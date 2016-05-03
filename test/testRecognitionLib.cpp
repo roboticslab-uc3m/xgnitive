@@ -1,9 +1,8 @@
 
 #include "gtest/gtest.h"
 
-
-
 #include "ColorDebug.hpp"
+#include "DtwRecognition.hpp"
 
 namespace teo
 {
@@ -11,7 +10,7 @@ namespace teo
 /**
  * @brief Tests ...
  */
-class RecognitionLibTest : public testing::Test // -- inherit the Test class (gtest.h)
+class TestRecognitionLib : public testing::Test // -- inherit the Test class (gtest.h)
 {
 
 public:
@@ -28,18 +27,18 @@ public:
 
 protected:
 
-    /** CAN BUS device. */
-
+    /** Recognition object. */
+    DtwRecognition recognition;
 };
 
-/*
-TEST_F( RecognitionLibTest, TechnosoftIposGetPresencewithReset) // -- we call the class that we want to do the test and we assign it a name
+
+TEST_F( TestRecognitionLib, TestRecognitionLib_DTW) // -- we call the class that we want to do the test and we assign it a name
 {
     int canId = 0;
     int ret = 0;
 
-    ASSERT_EQ(buffer.id-canId , 0x700);
+    ASSERT_EQ( 1 , 1 );
 }
-*/
+
 }  // namespace teo
 

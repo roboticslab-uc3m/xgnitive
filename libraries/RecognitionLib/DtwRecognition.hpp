@@ -3,14 +3,14 @@
 
 #include <vector>
 
+namespace teo
+{
+
 //This class receive two trajectories vector defined with vectors and compare them with DTW. It returns a "discrepancy value"
 class DtwRecognition
 {
 
 public:
-
-    //Constructor
-    DtwRecognition();
 
     /*
      * With this fuction we just define the generalized trajectory, which
@@ -21,14 +21,15 @@ public:
     /*
      * Compare the vector "v2" with the generalized trajectory
      */
-    bool compare(std::vector<double> &v2, double discrepancy);
+    bool compare(std::vector<double> &v2, double& discrepancy);
 
-    ~DtwRecognition();
 
 private:
     std::vector<double> generalizedT;
 
 };
+
+}  // namespace teo
 
 #endif // __DTW_RECOGNITION_HPP__
 
