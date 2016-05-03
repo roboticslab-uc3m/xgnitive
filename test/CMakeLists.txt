@@ -4,7 +4,7 @@ enable_testing()
 
 find_package(YARP REQUIRED)
 
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} ${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS} ${COLOR_DEBUG_INCLUDE_DIRS})
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} ${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS})
 link_directories(${XGNITIVE_LINK_DIRS})
 
 add_executable(testActionRecognitionLib testActionRecognitionLib.cpp)
