@@ -1,11 +1,11 @@
-#include "DtwRecognition.hpp"
+#include "DtwActionRecognition.hpp"
 
 namespace teo
 {
 
 /***********************************************************************/
 
-bool DtwRecognition::setGeneralized(std::vector<double> &v1)
+bool DtwActionRecognition::setGeneralized(std::vector<double> &v1)
 {
     return true;
 }
