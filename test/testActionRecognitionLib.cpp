@@ -16,28 +16,32 @@ class TestActionRecognitionLib : public testing::Test // -- inherit the Test cla
 public:
 
     virtual void SetUp() {
-    // -- code here will execute just before the test ensues
+        // -- code here will execute just before the test ensues
+        actionRecognition = new DtwActionRecognition;
     }
 
     virtual void TearDown()
     {
-    // -- code here will be called just after the test completes
-    // -- ok to through exceptions from here if need be
+        // -- code here will be called just after the test completes
+        // -- ok to through exceptions from here if need be
+        delete actionRecognition;
+        actionRecognition = 0;
     }
 
 protected:
 
     /** ActionRecognition object. */
-    DtwActionRecognition recognition;
+    ActionRecognition* actionRecognition;
 };
 
 
 TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW) // -- we call the class that we want to do the test and we assign it a name
 {
-    int canId = 0;
-    int ret = 0;
-
-    ASSERT_EQ( 1 , 1 );
+    std::vector< double > generalized;
+    //-- fill in the generalized vector here!!!
+    //...
+    bool ok = actionRecognition->setGeneralized( generalized );
+    ASSERT_TRUE( ok );
 }
 
 }  // namespace teo
