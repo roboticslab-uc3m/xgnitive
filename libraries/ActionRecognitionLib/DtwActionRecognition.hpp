@@ -6,7 +6,12 @@
 namespace teo
 {
 
-//! This class receive two trajectories vector defined with vectors and compare them with DTW. It returns a "discrepancy value"
+/**
+ * @ingroup ActionRecognitionLib
+ *
+ * @brief This class receive two trajectories vector defined with vectors and compare them with DTW. It returns a "discrepancy value".
+ *
+ */
 class DtwActionRecognition : public ActionRecognition
 {
 

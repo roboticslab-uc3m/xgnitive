@@ -8,7 +8,19 @@
 namespace teo
 {
 
-//! This class receive two trajectories vector defined with vectors and compare them. It returns a "discrepancy value"
+/**
+ *
+ * @ingroup xgnitive_libraries
+ * \defgroup ActionRecognitionLib
+ * @brief Contains teo::ActionRecognition base class and derived.
+ */
+
+/**
+ * @ingroup ActionRecognitionLib
+ *
+ * @brief This class receives two trajectories vector defined with vectors and compare them. It returns a "discrepancy value".
+ * 
+ */
 class ActionRecognition
 {
 
