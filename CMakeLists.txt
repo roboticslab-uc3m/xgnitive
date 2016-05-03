@@ -22,6 +22,10 @@ option(ENABLE_exampleProgram "Choose if you want to compile exampleProgram" TRUE
 ### options: force default
 option(ENABLE_exampleExtraOption "Enable/disable option exampleExtraOption" TRUE)
 
+##### test and coverage options
+option(ENABLE_tests "Choose if you want to compile tests" TRUE)
+option(ENABLE_coverage "Choose if you want to enable coverage collection" FALSE)
+
 if(MSVC)
   MESSAGE(STATUS "Running on windows")    
   set(CMAKE_DEBUG_POSTFIX "d")
@@ -66,6 +70,9 @@ set(XGNITIVE_LIBRARIES CACHE INTERNAL "appended libraries" FORCE)
 add_subdirectory(share)
 add_subdirectory(libraries)
 add_subdirectory(programs)
+if (ENABLE_tests)
+    add_subdirectory(test)
+endif (ENABLE_tests)
 
 # export our variables to a XGNITIVEConfig.cmake creation
 set(XGNITIVE_LINK_DIRS ${XGNITIVE_LINK_DIRS} ${LIBRARY_OUTPUT_PATH})
