@@ -14,7 +14,7 @@ endif(COMMAND cmake_policy)
 project(XGNITIVE)
 
 ### options: cpp libraries
-option(ENABLE_RecognitionLib "Choose if you want to compile RecognitionLib" TRUE)
+option(ENABLE_ActionRecognitionLib "Choose if you want to compile ActionRecognitionLib" TRUE)
 
 ### options: cpp programs
 option(ENABLE_exampleProgram "Choose if you want to compile exampleProgram" TRUE)
