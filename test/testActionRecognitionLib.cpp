@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 
 #include "ColorDebug.hpp"
-#include "DtwRecognition.hpp"
+#include "DtwActionRecognition.hpp"
 
 namespace teo
 {
@@ -10,7 +10,7 @@ namespace teo
 /**
  * @brief Tests ...
  */
-class TestRecognitionLib : public testing::Test // -- inherit the Test class (gtest.h)
+class TestActionRecognitionLib : public testing::Test // -- inherit the Test class (gtest.h)
 {
 
 public:
@@ -27,12 +27,12 @@ public:
 
 protected:
 
-    /** Recognition object. */
-    DtwRecognition recognition;
+    /** ActionRecognition object. */
+    DtwActionRecognition recognition;
 };
 
 
-TEST_F( TestRecognitionLib, TestRecognitionLib_DTW) // -- we call the class that we want to do the test and we assign it a name
+TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW) // -- we call the class that we want to do the test and we assign it a name
 {
     int canId = 0;
     int ret = 0;

@@ -2,9 +2,9 @@
 
 cmake_minimum_required(VERSION 2.6)
 
-IF (ENABLE_RecognitionLib)
+IF (ENABLE_ActionRecognitionLib)
 
-set(KEYWORD "RecognitionLib")
+set(KEYWORD "ActionRecognitionLib")
 
 # Find YARP.
 find_package(YARP REQUIRED)
@@ -36,7 +36,7 @@ endif (folder_source)
 
   # Exporting dependencies for XGNITIVEConfig.cmake quite manually for now...
   set(XGNITIVE_INCLUDE_DIRS ${XGNITIVE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended libraries")
-  set(XGNITIVE_LIBRARIES ${XGNITIVE_LIBRARIES} RecognitionLib CACHE INTERNAL "appended libraries")
+  set(XGNITIVE_LIBRARIES ${XGNITIVE_LIBRARIES} ActionRecognitionLib CACHE INTERNAL "appended libraries")
 
-ENDIF (ENABLE_RecognitionLib)
+ENDIF (ENABLE_ActionRecognitionLib)
 
