@@ -12,7 +12,7 @@ bool DtwActionRecognition::setGeneralized(std::vector<double> &v1)
 
 /***********************************************************************/
 
-bool compare(std::vector<double> &v2, double& discrepancy)
+bool DtwActionRecognition::compare(std::vector<double> &v2, double& discrepancy)
 {
     return true;
 }
