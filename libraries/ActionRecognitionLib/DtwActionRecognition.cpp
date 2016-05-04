@@ -1,5 +1,4 @@
 #include "DtwActionRecognition.hpp"
-#include <iostream>
 
 
 namespace teo
@@ -7,7 +6,7 @@ namespace teo
 
 /***********************************************************************/
 
-bool DtwActionRecognition::setGeneralized(std::vector<double> &v1)
+bool DtwActionRecognition::setGeneralized(std::vector<std::vector<double >> &v1)
 {
     if( v1.size() == 0 )
     {
@@ -20,25 +19,25 @@ bool DtwActionRecognition::setGeneralized(std::vector<double> &v1)
 
 /***********************************************************************/
 
-bool DtwActionRecognition::compare(std::vector<double> &v2, double& discrepancy)
+bool DtwActionRecognition::compare(std::vector<std::vector<double>> &v2, double& discrepancy)
 {
     //"from" and "to" are of the type std::vector< std::vector< double > > which is a vector of vectors.
     Aquila::DtwDataType from, to;
 
     if( v2.size() != generalizedT.size())
     {
-        CD_ERROR("DTW ERROR=>The two feature trajectories must have same dimensions!")
+        CD_ERROR("DTW ERROR=>Input vectors MUST have the same number of features!\n")
         return false;
     }
 
     //Store input vectors in the two DtwDatype variables
-    from.push_back(v2);
-    to.push_back(generalizedT);
+    from=v2;
+    to=generalizedT;
 
     //dtw Aquila dst
     Aquila::Dtw dtw;
     discrepancy = dtw.getDistance(from, to);
-    std::cout << "DTW distance (neighbors): " << discrepancy << "\n";
+    CD_INFO("DTW distance (neighbors): %f\n", discrepancy)
     //drawDtwPath(dtw, 1, 1);
 
 

@@ -30,16 +30,16 @@ public:
      * With this fuction we just define the generalized trajectory, which
      * at the end is the one we want to achieve
      */
-    virtual bool setGeneralized(std::vector<double> &v1) = 0;
+    virtual bool setGeneralized(std::vector<std::vector<double>> &v1) = 0;
 
     /**
      * Compare the vector "v2" with the generalized trajectory
      */
-    virtual bool compare(std::vector<double> &v2, double& discrepancy) = 0;
+    virtual bool compare(std::vector<std::vector<double>> &v2, double& discrepancy) = 0;
 
 
 protected:
-    std::vector<double> generalizedT;
+    std::vector<std::vector<double>> generalizedT;
 
 };
 

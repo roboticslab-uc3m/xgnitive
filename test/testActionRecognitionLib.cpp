@@ -37,16 +37,18 @@ protected:
 
 TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW) // -- we call the class that we want to do the test and we assign it a name
 {
-    std::vector< double > generalized;
-    std::vector< double > v2;
+    std::vector<std::vector<double>> generalized;
+    std::vector<std::vector<double>> v2;
     double discrepancy;
 
     //-- test Generalized
-    generalized={27,58,48,35,25};
+    generalized.push_back({27,58,48,35,25});
+    generalized.push_back({24,8,3453});
     bool okg = actionRecognition->setGeneralized( generalized );
 
     //-- test compare
-    v2={23,54, 345, 2, 18794};
+    v2.push_back({23,54, 345, 2, 18794});
+    v2.push_back({4,58, 324, 12, 7847});
     bool okc = actionRecognition->compare(v2,discrepancy);
     ASSERT_TRUE( okg & okc );
 }
