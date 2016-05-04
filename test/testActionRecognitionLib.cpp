@@ -38,10 +38,17 @@ protected:
 TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW) // -- we call the class that we want to do the test and we assign it a name
 {
     std::vector< double > generalized;
-    //-- fill in the generalized vector here!!!
-    //...
-    bool ok = actionRecognition->setGeneralized( generalized );
-    ASSERT_TRUE( ok );
+    std::vector< double > v2;
+    double discrepancy;
+
+    //-- test Generalized
+    generalized={27,58,48,35,25};
+    bool okg = actionRecognition->setGeneralized( generalized );
+
+    //-- test compare
+    v2={23,54, 345, 2, 18794};
+    bool okc = actionRecognition->compare(v2,discrepancy);
+    ASSERT_TRUE( okg & okc );
 }
 
 }  // namespace teo

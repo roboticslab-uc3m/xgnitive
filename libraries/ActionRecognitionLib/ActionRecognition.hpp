@@ -38,7 +38,7 @@ public:
     virtual bool compare(std::vector<double> &v2, double& discrepancy) = 0;
 
 
-private:
+protected:
     std::vector<double> generalizedT;
 
 };

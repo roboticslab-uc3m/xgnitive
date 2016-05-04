@@ -30,7 +30,7 @@ link_directories(${XGNITIVE_LINK_DIRS})
 # Set up our main executable.
 if (folder_source)
   add_library(${KEYWORD} ${folder_source} ${folder_header})
-  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES})
+  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} Aquila)
   install(TARGETS ${KEYWORD} DESTINATION bin)
 else (folder_source)
   message(FATAL_ERROR "No source code files found. Please add something")
