@@ -1,6 +1,11 @@
 #ifndef __DTW_ACTION_RECOGNITION_HPP__
 #define __DTW_ACTION_RECOGNITION_HPP__
 
+
+#include <aquila/global.h>
+#include <aquila/functions.h>
+#include <aquila/ml/Dtw.h>
+
 #include "ActionRecognition.hpp"
 
 namespace teo

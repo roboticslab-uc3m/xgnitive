@@ -6,6 +6,8 @@ IF (ENABLE_ActionRecognitionLib)
 
 set(KEYWORD "ActionRecognitionLib")
 
+add_definitions(-std=c++11)  # Required for aquila-dsp used by DtwActionRecognition
+
 # Find YARP.
 find_package(YARP REQUIRED)
 
