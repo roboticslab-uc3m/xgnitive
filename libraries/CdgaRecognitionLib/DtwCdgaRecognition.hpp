@@ -1,23 +1,23 @@
-#ifndef __DTW_ACTION_RECOGNITION_HPP__
-#define __DTW_ACTION_RECOGNITION_HPP__
+#ifndef __DTW_CDGA_RECOGNITION_HPP__
+#define __DTW_CDGA_RECOGNITION_HPP__
 
 
 #include <aquila/global.h>
 #include <aquila/functions.h>
 #include <aquila/ml/Dtw.h>
 
-#include "ActionRecognition.hpp"
+#include "CdgaRecognition.hpp"
 
 namespace teo
 {
 
 /**
- * @ingroup ActionRecognitionLib
+ * @ingroup CdgaRecognitionLib
  *
  * @brief This class receive two trajectories vector defined with vectors and compare them with DTW. It returns a "discrepancy value".
  *
  */
-class DtwActionRecognition : public ActionRecognition
+class DtwCdgaRecognition : public CdgaRecognition
 {
 
 public:
@@ -40,5 +40,5 @@ private:
 
 }  // namespace teo
 
-#endif // __DTW_ACTION_RECOGNITION_HPP__
+#endif // __DTW_CDGA_RECOGNITION_HPP__
 

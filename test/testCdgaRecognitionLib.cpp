@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 
 #include "ColorDebug.hpp"
-#include "DtwActionRecognition.hpp"
+#include "DtwCdgaRecognition.hpp"
 
 namespace teo
 {
@@ -10,32 +10,32 @@ namespace teo
 /**
  * @brief Tests ...
  */
-class TestActionRecognitionLib : public testing::Test // -- inherit the Test class (gtest.h)
+class TestCdgaRecognitionLib : public testing::Test // -- inherit the Test class (gtest.h)
 {
 
 public:
 
     virtual void SetUp() {
         // -- code here will execute just before each test ensues
-        actionRecognition = new DtwActionRecognition;
+        cdgaRecognition = new DtwCdgaRecognition;
     }
 
     virtual void TearDown()
     {
         // -- code here will be called just after each test completes
         // -- ok to through exceptions from here if need be
-        delete actionRecognition;
-        actionRecognition = 0;
+        delete cdgaRecognition;
+        cdgaRecognition = 0;
     }
 
 protected:
 
-    /** ActionRecognition object. */
-    ActionRecognition* actionRecognition;
+    /** CdgaRecognition object. */
+    CdgaRecognition* cdgaRecognition;
 };
 
 
-TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_setGeneralized)
+TEST_F( TestCdgaRecognitionLib, TestCdgaRecognitionLib_DTW_setGeneralized)
 {
     std::vector<std::vector<double>> generalizedRandom;
 
@@ -43,12 +43,12 @@ TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_setGeneralized)
     generalizedRandom.push_back({27,58,48,35,25});
     generalizedRandom.push_back({24,8,3453,48,89});
     generalizedRandom.push_back({24,58,22,58,47});
-    bool ok = actionRecognition->setGeneralized( generalizedRandom );
+    bool ok = cdgaRecognition->setGeneralized( generalizedRandom );
 
     ASSERT_TRUE( ok );
 }
 
-TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_compare)
+TEST_F( TestCdgaRecognitionLib, TestCdgaRecognitionLib_DTW_compare)
 {
 
     std::vector<std::vector<double>> generalizedRandom;
@@ -59,19 +59,19 @@ TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_compare)
     generalizedRandom.push_back({27,58,48,35,25});
     generalizedRandom.push_back({24,8,3453,48,89});
     generalizedRandom.push_back({24,58,22,58,47});
-    actionRecognition->setGeneralized( generalizedRandom );
+    cdgaRecognition->setGeneralized( generalizedRandom );
 
     //-- test compare
     attempVectRandom.push_back({23,54, 345, 2, 18794});
     attempVectRandom.push_back({4,58, 324, 12, 7847});
 
     double discrepancy;
-    bool ok = actionRecognition->compare(attempVectRandom,discrepancy);
+    bool ok = cdgaRecognition->compare(attempVectRandom,discrepancy);
 
     ASSERT_TRUE( ok );
 }
 
-TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_zero)
+TEST_F( TestCdgaRecognitionLib, TestCdgaRecognitionLib_DTW_zero)
 {
     std::vector<std::vector<double>> generalizedForZeroDiscrepancy;
     std::vector<std::vector<double>> attempVectforZeroDiscrepancy;
@@ -80,19 +80,19 @@ TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_zero)
     generalizedForZeroDiscrepancy.push_back({27,58,48,35,25});
     generalizedForZeroDiscrepancy.push_back({24,8,3453,12,43});
 
-    actionRecognition->setGeneralized( generalizedForZeroDiscrepancy );
+    cdgaRecognition->setGeneralized( generalizedForZeroDiscrepancy );
 
     //-- test compare
     attempVectforZeroDiscrepancy.push_back({27,58,48,35,25});
     attempVectforZeroDiscrepancy.push_back({24,8,3453,12,43});
 
     double discrepancy;
-    actionRecognition->compare(attempVectforZeroDiscrepancy,discrepancy);
+    cdgaRecognition->compare(attempVectforZeroDiscrepancy,discrepancy);
 
     ASSERT_EQ( discrepancy, 0 );
 }
 
-TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_simple)
+TEST_F( TestCdgaRecognitionLib, TestCdgaRecognitionLib_DTW_simple)
 {
 
     /*
@@ -120,7 +120,7 @@ TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_simple)
     generalizedForSimpleDiscrepancy.push_back({1});
     generalizedForSimpleDiscrepancy.push_back({1});
 
-    actionRecognition->setGeneralized( generalizedForSimpleDiscrepancy );
+    cdgaRecognition->setGeneralized( generalizedForSimpleDiscrepancy );
 
     //-- test compare
     attempVectforSimpleDiscrepancy.push_back({0});
@@ -129,7 +129,7 @@ TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_simple)
     attempVectforSimpleDiscrepancy.push_back({0});
 
     double discrepancy;
-    actionRecognition->compare(attempVectforSimpleDiscrepancy,discrepancy);
+    cdgaRecognition->compare(attempVectforSimpleDiscrepancy,discrepancy);
 
     ASSERT_EQ( discrepancy, 1 );
 

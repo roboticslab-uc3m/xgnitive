@@ -2,18 +2,16 @@
 
 cmake_minimum_required(VERSION 2.6)
 
-IF (ENABLE_ActionRecognitionLib)
+IF (ENABLE_cdgaOptimization)
 
-set(KEYWORD "ActionRecognitionLib")
-
-add_definitions(-std=c++11)  # Required for aquila-dsp used by DtwActionRecognition
+set(KEYWORD "cdgaOptimization")
 
 # Find YARP.
 find_package(YARP REQUIRED)
 
 # Search for source code.
 file(GLOB folder_source *.cpp *.cc *.c)
-file(GLOB folder_header *.h *.hpp)
+file(GLOB folder_header *.h)
 source_group("Source Files" FILES ${folder_source})
 source_group("Header Files" FILES ${folder_header})
 
@@ -29,16 +27,12 @@ link_directories(${XGNITIVE_LINK_DIRS})
 
 # Set up our main executable.
 if (folder_source)
-  add_library(${KEYWORD} ${folder_source} ${folder_header})
-  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} Aquila)
+  add_executable(${KEYWORD} ${folder_source} ${folder_header})
+  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${XGNITIVE_LIBRARIES})
   install(TARGETS ${KEYWORD} DESTINATION bin)
 else (folder_source)
   message(FATAL_ERROR "No source code files found. Please add something")
 endif (folder_source)
 
-  # Exporting dependencies for XGNITIVEConfig.cmake quite manually for now...
-  set(XGNITIVE_INCLUDE_DIRS ${XGNITIVE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended libraries")
-  set(XGNITIVE_LIBRARIES ${XGNITIVE_LIBRARIES} ActionRecognitionLib CACHE INTERNAL "appended libraries")
-
-ENDIF (ENABLE_ActionRecognitionLib)
+ENDIF (ENABLE_cdgaOptimization)
 

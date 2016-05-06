@@ -4,5 +4,5 @@
 add_subdirectory(ColorDebug)  # ColorDebug sets COLOR_DEBUG_INCLUDE_DIRS
 set(XGNITIVE_INCLUDE_DIRS ${XGNITIVE_INCLUDE_DIRS} ${COLOR_DEBUG_INCLUDE_DIRS} CACHE INTERNAL "appended libraries")
 
-add_subdirectory(ActionRecognitionLib)
+add_subdirectory(CdgaRecognitionLib)
 

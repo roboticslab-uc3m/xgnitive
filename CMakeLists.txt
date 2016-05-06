@@ -14,10 +14,10 @@ endif(COMMAND cmake_policy)
 project(XGNITIVE)
 
 ### options: cpp libraries
-option(ENABLE_ActionRecognitionLib "Choose if you want to compile ActionRecognitionLib" TRUE)
+option(ENABLE_CdgaRecognitionLib "Choose if you want to compile CdgaRecognitionLib" TRUE)
 
 ### options: cpp programs
-option(ENABLE_exampleProgram "Choose if you want to compile exampleProgram" TRUE)
+option(ENABLE_cdgaOptimization "Choose if you want to compile cdgaOptimization" TRUE)
 
 ### options: force default
 option(ENABLE_exampleExtraOption "Enable/disable option exampleExtraOption" TRUE)

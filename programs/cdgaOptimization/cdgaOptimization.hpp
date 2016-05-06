@@ -1,7 +1,7 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#ifndef __EXAMPLE_PROGRAM_HPP__
-#define __EXAMPLE_PROGRAM_HPP__
+#ifndef __CDGA_OPTIMIZATION_HPP__
+#define __CDGA_OPTIMIZATION_HPP__
 
 #include <yarp/os/all.h>
 
@@ -9,12 +9,12 @@ namespace teo
 {
 
 /**
- * @ingroup exampleProgram
+ * @ingroup cdgaOptimization
  *
- * @brief exampleProgram
+ * @brief cdgaOptimization
  *
  */
-class ExampleProgram : public yarp::os::RFModule {
+class cdgaOptimization : public yarp::os::RFModule {
     public:
         bool configure(yarp::os::ResourceFinder &rf);
 
@@ -28,4 +28,4 @@ class ExampleProgram : public yarp::os::RFModule {
 
 }  // namespace teo
 
-#endif  // __EXAMPLE_PROGRAM_HPP__
+#endif  // __CDGA_OPTIMIZATION_HPP__

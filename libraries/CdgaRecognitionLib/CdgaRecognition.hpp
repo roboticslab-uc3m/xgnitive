@@ -1,5 +1,5 @@
-#ifndef __ACTION_RECOGNITION_HPP__
-#define __ACTION_RECOGNITION_HPP__
+#ifndef __Cdga_RECOGNITION_HPP__
+#define __Cdga_RECOGNITION_HPP__
 
 #include <vector>
 
@@ -11,17 +11,17 @@ namespace teo
 /**
  *
  * @ingroup xgnitive_libraries
- * \defgroup ActionRecognitionLib
- * @brief Contains teo::ActionRecognition base class and derived.
+ * \defgroup CdgaRecognitionLib
+ * @brief Contains teo::CdgaRecognition base class and derived.
  */
 
 /**
- * @ingroup ActionRecognitionLib
+ * @ingroup CdgaRecognitionLib
  *
  * @brief This class receives two trajectories vector defined with vectors and compare them. It returns a "discrepancy value".
  * 
  */
-class ActionRecognition
+class CdgaRecognition
 {
 
 public:
@@ -45,5 +45,5 @@ protected:
 
 }  // namespace teo
 
-#endif // __ACTION_RECOGNITION_HPP__
+#endif // __Cdga_RECOGNITION_HPP__
 

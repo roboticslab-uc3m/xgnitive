@@ -3,11 +3,11 @@
 /**
  *
  * @ingroup xgnitive_programs
- * \defgroup exampleProgram
+ * \defgroup cdgaOptimization
  *
- * @brief Creates an instance of teo::ExampleProgram
+ * @brief Creates an instance of teo::cdgaOptimization
  *
- * @section exampleProgram_legal Legal
+ * @section cdgaOptimization_legal Legal
  *
  * Copyright: 2016 (C) Universidad Carlos III de Madrid
  *
@@ -18,13 +18,13 @@
  *
  * <hr>
  *
- * This file can be edited at exampleProgram
+ * This file can be edited at cdgaOptimization
  *
  */
 
 #include <yarp/os/all.h>
 
-#include "ExampleProgram.hpp"
+#include "cdgaOptimization.hpp"
 
 using namespace yarp::os;
 
@@ -32,11 +32,11 @@ int main(int argc, char **argv) {
 
     ResourceFinder rf;
     rf.setVerbose(true);
-    rf.setDefaultContext("exampleProgram");
-    rf.setDefaultConfigFile("exampleProgram.ini");
+    rf.setDefaultContext("cdgaOptimization");
+    rf.setDefaultConfigFile("cdgaOptimization.ini");
     rf.configure(argc, argv);
 
-    teo::ExampleProgram mod;
+    teo::cdgaOptimization mod;
     if(rf.check("help")) {
         return mod.runModule(rf);
     }
