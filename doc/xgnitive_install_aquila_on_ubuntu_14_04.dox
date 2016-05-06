@@ -1,0 +1,23 @@
+
+/**
+ * \page xgnitive_install_aquila_on_ubuntu_14_04 Install Aquila (Ubuntu 14.04)
+
+We use Aquila for DTW. Installing Aquila on Ubuntu is quite straightforward. Note that you will be prompted for your password upon using '''sudo'''. Type:
+
+\verbatim
+sudo apt-get install libsfml-dev
+cd  # go home
+mkdir -p repos; cd repos  # make $HOME/repos if it doesn't exist; then, enter it
+git clone git://github.com/zsiciarz/aquila.git
+cd aquila; mkdir build; cd build
+cmake ..
+make -j3;  sudo make install; sudo ldconfig; cd  # go home
+\endverbatim
+
+<br><hr>
+
+This page can be edited at xgnitive/doc/xgnitive_install_aquila_on_ubuntu_14_04.dox.
+
+*
+*/
+
