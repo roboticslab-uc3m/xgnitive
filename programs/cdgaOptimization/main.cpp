@@ -3,7 +3,7 @@
 /**
  *
  * @ingroup xgnitive_programs
- * \defgroup cgdaOptimization
+ * \defgroup cgdaOptimization cgdaOptimization
  *
  * @brief Creates an instance of teo::CgdaOptimization
  *
