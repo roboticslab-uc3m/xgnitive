@@ -3,11 +3,11 @@
 /**
  *
  * @ingroup xgnitive_programs
- * \defgroup cdgaOptimization
+ * \defgroup cgdaOptimization
  *
- * @brief Creates an instance of teo::cdgaOptimization
+ * @brief Creates an instance of teo::CgdaOptimization
  *
- * @section cdgaOptimization_legal Legal
+ * @section cgdaOptimization_legal Legal
  *
  * Copyright: 2016 (C) Universidad Carlos III de Madrid
  *
@@ -18,13 +18,13 @@
  *
  * <hr>
  *
- * This file can be edited at cdgaOptimization
+ * This file can be edited at cgdaOptimization
  *
  */
 
 #include <yarp/os/all.h>
 
-#include "cdgaOptimization.hpp"
+#include "CgdaOptimization.hpp"
 
 using namespace yarp::os;
 
@@ -32,11 +32,11 @@ int main(int argc, char **argv) {
 
     ResourceFinder rf;
     rf.setVerbose(true);
-    rf.setDefaultContext("cdgaOptimization");
-    rf.setDefaultConfigFile("cdgaOptimization.ini");
+    rf.setDefaultContext("cgdaOptimization");
+    rf.setDefaultConfigFile("cgdaOptimization.ini");
     rf.configure(argc, argv);
 
-    teo::cdgaOptimization mod;
+    teo::CgdaOptimization mod;
     if(rf.check("help")) {
         return mod.runModule(rf);
     }

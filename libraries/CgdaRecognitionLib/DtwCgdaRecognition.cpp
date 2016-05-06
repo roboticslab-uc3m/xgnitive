@@ -1,11 +1,11 @@
-#include "DtwCdgaRecognition.hpp"
+#include "DtwCgdaRecognition.hpp"
 
 namespace teo
 {
 
 /***********************************************************************/
 
-bool DtwCdgaRecognition::setGeneralized(std::vector<std::vector<double >> &v1)
+bool DtwCgdaRecognition::setGeneralized(std::vector<std::vector<double >> &v1)
 {
     if( v1.size() == 0 )
     {
@@ -18,7 +18,7 @@ bool DtwCdgaRecognition::setGeneralized(std::vector<std::vector<double >> &v1)
 
 /***********************************************************************/
 
-bool DtwCdgaRecognition::compare(std::vector<std::vector<double>> &v2, double& discrepancy)
+bool DtwCgdaRecognition::compare(std::vector<std::vector<double>> &v2, double& discrepancy)
 {
 
     if( v2[0].size() != generalizedT[0].size())

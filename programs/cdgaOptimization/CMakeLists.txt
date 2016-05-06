@@ -2,9 +2,9 @@
 
 cmake_minimum_required(VERSION 2.6)
 
-IF (ENABLE_cdgaOptimization)
+IF (ENABLE_cgdaOptimization)
 
-set(KEYWORD "cdgaOptimization")
+set(KEYWORD "cgdaOptimization")
 
 # Find YARP.
 find_package(YARP REQUIRED)
@@ -34,5 +34,5 @@ else (folder_source)
   message(FATAL_ERROR "No source code files found. Please add something")
 endif (folder_source)
 
-ENDIF (ENABLE_cdgaOptimization)
+ENDIF (ENABLE_cgdaOptimization)
 
