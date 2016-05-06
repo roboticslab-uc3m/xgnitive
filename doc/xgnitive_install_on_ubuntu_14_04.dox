@@ -5,6 +5,7 @@
 First install the depencencies:
   \li \ref xgnitive_install_cmake_on_ubuntu_14_04
   \li \ref xgnitive_install_yarp_on_ubuntu_14_04
+  \li \ref xgnitive_install_aquila_on_ubuntu_14_04
 
  * @section install_xgnitive Install XGNITIVE
 
