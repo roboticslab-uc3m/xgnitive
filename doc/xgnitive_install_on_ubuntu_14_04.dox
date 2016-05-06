@@ -15,7 +15,7 @@ Our software integrates the previous dependencies. Note that you will be prompte
 cd  # go home
 mkdir -p repos; cd repos  # make $HOME/repos if it doesn't exist; then, enter it
 git clone https://github.com/roboticslab-uc3m/xgnitive.git  # Download xgnitive software from the repository
-cd teo-main; mkdir build; cd build; cmake ..  # Configure the xgnitive software
+cd xgnitive; mkdir build; cd build; cmake ..  # Configure the xgnitive software
 make  # Compile
 sudo make install  # Install :-)
 cp ../scripts/gnome/xgnitive.desktop $HOME/Desktop
