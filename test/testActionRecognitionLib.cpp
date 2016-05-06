@@ -3,7 +3,6 @@
 
 #include "ColorDebug.hpp"
 #include "DtwActionRecognition.hpp"
-#include <iostream>
 
 namespace teo
 {
@@ -56,6 +55,7 @@ TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_compare)
     std::vector<std::vector<double>> attempVectRandom;
 
     //-- test Generalized
+    //Each push_back adds a new row.
     generalizedRandom.push_back({27,58,48,35,25});
     generalizedRandom.push_back({24,8,3453,48,89});
     generalizedRandom.push_back({24,58,22,58,47});
@@ -79,6 +79,7 @@ TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_zero)
     //-- test Generalized
     generalizedForZeroDiscrepancy.push_back({27,58,48,35,25});
     generalizedForZeroDiscrepancy.push_back({24,8,3453,12,43});
+
     actionRecognition->setGeneralized( generalizedForZeroDiscrepancy );
 
     //-- test compare
@@ -95,29 +96,35 @@ TEST_F( TestActionRecognitionLib, TestActionRecognitionLib_DTW_simple)
 {
 
     /*
-     * The Matrix cost using euclidean distance is the following one
-     *
-     *  0    1
+     * The Matrix cost using euclidean distance is the following one.
+     *  ------------>Generalized
+     *  |  0    0    1
      *  |
-     *  0 -- 1
+     *  |  0    1    1
+     *  |     \
+     *  |  1    0    0
+     *  |          \
+     *  |  0    1    1
+     *  "
+     * Attemp
      *
-     * The optimal path is the one in the figure, which cost is one.
+     * The optimal path is the one in the figure, wich corresponds with the lower cost
+     * of aligning both signals, in this case is one.
      */
 
     std::vector<std::vector<double>> generalizedForSimpleDiscrepancy;
     std::vector<std::vector<double>> attempVectforSimpleDiscrepancy;
 
     //-- test Generalized
-    generalizedForSimpleDiscrepancy.push_back({1});
     generalizedForSimpleDiscrepancy.push_back({0});
     generalizedForSimpleDiscrepancy.push_back({1});
-    //double tam=generalizedForSimpleDiscrepancy.size();
-    //CD_INFO("EL TAMAÑO ES: %f",tam);
-    //std::cout<<generalizedForSimpleDiscrepancy[0][0]<<std::endl;
+    generalizedForSimpleDiscrepancy.push_back({1});
+
     actionRecognition->setGeneralized( generalizedForSimpleDiscrepancy );
 
     //-- test compare
-    attempVectforSimpleDiscrepancy.push_back({2});
+    attempVectforSimpleDiscrepancy.push_back({0});
+    attempVectforSimpleDiscrepancy.push_back({0});
     attempVectforSimpleDiscrepancy.push_back({1});
     attempVectforSimpleDiscrepancy.push_back({0});
 

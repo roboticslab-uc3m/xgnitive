@@ -1,6 +1,5 @@
 #include "DtwActionRecognition.hpp"
 
-
 namespace teo
 {
 
@@ -21,8 +20,6 @@ bool DtwActionRecognition::setGeneralized(std::vector<std::vector<double >> &v1)
 
 bool DtwActionRecognition::compare(std::vector<std::vector<double>> &v2, double& discrepancy)
 {
-    //"from" and "to" are of the type std::vector< std::vector< double > > which is a vector of vectors.
-    //Aquila::DtwDataType from, to;
 
     if( v2[0].size() != generalizedT[0].size())
     {
@@ -30,15 +27,19 @@ bool DtwActionRecognition::compare(std::vector<std::vector<double>> &v2, double&
         return false;
     }
 
-    //Store input vectors in the two DtwDatype variables
-    //from=v2;
-    //to=generalizedT;
-
     //dtw Aquila dst
     Aquila::Dtw dtw;
     discrepancy = dtw.getDistance(v2, generalizedT);
     CD_INFO("DTW distance (neighbors): %f\n", discrepancy)
-    //drawDtwPath(dtw, 1, 1);
+
+    //Uncomment for dedugging the path
+//    Aquila::DtwPathType path;
+//    path= dtw.getPath();
+//    for (auto it = path.begin(); it != path.end(); ++it)
+//    {
+//        CD_INFO("EL SIGUIENTE PUNTO (attemp,generalized) ES: (%zu, %zu) \n", it->x, it->y);
+//        //CD_INFO("EL SIGUIENTE PUNTO Y ES: %zu \n", it->y);
+//    }
 
 
     return true;
