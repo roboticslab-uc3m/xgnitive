@@ -1,6 +1,6 @@
 
 /**
- * \page xgnitive_install_aquila_on_ubuntu_14_04 Install aquila (Ubuntu 14.04)
+ * \page xgnitive_install_aquila_on_ubuntu_14_04 Install Aquila (Ubuntu 14.04)
 
 We use Aquila for DTW. Installing Aquila on Ubuntu is quite straightforward. Note that you will be prompted for your password upon using '''sudo'''. Type:
 
