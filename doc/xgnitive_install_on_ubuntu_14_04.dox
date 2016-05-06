@@ -1,0 +1,37 @@
+
+/**
+ * \page xgnitive_install_on_ubuntu_14_04 Installation from Source Code (Ubuntu 14.04)
+
+First install the depencencies:
+  \li \ref xgnitive_install_cmake_on_ubuntu_14_04
+  \li \ref xgnitive_install_yarp_on_ubuntu_14_04
+
+ * @section install_xgnitive Install XGNITIVE
+
+Our software integrates the previous dependencies. Note that you will be prompted for your password upon using '''sudo''' a couple of times:
+
+\verbatim
+cd  # go home
+mkdir -p repos; cd repos  # make $HOME/repos if it doesn't exist; then, enter it
+git clone https://github.com/roboticslab-uc3m/xgnitive.git  # Download xgnitive software from the repository
+cd teo-main; mkdir build; cd build; cmake ..  # Configure the xgnitive software
+make  # Compile
+sudo make install  # Install :-)
+cp ../scripts/gnome/xgnitive.desktop $HOME/Desktop
+\endverbatim
+
+For additional xgnitive options use ccmake instead of cmake.
+
+@section install_on_ubuntu_14_04_even_more Even more!
+
+Done! You are now probably interested in one of the following links:
+  \li \ref xgnitive_post_install
+  \li \ref xgnitive_environment_variables
+
+<hr>
+
+This page can be edited at xgnitive/doc/xgnitive_install_on_ubuntu_14_04.dox.
+
+*
+*/
+
