@@ -6,8 +6,6 @@ IF (ENABLE_CgdaRecognitionLib)
 
 set(KEYWORD "CgdaRecognitionLib")
 
-add_definitions(-std=c++11)  # Required for aquila-dsp used by DtwCgdaRecognition
-
 # Find YARP.
 find_package(YARP REQUIRED)
 
@@ -26,6 +24,8 @@ foreach(header_file ${folder_header})
   include_directories(${p})
 endforeach(header_file ${folder_header})
 
+add_definitions(${AQUILA_DEFINITIONS})
+
 include_directories(${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS} ${AQUILA_INCLUDE_DIRS})
 
 link_directories(${XGNITIVE_LINK_DIRS})
@@ -40,8 +40,9 @@ else (folder_source)
 endif (folder_source)
 
   # Exporting dependencies for XGNITIVEConfig.cmake quite manually for now...
-  set(XGNITIVE_INCLUDE_DIRS ${XGNITIVE_INCLUDE_DIRS} ${AQUILA_INCLUDE_DIRS} ${AQUILA_LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended libraries")
-  set(XGNITIVE_LIBRARIES ${XGNITIVE_LIBRARIES} CgdaRecognitionLib CACHE INTERNAL "appended libraries")
+  set(XGNITIVE_DEFINITIONS ${XGNITIVE_DEFINITIONS} ${AQUILA_DEFINITIONS} CACHE INTERNAL "appended definitions")
+  set(XGNITIVE_INCLUDE_DIRS ${XGNITIVE_INCLUDE_DIRS} ${AQUILA_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended headers")
+  set(XGNITIVE_LIBRARIES ${XGNITIVE_LIBRARIES} ${AQUILA_LIBRARIES} CgdaRecognitionLib CACHE INTERNAL "appended libraries")
 
 ENDIF (ENABLE_CgdaRecognitionLib)
 
