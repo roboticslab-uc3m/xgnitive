@@ -11,6 +11,9 @@ add_definitions(-std=c++11)  # Required for aquila-dsp used by DtwCgdaRecognitio
 # Find YARP.
 find_package(YARP REQUIRED)
 
+# Find Aquila.
+find_package(Aquila REQUIRED)
+
 # Search for source code.
 file(GLOB folder_source *.cpp *.cc *.c)
 file(GLOB folder_header *.h *.hpp)
@@ -23,21 +26,21 @@ foreach(header_file ${folder_header})
   include_directories(${p})
 endforeach(header_file ${folder_header})
 
-include_directories(${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS})
+include_directories(${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS} ${AQUILA_INCLUDE_DIRS})
 
 link_directories(${XGNITIVE_LINK_DIRS})
 
 # Set up our main executable.
 if (folder_source)
   add_library(${KEYWORD} ${folder_source} ${folder_header})
-  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} Aquila)
+  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${AQUILA_LIBRARIES})
   install(TARGETS ${KEYWORD} DESTINATION bin)
 else (folder_source)
   message(FATAL_ERROR "No source code files found. Please add something")
 endif (folder_source)
 
   # Exporting dependencies for XGNITIVEConfig.cmake quite manually for now...
-  set(XGNITIVE_INCLUDE_DIRS ${XGNITIVE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended libraries")
+  set(XGNITIVE_INCLUDE_DIRS ${XGNITIVE_INCLUDE_DIRS} ${AQUILA_INCLUDE_DIRS} ${AQUILA_LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended libraries")
   set(XGNITIVE_LIBRARIES ${XGNITIVE_LIBRARIES} CgdaRecognitionLib CACHE INTERNAL "appended libraries")
 
 ENDIF (ENABLE_CgdaRecognitionLib)
