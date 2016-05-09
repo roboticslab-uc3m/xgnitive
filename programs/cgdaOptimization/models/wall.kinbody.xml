@@ -1,0 +1,123 @@
+<!-- wall.kinbody.xml -->
+<KinBody name="wall">
+
+
+
+<Body name= "square0"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.8 0.32 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square1"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.8 0.52 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square2"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.8 0.72 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square3"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.8 0.92 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square4"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.6 0.32 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square5"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.6 0.52 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square6"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.6 0.72 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square7"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.6 0.92 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square8"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.4 0.32 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square9"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.4 0.52 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square10"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.4 0.72 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square11"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.4 0.92 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square12"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.2 0.32 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square13"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.2 0.52 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square14"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.2 0.72 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+<Body name= "square15"  type= "static" >
+<Geom type= "box" >
+<Extents>0.001 0.1 0.1</Extents>
+<Translation> 0.6 -0.2 0.92 </Translation>
+ <diffuseColor>.5 .5 .5</diffuseColor>
+</Geom>
+</Body>
+
+
+
+</KinBody>
+
+

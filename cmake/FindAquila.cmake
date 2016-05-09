@@ -18,8 +18,6 @@ find_library(AQUILA_LIBRARY NAMES Aquila libAquila )
 
 mark_as_advanced(AQUILA_INCLUDE_DIR AQUILA_LIBRARY )
 
-#add_definitions(-std=c++11)  # Required for aquila-dsp used by DtwCgdaRecognition
-
 set(AQUILA_DEFINITIONS -std=c++11 )
 set(AQUILA_INCLUDE_DIRS ${AQUILA_INCLUDE_DIR} )
 set(AQUILA_LIBRARIES ${AQUILA_LIBRARY} )

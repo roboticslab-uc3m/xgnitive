@@ -1,0 +1,1 @@
+python /usr/local/lib/python2.7/dist-packages/openravepy/_openravepy_/ikfast.py --robot=robots/barrettwam.robot.xml --baselink=0 --eelink=7 --savefile=ik.cpp --freeindex=2

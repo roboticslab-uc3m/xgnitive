@@ -1,0 +1,143 @@
+<Robot name="right_leg_robot">
+  <KinBody name="right_leg" makejoinedlinksadjacent="false">
+
+<!--This link added for hip joint-->
+    <body name="right_leg/hip_bone">
+	<Translation>0 0 0</Translation>
+      <geom type="box">
+        <extents>0.001 0.001 0.001</extents>
+      </geom>
+    </body>
+
+<!--Leg parts from here-->
+    <Body name="right_leg/hip_yawer" type="dynamic">
+	<Translation>0 0 0</Translation>
+	<RotationAxis>0 0 1 0</RotationAxis>
+      <Geom type="trimesh">
+        <Render>models/right_leg/hip_yawer.wrl</Render>
+	<collision>models/right_leg/hip_yawer.wrl</collision>
+      </Geom>
+    </Body>
+
+    <Joint circular="true" name="right_leg/hip_yaw" type="hinge">
+      <Body>right_leg/hip_bone</Body>
+      <Body>right_leg/hip_yawer</Body>
+      <offsetfrom>right_leg/hip_bone</offsetfrom>
+      <weight>4</weight>
+      <limitsdeg>-20 20</limitsdeg>
+      <axis>0 0 1</axis>
+      <maxvel>3</maxvel>
+      <resolution>1</resolution>
+    </Joint>
+
+    <Body name="right_leg/hip_roller" type="dynamic">
+	<offsetfrom>right_leg/hip_yawer</offsetfrom>
+	<Translation>0 0 0</Translation>
+	<RotationAxis>0 0 1 0</RotationAxis>
+      <Geom type="trimesh">
+        <Render>models/right_leg/hip_roller.wrl</Render>
+	<collision>models/right_leg/hip_roller.wrl</collision>
+      </Geom>
+    </Body>
+
+    <Joint circular="true" name="right_leg/hip_roll" type="hinge">
+      <Body>right_leg/hip_yawer</Body>
+      <Body>right_leg/hip_roller</Body>
+      <offsetfrom>right_leg/hip_yawer</offsetfrom>
+      <weight>4</weight>
+      <limitsdeg>-80 80</limitsdeg>
+      <axis>1 0 0</axis>
+      <maxvel>3</maxvel>
+      <resolution>1</resolution>
+    </Joint>
+
+
+    <Body name="right_leg/thigh" type="dynamic">
+	<Translation>0 0.014 0</Translation>
+	<RotationAxis>0 0 1 0</RotationAxis>
+	<offsetfrom>right_leg/hip_roller</offsetfrom>
+      <Geom type="trimesh">
+        <Render>models/right_leg/thigh.wrl</Render>
+	<collision>models/right_leg/thigh.wrl</collision>
+      </Geom>
+    </Body>
+
+    <Joint circular="true" name="right_leg/hip_pitch" type="hinge">
+      <Body>right_leg/hip_roller</Body>
+      <Body>right_leg/thigh</Body>
+      <offsetfrom>right_leg/hip_roller</offsetfrom>
+      <weight>4</weight>
+      <limitsdeg>-80 80</limitsdeg>
+      <axis>0 1 0</axis>
+      <maxvel>3</maxvel>
+      <resolution>1</resolution>
+    </Joint>
+
+    <Body name="right_leg/leg" type="dynamic">
+	<offsetfrom>right_leg/thigh</offsetfrom>
+	<Translation>0 0 -0.33</Translation>
+	<rotationaxis>0 0 1 0</rotationaxis>
+      <Geom type="trimesh">
+        <Render>models/right_leg/leg.wrl</Render>
+	<collision>models/right_leg/leg.wrl</collision>
+      </Geom>
+    </Body>
+
+
+    <Joint circular="true" name="right_leg/knee" type="hinge">
+      <Body>right_leg/thigh</Body>
+      <Body>right_leg/leg</Body>
+      <offsetfrom>right_leg/leg</offsetfrom>
+      <weight>4</weight>
+      <limitsdeg>-80 80</limitsdeg>
+      <axis>0 1 0</axis>
+      <maxvel>3</maxvel>
+      <resolution>1</resolution>
+    </Joint>
+
+
+   <Body name="right_leg/ankle" type="dynamic">
+	<offsetfrom>right_leg/leg</offsetfrom>
+	<Translation>0 +0.017 -0.3</Translation>
+	<rotationaxis>0 0 1 0</rotationaxis>
+      <Geom type="trimesh">
+        <Render>models/right_leg/ankle.wrl</Render>
+	<collision>models/right_leg/ankle.wrl</collision>
+      </Geom>
+    </Body>
+
+    <Joint circular="true" name="right_leg/ankle" type="hinge">
+      <Body>right_leg/leg</Body>
+      <Body>right_leg/ankle</Body>
+      <offsetfrom>right_leg/ankle</offsetfrom>
+      <weight>4</weight>
+      <limitsdeg>-45 45</limitsdeg>
+      <axis>0 1 0</axis>
+      <maxvel>3</maxvel>
+      <resolution>1</resolution>
+    </Joint>
+ 
+    <Body name="right_leg/foot" type="dynamic">
+	<offsetfrom>right_leg/ankle</offsetfrom>
+      <Geom type="trimesh">
+        <Render>models/right_leg/foot.wrl</Render>
+	<collision>models/right_leg/foot.wrl</collision>
+      </Geom>
+    </Body>
+
+    <Joint circular="true" name="right_leg/foot" type="hinge">
+      <Body>right_leg/ankle</Body>
+      <Body>right_leg/foot</Body>
+      <offsetfrom>right_leg/foot</offsetfrom>
+      <weight>4</weight>
+      <limitsdeg>-45 45</limitsdeg>
+      <axis>1 0 0</axis>
+      <maxvel>3</maxvel>
+      <resolution>1</resolution>
+    </Joint>
+
+
+
+
+  </KinBody>
+</Robot>

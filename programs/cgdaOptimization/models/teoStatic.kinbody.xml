@@ -1,0 +1,31 @@
+<KinBody name="teo">
+  <Body name="TRUNK" type="static">
+    <Geom type="trimesh">
+      <Render>./wrls/static_complete_teoFull.wrl</Render>
+    </Geom>      
+        <mass type="mimicgeom">
+            <total>.1</total>
+        </mass>
+  </Body>
+    <Body name="R7a">
+        <offsetfrom>TRUNK</offsetfrom>
+        <Translation>0 -.169 0</Translation>
+        <Geom type="box">
+            <Extents>.010 .159 .010</Extents>
+            <diffuseColor>0 0 1</diffuseColor>
+        </Geom>
+        <mass type="mimicgeom">
+            <total>.1</total>
+        </mass>
+    </Body>
+    <Joint name="Q15" type="hinge">
+        <offsetfrom>TRUNK</offsetfrom>
+        <anchor>0 0 0</anchor>
+        <body>TRUNK</body>
+        <body>R7a</body>
+        <axis>0 -1 0</axis>
+        <limitsdeg>-180 180</limitsdeg>
+        <maxvel>2</maxvel>
+    </Joint>
+
+</KinBody>

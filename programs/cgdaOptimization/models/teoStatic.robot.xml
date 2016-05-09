@@ -1,0 +1,10 @@
+<!-- teoStatic.robot.xml -->
+
+<Robot name="teoStaticRobot">
+    <KinBody file="./teoStatic.kinbody.xml"/>
+    <Manipulator name="teoArmsBasicRManipulator">
+        <effector>R7a</effector>
+        <base>TRUNK</base>
+    </Manipulator>
+</Robot>
+

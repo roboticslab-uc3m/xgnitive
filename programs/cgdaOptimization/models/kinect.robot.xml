@@ -1,0 +1,10 @@
+<!-- kinect.robot.xml -->
+
+<Robot name="kinectRobot">
+    <KinBody file="./kinect.kinbody.xml"/>
+    <Manipulator name="kinectManipulator">
+        <base>kinectBase</base>
+        <effector>kinectHead</effector>
+    </Manipulator>
+</Robot>
+
