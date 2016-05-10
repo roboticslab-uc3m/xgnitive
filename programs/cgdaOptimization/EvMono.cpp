@@ -48,6 +48,7 @@ bool EvMono::init() {
     KinBodyPtr objPtr = penv->GetKinBody("object");
     if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
     else printf("[WorldRpcResponder] good grab\n");
+    probot->SetActiveManipulator("m2");
     probot->Grab(objPtr);
 
 	StateP state (new State);
@@ -64,7 +65,7 @@ bool EvMono::init() {
     printf("---------------------------> ");
 
     int newArgc = 2;
-    char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaOptimization//conf/evMono_ecf_params.xml" };
+    char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaOptimization/conf/evMono_ecf_params.xml" };
 
     state->initialize(newArgc, newArgv);
     state->run();

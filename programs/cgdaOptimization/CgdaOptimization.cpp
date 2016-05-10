@@ -62,10 +62,11 @@ double FunctionMinEvalOp::getCustomFitness(vector <double> genPoints){
         //--------just OPENRAVE things to move TEO-----------------------------------------------------------
         //things about moving arm. OpenRave things. dReal is a floating in dynamics ODE.
         std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
-        dEncRaw[0+18] = -genPoints[t*3+0]*M_PI/180.0;  // simple
-        dEncRaw[1+18] = -genPoints[t*3+1]*M_PI/180.0;  // simple
-        dEncRaw[3+18] = -genPoints[t*3+2]*M_PI/180.0;  // simple
-        dEncRaw[4+18] = -45*M_PI/180.0;
+        dEncRaw[0+4] = -genPoints[t*3+0]*M_PI/180.0;  // simple
+        dEncRaw[1+4] = -genPoints[t*3+1]*M_PI/180.0;  // simple
+        dEncRaw[3+4] = -genPoints[t*3+2]*M_PI/180.0;  // simple
+        dEncRaw[4+4] = -45*M_PI/180.0;
+        //NOTE: In the right arm there is an additional DOF for the wrist, that can be used if needed.
 
         //Prorobot set the math model and pcontrol moves the model??
         probot->SetJointValues(dEncRaw);
