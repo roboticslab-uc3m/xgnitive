@@ -26,7 +26,7 @@ bool EvMono::init() {
     RaveSetDebugLevel(Level_Debug);
     string viewername = "qtcoin";
     boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
-    string scenefilename = "../../programs/cgdaOptimization/models/teo_cgda_iros.env.xml";
+    string scenefilename = "../../programs/cgdaExecution/models/teo_cgda_iros.env.xml";
     penv->Load(scenefilename); // load the scene
     //-- Get Robot 0
     std::vector<RobotBasePtr> robots;
@@ -65,7 +65,7 @@ bool EvMono::init() {
     printf("---------------------------> ");
 
     int newArgc = 2;
-    char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaOptimization/conf/evMono_ecf_params.xml" };
+    char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecution/conf/evMono_ecf_params.xml" };
 
     state->initialize(newArgc, newArgv);
     //Debugging

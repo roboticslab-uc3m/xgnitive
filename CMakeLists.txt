@@ -15,10 +15,10 @@ project(XGNITIVE)
 
 ### options: cpp libraries
 option(ENABLE_CgdaRecognitionLib "Choose if you want to compile CgdaRecognitionLib" TRUE)
+option(ENABLE_ECFComponents "Choose if you want to compile PSOFitInheritance" TRUE)
 
 ### options: cpp programs
-option(ENABLE_cgdaOptimization "Choose if you want to compile CgdaOptimization" TRUE)
-
+option(ENABLE_cgdaExecution "Choose if you want to compile CgdaExecution" TRUE)
 ### options: force default
 option(ENABLE_exampleExtraOption "Enable/disable option exampleExtraOption" TRUE)
 

@@ -3,7 +3,7 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
-#include "CgdaOptimization.hpp"
+#include "CgdaExecution.hpp"
 
 #define DEFAULT_FILE_NAME "evMono_ecf_params.xml"
 
