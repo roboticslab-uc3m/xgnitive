@@ -68,6 +68,15 @@ bool EvMono::init() {
     char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaOptimization/conf/evMono_ecf_params.xml" };
 
     state->initialize(newArgc, newArgv);
+    //Debugging
+    Population pop;
+    pop.initialize(state);
+    AlgorithmP alg;
+    alg=state->getAlgorithm();
+
+    std::cout << "Population: " << pop[0]->getSize() << std::endl;
+    std::cout << "Algorithm: " << alg->getName() << std::endl;
+
     state->run();
 
     vector<IndividualP> bestInd;
