@@ -1,6 +1,7 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
 #include "EvMono.hpp"
+#include "AlgPSOInheritance.hpp"
 
 namespace teo
 {
@@ -52,6 +53,9 @@ bool EvMono::init() {
     probot->Grab(objPtr);
 
 	StateP state (new State);
+
+    PSOInheritanceP nalg = (PSOInheritanceP) new PSOInheritance;
+    state->addAlgorithm(nalg);
 
     // set the evaluation operator
     FunctionMinEvalOp* functionMinEvalOp = new FunctionMinEvalOp; 

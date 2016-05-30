@@ -6,4 +6,4 @@ set(XGNITIVE_INCLUDE_DIRS ${XGNITIVE_INCLUDE_DIRS} ${COLOR_DEBUG_INCLUDE_DIRS} C
 
 add_subdirectory(CgdaRecognitionLib)
 
-#add_subdirectory(ECFComponentes)
+add_subdirectory(EcfComponents)
