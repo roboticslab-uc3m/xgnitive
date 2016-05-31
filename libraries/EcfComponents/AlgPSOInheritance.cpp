@@ -198,25 +198,30 @@ bool PSOInheritance::advanceGeneration(StateP state, DemeP deme)
 					positions[j] = ubound_;
 			}
 		}
-        //Initial PSO inheritance algorithm -> 100%inheritance no evaluations.
-		// determine new particle fitness
-        //evaluate( particle );
+        int proportion=40;
+        if(rand()>proportion){
+            //Initial PSO inheritance algorithm -> 100%inheritance no evaluations.
+            // determine new particle fitness
+            evaluate( particle );
+        }
+        else{
+            //Particle best personal fitness
+            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(3));
+            double &particlePbestFitness = flp->realValue[0];
 
-        //Particle best personal fitness
-        flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(3));
-        double &particlePbestFitness = flp->realValue[0];
+            //Best particle fitness
+            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
+            double &bestparticlePbestFitness = flp->realValue[0];
 
-        //Best particle fitness
-        flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
-        double &bestparticlePbestFitness = flp->realValue[0];
+            //Inheritance based on flight formula
+            double R1=rand()/(float)RAND_MAX, R2=rand()/(float)RAND_MAX, vf;
+            int C1=2, C2=2;
 
-        //Inheritance based on flight formula
-        double C1=rand()/(float)RAND_MAX, C2=rand()/(float)RAND_MAX, vf;
-        int R1=2, R2=2;
-
-        vf=C1*R1*(particlePbestFitness-particle->fitness->getValue())+C2*R2*(bestparticlePbestFitness-particle->fitness->getValue())/(1+C1*R1+C2*R2);
-        particle->fitness->setValue(particle->fitness->getValue()+vf);
-        std::cout << std::endl << " fit: " << particle->fitness->getValue()<< " ";
+            //Fitness is not correctly inherited, check:
+            vf=C1*R1*(particlePbestFitness-particle->fitness->getValue())+C2*R2*(bestparticlePbestFitness-particle->fitness->getValue());
+            particle->fitness->setValue(particle->fitness->getValue()+vf);
+            std::cout << std::endl << " Inherited: " << particle->fitness->getValue()<< " ";
+        }
 
 	}
 
