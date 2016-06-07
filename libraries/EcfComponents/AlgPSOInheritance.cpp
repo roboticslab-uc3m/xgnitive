@@ -124,24 +124,36 @@ bool PSOInheritance::advanceGeneration(StateP state, DemeP deme)
 		// the whole point of this section is to compare fitness and pbest
         FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(3));
         double &particlePbestFitness = flp->realValue[0];
-		double fitness = particle->fitness->getValue();
+        double fitness = particle->fitness->getValue();
 
-		flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(0));
-		std::vector< double > &positions = flp->realValue;
+        //There is a problem with the particlePbestFitness initialization in this algorithm. The following lines take care of this.
+        //TODO: Find a way to do this in the ¿initialize fuction?.
+        if(state->getGenerationNo()==1){
+            std::cout<<"INCIALIZADOOOOOOOOOOOOO!!!!!!!!!!!!!!!!!"<<std::endl;
+            particlePbestFitness=fitness;
+        }
+        else{
+            //std::cout<<"FITNESS"<<fitness<<std::endl;
 
-		flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(2));
-		std::vector< double > &pbestx = flp->realValue;
+            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(0));
+            std::vector< double > &positions = flp->realValue;
 
-		// set particle pbestx-es
-		if( /*iter == 0 ||*/ fitness < particlePbestFitness ) { // minimize error
-            particlePbestFitness = fitness; //Update particle personal fitness
+            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(2));
+            std::vector< double > &pbestx = flp->realValue;
 
-			// set pbestx-es
-			for( uint j = 0;j<pbestx.size();j++ ) {
-				pbestx[j] = positions[j];
-			}
-		}
+            // set particle pbestx-es
+            if( /*iter == 0 ||*/ fitness < particlePbestFitness ) { // minimize error
+                particlePbestFitness = fitness; //Update particle personal fitness
+
+                // set pbestx-es
+                for( uint j = 0;j<pbestx.size();j++ ) {
+                    pbestx[j] = positions[j];
+                }
+            }
+        }
+
 		// NOTE store best particle index?
+        //std::cout<<"THE PBEST OF THIS PARTICLE IS!!!!!!!!!!!!:"<<particlePbestFitness<<std::endl;
 	}
 
 	// b)
@@ -158,6 +170,7 @@ bool PSOInheritance::advanceGeneration(StateP state, DemeP deme)
 
 		flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(2));
 		std::vector< double > &pbestx = flp->realValue;
+
 
 
 		double weight_up;
@@ -198,10 +211,11 @@ bool PSOInheritance::advanceGeneration(StateP state, DemeP deme)
 					positions[j] = ubound_;
 			}
 		}
+
         int proportion=40;
-        if(rand()>proportion){
+        if(rand()%100>=proportion){
             //Initial PSO inheritance algorithm -> 100%inheritance no evaluations.
-            // determine new particle fitness
+            //determine new particle fitness
             evaluate( particle );
         }
         else{
@@ -213,17 +227,24 @@ bool PSOInheritance::advanceGeneration(StateP state, DemeP deme)
             flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
             double &bestparticlePbestFitness = flp->realValue[0];
 
+            std::cout<<std::endl<<"The EverPersonalBEST of this particle is:"<<particlePbestFitness<<std::endl;
+            std::cout<<std::endl<<"THE present LEADER(Allbes) of this particle fitness is:"<<bestparticlePbestFitness<<std::endl;
+
             //Inheritance based on flight formula
             double R1=rand()/(float)RAND_MAX, R2=rand()/(float)RAND_MAX, vf;
             int C1=2, C2=2;
 
-            //Fitness is not correctly inherited, check:
-            vf=C1*R1*(particlePbestFitness-particle->fitness->getValue())+C2*R2*(bestparticlePbestFitness-particle->fitness->getValue());
-            particle->fitness->setValue(particle->fitness->getValue()+vf);
+            //Fitness(old version no working)
+            //vf=C1*R1*(particlePbestFitness-particle->fitness->getValue())+
+            //          C2*R2*(bestparticlePbestFitness-particle->fitness->getValue());
+            //particle->fitness->setValue(particle->fitness->getValue()+vf);
+
+            //Fitness inheritance
+            vf=(C1*R1*(particlePbestFitness-particle->fitness->getValue())+C2*R2*(bestparticlePbestFitness-particle->fitness->getValue()))/(1+C1*R1+C2*R2);
+            particle->fitness->setValue(vf+particle->fitness->getValue());
+
             std::cout << std::endl << " Inherited: " << particle->fitness->getValue()<< " ";
         }
-
 	}
-
 	return true;
 }
