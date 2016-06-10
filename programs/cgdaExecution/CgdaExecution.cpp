@@ -45,7 +45,7 @@ double FunctionMinEvalOp::getCustomFitness(vector <double> genPoints){
     const int cols=4;
     const int numbPoints=5;
     double percentage[numbPoints];
-    int sqAr [rows*cols] = { }; //setting number of changed square as zero
+    int sqPainted [rows*cols] = { }; //setting number of changed square as zero
 
     //The Generalized trajectory (TEST example is):
     std::vector < std::vector < double > > generalized;
@@ -98,7 +98,7 @@ double FunctionMinEvalOp::getCustomFitness(vector <double> genPoints){
 
                 if (dist < 0.12){
 //                  _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
-                    sqAr[i]=1;
+                    sqPainted[i]=1;
                 }
                 ss.str("");
         }
@@ -136,11 +136,11 @@ double FunctionMinEvalOp::getCustomFitness(vector <double> genPoints){
 
     // END->AQUI EXTRAER IMAGEN CAMARA!!!
 
-     //Fitness = percentage of wall painted
-     std::valarray<int> myvalarray (sqAr,rows*cols);
-     percentage[t]= ( (float)myvalarray.sum()/(rows*cols))*100;
+         //Fitness = percentage of wall painted
+         std::valarray<int> myvalarray (sqPainted,rows*cols);
+         percentage[t]= ( (float)myvalarray.sum()/(rows*cols))*100;
 
-//     cout << std::endl << " d: " << myvalarray.sum() << " " << percentage[t] << " ";
+     //cout << std::endl << " d: " << myvalarray.sum() << " " << percentage[t] << " ";
     } //cierre bucle trayectoria completa
 
 
@@ -165,8 +165,21 @@ double FunctionMinEvalOp::getCustomFitness(vector <double> genPoints){
     {
         attempVectforSimpleDiscrepancy.push_back({percentage[t]});
     }
+
     double fit;
-    featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
+    for(int i=0; i<attempVectforSimpleDiscrepancy.size(); i++){ //For each vector of characteristics
+        bool zeros = std::all_of(attempVectforSimpleDiscrepancy[i].begin(), attempVectforSimpleDiscrepancy[i].end(), [](int i) { return i==0; });
+        if(zeros==1){
+            std::cout<<"ES TODO CEROS"<<std::endl;
+            fit=230;
+        }
+        else{
+            for(int j=0; j<5; j++){
+                std::cout<<"trajectory step "<<j<<" ==> " <<attempVectforSimpleDiscrepancy[j][0]<<std::endl;
+            }
+            featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
+        }
+    }
 
   //  cout << std::endl << " percentage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
     cout << std::endl << " fit: " << fit << " ";

@@ -1,0 +1,5 @@
+Experiment 1: 40-120-10-30 --> 1370 Evaluations --> 70 seconds
+Experiment 1: 0-120-10-30 --> 1080 Evaluations --> 56 seconds
+
+
+

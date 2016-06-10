@@ -56,14 +56,24 @@ TEST_F( TestCgdaRecognitionLib, TestCgdaRecognitionLib_DTW_compare)
 
     //-- test Generalized
     //Each push_back adds a new row.
-    generalizedRandom.push_back({27,58,48,35,25});
-    generalizedRandom.push_back({24,8,3453,48,89});
-    generalizedRandom.push_back({24,58,22,58,47});
+    //generalizedRandom.push_back({0,10,40,80,100});
+    //generalizedRandom.push_back({24,8,3453,48,89});
+    //generalizedRandom.push_back({24,58,22,58,47});
+    generalizedRandom.push_back({0});
+    generalizedRandom.push_back({10});
+    generalizedRandom.push_back({40});
+    generalizedRandom.push_back({80});
+    generalizedRandom.push_back({100});
     cgdaRecognition->setGeneralized( generalizedRandom );
 
     //-- test compare
-    attempVectRandom.push_back({23,54, 345, 2, 18794});
-    attempVectRandom.push_back({4,58, 324, 12, 7847});
+    attempVectRandom.push_back({0});
+    attempVectRandom.push_back({12.25});
+    attempVectRandom.push_back({37.5});
+    attempVectRandom.push_back({75});
+    attempVectRandom.push_back({100});
+    //attempVectRandom.push_back({0,13, 43, 2, 18794});
+    //attempVectRandom.push_back({4,58, 324, 12, 7847});
 
     double discrepancy;
     bool ok = cgdaRecognition->compare(attempVectRandom,discrepancy);

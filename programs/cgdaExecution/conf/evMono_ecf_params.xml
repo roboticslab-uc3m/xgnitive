@@ -5,7 +5,7 @@
         <PSOInheritance>
             <Entry key="weightType">0</Entry> <!-- weight type update: 0 - constant, 1 - time dependant (based on max generations) -->
             <Entry key="weight">0.8</Entry>   <!-- initial inertia weight (either constant or time dependant) -->
-            <Entry key="maxVelocity">100</Entry>  <!-- max particle velocity -->
+            <Entry key="maxVelocity">5</Entry>  <!-- max particle velocity -->
         </PSOInheritance> 
 	</Algorithm>
 
@@ -18,11 +18,11 @@
 		</FloatingPoint>
 	</Genotype>
 	<Registry>
-		<Entry key="population.size">50</Entry>
+		<Entry key="population.size">30</Entry>
 		<Entry key="mutation.indprob1">0.6</Entry> <!-- individual mutation probability (default: 0.3) -->
 		<Entry key="log.level">1</Entry>
 		<Entry key="log.filename">HallOfFame.xml</Entry>
-		<Entry key="term.fitnessval">140</Entry> <!-- value for termination -->
+		<Entry key="term.fitnessval">120</Entry> <!-- value for termination -->
 	        <!--<Entry key="term.eval">1000</Entry>  max number of fitness evaluations (default: none) -->
 		<!--<Entry key="term.maxgen">10</Entry>  max number of generations (default: none) -->
 	</Registry>

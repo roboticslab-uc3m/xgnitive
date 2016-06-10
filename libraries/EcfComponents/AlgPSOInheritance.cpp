@@ -1,5 +1,8 @@
 #include "AlgPSOInheritance.hpp"
 
+#include <iostream>
+#include <fstream>
+
 
 PSOInheritance::PSOInheritance()
 {
@@ -216,7 +219,7 @@ bool PSOInheritance::advanceGeneration(StateP state, DemeP deme)
 					positions[j] = ubound_;
 			}
 
-            std::cout<<"LA VELOCIDAD ES::::"<<velocity<<std::endl;
+            //std::cout<<"LA VELOCIDAD ES::::"<<velocity<<std::endl;
 		}
 
         int proportion=40;
@@ -267,11 +270,26 @@ bool PSOInheritance::advanceGeneration(StateP state, DemeP deme)
 
             std::cout<< " Inherited: " << particle->fitness->getValue()<< " "<< std::endl ;
         }
+
 	}
 
     //std::cout<<std::endl<<"THE NUMBER OF THIS GENERATION IS:"<<state->getGenerationNo() <<std::endl;
     std::cout<<std::endl<<"THE NUMBER OF EVALUATIONS ARE:"<<state->getEvaluations() <<std::endl;
     std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<state->getElapsedTime() <<std::endl;
+
+    //*******************FILE OUTPUT FOR DEBUGGING***********************************************//
+    IndividualP bestParticle = selBestOp->select( *deme );
+
+    FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
+
+    double &bestparticlePbestFitness = flp->realValue[0];
+    std::ofstream myfile1;
+    myfile1.open("FitnessvsEvaluations.txt", std::ios_base::app);
+    if (myfile1.is_open()){
+        myfile1<<bestparticlePbestFitness<<" ";
+        myfile1<<state->getEvaluations()<<std::endl;
+    }
+    //*******************************************************************************************//
 
 	return true;
 }

@@ -33,13 +33,13 @@ bool DtwCgdaRecognition::compare(std::vector<std::vector<double>> &v2, double& d
     CD_INFO("DTW distance (neighbors): %f\n", discrepancy)
 
     //Uncomment for dedugging the path
-//    Aquila::DtwPathType path;
-//    path= dtw.getPath();
-//    for (auto it = path.begin(); it != path.end(); ++it)
-//    {
-//        CD_INFO("EL SIGUIENTE PUNTO (attemp,generalized) ES: (%zu, %zu) \n", it->x, it->y);
-//        //CD_INFO("EL SIGUIENTE PUNTO Y ES: %zu \n", it->y);
-//    }
+    //    Aquila::DtwPathType path;
+    //    path= dtw.getPath();
+    //    for (auto it = path.begin(); it != path.end(); ++it)
+    //    {
+    //        CD_INFO("EL SIGUIENTE PUNTO (attemp,generalized) ES: (%zu, %zu) \n", it->x, it->y);
+    //        //CD_INFO("EL SIGUIENTE PUNTO Y ES: %zu \n", it->y);
+    //    }
 
 
     return true;
