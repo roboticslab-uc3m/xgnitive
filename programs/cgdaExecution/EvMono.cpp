@@ -2,6 +2,7 @@
 
 #include "EvMono.hpp"
 #include "AlgPSOInheritance.hpp"
+#include "AlgPSOFuzzy.hpp"
 
 namespace teo
 {
@@ -54,8 +55,11 @@ bool EvMono::init() {
 
 	StateP state (new State);
 
-    PSOInheritanceP nalg = (PSOInheritanceP) new PSOInheritance;
-    state->addAlgorithm(nalg);
+    PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
+    state->addAlgorithm(nalg1);
+
+    PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
+    state->addAlgorithm(nalg2);
 
     // set the evaluation operator
     FunctionMinEvalOp* functionMinEvalOp = new FunctionMinEvalOp; 

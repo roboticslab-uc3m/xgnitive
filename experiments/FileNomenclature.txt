@@ -1,2 +1,0 @@
-File nomenclature:
-ExperimentNumber-%Inherit-NumberofEvaluations/FitnessGoal-MaxVelocity-NumberParticles

@@ -56,6 +56,7 @@ TEST_F( TestCgdaRecognitionLib, TestCgdaRecognitionLib_DTW_compare)
 
     //-- test Generalized
     //Each push_back adds a new row.
+    //The val in a push back is a column.
     //generalizedRandom.push_back({0,10,40,80,100});
     //generalizedRandom.push_back({24,8,3453,48,89});
     //generalizedRandom.push_back({24,58,22,58,47});
