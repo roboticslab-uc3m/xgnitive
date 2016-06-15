@@ -7,6 +7,7 @@
 #include "Algorithm.h"
 #include "floatingpoint/FloatingPoint.h"
 
+#include <cmath>
 
 /**
  * \brief Particle swarm optimization algorithm  with inheritance (see e.g. http://en.wikipedia.org/wiki/Particle_swarm_optimization)
@@ -44,7 +45,7 @@ protected:
 	bool bounded_;	//!< constrained or not
 	double lbound_, ubound_;
     //PSO+Fuzzy. The first coordinate (rows) are the granules, while the second one (columns) are the propierties.
-    //In a granule (i): G[i][0]=Index of the granule, Gk[i][1]=Life of the granule. The rest are characteristics.
+    //In a granule (i): G[i][0]=Index of the leader particle, Gk[i][1]=Life of the granule, Gk[i][2]=Fitness Granule. The rest are characteristics.
     std::vector< std::vector<double> > Granules;
 };
 typedef boost::shared_ptr<PSOFuzzy> PSOFuzzyP;

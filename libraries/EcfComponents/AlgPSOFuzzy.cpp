@@ -117,9 +117,13 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
 //          3) Apply the velocity constriction
 //          4) Update particle position according to the position equation (2)
 //          5) Apply the position constriction
-//       c) Inherit // Evaluate
-//          1) Get the fitness value via evaluation or inheritance.
-//          End
+//       c) PSO-FUZZY/Evaluate
+
+    //PSO-Fuzzy Constants
+    int b=1; //Emphasis operator
+    int a=1; //Constant proporcionality
+    int Num_max_granules = 10; //Numero máximo de granulos
+    double Threshold = 0;
 
 	for( uint i = 0; i < deme->getSize(); i++ ) { // for each particle 
         IndividualP particle = deme->at(i);                                                                             //Read "i" particle
@@ -221,7 +225,10 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
 
             //std::cout<<"LA VELOCIDAD ES::::"<<velocity<<std::endl;
 		}
-        if(state->getGenerationNo()==1 && i==0){
+
+        /*************INIT FIRST GRANULE**************************************/
+        //TODO: Find a way to do this in the ¿initialize fuction?.
+        if(state->getGenerationNo()==1 && i==0){ //Init First Granule
             //Initialize the first granule to the first particle
             FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(0));
             std::vector< double > &positions = flp->realValue;
@@ -230,26 +237,86 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
             std::vector<double> aux_vect;
             aux_vect.push_back (0);
             aux_vect.push_back (1);
+
+            evaluate(particle); //Real fitness of the first particle
+            aux_vect.push_back(particle->fitness->getValue());
+
             for(int i=0;i<positions.size();i++){
                 aux_vect.push_back(positions[i]);
             }
 
-
             Granules.push_back (aux_vect);
 
         }
+        /*********************************************************************/
 
-        if(state->getGenerationNo()==10 && i==0){
+        /************PSO-FUZZY************************************************/
+        else{
+            std::vector<double> similarity; //similarity (mu mean) between particle and granule
+            double max_similarity = -10000;
+            int Granule_index;
 
+            for(int k=0;k<Granules.size();k++){
+                similarity.push_back(0); //Allocate similarity vector
+
+                double Theta=1/(pow(exp(Granules[k][2]),b)); //Granule scale value
+
+                for(int l=0;l<positions.size();l++){
+                   similarity [k] += (exp(-(positions[l]-Granules[k][l+3])/(pow(Theta,2)))); //similarity value
+
+                }
+
+                similarity[k]= similarity[k]/(positions.size());
+
+                if (similarity[k]>max_similarity){ //Update best granule (most similar)
+                    max_similarity=similarity[k];
+                    Granule_index=k;
+                }
+
+            }
+
+            FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
+            double &bestParticlePbestFitness = flp->realValue[0];
+
+            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(3));
+            double &particlePbestFitness = flp->realValue[0];
+
+            Threshold=a*(bestParticlePbestFitness/particlePbestFitness);
+
+            if (max_similarity>Threshold){
+                particle->fitness->setValue(Granules[Granule_index][2]);
+            }
+
+            else{
+                //Generating new granule and evaluating the particle
+                FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(0));
+                std::vector< double > &positions = flp->realValue;
+
+                //aux vector to pushback "Granule vector" into "Granules vector of vector"
+                std::vector<double> aux_vect;
+                aux_vect.push_back (i); //Index of the leader particle for this granule (Maybe this is not useful)
+                aux_vect.push_back (1); //Life of the Granule
+
+                evaluate(particle); //Real fitness of the first particle
+                aux_vect.push_back(particle->fitness->getValue());
+
+                for(int i=0;i<positions.size();i++){
+                    aux_vect.push_back(positions[i]);
+                }
+
+                Granules.push_back (aux_vect);
+            }
+
+            //Update Granules life table
+            if(Granules.size()>Num_max_granules){
+
+            }
             Granules[0][1]=10;
 
         }
 
         std::cout<<"LOS GRANULOS SON ============================>>>>>>>>>"<<Granules[0][1]<<std::endl;
-
-        //Fuzzy algorithm is going to be here
-
-
+        /********************************************************************/
 
 
     //std::cout<<std::endl<<"THE NUMBER OF THIS GENERATION IS:"<<state->getGenerationNo() <<std::endl;
