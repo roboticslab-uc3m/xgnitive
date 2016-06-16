@@ -120,10 +120,33 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
 //       c) PSO-FUZZY/Evaluate
 
     //PSO-Fuzzy Constants
-    int b=1; //Emphasis operator
-    int a=1; //Constant proporcionality
+    float b=0.01; //Emphasis operator. Bigger means giving more importance to best fit sol.
+    float a=0.2; //Constant proporcionality. Bigger means bigger threshod.
+    int M=5; //Granule life reward particle addition
     int Num_max_granules = 10; //Numero máximo de granulos
     double Threshold = 0;
+    double fitness_mean= 0;
+
+    //Update Granules life.
+    for(int k=0;k<Granules.size();k++){
+        Granules[k][1] -= 5;
+    }
+
+    /****************PSO-FUZZY-THRESHOLD*************************/
+    for( uint i = 0; i < deme->getSize(); i++ ) {
+        IndividualP particle = deme->at(i);
+        fitness_mean+= particle->fitness->getValue();
+    }
+
+    fitness_mean=fitness_mean/deme->getSize();
+
+    IndividualP bestParticle = selBestOp->select( *deme );
+
+    Threshold=a*(fitness_mean/bestParticle->fitness->getValue());
+
+    std::cout<<"======================================EL THRESHOLD ES=========================================================================================: "<<Threshold<<std::endl;
+
+    /****************PSO-FUZZY-THRESHOLD*************************/
 
 	for( uint i = 0; i < deme->getSize(); i++ ) { // for each particle 
         IndividualP particle = deme->at(i);                                                                             //Read "i" particle
@@ -226,7 +249,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
             //std::cout<<"LA VELOCIDAD ES::::"<<velocity<<std::endl;
 		}
 
-        /*************INIT FIRST GRANULE**************************************/
+        /*************INIT-FIRST-GRANULE**************************************/
         //TODO: Find a way to do this in the ¿initialize fuction?.
         if(state->getGenerationNo()==1 && i==0){ //Init First Granule
             //Initialize the first granule to the first particle
@@ -241,8 +264,8 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
             evaluate(particle); //Real fitness of the first particle
             aux_vect.push_back(particle->fitness->getValue());
 
-            for(int i=0;i<positions.size();i++){
-                aux_vect.push_back(positions[i]);
+            for(int k=0;k<positions.size();k++){
+                aux_vect.push_back(positions[k]);
             }
 
             Granules.push_back (aux_vect);
@@ -255,36 +278,34 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
             std::vector<double> similarity; //similarity (mu mean) between particle and granule
             double max_similarity = -10000;
             int Granule_index;
-
             for(int k=0;k<Granules.size();k++){
                 similarity.push_back(0); //Allocate similarity vector
+                std::cout<<"Granules fitness for lambda es --------------------------------------------->"<<Granules[k][2]<<std::endl;
+                double lambda=pow(exp(Granules[k][2]),b); //Granule scale value. More fitness->bigger->smaller granule.
 
-                double Theta=1/(pow(exp(Granules[k][2]),b)); //Granule scale value
+                std::cout<<"LAMBDA ES::::::::::::> "<<lambda<<std::endl;
 
                 for(int l=0;l<positions.size();l++){
-                   similarity [k] += (exp(-(positions[l]-Granules[k][l+3])/(pow(Theta,2)))); //similarity value
+                   similarity [k] += (exp(-pow((positions[l]-Granules[k][l+3]),2)/pow(lambda,2))); //similarity value
 
                 }
 
                 similarity[k]= similarity[k]/(positions.size());
 
+                std::cout<<"Similarity is:::"<<similarity[k]<<std::endl;
+                std::cout<<"Granule life is =  "<<Granules[k][1]<<std::endl;
+
                 if (similarity[k]>max_similarity){ //Update best granule (most similar)
                     max_similarity=similarity[k];
                     Granule_index=k;
                 }
-
             }
 
-            FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
-            double &bestParticlePbestFitness = flp->realValue[0];
-
-            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(3));
-            double &particlePbestFitness = flp->realValue[0];
-
-            Threshold=a*(bestParticlePbestFitness/particlePbestFitness);
+            std::cout<<"LA SIMILARIDAD ES   "<<max_similarity<<std::endl;
 
             if (max_similarity>Threshold){
                 particle->fitness->setValue(Granules[Granule_index][2]);
+                Granules[Granule_index][1]+=M;
             }
 
             else{
@@ -300,22 +321,37 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
                 evaluate(particle); //Real fitness of the first particle
                 aux_vect.push_back(particle->fitness->getValue());
 
-                for(int i=0;i<positions.size();i++){
-                    aux_vect.push_back(positions[i]);
+                for(int l=0;l<positions.size();l++){
+                    aux_vect.push_back(positions[l]);
                 }
 
                 Granules.push_back (aux_vect);
             }
 
-            //Update Granules life table
-            if(Granules.size()>Num_max_granules){
+            /*****************************Update Granules life table*****************/
+            if(Granules.size()>Num_max_granules){   //If we have more granules than the max number
+                //std::cout<<"El número de Granulos es: "<<Granules.size();
+                while (Granules.size()>Num_max_granules){   //Reduce the number to the max
+                    int WGIndex=0;
+                    for(int m=1;m<Granules.size();m++){ //Find the worst granule (less live) in the "table"
+                        if(Granules[m][1]<Granules[WGIndex][1]){
+                            WGIndex=m;
+                        }
+                    }
+                    //Delete the worst Granule (rows)
+
+                    Granules.erase( Granules.begin() + WGIndex );
+
+                    //std::cout<<"El número de Granulos tras reducir es: "<<Granules.size();
+                }
 
             }
-            Granules[0][1]=10;
+
+            /************************************************************************/
+
+            /************************************************************************/
 
         }
-
-        std::cout<<"LOS GRANULOS SON ============================>>>>>>>>>"<<Granules[0][1]<<std::endl;
         /********************************************************************/
 
 
@@ -325,7 +361,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
     }
 
     //*******************FILE OUTPUT FOR DEBUGGING***********************************************//
-    IndividualP bestParticle = selBestOp->select( *deme );
+    //IndividualP bestParticle = selBestOp->select( *deme );
 
     FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
 
@@ -337,6 +373,5 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
         myfile1<<state->getEvaluations()<<std::endl;
     }
     //*******************************************************************************************//
-
 	return true;
 }

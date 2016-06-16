@@ -22,8 +22,8 @@
 		<Entry key="mutation.indprob1">0.6</Entry> <!-- individual mutation probability (default: 0.3) -->
 		<Entry key="log.level">1</Entry>
 		<Entry key="log.filename">HallOfFame.xml</Entry>
-		<Entry key="term.fitnessval">120</Entry> <!-- value for termination -->
-	        <!--<Entry key="term.eval">1000</Entry>  max number of fitness evaluations (default: none) -->
+		<!--<Entry key="term.fitnessval">120</Entry>  value for termination -->
+	        <Entry key="term.eval">1000</Entry>  <!--max number of fitness evaluations (default: none) -->
 		<!--<Entry key="term.maxgen">10</Entry>  max number of generations (default: none) -->
 	</Registry>
 </ECF>

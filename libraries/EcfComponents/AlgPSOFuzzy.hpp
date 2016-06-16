@@ -44,7 +44,7 @@ protected:
 	bool areGenotypesAdded_;
 	bool bounded_;	//!< constrained or not
 	double lbound_, ubound_;
-    //PSO+Fuzzy. The first coordinate (rows) are the granules, while the second one (columns) are the propierties.
+    //PSO+Fuzzy. The first coordinate (rows) are the granules. Each the columns are the properties.
     //In a granule (i): G[i][0]=Index of the leader particle, Gk[i][1]=Life of the granule, Gk[i][2]=Fitness Granule. The rest are characteristics.
     std::vector< std::vector<double> > Granules;
 };
