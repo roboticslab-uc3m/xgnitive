@@ -1,6 +1,12 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
+//Copyright: Universidad Carlos III de Madrid (C) 2016
+//Authors: jgvictores, raulfdzbis, smorante
+
 #include "EvMono.hpp"
+
+namespace teo
+{
 /************************************************************************/
 
 void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
@@ -23,7 +29,7 @@ bool EvMono::init() {
     RaveSetDebugLevel(Level_Debug);
     string viewername = "qtcoin";
     boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
-    string scenefilename = "../../evMono6/models/teo_cgda_iros.env.xml";
+    string scenefilename = "../../programs/models/teo_cgda_iros.env.xml";
     penv->Load(scenefilename); // load the scene
     //-- Get Robot 0
     std::vector<RobotBasePtr> robots;
@@ -66,7 +72,7 @@ bool EvMono::init() {
 
            printf("---------------------------> i:%d\n",i);
            int newArgc = 2;
-           char *newArgv[2] = { (char*)"unusedFirstParam", "../conf/evMono_ecf_params.xml" };
+           char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
 
            state->initialize(newArgc, newArgv);
            state->run();
@@ -93,3 +99,4 @@ bool EvMono::init() {
 
 /************************************************************************/
 
+} //namespace TEO

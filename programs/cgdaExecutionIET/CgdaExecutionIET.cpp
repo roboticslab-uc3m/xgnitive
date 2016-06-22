@@ -1,10 +1,12 @@
 // -*- mode:C++; tab-width:3; c-basic-offset:4; indent-tabs-mode:nil -*-
 
+//Copyright: Universidad Carlos III de Madrid (C) 2016
+//Authors: jgvictores, raulfdzbis, smorante
+
 #include "CgdaExecutionIET.hpp"
-#include <sstream>
-#include <string>
-#include <vector>
-#include <valarray>     // std::valarray
+
+namespace teo
+{
 
 /************************************************************************/
 
@@ -17,8 +19,8 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
 
     const int rows=4; //setting wall parameters
     const int cols=4;
-    float percentage;
-    int sqAr [rows*cols] = { }; //setting number of changed square as cero
+    std::vector<double> percentage;
+    int sqPainted [rows*cols] = { }; //setting number of changed square as cero
 
      // // reset square color
     for(int i=0; i<(rows*cols); i++){
@@ -36,9 +38,12 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
 //                cout << "pF1: " << pFresults->operator [](t*3+1) << std::endl;
 //                cout << "pF2: " << pFresults->operator [](t*3+2) << std::endl;
 
-                dEncRaw[0+18] = -1*(pFresults->operator [](t*3+0))*M_PI/180.0;  // simple
-                dEncRaw[1+18] = -1*(pFresults->operator [](t*3+1))*M_PI/180.0;  // simple
-                dEncRaw[3+18] = -1*(pFresults->operator [](t*3+2))*M_PI/180.0;  // simple
+                dEncRaw[0+4] = -1*(pFresults->operator [](t*3+0))*M_PI/180.0;  // simple
+                dEncRaw[1+4] = -1*(pFresults->operator [](t*3+1))*M_PI/180.0;  // simple
+                dEncRaw[3+4] = -1*(pFresults->operator [](t*3+2))*M_PI/180.0;  // simple
+
+
+
             }
             else if (t==*pIter){
 //                cout << "== t: " << t << " *pIter: " << *pIter << std::endl;
@@ -46,13 +51,13 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
 //                cout << "gp1: " << genPoints[1] << std::endl;
 //                cout << "gp2: " << genPoints[2] << std::endl;
 
-                dEncRaw[0+18] = -genPoints[0]*M_PI/180.0;  // simple
-                dEncRaw[1+18] = -genPoints[1]*M_PI/180.0;  // simple
-                dEncRaw[3+18] = -genPoints[2]*M_PI/180.0;  // simple
+                dEncRaw[0+4] = -genPoints[0]*M_PI/180.0;  // simple
+                dEncRaw[1+4] = -genPoints[1]*M_PI/180.0;  // simple
+                dEncRaw[3+4] = -genPoints[2]*M_PI/180.0;  // simple
             }
             else{cerr << "ERROR IN pIter or t" << std::endl;}
 
-            dEncRaw[4+18] = -45*M_PI/180.0;
+            dEncRaw[4+4] = -45*M_PI/180.0;
             probot->SetJointValues(dEncRaw);
             pcontrol->SetDesired(dEncRaw); // This function "resets" physics
             while(!pcontrol->IsDone()) {
@@ -80,36 +85,41 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
 
                        if (dist < 0.13){
                       _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
-                        sqAr[i]=1;
+                        sqPainted[i]=1;
                     }
                     ss.str("");
             }
+
+            //Fitness = percentage of wall painted
+            std::valarray<int> myvalarray (sqPainted,rows*cols);
+            percentage[t]= ( (float)myvalarray.sum()/(rows*cols))*100;
+
     } //cierre bucle trayectoria completa
 
-    std::valarray<int> myvalarray (sqAr,rows*cols);
-    percentage= ( (float)myvalarray.sum()/(rows*cols))*100;
-
-  //  cout << " per: " << percentage << std::endl;
-
     // calculate fit /percentage of painted wall
-    double fit = abs(percentage-target[*pIter]);
+    //double fit = abs(percentage-target[*pIter]);
 
     //The fit is obtained using the DTW algorithm.
     //The feature is the percentage of wall painted
     CgdaRecognition* featureTrajectories;
     featureTrajectories = new DtwCgdaRecognition;
-    featureTrajectories->setGeneralized(generalized);
+    //Current Generalized trajectory
+    std::vector < std::vector < double > > current_target;
+    for(int i=0; i<*pIter;i++){
+        current_target.push_back({target[i]});
+    }
+    featureTrajectories->setGeneralized(current_target);
 
     //Get the discrepancy value between what we have and what we want
     //Init feature attemp vector
     std::vector< std::vector< double > > attempVectforSimpleDiscrepancy;
-    for(int t=0;t<numbPoints;t++)
+    for(int t=0;t<percentage.size();t++)
     {
         attempVectforSimpleDiscrepancy.push_back({percentage[t]});
     }
 
     double fit;
-    for(int i=0; i<attempVectforSimpleDiscrepancy.size(); i++){ //For each vector of characteristics
+    for(int i=0; i<attempVectforSimpleDiscrepancy.size(); i++){ //For each vector of characteristics. In this case should be 1.
         bool zeros = std::all_of(attempVectforSimpleDiscrepancy[i].begin(), attempVectforSimpleDiscrepancy[i].end(), [](int i) { return i==0; });
         if(zeros==1){
             std::cout<<"ES TODO CEROS"<<std::endl;
@@ -179,3 +189,4 @@ FitnessP CgdaExecutionIET::evaluate(IndividualP individual) {
 
 /************************************************************************/
 
+} // namespace teo

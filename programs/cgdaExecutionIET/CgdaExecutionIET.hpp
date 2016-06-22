@@ -1,6 +1,8 @@
+//Copyright: Universidad Carlos III de Madrid (C) 2016
+//Authors: jgvictores, raulfdzbis, smorante
 
-#ifndef FUNCTIONMINEVALOP_H_
-#define FUNCTIONMINEVALOP_H_
+#ifndef CGDA_EXECUTION_IET_H_
+#define CGDA_EXECUTION_IET_H_
 
 #include <cmath>
 #include <iostream>
@@ -9,9 +11,16 @@
 #include <ecf/ECF.h>
 #include <openrave-core.h>
 #include <vector>
+#include <sstream>
+#include <string>
+#include <valarray>     // std::valarray
 
 #include "DtwCgdaRecognition.hpp"
+
 using namespace OpenRAVE;
+
+namespace teo
+{
 
 class CgdaExecutionIET : public EvaluateOp {
 
@@ -51,5 +60,7 @@ class CgdaExecutionIET : public EvaluateOp {
 
 typedef boost::shared_ptr<CgdaExecutionIET> CgdaExecutionIETP;
 
-#endif /* FUNCTIONMINEVALOP_H_ */
+}  // namespace teo
+
+#endif /* CGDA_EXECUTION_IET_H_ */
 

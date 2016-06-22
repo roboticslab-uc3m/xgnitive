@@ -28,7 +28,7 @@ bool EvMono::init() {
     RaveSetDebugLevel(Level_Debug);
     string viewername = "qtcoin";
     boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
-    string scenefilename = "../../programs/cgdaExecution/models/teo_cgda_iros.env.xml";
+    string scenefilename = "../../programs/models/teo_cgda_iros.env.xml";
     penv->Load(scenefilename); // load the scene
     //-- Get Robot 0
     std::vector<RobotBasePtr> robots;
