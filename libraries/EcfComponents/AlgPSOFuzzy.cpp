@@ -120,17 +120,17 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
 //       c) PSO-FUZZY/Evaluate
 
     //PSO-Fuzzy Constants
-    float b=6; //Emphasis operator. Bigger means giving more importance to best fit sol.
-    float a=0.4; //Constant proporcionality. Bigger means bigger threshod. Max=1;
-    float omega=0.1;
+    float b=10; //Emphasis operator. Bigger means giving more importance to best fit sol.
+    float a=0.6; //Constant proporcionality. Bigger means bigger threshod. Max=1;
+    float omega=0.0005;
     int M=5; //Granule life reward particle addition
-    int Num_max_granules = 5; //Numero máximo de granulos
+    int Num_max_granules = 100; //Numero máximo de granulos anterior 5
     double Threshold = 0;
     double fitness_mean= 0;
 
     //Update Granules life.
-    for(int k=0;k<Granules.size();k++){
-        Granules[k][1] -= 5;
+    for(int k=0;k<Granules.size();k++){     
+        Granules[k][1] -= 1;
         std::cout<<" LA VIDA UPDATED DE EL GRANULO ES:::  "<< Granules[k][1]<<std::endl;
     }
 
@@ -281,23 +281,23 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
             std::vector<double> similarity; //similarity (mu mean) between particle and granule
             double max_similarity = -10000;
             int Granule_index;
-            for(int k=0;k<Granules.size();k++){
+            for(int k=0;k<Granules.size();k++){ //Compare with all Granules
                 similarity.push_back(0); //Allocate similarity vector
-                std::cout<<"Granules fitness for lambda es -->"<<Granules[k][2]<<std::endl;
+                //std::cout<<"Granules fitness for lambda es -->"<<Granules[k][2]<<std::endl;
                 double lambda=omega*1/pow(exp(-Granules[k][2]/230),b); //Gaussian variance no normalized. The bigger this value, the bigger the granule.
                 //lambda=1;
-                std::cout<<"LAMBDA ES::::::::::::> "<<lambda<<std::endl;
+                //std::cout<<"LAMBDA ES::::::::::::> "<<lambda<<std::endl;
 
                 for(int l=0;l<positions.size();l++){
                    similarity [k] += (exp(-pow((positions[l]-Granules[k][l+3]),2)/pow(lambda,2))); //similarity value (Gaussian)
-                   std::cout<<"La posicion de la particula es   "<<positions[l]<<"  la posición del Granulo es "<< Granules[k][l+3]<<std::endl;
+                   //std::cout<<"La posicion de la particula es   "<<positions[l]<<"  la posición del Granulo es "<< Granules[k][l+3]<<std::endl;
 
                 }
 
                 similarity[k]= similarity[k]/(positions.size());
 
 
-                std::cout<<"Similarity is:::"<<similarity[k]<<std::endl;
+                //std::cout<<"Similarity is:::"<<similarity[k]<<std::endl;
                 //std::cout<<"Granule life is =  "<<Granules[k][1]<<std::endl;
 
                 if (similarity[k]>max_similarity){ //Update best granule (most similar)
@@ -311,7 +311,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
             if (max_similarity>Threshold){
                 particle->fitness->setValue(Granules[Granule_index][2]);
                 Granules[Granule_index][1]+=M;
-                std::cout<<"Particle added to Granule:  "<<Granule_index<<" With Fitness " <<Granules[Granule_index][2]<<"  The life of this Granule is: "<<Granules[Granule_index][1]<<std::endl;
+                //std::cout<<"Particle added to Granule:  "<<Granule_index<<" With Fitness " <<Granules[Granule_index][2]<<"  The life of this Granule is: "<<Granules[Granule_index][1]<<std::endl;
             }
 
             else{
@@ -332,7 +332,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
                 }
 
                 Granules.push_back (aux_vect);
-                std::cout<<" New granule added "<<std::endl;
+                //std::cout<<" New granule added "<<std::endl;
             }
 
             /************************************************************************/
@@ -352,7 +352,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
                 //Delete the worst Granule (rows)
 
                 Granules.erase( Granules.begin() + WGIndex );
-                std::cout<<" El granulo numero " << WGIndex << " Con life "<<Granules[WGIndex][1]<<" Ha sido borrado "<<std::endl;
+                //std::cout<<" El granulo numero " << WGIndex << " Con life "<<Granules[WGIndex][1]<<" Ha sido borrado "<<std::endl;
 
                 //std::cout<<"El número de Granulos tras reducir es: "<<Granules.size();
             }

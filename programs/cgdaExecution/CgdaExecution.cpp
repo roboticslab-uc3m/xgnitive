@@ -47,7 +47,7 @@ double FunctionMinEvalOp::getCustomFitness(vector <double> genPoints){
     double percentage[numbPoints];
     int sqPainted [rows*cols] = { }; //setting number of changed square as zero
 
-    //The Generalized trajectory (TEST example is):
+    //The Generalized feature trajectory (TEST example is):
     std::vector < std::vector < double > > generalized;
     //The first dimension is the feature trajectory the second is the number of features
     generalized.push_back({0});

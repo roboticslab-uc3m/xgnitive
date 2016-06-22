@@ -61,7 +61,7 @@ bool EvMono::init() {
     PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
     state->addAlgorithm(nalg2);
 
-    // set the evaluation operator
+    // set the evaluation operator, init CgdaExecution
     FunctionMinEvalOp* functionMinEvalOp = new FunctionMinEvalOp; 
     functionMinEvalOp->setPRobot(probot);
     functionMinEvalOp->setPenv(penv);

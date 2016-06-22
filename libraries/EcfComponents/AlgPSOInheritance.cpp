@@ -228,23 +228,23 @@ bool PSOInheritance::advanceGeneration(StateP state, DemeP deme)
             //determine new particle fitness
 
             //Particle best personal fitness
-            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(3));
-            double &particlePbestFitness = flp->realValue[0];
+//            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(3));
+//            double &particlePbestFitness = flp->realValue[0];
 
             //Best particle fitness
-            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
-            double &bestparticlePbestFitness = flp->realValue[0];
+//            flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
+//            double &bestparticlePbestFitness = flp->realValue[0];
 
-            vf=(C1*R1*(particlePbestFitness-particle->fitness->getValue())+C2*R2*(bestparticlePbestFitness-particle->fitness->getValue()))
-                    /(1+C1*R1+C2*R2);
+//            vf=(C1*R1*(particlePbestFitness-particle->fitness->getValue())+C2*R2*(bestparticlePbestFitness-particle->fitness->getValue()))
+//                    /(1+C1*R1+C2*R2);
 
-            vf=vf+particle->fitness->getValue();
+//            vf=vf+particle->fitness->getValue();
 
 
 
             evaluate( particle );
 
-            std::cout<< " Inherited: " << vf<< " -> Evaluated "<< particle->fitness->getValue() <<std::endl ;
+            //std::cout<< " Inherited: " << vf<< " -> Evaluated "<< particle->fitness->getValue() <<std::endl ;
 
         }
         else{

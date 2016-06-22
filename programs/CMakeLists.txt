@@ -2,4 +2,5 @@
 # Authors: jgvictores, raulfdzbis, smorante
 
 add_subdirectory(cgdaExecution)
+add_subdirectory(cgdaExecutionIET)
 
