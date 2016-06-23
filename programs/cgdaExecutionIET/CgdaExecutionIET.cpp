@@ -43,7 +43,6 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
                 dEncRaw[3+4] = -1*(pFresults->operator [](t*3+2))*M_PI/180.0;  // simple
 
 
-
             }
             else if (t==*pIter){
 //                cout << "== t: " << t << " *pIter: " << *pIter << std::endl;
@@ -63,7 +62,6 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
             while(!pcontrol->IsDone()) {
                 boost::this_thread::sleep(boost::posix_time::milliseconds(1));
             }
-
             penv->StepSimulation(0.0001);  // StepSimulation must be given in seconds
             T_base_object = _objPtr->GetTransform();
             double T_base_object_x = T_base_object.trans.x;
@@ -84,15 +82,16 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
                                   + pow(T_base_object_z-pos_square_z,2) );
 
                        if (dist < 0.13){
-                      _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
+                        _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
                         sqPainted[i]=1;
+                        //std::cout<<"I have painted a happy little tree "<<std::endl;
                     }
                     ss.str("");
             }
 
             //Fitness = percentage of wall painted
             std::valarray<int> myvalarray (sqPainted,rows*cols);
-            percentage[t]= ( (float)myvalarray.sum()/(rows*cols))*100;
+            percentage.push_back(( (float)myvalarray.sum()/(rows*cols))*100);
 
     } //cierre bucle trayectoria completa
 
@@ -105,7 +104,7 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
     featureTrajectories = new DtwCgdaRecognition;
     //Current Generalized trajectory
     std::vector < std::vector < double > > current_target;
-    for(int i=0; i<*pIter;i++){
+    for(int i=0; i<=*pIter;i++){
         current_target.push_back({target[i]});
     }
     featureTrajectories->setGeneralized(current_target);
@@ -120,17 +119,12 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
 
     double fit;
     for(int i=0; i<attempVectforSimpleDiscrepancy.size(); i++){ //For each vector of characteristics. In this case should be 1.
-        bool zeros = std::all_of(attempVectforSimpleDiscrepancy[i].begin(), attempVectforSimpleDiscrepancy[i].end(), [](int i) { return i==0; });
-        if(zeros==1){
-            std::cout<<"ES TODO CEROS"<<std::endl;
-            fit=230;
+
+        for(int j=0; j<attempVectforSimpleDiscrepancy[0].size(); j++){ //For each trajectory step
+            std::cout<<"trajectory step "<<j<<" ==> " <<attempVectforSimpleDiscrepancy[j][0]<<std::endl;
         }
-        else{
-            for(int j=0; j<5; j++){
-                std::cout<<"trajectory step "<<j<<" ==> " <<attempVectforSimpleDiscrepancy[j][0]<<std::endl;
-            }
-            featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
-        }
+        featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
+
     }
 
   //  cout << std::endl << " percentage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];

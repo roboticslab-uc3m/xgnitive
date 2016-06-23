@@ -51,6 +51,7 @@ bool EvMono::init() {
     KinBodyPtr objPtr = penv->GetKinBody("object");
     if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
     else printf("[WorldRpcResponder] good grab\n");
+    probot->SetActiveManipulator("m2");
     probot->Grab(objPtr);
 
 	StateP state (new State);
