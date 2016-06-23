@@ -5,6 +5,10 @@
 
 #include "CgdaExecution.hpp"
 
+#include "AlgPSOInheritance.hpp"
+#include "AlgPSOFuzzy.hpp"
+
+
 #define DEFAULT_FILE_NAME "evMono_ecf_params.xml"
 
 namespace teo

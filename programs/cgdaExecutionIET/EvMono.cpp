@@ -55,6 +55,13 @@ bool EvMono::init() {
     probot->Grab(objPtr);
 
 	StateP state (new State);
+
+    PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
+    state->addAlgorithm(nalg1);
+
+    PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
+    state->addAlgorithm(nalg2);
+
     vector< double > results;
     vector< double >* presults= &results;
     // set the evaluation operator
