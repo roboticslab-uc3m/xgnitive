@@ -131,7 +131,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
     //Update Granules life.
     for(int k=0;k<Granules.size();k++){     
         Granules[k][1] -= 1;
-        std::cout<<" LA VIDA UPDATED DE EL GRANULO ES:::  "<< Granules[k][1]<<std::endl;
+        //std::cout<<" LA VIDA UPDATED DE EL GRANULO ES:::  "<< Granules[k][1]<<std::endl;
     }
 
     /****************PSO-FUZZY-THRESHOLD*************************/
@@ -143,15 +143,20 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
     fitness_mean=fitness_mean/deme->getSize();
 
     IndividualP bestParticle = selBestOp->select( *deme );
-
-    Threshold=a*(fitness_mean/(bestParticle->fitness->getValue())); // fitness/bestfitness (min=1)
+    if(bestParticle->fitness->getValue()!=0){
+        Threshold=a*(fitness_mean/(bestParticle->fitness->getValue())); // fitness/bestfitness (min=1)
+    }
+    else{
+        Threshold=100000;
+    }
 
     std::cout<<"======================================EL THRESHOLD ES=========================================================================================: "<<Threshold<<std::endl;
 
-    /****************PSO-FUZZY-THRESHOLD*************************/
+    /****************PSO-FUZZY-THRESHOLD_END*************************/
 
 	for( uint i = 0; i < deme->getSize(); i++ ) { // for each particle 
-        IndividualP particle = deme->at(i);                                                                             //Read "i" particle
+        IndividualP particle = deme->at(i); //Read "i" particle
+
 
 		// the whole point of this section is to compare fitness and pbest
         FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(3));
@@ -161,8 +166,8 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
         //There is a problem with the particlePbestFitness initialization in this algorithm. The following lines take care of this.
         //TODO: Find a way to do this in the ¿initialize fuction?.
         if(state->getGenerationNo()==1){
-            //std::cout<<"INCIALIZADOOOOOOOOOOOOO!!!!!!!!!!!!!!!!!"<<std::endl;
             particlePbestFitness=fitness;
+
         }
         else{
             //std::cout<<"FITNESS"<<fitness<<std::endl;
@@ -204,9 +209,6 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
         std::vector< double > &pbestx = flp->realValue;
 
         double R1=rand()/(float)RAND_MAX, R2=rand()/(float)RAND_MAX, vf;
-        int C1=2, C2=2;
-
-
 
         double weight_up;
 
@@ -284,6 +286,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
             for(int k=0;k<Granules.size();k++){ //Compare with all Granules
                 similarity.push_back(0); //Allocate similarity vector
                 //std::cout<<"Granules fitness for lambda es -->"<<Granules[k][2]<<std::endl;
+                //double lambda=omega*1/pow(exp(-Granules[k][2]/230),b); //Gaussian variance no normalized. The bigger this value, the bigger the granule.
                 double lambda=omega*1/pow(exp(-Granules[k][2]/230),b); //Gaussian variance no normalized. The bigger this value, the bigger the granule.
                 //lambda=1;
                 //std::cout<<"LAMBDA ES::::::::::::> "<<lambda<<std::endl;
