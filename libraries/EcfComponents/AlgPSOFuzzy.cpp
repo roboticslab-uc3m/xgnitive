@@ -154,9 +154,11 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
 
     /****************PSO-FUZZY-THRESHOLD_END*************************/
 
-	for( uint i = 0; i < deme->getSize(); i++ ) { // for each particle 
-        IndividualP particle = deme->at(i); //Read "i" particle
+    for( uint i = 0; i < deme->getSize(); i++ ) { // for each particle
 
+
+        IndividualP particle = deme->at(i); //Read "i" particle
+        std::cout<<particle->toString()<<std::endl;
 
 		// the whole point of this section is to compare fitness and pbest
         FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (particle->getGenotype(3));

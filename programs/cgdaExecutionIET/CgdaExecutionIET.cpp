@@ -115,17 +115,21 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
     for(int t=0;t<percentage.size();t++)
     {
         attempVectforSimpleDiscrepancy.push_back({percentage[t]});
+        std::cout<<"ATTEMP TRAJECTORY ::::"<<t<<" : "<<percentage[t]<<std::endl;
+    }
+
+    //Console output.
+    for(int i=0; i<attempVectforSimpleDiscrepancy[0].size(); i++){ //For each vector of characteristics(each column). In this case should be 1.
+        std::cout<<std::endl<<std::endl;
+        for(int j=0; j<attempVectforSimpleDiscrepancy.size(); j++){ //For each trajectory step
+            std::cout<<"trajectory step "<<j<<" ==> " <<attempVectforSimpleDiscrepancy[j][i]<<std::endl;
+        }
     }
 
     double fit;
-    for(int i=0; i<attempVectforSimpleDiscrepancy.size(); i++){ //For each vector of characteristics. In this case should be 1.
+    featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
 
-        for(int j=0; j<attempVectforSimpleDiscrepancy[0].size(); j++){ //For each trajectory step
-            std::cout<<"trajectory step "<<j<<" ==> " <<attempVectforSimpleDiscrepancy[j][0]<<std::endl;
-        }
-        featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
 
-    }
 
   //  cout << std::endl << " percentage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
     cout << std::endl << " fit: " << fit << " ";

@@ -54,7 +54,7 @@ bool EvMono::init() {
     probot->SetActiveManipulator("m2");
     probot->Grab(objPtr);
 
-	StateP state (new State);
+    StateP state (new State);
 
     PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
     state->addAlgorithm(nalg1);
@@ -65,7 +65,7 @@ bool EvMono::init() {
     vector< double > results;
     vector< double >* presults= &results;
     // set the evaluation operator
-    CgdaExecutionIET* functionMinEvalOp = new CgdaExecutionIET; 
+    CgdaExecutionIET* functionMinEvalOp = new CgdaExecutionIET;
     functionMinEvalOp->setPRobot(probot);
     functionMinEvalOp->setPenv(penv);
     functionMinEvalOp->setPcontrol(pcontrol);

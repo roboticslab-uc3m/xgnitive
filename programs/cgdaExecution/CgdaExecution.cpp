@@ -166,22 +166,17 @@ double FunctionMinEvalOp::getCustomFitness(vector <double> genPoints){
         attempVectforSimpleDiscrepancy.push_back({percentage[t]});
     }
 
-    double fit;
-    for(int i=0; i<attempVectforSimpleDiscrepancy.size(); i++){ //For each vector of characteristics
-        bool zeros = std::all_of(attempVectforSimpleDiscrepancy[i].begin(), attempVectforSimpleDiscrepancy[i].end(), [](int i) { return i==0; });
-        if(zeros==1){
-            std::cout<<"ES TODO CEROS"<<std::endl;
-            fit=230;
-        }
-        else{
-            for(int j=0; j<5; j++){
-                std::cout<<"trajectory step "<<j<<" ==> " <<attempVectforSimpleDiscrepancy[j][0]<<std::endl;
-            }
-            featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
+    //Console output.
+    for(int i=0; i<attempVectforSimpleDiscrepancy[0].size(); i++){ //For each vector of characteristics(each column). In this case should be 1.
+        std::cout<<std::endl<<std::endl;
+        for(int j=0; j<attempVectforSimpleDiscrepancy.size(); j++){ //For each trajectory step
+            std::cout<<"trajectory step "<<j<<" ==> " <<attempVectforSimpleDiscrepancy[j][i]<<std::endl;
         }
     }
 
-  //  cout << std::endl << " percentage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
+    double fit;
+    featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
+
     cout << std::endl << " fit: " << fit << " ";
     return fit;
 }
