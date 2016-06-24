@@ -54,27 +54,28 @@ bool EvMono::init() {
     probot->SetActiveManipulator("m2");
     probot->Grab(objPtr);
 
-    StateP state (new State);
-
-    PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
-    state->addAlgorithm(nalg1);
-
-    PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
-    state->addAlgorithm(nalg2);
-
     vector< double > results;
     vector< double >* presults= &results;
-    // set the evaluation operator
-    CgdaExecutionIET* functionMinEvalOp = new CgdaExecutionIET;
-    functionMinEvalOp->setPRobot(probot);
-    functionMinEvalOp->setPenv(penv);
-    functionMinEvalOp->setPcontrol(pcontrol);
-    functionMinEvalOp->setResults(presults);
-
-    state->setEvalOp(functionMinEvalOp);
 
 
        for(unsigned int i=0; i<numberOfPoints; i++) {
+           StateP state (new State);
+
+           PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
+           state->addAlgorithm(nalg1);
+
+           PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
+           state->addAlgorithm(nalg2);
+
+           // set the evaluation operator
+           CgdaExecutionIET* functionMinEvalOp = new CgdaExecutionIET;
+           functionMinEvalOp->setPRobot(probot);
+           functionMinEvalOp->setPenv(penv);
+           functionMinEvalOp->setPcontrol(pcontrol);
+           functionMinEvalOp->setResults(presults);
+
+           state->setEvalOp(functionMinEvalOp);
+
            unsigned int* pIter= &i;
            functionMinEvalOp->setIter(pIter);
 

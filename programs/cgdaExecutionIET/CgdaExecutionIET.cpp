@@ -115,7 +115,7 @@ double CgdaExecutionIET::getCustomFitness(vector <double> genPoints){
     for(int t=0;t<percentage.size();t++)
     {
         attempVectforSimpleDiscrepancy.push_back({percentage[t]});
-        std::cout<<"ATTEMP TRAJECTORY ::::"<<t<<" : "<<percentage[t]<<std::endl;
+        //std::cout<<std::endl<<"ATTEMP TRAJECTORY ::::"<<t<<" : "<<percentage[t]<<std::endl;
     }
 
     //Console output.
