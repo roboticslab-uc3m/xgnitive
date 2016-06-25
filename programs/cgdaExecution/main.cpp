@@ -24,14 +24,14 @@
 
 #include <yarp/os/all.h>
 
-#include "EvMono.hpp"
+#include "CgdaExecution.hpp"
 
 //using namespace yarp::os;
 
 int main(int argc, char **argv) {
 
-    //Just init EvMono.
-    teo::EvMono mod;
+    //Just init CgdaExecution.
+    teo::CgdaExecution mod;
     return mod.init();
 
     //    ResourceFinder rf;

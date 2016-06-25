@@ -1,63 +1,29 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#ifndef FUNCTIONMINEVALOP_H_
-#define FUNCTIONMINEVALOP_H_
+#ifndef __EV_MONO_HPP__
+#define __EV_MONO_HPP__
 
-#include <cmath>
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <vector>
-#include <sstream>
-#include <valarray>     // std::valarray
+#include "CgdaFitnessFunction.hpp"
 
-#include <ecf/ECF.h>
+#include "AlgPSOInheritance.hpp"
+#include "AlgPSOFuzzy.hpp"
 
-#include <openrave-core.h>
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/core/core.hpp>
-
-#include "DtwCgdaRecognition.hpp"
-
-using namespace OpenRAVE;
-
-//This file comes from FunctionMinEvalOp.hpp from the package evMono6.
+#define DEFAULT_FILE_NAME "evMono_ecf_params.xml"
 
 namespace teo
 {
 
-class FunctionMinEvalOp : public EvaluateOp {
-
-  public:
-    void setPRobot(const RobotBasePtr& _probot) {
-        probot = _probot;
-    }
-    void setPenv(const EnvironmentBasePtr& _penv){
-        penv = _penv;
-    }
-    void setPcontrol(const ControllerBasePtr& _pcontrol){
-        pcontrol = _pcontrol;
-    }
-
-  public:
-    FitnessP evaluate(IndividualP individual);
-    void registerParameters(StateP);
-    bool initialize(StateP);
-    double getCustomFitness(vector<double> genPoints);
+class CgdaExecution  {
+  private:
     RobotBasePtr probot;
     EnvironmentBasePtr penv;
     ControllerBasePtr pcontrol;
 
-    KinBodyPtr _objPtr;
-    KinBodyPtr _wall;
-
-    Transform T_base_object;
+  public:
+    bool init();
 };
+}
 
-typedef boost::shared_ptr<FunctionMinEvalOp> FunctionMinEvalOpP;
+#endif  // __EV_MONO_HPP__
 
-}  // namespace teo
-
-#endif /* FUNCTIONMINEVALOP_H_ */

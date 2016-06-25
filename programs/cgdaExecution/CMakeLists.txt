@@ -40,7 +40,7 @@ link_directories(${OpenRAVE_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS} ${XGNITIVE_LINK_
 # Set up our main executable.
 if (folder_source)
   add_executable(${KEYWORD} ${folder_source} ${folder_header})
-  #add_executable(evMono main.cpp EvMono.cpp CgdaExecution.cpp)
+  #add_executable(evMono main.cpp CgdaExecution.cpp CgdaFitnessFunction.cpp)
   target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${XGNITIVE_LIBRARIES} ${OpenCV_LIBS} ${OpenRAVE_LIBRARIES} ${OpenRAVE_CORE_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ecf)
   install(TARGETS ${KEYWORD} DESTINATION bin)
 else (folder_source)

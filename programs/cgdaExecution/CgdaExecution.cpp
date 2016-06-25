@@ -4,234 +4,103 @@
 
 namespace teo
 {
+/************************************************************************/
+
+void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
+    ViewerBasePtr viewer = RaveCreateViewer(penv,viewername);
+    BOOST_ASSERT(!!viewer);
+    // attach it to the environment:
+    penv->AttachViewer(viewer);
+    // finally you call the viewer's infinite loop (this is why you need a separate thread):
+   bool showgui = true;
+ //   bool showgui = false;
+    viewer->main(showgui);
+}
 
 /************************************************************************/
 
-//class OpenRAVECamera
-//{
-//public:
-//    OpenRAVECamera(SensorBasePtr psensor)
-//    {
-//        pcamera=psensor;
-//        pdata = boost::static_pointer_cast<SensorBase::CameraSensorData>(pcamera->CreateSensorData(SensorBase::ST_Camera));
-//        geom = *boost::static_pointer_cast<SensorBase::CameraGeomData>(pcamera->GetSensorGeometry(SensorBase::ST_Camera));
-//        img = cvCreateImage(cvSize(geom.width,geom.height),IPL_DEPTH_8U,3);
-//    }
-//    virtual ~OpenRAVECamera() {
-//        cvReleaseImage(&img);
-//    }
+bool CgdaExecution::init() {
 
-//    SensorBasePtr pcamera;
-//    SensorBase::CameraGeomData geom;
-//    boost::shared_ptr<SensorBase::CameraSensorData> pdata;
-//    IplImage* img;
-//};
+    RaveInitialize(true); // start openrave core
+    penv = RaveCreateEnvironment(); // create the main environment
+    RaveSetDebugLevel(Level_Debug);
+    string viewername = "qtcoin";
+    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
+    string scenefilename = "../../programs/models/teo_cgda_iros.env.xml";
+    penv->Load(scenefilename); // load the scene
+    //-- Get Robot 0
+    std::vector<RobotBasePtr> robots;
+    penv->GetRobots(robots);
+    std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
+    probot = robots.at(0);
 
-//double target[5]={0, 10, 40, 80, 100};
-
-
-double FunctionMinEvalOp::getCustomFitness(vector <double> genPoints){
-
-     // // reset square color for opencv
-//    for(int i=0; i<4; i++){
-//        for(int j=0; j<4; j++){
-//            stringstream rr;
-//            rr << "square" << i << j;
-//            _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
-//            rr.str("");
-//        }}
-
-    const int rows=4; //setting wall parameters
-    const int cols=4;
-    const int numbPoints=5;
-    double percentage[numbPoints];
-    int sqPainted [rows*cols] = { }; //setting number of changed square as zero
-
-    //The Generalized feature trajectory (TEST example is):
-    std::vector < std::vector < double > > generalized;
-    //The first dimension is the feature trajectory the second is the number of features
-    generalized.push_back({0});
-    generalized.push_back({10});
-    generalized.push_back({40});
-    generalized.push_back({80});
-    generalized.push_back({100});
-
-
-    for(int t=0;t<numbPoints;t++) {
-
-        //--------just OPENRAVE things to move TEO-----------------------------------------------------------
-        //things about moving arm. OpenRave things. dReal is a floating in dynamics ODE.
-        std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
-        dEncRaw[0+4] = -genPoints[t*3+0]*M_PI/180.0;  // simple
-        dEncRaw[1+4] = -genPoints[t*3+1]*M_PI/180.0;  // simple
-        dEncRaw[3+4] = -genPoints[t*3+2]*M_PI/180.0;  // simple
-        dEncRaw[4+4] = -45*M_PI/180.0;
-        //NOTE: In the right arm there is an additional DOF for the wrist, that can be used if needed.
-
-        //Prorobot set the math model and pcontrol moves the model??
-        probot->SetJointValues(dEncRaw);
-        pcontrol->SetDesired(dEncRaw); // This function "resets" physics
-        while(!pcontrol->IsDone()) {
-            boost::this_thread::sleep(boost::posix_time::milliseconds(1));
-        }
-
-        penv->StepSimulation(0.0001);  // StepSimulation must be given in seconds
-        T_base_object = _objPtr->GetTransform();
-        double T_base_object_x = T_base_object.trans.x;
-        double T_base_object_y = T_base_object.trans.y;
-        double T_base_object_z = T_base_object.trans.z;
-
-        //--------just OPENRAVE things to move TEO-----------------------------------------------------------
-
-        //change square color in function of dist (end-effector,square)
-        for(int i=0; i<(rows*cols); i++){
-                stringstream ss;
-                ss << "square" << i;
-                Transform pos_square = _wall->GetLink(ss.str())->GetGeometry(0)->GetTransform();
-
-                double pos_square_x = pos_square.trans.x;
-                double pos_square_y = pos_square.trans.y;
-                double pos_square_z = pos_square.trans.z;
-                double dist = sqrt(pow(T_base_object_x-pos_square_x,2)
-                                  + pow(T_base_object_y-pos_square_y,2)
-                                  + pow(T_base_object_z-pos_square_z,2) );
-
-                if (dist < 0.12){
-//                  _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
-                    sqPainted[i]=1;
-                }
-                ss.str("");
-        }
-
-        //opencv etc
-    // BEGIN->AQUI EXTRAER IMAGEN CAMARA!!!
-
-    //    // extract all the cameras
-    //    std::vector<SensorBasePtr> allsensors;
-    //    penv->GetSensors(allsensors);
-    //    std::vector< boost::shared_ptr<OpenRAVECamera> > vcameras;
-    //    for( std::vector<SensorBasePtr>::iterator itsensor = allsensors.begin(); itsensor != allsensors.end(); ++itsensor) {
-    //        if( (*itsensor)->Supports(SensorBase::ST_Camera) ) {
-    //            (*itsensor)->Configure(SensorBase::CC_PowerOn);
-    //            (*itsensor)->Configure(SensorBase::CC_RenderDataOn);
-    //            vcameras.push_back(boost::shared_ptr<OpenRAVECamera>(new OpenRAVECamera(*itsensor)));
-    //        }
-    //    }
-
-    //        for(size_t icamera = 0; icamera < vcameras.size(); ++icamera) {
-    //            vcameras[icamera]->pcamera->GetSensorData(vcameras[icamera]->pdata);
-    //            if( vcameras[icamera]->pdata->vimagedata.size() > 0 ) {
-    //                char* imageData = vcameras[icamera]->img->imageData;
-    //                uint8_t* src = &vcameras[icamera]->pdata->vimagedata.at(0);
-    //                for(int i=0; i < vcameras[icamera]->geom.height; i++, imageData += vcameras[icamera]->img->widthStep, src += 3*vcameras[icamera]->geom.width) {
-    //                    for(int j=0; j<vcameras[icamera]->geom.width; j++) {
-    //                        // opencv is bgr while openrave is rgb
-    //                        imageData[3*j] = src[3*j+2];
-    //                        imageData[3*j+1] = src[3*j+1];
-    //                        imageData[3*j+2] = src[3*j+0];
-    //                    }
-    //                }
-    //            }
-    //        }
-
-    // END->AQUI EXTRAER IMAGEN CAMARA!!!
-
-         //Fitness = percentage of wall painted
-         std::valarray<int> myvalarray (sqPainted,rows*cols);
-         percentage[t]= ( (float)myvalarray.sum()/(rows*cols))*100;
-
-     //cout << std::endl << " d: " << myvalarray.sum() << " " << percentage[t] << " ";
-    } //cierre bucle trayectoria completa
-
-
-    //Ahora mismo fitness manipulado
-    // calculate fit /percentage of painted wall
-//    double fit = sqrt(pow(percentage[0]-target[0],2)
-//                    + pow(percentage[1]-target[1],2)
-//                    + pow(percentage[2]-target[2],2)
-//                    + pow(percentage[3]-target[3],2)
-//                    + pow(percentage[4]-target[4],2) );
-
-    //The fit is obtained using the DTW algorithm.
-    //The feature is the percentage of wall painted
-    CgdaRecognition* featureTrajectories;
-    featureTrajectories = new DtwCgdaRecognition;
-    featureTrajectories->setGeneralized(generalized);
-
-    //Get the discrepancy value between what we have and what we want
-    //Init feature attemp vector
-    std::vector< std::vector< double > > attempVectforSimpleDiscrepancy;
-    for(int t=0;t<numbPoints;t++)
+    pcontrol = RaveCreateController(penv,"idealcontroller");
+    // Create the controllers, make sure to lock environment! (prevents changes)
     {
-        attempVectforSimpleDiscrepancy.push_back({percentage[t]});
+      EnvironmentMutex::scoped_lock lock(penv->GetMutex());
+      std::vector<int> dofindices(probot->GetDOF());
+      for(int i = 0; i < probot->GetDOF(); ++i) {
+        dofindices[i] = i;
+      }
+      probot->SetController(pcontrol,dofindices,1); // control everything
     }
 
-    //Console output.
-    for(int i=0; i<attempVectforSimpleDiscrepancy[0].size(); i++){ //For each vector of characteristics(each column). In this case should be 1.
-        std::cout<<std::endl<<std::endl;
-        for(int j=0; j<attempVectforSimpleDiscrepancy.size(); j++){ //For each trajectory step
-            std::cout<<"trajectory step "<<j<<" ==> " <<attempVectforSimpleDiscrepancy[j][i]<<std::endl;
-        }
-    }
+    KinBodyPtr objPtr = penv->GetKinBody("object");
+    if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
+    else printf("[WorldRpcResponder] good grab\n");
+    probot->SetActiveManipulator("m2");
+    probot->Grab(objPtr);
 
-    double fit;
-    featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
+	StateP state (new State);
 
-    cout << std::endl << " fit: " << fit << " ";
-    return fit;
-}
+    PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
+    state->addAlgorithm(nalg1);
 
-/************************************************************************/
+    PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
+    state->addAlgorithm(nalg2);
 
-void FunctionMinEvalOp::registerParameters(StateP state) {
-    state->getRegistry()->registerEntry("function", (voidP) (new uint(1)), ECF::UINT);
-}
+    // set the evaluation operator, init CgdaFitnessFunction
+    CgdaFitnessFunction* functionMinEvalOp = new CgdaFitnessFunction; 
+    functionMinEvalOp->setPRobot(probot);
+    functionMinEvalOp->setPenv(penv);
+    functionMinEvalOp->setPcontrol(pcontrol);
+    //Here the functionMinEvalOp is set as the evaulation function
+    state->setEvalOp(functionMinEvalOp);
 
-/************************************************************************/
+    //por aqui se muestran resultados
+    printf("---------------------------> ");
 
-bool FunctionMinEvalOp::initialize(StateP state) {
+    int newArgc = 2;
+    char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecution/conf/evMono_ecf_params.xml" };
 
-    voidP sptr = state->getRegistry()->getEntry("function"); // get parameter value
-    stringstream msg;
-    _objPtr = penv->GetKinBody("object");
-    _wall = penv->GetKinBody("wall");
+    state->initialize(newArgc, newArgv);
+    //Debugging
+    Population pop;
+    pop.initialize(state);
+    AlgorithmP alg;
+    alg=state->getAlgorithm();
 
-    if(!_objPtr) {
-        fprintf(stderr,"error: object \"object\" does not exist.\n");
-    } else printf("sucess: object \"object\" exists.\n");
+    std::cout << "Population: " << pop[0]->getSize() << std::endl;
+    std::cout << "Algorithm: " << alg->getName() << std::endl;
 
-    if(!_wall) {
-        fprintf(stderr,"error: object \"wall\" does not exist.\n");
-    } else printf("sucess: object \"wall\" exists.\n");
+    state->run();
 
+    vector<IndividualP> bestInd;
+    FloatingPoint::FloatingPoint* genBest;
+    vector<double> bestPoints;
 
-    usleep(1.0 * 1000000.0);
+    // final result
+    bestInd = state->getHoF()->getBest();
+    genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
+    bestPoints = genBest->realValue;
+
+    printf("-begin-\n");
+    for(unsigned int i=0;i<bestPoints.size();i++)
+        printf("%f, ",bestPoints[i]);
+    printf("\n-end-\n");
 
     return true;
 }
 
 /************************************************************************/
-
-FitnessP FunctionMinEvalOp::evaluate(IndividualP individual) {
-
-    // evaluation creates a new fitness object using a smart pointer
-    // in our case, we try to minimize the function value, so we use FitnessMin fitness (for minimization problems)
-    FitnessP fitness (new FitnessMin);
-
-    // we define FloatingPoint as the only genotype (in the configuration file)
-    FloatingPoint::FloatingPoint* gen = (FloatingPoint::FloatingPoint*) individual->getGenotype().get();
-
-    // we implement the fitness function 'as is', without any translation
-    // the number of variables is read from the genotype itself (size of 'realValue' vactor)
-
-    double value =0;
-    value= getCustomFitness(gen->realValue);
-    fitness->setValue(value);
-    return fitness;
 }
-
-/************************************************************************/
-
-
-}  // namespace teo
-

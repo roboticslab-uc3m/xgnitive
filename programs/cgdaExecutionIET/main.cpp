@@ -3,11 +3,11 @@
 //Copyright: Universidad Carlos III de Madrid (C) 2016
 //Authors: jgvictores, raulfdzbis, smorante
 
-#include "EvMono.hpp"
+#include "CgdaExecutionIET.hpp"
 
 int main(int argc, char **argv) {
 
-    teo::EvMono mod;
+    teo::CgdaExecutionIET mod;
     return mod.init();
 }
 
