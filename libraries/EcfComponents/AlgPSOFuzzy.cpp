@@ -366,11 +366,14 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
 
         /************************************************************************/
     }
+
+    //*******************************************************************************************//
+    //                              FILE OUTPUT FOR DEBUGGING                                    //
+    //*******************************************************************************************//
+
     //std::cout<<std::endl<<"THE NUMBER OF THIS GENERATION IS:"<<state->getGenerationNo() <<std::endl;
     std::cout<<std::endl<<"THE NUMBER OF EVALUATIONS IS:"<<state->getEvaluations() <<std::endl;
     std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<state->getElapsedTime() <<std::endl;
-
-    //*******************FILE OUTPUT FOR DEBUGGING***********************************************//
     //IndividualP bestParticle = selBestOp->select( *deme );
 
     FloatingPointP flp = boost::dynamic_pointer_cast<FloatingPoint::FloatingPoint> (bestParticle->getGenotype(3));
@@ -382,6 +385,8 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
         myfile1<<bestparticlePbestFitness<<" ";
         myfile1<<state->getEvaluations()<<std::endl;
     }
+    //*******************************************************************************************//
+    //                                      END                                                  //
     //*******************************************************************************************//
 	return true;
 

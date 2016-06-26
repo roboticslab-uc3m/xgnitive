@@ -97,7 +97,6 @@ bool CgdaExecutionIET::init() {
            results.push_back(bestPoints[1]);
            results.push_back(bestPoints[2]);
 
-
        }
 
        printf("-begin-\n");

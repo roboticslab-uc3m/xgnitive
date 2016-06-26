@@ -1,17 +1,17 @@
 <ECF>
-	<Algorithm>
+	<!--<Algorithm>
         	<SteadyStateTournament>
                 	<Entry key="tsize">3</Entry>-->              <!-- tournament size. def 3 -->
-        	</SteadyStateTournament>
-	</Algorithm>
+        	<!--</SteadyStateTournament>
+	</Algorithm>-->  
 
-	<!--<Algorithm>
+	<Algorithm>
 		<PSOInheritance>
-			<Entry key="weightType">0</Entry> weight type update: 0 - constant, 1 - time dependant (based on max generations) -->
-			<!--<Entry key="weight">0.8</Entry>    initial inertia weight (either constant or time dependant) -->
-			<!--<Entry key="maxVelocity">5</Entry> max particle velocity -->
-		<!--</PSOInheritance> 
-	</Algorithm>-->
+			<Entry key="weightType">0</Entry>  <!--weight type update: 0 - constant, 1 - time dependant (based on max generations) -->
+			<Entry key="weight">0.8</Entry>    <!--initial inertia weight (either constant or time dependant) -->
+			<Entry key="maxVelocity">5</Entry> <!--max particle velocity -->
+		</PSOInheritance> 
+	</Algorithm>
 	
 
 	<Genotype>
@@ -22,12 +22,12 @@
 		</FloatingPoint>
 	</Genotype>
 	<Registry>
-		<Entry key="population.size">30</Entry>
+		<Entry key="population.size">10</Entry>
 		<Entry key="mutation.indprob">0.6</Entry> <!-- individual mutation probability (default: 0.3) -->
 		<Entry key="log.level">1</Entry>
 		<Entry key="log.filename">HallOfFame.xml</Entry>
 		<Entry key="term.fitnessval">0</Entry>
-		<Entry key="term.stagnation">1</Entry> <!-- gens w/o improvement. def 30 -->
+		<Entry key="term.stagnation">10</Entry> <!-- gens w/o improvement. def 30 -->
 	</Registry>
 </ECF>
 
