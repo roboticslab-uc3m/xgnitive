@@ -105,7 +105,7 @@ bool CgdaExecutionIET::init() {
            evaluations+=state->getEvaluations();
            time+=state->getElapsedTime();
 
-           std::cout<<std::endl<<"THE NUMBER OF EVALUATIONS IS:"<<state->getEvaluations() <<std::endl;
+           std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
            std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<time <<std::endl;
            //IndividualP bestParticle = selBestOp->select( *deme );
 
