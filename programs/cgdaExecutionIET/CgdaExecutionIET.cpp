@@ -23,6 +23,8 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 /************************************************************************/
 
 int numberOfPoints=17;
+double time=0;
+double evaluations=0;
 bool CgdaExecutionIET::init() {
     RaveInitialize(true); // start openrave core
     penv = RaveCreateEnvironment(); // create the main environment
@@ -96,6 +98,26 @@ bool CgdaExecutionIET::init() {
            results.push_back(bestPoints[0]);
            results.push_back(bestPoints[1]);
            results.push_back(bestPoints[2]);
+
+           //*******************************************************************************************//
+           //                              FILE OUTPUT FOR DEBUGGING                                    //
+           //*******************************************************************************************//
+           evaluations+=state->getEvaluations();
+           time+=state->getElapsedTime();
+
+           std::cout<<std::endl<<"THE NUMBER OF EVALUATIONS IS:"<<state->getEvaluations() <<std::endl;
+           std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<time <<std::endl;
+           //IndividualP bestParticle = selBestOp->select( *deme );
+
+           std::ofstream myfile1;
+           myfile1.open("TrajectoryterationsvsEvaluations.txt", std::ios_base::app);
+           if (myfile1.is_open()){
+               myfile1<<i<<" ";
+               myfile1<<evaluations<<std::endl;
+           }
+           //*******************************************************************************************//
+           //                                      END                                                  //
+           //*******************************************************************************************//
 
        }
 
