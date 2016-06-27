@@ -17,7 +17,7 @@ PSOInheritance::PSOInheritance()
 }
 
 
-// register algorithm parameters
+// Register algorithm parameters
 void PSOInheritance::registerParameters(StateP state)
 {
 	registerParameter(state, "weightType", (voidP) new InertiaWeightType(CONSTANT), ECF::INT,
