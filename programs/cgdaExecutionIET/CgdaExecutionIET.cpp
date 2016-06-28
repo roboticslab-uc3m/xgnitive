@@ -113,6 +113,7 @@ bool CgdaExecutionIET::init() {
            myfile1.open("TrajectoryterationsvsEvaluations.txt", std::ios_base::app);
            if (myfile1.is_open()){
                myfile1<<i<<" ";
+               myfile1<<time<<" ";
                myfile1<<evaluations<<std::endl;
            }
            //*******************************************************************************************//

@@ -120,9 +120,9 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
 //       c) PSO-FUZZY/Evaluate
 
     //PSO-Fuzzy Constants
-    float b=0.1; //Emphasis operator. Bigger means giving more importance to best fit sol.
-    float a=0.2; //Constant proporcionality. Bigger means bigger threshod. Max=1;
-    float omega=0.5;
+    float b=0.01; //Emphasis operator. Bigger means giving more importance to best fit sol.
+    float a=0.6; //Constant proporcionality. Bigger means bigger threshod. Max=1;
+    float omega=5;
     int M=5; //Granule life reward particle addition
     int Num_max_granules = 20; //Numero máximo de granulos anterior 5. This number is proportial with the dimension genotype of our algorithm.
     double Threshold = 0;
@@ -287,6 +287,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
             int Granule_index;
             for(int k=0;k<Granules.size();k++){ //Compare with all Granules
                 similarity.push_back(0); //Allocate similarity vector
+                std::cout<<"EL VALOR K ES:"<<similarity[k]<<std::endl;
                 std::cout<<"Granules fitness for lambda es -->"<<Granules[k][2]<<std::endl;
                 //double lambda=omega*1/pow(exp(-Granules[k][2]/230),b); //Gaussian variance no normalized. The bigger this value, the bigger the granule.
                 double lambda=omega*1/pow(exp(-Granules[k][2]),b); //Gaussian variance no normalized. The bigger this value, the bigger the granule.
@@ -294,7 +295,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
                 std::cout<<"LAMBDA ES::::::::::::> "<<lambda<<std::endl;
 
                 for(int l=0;l<positions.size();l++){
-                   similarity [k] += (exp(-pow((positions[l]-Granules[k][l+3]),2)/pow(lambda,2))); //similarity value (Gaussian)
+                   similarity [k] += exp(-pow((positions[l]-Granules[k][l+3]),2)/pow(lambda,2)); //similarity value (Gaussian)
                    std::cout<<"La posicion de la particula es   "<<positions[l]<<"  la posición del Granulo es "<< Granules[k][l+3]<<std::endl;
 
                 }
