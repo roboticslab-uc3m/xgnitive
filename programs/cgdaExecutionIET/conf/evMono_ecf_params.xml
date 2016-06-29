@@ -1,17 +1,17 @@
 <ECF>
-	<Algorithm>
-        	<SteadyStateTournament>
-                	<Entry key="tsize">3</Entry>            <!-- tournament size. def 3 -->
-        	</SteadyStateTournament>
-	</Algorithm> 
-
 	<!--<Algorithm>
+        	<SteadyStateTournament>
+                	<Entry key="tsize">3</Entry>             tournament size. def 3 -->
+        	<!--</SteadyStateTournament>
+	</Algorithm> -->
+
+	<Algorithm>
 		<PSOInheritance>
-			<Entry key="weightType">0</Entry>  weight type update: 0 - constant, 1 - time dependant (based on max generations) -->
-			<!--<Entry key="weight">0.8</Entry>     initial inertia weight (either constant or time dependant) -->
-			<!--<Entry key="maxVelocity">5</Entry> max particle velocity -->
-		<!--</PSOInheritance> 
-	</Algorithm>-->
+			<Entry key="weightType">0</Entry>   <!-- weight type update: 0 - constant, 1 - time dependant (based on max generations) -->
+			<Entry key="weight">0.8</Entry>     <!--initial inertia weight (either constant or time dependant) -->
+			<Entry key="maxVelocity">5</Entry>  <!--max particle velocity -->
+		</PSOInheritance> 
+	</Algorithm>
 	
 
 	<Genotype>

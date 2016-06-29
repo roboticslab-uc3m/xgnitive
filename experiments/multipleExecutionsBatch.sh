@@ -9,6 +9,7 @@ cd ../build/bin
 while [ $i -le $Number_of_iterations ]
 do
     ./cgdaExecutionIET
+    echo "This is the iteration number $i ........................................................................................"
     i=$((i+1))
     wait
 done
