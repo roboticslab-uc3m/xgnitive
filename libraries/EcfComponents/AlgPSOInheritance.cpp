@@ -222,7 +222,7 @@ bool PSOInheritance::advanceGeneration(StateP state, DemeP deme)
             //std::cout<<"LA VELOCIDAD ES::::"<<velocity<<std::endl;
 		}
 
-        int proportion=40;
+        int proportion=0;
         if(rand()%100>=proportion){
             //Initial PSO inheritance algorithm -> 100%inheritance no evaluations.
             //determine new particle fitness

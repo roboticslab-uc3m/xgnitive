@@ -114,7 +114,8 @@ bool CgdaExecutionIET::init() {
            if (myfile1.is_open()){
                myfile1<<i<<" ";
                myfile1<<time<<" ";
-               myfile1<<evaluations<<std::endl;
+               myfile1<<evaluations<<" ";
+               myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
            }
            //*******************************************************************************************//
            //                                      END                                                  //
