@@ -95,6 +95,13 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     } //cierre bucle trayectoria completa
 
+    //Output to file
+    std::ofstream myfile2;
+    myfile2.open("PercentageWall.txt", std::ios_base::app);
+    if (myfile2.is_open()){
+        myfile2<<percentage[*pIter]<<" ";
+    }
+
     // calculate fit /percentage of painted wall
     //double fit = abs(percentage-target[*pIter]);
 

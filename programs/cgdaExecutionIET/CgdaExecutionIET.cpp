@@ -117,6 +117,13 @@ bool CgdaExecutionIET::init() {
                myfile1<<evaluations<<" ";
                myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
            }
+
+           std::ofstream myfile2;
+           myfile2.open("PercentageWall.txt", std::ios_base::app);
+           if (myfile2.is_open()){
+               myfile2<<std::endl;
+           }
+
            //*******************************************************************************************//
            //                                      END                                                  //
            //*******************************************************************************************//
