@@ -1,4 +1,4 @@
-f = open('TVEVF-100IT-PSOFI-55%-10PART-10MAX.txt', 'r')
+f = open('TEFP-100IT-SST-10PART-10MAX.txt', 'r')
 data_string=""
 data_array=[]
 for line in f:
