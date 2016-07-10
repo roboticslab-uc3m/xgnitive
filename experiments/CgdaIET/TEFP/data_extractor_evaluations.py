@@ -1,10 +1,10 @@
-f = open('TEFP-100IT-SST-10PART-10MAX.txt', 'r')
+f = open('TEFP-100IT-PSO-10PART-10MAX-IMP.txt', 'r')
 data_string=""
 data_array=[]
 for line in f:
-    if line.startswith('16'):
-	for x in line.split():
-	    data_array.append(float(x))
+    if line.startswith('10'):
+	    for x in line.split():
+	        data_array.append(float(x))
 #print data_array
 #The Number of evaluations mean is:
 i=3
