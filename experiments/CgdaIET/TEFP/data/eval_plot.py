@@ -21,5 +21,5 @@ plt.legend(loc=2)
 
 #plt.plotfile('AFFG-Ev-paint.txt', 'PSO-Ev-paint.txt', 'PSOFI-Ev-paint.txt', 'SST-Ev-paint.txt', subplots=False, delimiter=' ', newfig=False, names=('Time interval', 'Wall Painted (%)', 'Number of evaluations'), marker='o')
 
-plt.savefig('EvavsInt.png')
+plt.savefig('EvavsInt.pdf')
 plt.show()
