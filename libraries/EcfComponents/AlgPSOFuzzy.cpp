@@ -120,11 +120,11 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
 //       c) PSO-FUZZY/Evaluate
 
     //PSO-Fuzzy Constants
-    float b=0.01; //Emphasis operator. Bigger means giving more importance to best fit sol.
-    float a=0.6; //Constant proporcionality. Bigger means bigger threshod. Max=1;
+    float b=0.001; //Emphasis operator. Bigger means giving more importance to best fit sol.
+    float a=0.3; //Constant proporcionality. Bigger means bigger threshod. Max=1;
     float omega=5;
-    int M=5; //Granule life reward particle addition
-    int Num_max_granules = 20; //Numero máximo de granulos anterior 5. This number is proportial with the dimension genotype of our algorithm.
+    int M=1; //Granule life reward particle addition
+    int Num_max_granules = 3; //Numero máximo de granulos anterior 5. This number is proportial with the dimension genotype of our algorithm.
     double Threshold = 0;
     double fitness_mean= 0;
 
@@ -289,9 +289,14 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
                 similarity.push_back(0); //Allocate similarity vector
                 std::cout<<"EL VALOR K ES:"<<similarity[k]<<std::endl;
                 std::cout<<"Granules fitness for lambda es -->"<<Granules[k][2]<<std::endl;
-                //double lambda=omega*1/pow(exp(-Granules[k][2]/230),b); //Gaussian variance no normalized. The bigger this value, the bigger the granule.
-                double lambda=omega*1/pow(exp(-Granules[k][2]),b); //Gaussian variance no normalized. The bigger this value, the bigger the granule.
-
+                double lambda;
+                if(Granules[k][2]==0){ //We already have found the solution. No particle will be added to this granule.
+                    lambda=0;
+                }
+                else{
+                    //double lambda=omega*1/pow(exp(-Granules[k][2]/230),b); //Gaussian variance no normalized. The bigger this value, the bigger the granule.
+                    lambda=omega*1/pow(exp(-Granules[k][2]),b); //Gaussian variance no normalized. The bigger this value, the bigger the granule.
+                }
                 std::cout<<"LAMBDA ES::::::::::::> "<<lambda<<std::endl;
 
                 for(int l=0;l<positions.size();l++){
