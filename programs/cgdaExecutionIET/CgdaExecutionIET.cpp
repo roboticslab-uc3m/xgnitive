@@ -22,7 +22,8 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 
 /************************************************************************/
 
-int numberOfPoints=17;
+//int numberOfPoints=17;
+int numberOfPoints=9;
 double time=0;
 double evaluations=0;
 bool CgdaExecutionIET::init() {
@@ -70,7 +71,8 @@ bool CgdaExecutionIET::init() {
            state->addAlgorithm(nalg2);
 
            // set the evaluation operator
-           CgdaFitnessFunction* functionMinEvalOp = new CgdaFitnessFunction;
+           //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+           CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
            functionMinEvalOp->setPRobot(probot);
            functionMinEvalOp->setPenv(penv);
            functionMinEvalOp->setPcontrol(pcontrol);
@@ -83,7 +85,7 @@ bool CgdaExecutionIET::init() {
 
            printf("---------------------------> i:%d\n",i);
            int newArgc = 2;
-           char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
+           char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params_WAX.xml" };
 
            state->initialize(newArgc, newArgv);
            state->run();

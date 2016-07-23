@@ -3,7 +3,7 @@
 //Copyright: Universidad Carlos III de Madrid (C) 2016
 //Authors: jgvictores, raulfdzbis, smorante
 
-#include "CgdaFitnessFunction.hpp"
+#include "CgdaPaintFitnessFunction.hpp"
 
 namespace teo
 {
@@ -15,7 +15,7 @@ namespace teo
 double target[17]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
                    , 43.75, 50, 56.25, 62.5, 68.75, 75, 81.25, 87.5, 93.75, 100};
 
-double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
+double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     const int rows=4; //setting wall parameters
     const int cols=4;
@@ -145,13 +145,13 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
 
 /************************************************************************/
 
-void CgdaFitnessFunction::registerParameters(StateP state) {
+void CgdaPaintFitnessFunction::registerParameters(StateP state) {
 	state->getRegistry()->registerEntry("function", (voidP) (new uint(1)), ECF::UINT);
 }
 
 /************************************************************************/
 
-bool CgdaFitnessFunction::initialize(StateP state) {
+bool CgdaPaintFitnessFunction::initialize(StateP state) {
 
 	voidP sptr = state->getRegistry()->getEntry("function"); // get parameter value
     stringstream msg;
@@ -174,7 +174,7 @@ bool CgdaFitnessFunction::initialize(StateP state) {
 
 /************************************************************************/
 
-FitnessP CgdaFitnessFunction::evaluate(IndividualP individual) {
+FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
 
 	// evaluation creates a new fitness object using a smart pointer
 	// in our case, we try to minimize the function value, so we use FitnessMin fitness (for minimization problems)

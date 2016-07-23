@@ -1,8 +1,8 @@
 //Copyright: Universidad Carlos III de Madrid (C) 2016
 //Authors: jgvictores, raulfdzbis, smorante
 
-#ifndef CGDA_EXECUTION_IET_H_
-#define CGDA_EXECUTION_IET_H_
+#ifndef CGDA_WAX_IET_H_
+#define CGDA_WAX_IET_H_
 
 #include <cmath>
 #include <iostream>
@@ -22,7 +22,7 @@ using namespace OpenRAVE;
 namespace teo
 {
 
-class CgdaFitnessFunction : public EvaluateOp {
+class CgdaWaxFitnessFunction : public EvaluateOp {
 
   public:
     void setPRobot(const RobotBasePtr& _probot) {
@@ -52,13 +52,12 @@ class CgdaFitnessFunction : public EvaluateOp {
     EnvironmentBasePtr penv;
     ControllerBasePtr pcontrol;
     KinBodyPtr _objPtr;
-    KinBodyPtr _wall;
     vector<double>* pFresults;
     unsigned int* pIter;
     Transform T_base_object;
 };
 
-typedef boost::shared_ptr<CgdaFitnessFunction> CgdaFitnessFunctionP;
+typedef boost::shared_ptr<CgdaWaxFitnessFunction> CgdaWaxFitnessFunctionP;
 
 }  // namespace teo
 

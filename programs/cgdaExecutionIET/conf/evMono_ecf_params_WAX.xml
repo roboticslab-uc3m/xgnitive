@@ -1,0 +1,26 @@
+<ECF>
+	<Algorithm>
+        	<SteadyStateTournament>
+                	<Entry key="tsize">3</Entry>              <!-- tournament size. def 3 -->
+        	</SteadyStateTournament>
+	</Algorithm>
+
+
+	<Genotype>
+		<FloatingPoint>
+			<Entry key="lbound">-15</Entry>
+			<Entry key="ubound">100</Entry>
+			<Entry key="dimension">3</Entry>
+		</FloatingPoint>
+	</Genotype>
+
+	<Registry>
+		<Entry key="population.size">50</Entry>
+		<Entry key="mutation.indprob">0.6</Entry> <!-- individual mutation probability (default: 0.3) -->
+		<Entry key="log.level">1</Entry>
+		<Entry key="log.filename">HallOfFame.xml</Entry>
+		<Entry key="term.fitnessval">20</Entry> <!-- value for termination -->
+	</Registry>
+</ECF>
+
+

@@ -6,7 +6,8 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
-#include "CgdaFitnessFunction.hpp"
+#include "CgdaPaintFitnessFunction.hpp"
+#include "CgdaWaxFitnessFunction.hpp"
 
 #include "AlgPSOInheritance.hpp"
 #include "AlgPSOFuzzy.hpp"
