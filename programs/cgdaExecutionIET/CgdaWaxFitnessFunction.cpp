@@ -15,6 +15,9 @@ namespace teo
 double CgdaWaxFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     std::vector<std::vector<double>> target;
+    double kinect_offset_x=307.43;
+    double kinect_offset_y=234.404;
+    double kinect_offset_z=350.04;
     target.push_back({6.38762472700000e+02,2.72626977500000e+00,-3.97845084999999e+00});
     target.push_back({6.42391811965000e+02,1.68573559950000e+01,-3.02628304000000e+00});
     target.push_back({6.80641917184079e+02,8.88397871243782e+01,1.23043924875622e+00});
@@ -116,6 +119,16 @@ bool CgdaWaxFitnessFunction::initialize(StateP state) {
     if(!_objPtr) {
         fprintf(stderr,"error: object \"object\" does not exist.\n");
     } else printf("sucess: object \"object\" exists.\n");
+    T_base_object = _objPtr->GetTransform();
+    printf("object \"object\" at %f %f %f.\n", T_base_object.trans.x, T_base_object.trans.y, T_base_object.trans.z);
+
+    KinBodyPtr _kinectPtr = penv->GetKinBody("kinect");
+    if(!_kinectPtr) {
+        fprintf(stderr,"error: object \"kinect\" does not exist.\n");
+    } else printf("sucess: object \"kinect\" exists.\n");
+    T_base_kinect = _kinectPtr->GetTransform();
+    printf("object \"kinect\" at %f %f %f.\n", T_base_kinect.trans.x, T_base_kinect.trans.y, T_base_kinect.trans.z);
+
 
     usleep(1.0 * 1000000.0);
 

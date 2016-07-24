@@ -52,6 +52,7 @@ class CgdaWaxFitnessFunction : public EvaluateOp {
     EnvironmentBasePtr penv;
     ControllerBasePtr pcontrol;
     KinBodyPtr _objPtr;
+    Transform T_base_kinect;
     vector<double>* pFresults;
     unsigned int* pIter;
     Transform T_base_object;
