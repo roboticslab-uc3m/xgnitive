@@ -31,7 +31,7 @@ bool CgdaExecutionIET::init() {
     penv = RaveCreateEnvironment(); // create the main environment
     RaveSetDebugLevel(Level_Debug);
     string viewername = "qtcoin";
-    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
+    //boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
     string scenefilename = "../../programs/models/teo_cgda_iros.env.xml";
     penv->Load(scenefilename); // load the scene
     //-- Get Robot 0
@@ -87,7 +87,21 @@ bool CgdaExecutionIET::init() {
            int newArgc = 2;
            char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params_WAX.xml" };
 
+
            state->initialize(newArgc, newArgv);
+
+//           int parameter=100;
+//           voidP sptr;
+//           sptr= (voidP)&parameter;
+//           state->getRegistry()->modifyEntry("term.fitnessval", sptr);
+
+//           if(state->getRegistry()->isModified("term.fitnessval")){
+//               std::cout<<"Ha sido modificado!!!!"<<std::endl;
+//               std::cout<<"Valor  "<<*par<<std::endl;
+//           }
+
+
+
            state->run();
 
            vector<IndividualP> bestInd;
@@ -118,13 +132,34 @@ bool CgdaExecutionIET::init() {
                myfile1<<time<<" ";
                myfile1<<evaluations<<" ";
                myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
-           }
+           }          
 
            std::ofstream myfile2;
            myfile2.open("PercentageWall.txt", std::ios_base::app);
            if (myfile2.is_open()){
                myfile2<<std::endl;
            }
+
+           std::ofstream myfile3;
+           myfile3.open("X.txt", std::ios_base::app);
+           if (myfile3.is_open()){
+               myfile3<<std::endl;
+           }
+
+           std::ofstream myfile4;
+           myfile4.open("Y.txt", std::ios_base::app);
+           if (myfile4.is_open()){
+               myfile4<<std::endl;
+           }
+
+           std::ofstream myfile5;
+           myfile5.open("Z.txt", std::ios_base::app);
+           if (myfile5.is_open()){
+               myfile5<<std::endl;
+           }
+
+
+
 
            //*******************************************************************************************//
            //                                      END                                                  //

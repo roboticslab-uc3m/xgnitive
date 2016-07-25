@@ -15,18 +15,18 @@ namespace teo
 double CgdaWaxFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     std::vector<std::vector<double>> target;
-    double kinect_offset_x=307.43;
-    double kinect_offset_y=234.404;
-    double kinect_offset_z=350.04;
-    target.push_back({6.38762472700000e+02,2.72626977500000e+00,-3.97845084999999e+00});
-    target.push_back({6.42391811965000e+02,1.68573559950000e+01,-3.02628304000000e+00});
-    target.push_back({6.80641917184079e+02,8.88397871243782e+01,1.23043924875622e+00});
-    target.push_back({7.83047694335000e+02,1.20799710345000e+02,6.47513742499999e+00});
-    target.push_back({8.64809906691542e+02,5.41469797114429e+01,7.08611930348259e+00});
-    target.push_back({8.16733444044999e+02,-5.19248806450000e+01,-9.54816400000000e-01});
-    target.push_back({6.91319608447761e+02,-6.46731068507463e+01,-6.88174848258707e+00});
-    target.push_back({6.38455344905001e+02,-1.57018014900000e+01,-4.27471647499999e+00});
-    target.push_back({6.36920685935323e+02,3.73245194029851e-01,-3.83094820398010e+00});
+    double kinect_offset_x=1100;
+    double kinect_offset_y=-500;
+    double kinect_offset_z=300;
+    target.push_back({kinect_offset_x-6.38762472700000e+02,kinect_offset_y-2.72626977500000e+00,kinect_offset_z-(-3.97845084999999e+00)});
+    target.push_back({kinect_offset_x-6.42391811965000e+02,kinect_offset_y-1.68573559950000e+01,kinect_offset_z-(-3.02628304000000e+00)});
+    target.push_back({kinect_offset_x-6.80641917184079e+02,kinect_offset_y-8.88397871243782e+01,kinect_offset_z-1.23043924875622e+00});
+    target.push_back({kinect_offset_x-7.83047694335000e+02,kinect_offset_y-1.20799710345000e+02,kinect_offset_z-6.47513742499999e+00});
+    target.push_back({kinect_offset_x-8.64809906691542e+02,kinect_offset_y-5.41469797114429e+01,kinect_offset_z-7.08611930348259e+00});
+    target.push_back({kinect_offset_x-8.16733444044999e+02,kinect_offset_y-(-5.19248806450000e+01),kinect_offset_z-(-9.54816400000000e-01)});
+    target.push_back({kinect_offset_x-6.91319608447761e+02,kinect_offset_y-(-6.46731068507463e+01),kinect_offset_z-(-6.88174848258707e+00)});
+    target.push_back({kinect_offset_x-6.38455344905001e+02,kinect_offset_y-(-1.57018014900000e+01),kinect_offset_z-(-4.27471647499999e+00)});
+    target.push_back({kinect_offset_x-6.36920685935323e+02,kinect_offset_y-3.73245194029851e-01,kinect_offset_z-(-3.83094820398010e+00)});
 
     std::vector<std::vector<double>> attempTrajectory;
 
@@ -68,9 +68,33 @@ double CgdaWaxFitnessFunction::getCustomFitness(vector <double> genPoints){
             double T_base_object_y = T_base_object.trans.y*1000.0; //pass to mm
             double T_base_object_z = T_base_object.trans.z*1000.0; //pass to mm
 
+//            target[t][0]=T_base_kinect.trans.x*1000.0 - target[t][0];
+//            target[t][1]=T_base_kinect.trans.y*1000.0 - target[t][1];
+//            target[t][2]=T_base_kinect.trans.z*1000.0 - target[t][2];
+
+
             attempTrajectory.push_back({T_base_object_x,T_base_object_y,T_base_object_z});
 
     } //cierre bucle trayectoria completa
+
+    std::ofstream myfile3;
+    myfile3.open("X.txt", std::ios_base::app);
+    if (myfile3.is_open()){
+        myfile3<<attempTrajectory[*pIter][0]<<" ";
+    }
+
+    std::ofstream myfile4;
+    myfile4.open("Y.txt", std::ios_base::app);
+    if (myfile4.is_open()){
+        myfile4<<attempTrajectory[*pIter][1]<<" ";
+    }
+
+    std::ofstream myfile5;
+    myfile5.open("Z.txt", std::ios_base::app);
+    if (myfile5.is_open()){
+        myfile5<<attempTrajectory[*pIter][2]<<" ";
+    }
+
 
     //The fit is obtained using the DTW algorithm.
     //The feature is the percentage of wall painted
@@ -99,6 +123,7 @@ double CgdaWaxFitnessFunction::getCustomFitness(vector <double> genPoints){
     featureTrajectories->compare(attempTrajectory,fit);
 
     cout << std::endl << " fit: " << fit << " ";
+
     return fit;
 }
 
@@ -121,14 +146,6 @@ bool CgdaWaxFitnessFunction::initialize(StateP state) {
     } else printf("sucess: object \"object\" exists.\n");
     T_base_object = _objPtr->GetTransform();
     printf("object \"object\" at %f %f %f.\n", T_base_object.trans.x, T_base_object.trans.y, T_base_object.trans.z);
-
-    KinBodyPtr _kinectPtr = penv->GetKinBody("kinect");
-    if(!_kinectPtr) {
-        fprintf(stderr,"error: object \"kinect\" does not exist.\n");
-    } else printf("sucess: object \"kinect\" exists.\n");
-    T_base_kinect = _kinectPtr->GetTransform();
-    printf("object \"kinect\" at %f %f %f.\n", T_base_kinect.trans.x, T_base_kinect.trans.y, T_base_kinect.trans.z);
-
 
     usleep(1.0 * 1000000.0);
 

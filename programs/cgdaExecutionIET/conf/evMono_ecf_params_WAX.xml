@@ -19,7 +19,9 @@
 		<Entry key="mutation.indprob">0.6</Entry> <!-- individual mutation probability (default: 0.3) -->
 		<Entry key="log.level">1</Entry>
 		<Entry key="log.filename">HallOfFame.xml</Entry>
-		<Entry key="term.fitnessval">20</Entry> <!-- value for termination -->
+		<!--<Entry key="term.fitnessval">40</Entry>  value for termination -->
+	        <!--<Entry key="term.fitnessval">0</Entry> -->
+		<Entry key="term.stagnation">3</Entry>  <!--gens w/o improvement. def 30 -->
 	</Registry>
 </ECF>
 
