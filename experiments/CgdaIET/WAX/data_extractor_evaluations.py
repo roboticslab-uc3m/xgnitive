@@ -1,4 +1,4 @@
-f = open('TEFP-FIPSO-55%-50part-3Max.txt', 'r')
+f = open('TEFP-AFFG-3Gran-50part-3Max.txt', 'r')
 data_string=""
 data_array=[]
 min_value_ev=10000

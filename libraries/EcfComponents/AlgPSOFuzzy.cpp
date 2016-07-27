@@ -124,7 +124,7 @@ bool PSOFuzzy::advanceGeneration(StateP state, DemeP deme)
     float a=0.2; //Constant proporcionality. Bigger means bigger threshod. Max=1;
     float omega=5;
     int M=1; //Granule life reward particle addition
-    int Num_max_granules = 10; //Numero máximo de granulos anterior 5. This number is proportial with the dimension genotype of our algorithm.
+    int Num_max_granules = 3; //Numero máximo de granulos anterior 5. This number is proportial with the dimension genotype of our algorithm.
     double Threshold = 0;
     double fitness_mean= 0;
 

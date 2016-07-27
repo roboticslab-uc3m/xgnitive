@@ -2,9 +2,9 @@ import numpy
 import math
 i=0
 while i<17:
-    fx = open('X-FIPSO-55%-50part-3Max.txt', 'r')
-    fy = open('Y-FIPSO-55%-50part-3Max.txt','r')
-    fz = open('Z-FIPSO-55%-50part-3Max.txt','r')
+    fx = open('X-AFFG-3Gran-50part-3Max.txt', 'r')
+    fy = open('Y-AFFG-3Gran-50part-3Max.txt','r')
+    fz = open('Z-AFFG-3Gran-50part-3Max.txt','r')
     i=0
     max_percentages=[]
     data_array_x=[]
