@@ -48,6 +48,7 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
 	void registerParameters(StateP);
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
+    void trajectoryExecution(int NumberPoints, vector<double> result_trajectory); //TE
     RobotBasePtr probot;
     EnvironmentBasePtr penv;
     ControllerBasePtr pcontrol;

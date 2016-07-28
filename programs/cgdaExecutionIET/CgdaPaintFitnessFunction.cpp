@@ -15,6 +15,71 @@ namespace teo
 double target[17]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
                    , 43.75, 50, 56.25, 62.5, 68.75, 75, 81.25, 87.5, 93.75, 100};
 
+void CgdaPaintFitnessFunction::trajectoryExecution(int NumberPoints, vector<double> result_trajectory){
+    //std::cout<<"I have entered Execution"<<std::endl;
+
+    const int rows=4; //setting wall parameters
+    const int cols=4;
+    int sqPainted [rows*cols] = { }; //setting number of changed square as cero
+
+    // // reset square color
+   for(int i=0; i<(rows*cols); i++){
+           stringstream rr;
+           rr << "square" << i;
+           _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
+           rr.str("");
+       }
+    //Move robot
+    for(int t=0;t<=NumberPoints;t++) {
+            std::cout<<"Executing"<<std::endl;
+            std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
+
+            dEncRaw[0+4] = -result_trajectory[t*3+0]*M_PI/180.0;  // simple
+            dEncRaw[1+4] = -result_trajectory[t*3+1]*M_PI/180.0;  // simple
+            dEncRaw[3+4] = -result_trajectory[t*3+2]*M_PI/180.0;  // simple
+
+            dEncRaw[4+4] = -45*M_PI/180.0;
+            probot->SetJointValues(dEncRaw);
+            pcontrol->SetDesired(dEncRaw); // This function "resets" physics
+            while(!pcontrol->IsDone()) {
+                boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+            }
+            penv->StepSimulation(0.0001);  // StepSimulation must be given in seconds
+            //std::cout<<"W8ing"<<std::endl;
+            T_base_object = _objPtr->GetTransform();
+            double T_base_object_x = T_base_object.trans.x;
+            double T_base_object_y = T_base_object.trans.y;
+            double T_base_object_z = T_base_object.trans.z;
+
+            //change square color in function of dist (end-effector,square)
+            for(int i=0; i<(rows*cols); i++){
+                    stringstream ss;
+                    ss << "square" << i;
+                    Transform pos_square = _wall->GetLink(ss.str())->GetGeometry(0)->GetTransform();
+
+                    double pos_square_x = pos_square.trans.x;
+                    double pos_square_y = pos_square.trans.y;
+                    double pos_square_z = pos_square.trans.z;
+                    double dist = sqrt(pow(T_base_object_x-pos_square_x,2)
+                                  + pow(T_base_object_y-pos_square_y,2)
+                                  + pow(T_base_object_z-pos_square_z,2) );
+
+                       if (dist < 0.13){
+                        _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
+                        sqPainted[i]=1;
+                        //std::cout<<"I have painted a happy little tree "<<std::endl;
+                    }
+                    ss.str("");
+            }
+
+            sleep(1);
+
+
+    }
+
+}
+
+
 double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     const int rows=4; //setting wall parameters

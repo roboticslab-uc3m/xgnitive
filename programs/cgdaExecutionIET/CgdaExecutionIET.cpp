@@ -22,8 +22,8 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 
 /************************************************************************/
 
-//int numberOfPoints=17;
-int numberOfPoints=9;
+int numberOfPoints=17;
+//int numberOfPoints=9;
 double time=0;
 double evaluations=0;
 bool CgdaExecutionIET::init() {
@@ -31,7 +31,7 @@ bool CgdaExecutionIET::init() {
     penv = RaveCreateEnvironment(); // create the main environment
     RaveSetDebugLevel(Level_Debug);
     string viewername = "qtcoin";
-    //boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
+    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
     string scenefilename = "../../programs/models/teo_cgda_iros.env.xml";
     penv->Load(scenefilename); // load the scene
     //-- Get Robot 0
@@ -39,6 +39,8 @@ bool CgdaExecutionIET::init() {
     penv->GetRobots(robots);
     std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
     probot = robots.at(0);
+
+    std::cin.get();
 
     pcontrol = RaveCreateController(penv,"idealcontroller");
     // Create the controllers, make sure to lock environment! (prevents changes)
@@ -71,8 +73,8 @@ bool CgdaExecutionIET::init() {
            state->addAlgorithm(nalg2);
 
            // set the evaluation operator
-           //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
-           CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
+           CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+           //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
            functionMinEvalOp->setPRobot(probot);
            functionMinEvalOp->setPenv(penv);
            functionMinEvalOp->setPcontrol(pcontrol);
@@ -85,7 +87,7 @@ bool CgdaExecutionIET::init() {
 
            printf("---------------------------> i:%d\n",i);
            int newArgc = 2;
-           char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params_WAX.xml" };
+           char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
 
 
            state->initialize(newArgc, newArgv);
@@ -158,7 +160,12 @@ bool CgdaExecutionIET::init() {
                myfile5<<std::endl;
            }
 
-
+           //This following line is only for the execution of the result trajectory of the paint task
+           if(i==(numberOfPoints-1)){
+                std::cout<<"LETS EXECUTE"<<std::endl;
+                functionMinEvalOp->trajectoryExecution(numberOfPoints, results);
+           }
+           //*******************************************************************************************//
 
 
            //*******************************************************************************************//

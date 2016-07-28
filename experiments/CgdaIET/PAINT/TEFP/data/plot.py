@@ -1,6 +1,11 @@
 #!/usr/bin/python
 import matplotlib.pyplot as plt 
 
+font = {'family' : 'normal',
+        'size'   : 18}
+
+plt.rc('font', **font)
+
 plt.plotfile('AFFG-Ev-paint.txt', delimiter=' ', cols=(0, 1), 
                      names=('Time interval', 'Wall Painted (%)'), marker='o')
 
