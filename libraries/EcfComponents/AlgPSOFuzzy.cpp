@@ -33,7 +33,7 @@ void PSOFuzzy::registerParameters(StateP state)
 
 bool PSOFuzzy::initialize(StateP state)
 {
-	// initialize all operators
+    //Initialize all operators
 	selBestOp->initialize(state);
 
 	voidP weightType = getParameterValue(state, "weightType");

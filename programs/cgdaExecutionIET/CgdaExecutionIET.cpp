@@ -162,7 +162,7 @@ bool CgdaExecutionIET::init() {
 
            //This following line is only for the execution of the result trajectory of the paint task
            if(i==(numberOfPoints-1)){
-                std::cout<<"LETS EXECUTE"<<std::endl;
+                //std::cout<<"LETS EXECUTE"<<std::endl;
                 functionMinEvalOp->trajectoryExecution(numberOfPoints, results);
            }
            //*******************************************************************************************//

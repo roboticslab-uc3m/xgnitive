@@ -30,7 +30,7 @@ bool DtwCgdaRecognition::compare(std::vector<std::vector<double>> &v2, double& d
     //dtw Aquila dst
     Aquila::Dtw dtw;
     discrepancy = dtw.getDistance(v2, generalizedT);
-    CD_INFO("DTW distance (neighbors): %f\n", discrepancy)
+    CD_INFO("DTW distance: %f\n", discrepancy)
 
     //Uncomment for dedugging the path
     //    Aquila::DtwPathType path;

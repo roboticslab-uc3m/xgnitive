@@ -31,7 +31,7 @@ void CgdaPaintFitnessFunction::trajectoryExecution(int NumberPoints, vector<doub
        }
     //Move robot
     for(int t=0;t<=NumberPoints;t++) {
-            std::cout<<"Executing"<<std::endl;
+            std::cout<<"Time interval"<<t<<std::endl;
             std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
 
             dEncRaw[0+4] = -result_trajectory[t*3+0]*M_PI/180.0;  // simple
