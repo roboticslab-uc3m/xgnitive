@@ -12,7 +12,7 @@ namespace teo
 
 
 //double target[10]={0, 10, 20, 30, 40, 50, 60, 70, 80, 100};
-double target[17]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
+double Const_target[17]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
                    , 43.75, 50, 56.25, 62.5, 68.75, 75, 81.25, 87.5, 93.75, 100};
 
 void CgdaPaintFitnessFunction::trajectoryExecution(int NumberPoints, vector<double> result_trajectory){
@@ -94,6 +94,9 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
             _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
             rr.str("");
         }
+    genPoints[0]=47.546;
+    genPoints[1]=81.3215;
+    genPoints[2]=42.7629;
 
     for(int t=0;t<=*pIter;t++) {
             std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
@@ -177,7 +180,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Current Generalized trajectory
     std::vector < std::vector < double > > current_target;
     for(int i=0; i<=*pIter;i++){
-        current_target.push_back({target[i]});
+        current_target.push_back({Const_target[i]});
     }
     featureTrajectories->setGeneralized(current_target);
 

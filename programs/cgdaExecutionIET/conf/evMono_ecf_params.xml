@@ -1,7 +1,7 @@
 <ECF>
 	<Algorithm>
         	<SteadyStateTournament>
-                	<Entry key="tsize">3</Entry>          <!-- tournament size. def 3 -->
+                	<Entry key="tsize">3</Entry>       <!-- tournament size. def 3 -->
         	</SteadyStateTournament>
 	</Algorithm>
 

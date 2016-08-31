@@ -61,24 +61,33 @@ bool CgdaExecutionIET::init() {
 
     vector< double > results;
     vector< double >* presults= &results;
+    int const_evaluations;
+    int* pconst_evaluations= &const_evaluations;
+    *pconst_evaluations=0;
 
 
        for(unsigned int i=0; i<numberOfPoints; i++) {
            StateP state (new State);
 
+           //PSOInheritance
            PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
            state->addAlgorithm(nalg1);
 
+           //PSOFuzzy
            PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
            state->addAlgorithm(nalg2);
 
            // set the evaluation operator
-           CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+           //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
            //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
+           CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
+           functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
+
            functionMinEvalOp->setPRobot(probot);
            functionMinEvalOp->setPenv(penv);
            functionMinEvalOp->setPcontrol(pcontrol);
            functionMinEvalOp->setResults(presults);
+           //Uncomment only for CgdaConstrained
 
            state->setEvalOp(functionMinEvalOp);
 
@@ -171,7 +180,7 @@ bool CgdaExecutionIET::init() {
            //*******************************************************************************************//
            //                                      END                                                  //
            //*******************************************************************************************//
-
+           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations;
        }
 
        printf("-begin-\n");

@@ -8,6 +8,8 @@
 
 #include "CgdaPaintFitnessFunction.hpp"
 #include "CgdaWaxFitnessFunction.hpp"
+#include "CgdaConstrainedPaintFitnessFunction.hpp"
+
 
 #include "AlgPSOInheritance.hpp"
 #include "AlgPSOFuzzy.hpp"
