@@ -1,3 +1,6 @@
+//Copyright: Universidad Carlos III de Madrid (C) 2016
+//Authors:raulfdzbis, jgvictores,  smorante
+
 #ifndef Particle_Swarm_Optimization_fuzzy_h
 #define Particle_Swarm_Optimization_fuzzy_h
 

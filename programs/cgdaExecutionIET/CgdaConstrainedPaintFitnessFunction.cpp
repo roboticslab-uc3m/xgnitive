@@ -10,8 +10,6 @@ namespace teo
 
 /************************************************************************/
 
-
-//double target[10]={0, 10, 20, 30, 40, 50, 60, 70, 80, 100};
 double target[17]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
                    , 43.75, 50, 56.25, 62.5, 68.75, 75, 81.25, 87.5, 93.75, 100};
 
@@ -26,13 +24,13 @@ void CgdaConstrainedPaintFitnessFunction::trajectoryExecution(int NumberPoints, 
    for(int i=0; i<(rows*cols); i++){
            stringstream rr;
            rr << "square" << i;
-           _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
+           _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(OpenRAVE::RaveVector<float>(0.5, 0.5, 0.5));
            rr.str("");
        }
     //Move robot
     for(int t=0;t<=NumberPoints;t++) {
             std::cout<<"Time interval"<<t<<std::endl;
-            std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
+            std::vector<OpenRAVE::dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
 
             dEncRaw[0+4] = -result_trajectory[t*3+0]*M_PI/180.0;  // simple
             dEncRaw[1+4] = -result_trajectory[t*3+1]*M_PI/180.0;  // simple
@@ -55,7 +53,7 @@ void CgdaConstrainedPaintFitnessFunction::trajectoryExecution(int NumberPoints, 
             for(int i=0; i<(rows*cols); i++){
                     stringstream ss;
                     ss << "square" << i;
-                    Transform pos_square = _wall->GetLink(ss.str())->GetGeometry(0)->GetTransform();
+                    OpenRAVE::Transform pos_square = _wall->GetLink(ss.str())->GetGeometry(0)->GetTransform();
 
                     double pos_square_x = pos_square.trans.x;
                     double pos_square_y = pos_square.trans.y;
@@ -65,7 +63,7 @@ void CgdaConstrainedPaintFitnessFunction::trajectoryExecution(int NumberPoints, 
                                   + pow(T_base_object_z-pos_square_z,2) );
 
                        if (dist < 0.13){
-                        _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
+                        _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(OpenRAVE::RaveVector<float>(0.0, 0.0, 1.0));
                         sqPainted[i]=1;
                         //std::cout<<"I have painted a happy little tree "<<std::endl;
                     }
@@ -84,9 +82,34 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
 
     double fit;
 
-    //Aqui meter la condición de si está fuera del limiti espacial impuesto
-    if(0==1){
+    //Aqui meter la condición de si está fuera del limite espacial impuesto
 
+    KDL::JntArray qInRad = KDL::JntArray(GdL);
+    qInRad(0) = -genPoints[0]*M_PI/180.0;  // simple
+    qInRad(1) = -genPoints[1]*M_PI/180.0;  // simple
+    qInRad(2) = -genPoints[2]*M_PI/180.0;  // simple
+    KDL::Frame kf;
+    KDL::ChainFkSolverPos_recursive fksolver = KDL::ChainFkSolverPos_recursive(chain);
+    fksolver.JntToCart(qInRad,kf);
+
+    std::cout << "x: FK: " << kf.p.x() << " | ";
+    std::cout << "y: FK: " << kf.p.y() << " | ";
+    std::cout << "z: FK: " << kf.p.z() << std::endl;
+
+    // x: FK: 0 OR: 0.00630739 | y: FK: -0.3469 OR: -0.340613 | z: FK: -0.220306 OR: -2.43642e-114
+
+    //region
+    float xl=0.3;
+    float xu=0.7;
+    float yl=-1;
+    float yu=-0;
+    float zl=0.3;
+    float zu=1.1;
+
+    //if not in the allowed region
+    if(!(((kf.p.x()>xl) && (kf.p.x()<xu)) && ((kf.p.y()>yl) && (kf.p.y()<yu)) && ((kf.p.z()>zl) && (kf.p.z()<zu)))){
+        std::cout<<"***************************************SPACE LIMITED********************************"<<std::endl;
+        return 10000;
     }
 
     else{
@@ -95,22 +118,17 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
         std::vector<double> percentage;
         int sqPainted [rows*cols] = { }; //setting number of changed square as cero
 
-         // // reset square color
+        // reset square color
         for(int i=0; i<(rows*cols); i++){
                 stringstream rr;
                 rr << "square" << i;
-                _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
+                _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(OpenRAVE::RaveVector<float>(0.5, 0.5, 0.5));
                 rr.str("");
             }
 
         for(int t=0;t<=*pIter;t++) {
-                std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
+                std::vector<OpenRAVE::dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
                 if (t<*pIter){
-    //                cout << "< t: " << t << " *pIter: " << *pIter << std::endl;
-    //                cout << "pF0: " << pFresults->operator [](t*3+0) << std::endl;
-    //                cout << "pF1: " << pFresults->operator [](t*3+1) << std::endl;
-    //                cout << "pF2: " << pFresults->operator [](t*3+2) << std::endl;
-
                     dEncRaw[0+4] = -1*(pFresults->operator [](t*3+0))*M_PI/180.0;  // simple
                     dEncRaw[1+4] = -1*(pFresults->operator [](t*3+1))*M_PI/180.0;  // simple
                     dEncRaw[3+4] = -1*(pFresults->operator [](t*3+2))*M_PI/180.0;  // simple
@@ -118,11 +136,6 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
 
                 }
                 else if (t==*pIter){
-    //                cout << "== t: " << t << " *pIter: " << *pIter << std::endl;
-    //                cout << "gp0: " << genPoints[0] << std::endl;
-    //                cout << "gp1: " << genPoints[1] << std::endl;
-    //                cout << "gp2: " << genPoints[2] << std::endl;
-
                     dEncRaw[0+4] = -genPoints[0]*M_PI/180.0;  // simple
                     dEncRaw[1+4] = -genPoints[1]*M_PI/180.0;  // simple
                     dEncRaw[3+4] = -genPoints[2]*M_PI/180.0;  // simple
@@ -132,9 +145,9 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
                 dEncRaw[4+4] = -45*M_PI/180.0;
                 probot->SetJointValues(dEncRaw);
                 pcontrol->SetDesired(dEncRaw); // This function "resets" physics
-                while(!pcontrol->IsDone()) {
-                    boost::this_thread::sleep(boost::posix_time::milliseconds(1));
-                }
+                //while(!pcontrol->IsDone()) {
+                //    boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+                //}
                 penv->StepSimulation(0.0001);  // StepSimulation must be given in seconds
                 T_base_object = _objPtr->GetTransform();
                 double T_base_object_x = T_base_object.trans.x;
@@ -145,8 +158,8 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
                 for(int i=0; i<(rows*cols); i++){
                         stringstream ss;
                         ss << "square" << i;
-                        Transform pos_square = _wall->GetLink(ss.str())->GetGeometry(0)->GetTransform();
-
+                        OpenRAVE::Transform pos_square = _wall->GetLink(ss.str())->GetGeometry(0)->GetTransform();
+                        //std::cout<<"POS SQUARE X Y Z--------------> "<<pos_square.trans.x<<pos_square.trans.y<<pos_square.trans.z<<std::endl;
                         double pos_square_x = pos_square.trans.x;
                         double pos_square_y = pos_square.trans.y;
                         double pos_square_z = pos_square.trans.z;
@@ -155,7 +168,7 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
                                       + pow(T_base_object_z-pos_square_z,2) );
 
                            if (dist < 0.13){
-                            _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
+                            _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(OpenRAVE::RaveVector<float>(0.0, 0.0, 1.0));
                             sqPainted[i]=1;
                             //std::cout<<"I have painted a happy little tree "<<std::endl;
                         }
@@ -225,6 +238,12 @@ void CgdaConstrainedPaintFitnessFunction::registerParameters(StateP state) {
 /************************************************************************/
 
 bool CgdaConstrainedPaintFitnessFunction::initialize(StateP state) {
+
+    chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::None),KDL::Frame(KDL::Vector(0.0,-0.338,(0.1932+0.305+0.3)))));
+
+    chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::RotY),KDL::Frame(KDL::Vector(0,0,0))));
+    chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::RotX),KDL::Frame(KDL::Vector(0,0,-0.32901))));
+    chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::RotY),KDL::Frame(KDL::Vector(0,0,-0.4692))));
 
 	voidP sptr = state->getRegistry()->getEntry("function"); // get parameter value
     stringstream msg;

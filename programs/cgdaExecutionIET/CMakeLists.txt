@@ -44,7 +44,7 @@ link_directories(${OpenRAVE_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS} ${XGNITIVE_LINK_
 if (folder_source)
   add_executable(${KEYWORD} ${folder_source} ${folder_header})
   #add_executable(evMono main.cpp CgdaExecutionIET.cpp CgdaFitnessFunction.cpp)
-  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${orocos_kdl_INCLUDE_DIRS} ${XGNITIVE_LIBRARIES} ${OpenCV_LIBS} ${OpenRAVE_LIBRARIES} ${OpenRAVE_CORE_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ecf)
+  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${orocos_kdl_LIBRARIES} ${XGNITIVE_LIBRARIES} ${OpenCV_LIBS} ${OpenRAVE_LIBRARIES} ${OpenRAVE_CORE_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ecf)
   install(TARGETS ${KEYWORD} DESTINATION bin)
 else (folder_source)
   message(FATAL_ERROR "No source code files found. Please add something")

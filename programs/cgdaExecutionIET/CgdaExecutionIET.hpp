@@ -13,6 +13,7 @@
 
 #include "AlgPSOInheritance.hpp"
 #include "AlgPSOFuzzy.hpp"
+#include "AlgConstrainedSST.hpp"
 
 #define DEFAULT_FILE_NAME "evMono_ecf_params.xml"
 

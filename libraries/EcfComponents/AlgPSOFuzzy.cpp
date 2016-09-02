@@ -1,3 +1,6 @@
+//Copyright: Universidad Carlos III de Madrid (C) 2016
+//Authors:raulfdzbis, jgvictores,  smorante
+
 #include "AlgPSOFuzzy.hpp"
 
 #include <iostream>

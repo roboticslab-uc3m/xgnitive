@@ -77,6 +77,10 @@ bool CgdaExecutionIET::init() {
            PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
            state->addAlgorithm(nalg2);
 
+           //ConstrainedSST
+           ConstrainedSSTP nalg3 = (ConstrainedSSTP) new ConstrainedSST;
+           state->addAlgorithm(nalg3);
+
            // set the evaluation operator
            //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
            //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
@@ -141,7 +145,12 @@ bool CgdaExecutionIET::init() {
            if (myfile1.is_open()){
                myfile1<<i<<" ";
                myfile1<<time<<" ";
-               myfile1<<evaluations<<" ";
+               if(const_evaluations==0){ //If we are not using the constrained version output normal
+                    myfile1<<evaluations<<" ";
+               }
+               else{
+                   myfile1<<const_evaluations<<" ";
+               }
                myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
            }          
 
@@ -180,7 +189,7 @@ bool CgdaExecutionIET::init() {
            //*******************************************************************************************//
            //                                      END                                                  //
            //*******************************************************************************************//
-           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations;
+           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
        }
 
        printf("-begin-\n");

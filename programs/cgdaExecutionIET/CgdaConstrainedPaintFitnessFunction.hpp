@@ -15,9 +15,11 @@
 #include <string>
 #include <valarray>     // std::valarray
 
+#include <kdl/chainfksolverpos_recursive.hpp>
+
 #include "DtwCgdaRecognition.hpp"
 
-using namespace OpenRAVE;
+#define GdL 3
 
 namespace teo
 {
@@ -25,13 +27,13 @@ namespace teo
 class CgdaConstrainedPaintFitnessFunction : public EvaluateOp {
 
   public:
-    void setPRobot(const RobotBasePtr& _probot) {
+    void setPRobot(const OpenRAVE::RobotBasePtr& _probot) {
         probot = _probot;
     }
-    void setPenv(const EnvironmentBasePtr& _penv){
+    void setPenv(const OpenRAVE::EnvironmentBasePtr& _penv){
         penv = _penv;
     }
-    void setPcontrol(const ControllerBasePtr& _pcontrol){
+    void setPcontrol(const OpenRAVE::ControllerBasePtr& _pcontrol){
         pcontrol = _pcontrol;
     }
     void setResults( vector<double>* _presults){
@@ -47,21 +49,26 @@ class CgdaConstrainedPaintFitnessFunction : public EvaluateOp {
         const_evaluations=_pconst_evaluations;
     }
 
-  public:
+    void trajectoryExecution(int NumberPoints, vector<double> result_trajectory); //TE
+
+  private:
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
-    void trajectoryExecution(int NumberPoints, vector<double> result_trajectory); //TE
-    RobotBasePtr probot;
-    EnvironmentBasePtr penv;
-    ControllerBasePtr pcontrol;
-    KinBodyPtr _objPtr;
-    KinBodyPtr _wall;
+    OpenRAVE::RobotBasePtr probot;
+    OpenRAVE::EnvironmentBasePtr penv;
+    OpenRAVE::ControllerBasePtr pcontrol;
+    OpenRAVE::KinBodyPtr _objPtr;
+    OpenRAVE::KinBodyPtr _wall;
     vector<double>* pFresults;
     unsigned int* pIter;
-    Transform T_base_object;
+    OpenRAVE::Transform T_base_object;
     int* const_evaluations;
+
+    /** The chain. **/
+    KDL::Chain chain;
+
 };
 
 typedef boost::shared_ptr<CgdaConstrainedPaintFitnessFunction> CgdaConstrainedPaintFitnessFunctionP;
