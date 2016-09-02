@@ -99,15 +99,15 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
     // x: FK: 0 OR: 0.00630739 | y: FK: -0.3469 OR: -0.340613 | z: FK: -0.220306 OR: -2.43642e-114
 
     //region
-    float xl=0.3;
-    float xu=0.7;
-    float yl=-1;
-    float yu=-0;
-    float zl=0.3;
-    float zu=1.1;
+    float xl=0.25;
+    float xu=0.75;
+    float yl=-1.05;
+    float yu=0.5;
+    float zl=0.25;
+    float zu=1.15;
 
     //if not in the allowed region
-    if(!(((kf.p.x()>xl) && (kf.p.x()<xu)) && ((kf.p.y()>yl) && (kf.p.y()<yu)) && ((kf.p.z()>zl) && (kf.p.z()<zu)))){
+    if(1==2){//!(((kf.p.x()>xl) && (kf.p.x()<xu)) && ((kf.p.y()>yl) && (kf.p.y()<yu)) && ((kf.p.z()>zl) && (kf.p.z()<zu)))){
         std::cout<<"***************************************SPACE LIMITED********************************"<<std::endl;
         return 10000;
     }

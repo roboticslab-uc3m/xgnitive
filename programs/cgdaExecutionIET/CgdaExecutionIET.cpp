@@ -40,7 +40,8 @@ bool CgdaExecutionIET::init() {
     std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
     probot = robots.at(0);
 
-    std::cin.get();
+    //Uncomment for pause before start
+    //std::cin.get();
 
     pcontrol = RaveCreateController(penv,"idealcontroller");
     // Create the controllers, make sure to lock environment! (prevents changes)
@@ -136,7 +137,7 @@ bool CgdaExecutionIET::init() {
            evaluations+=state->getEvaluations();
            time+=state->getElapsedTime();
 
-           std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
+           std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
            std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<time <<std::endl;
            //IndividualP bestParticle = selBestOp->select( *deme );
 
@@ -179,10 +180,10 @@ bool CgdaExecutionIET::init() {
            }
 
            //This following line is only for the execution of the result trajectory of the paint task
-           if(i==(numberOfPoints-1)){
-                //std::cout<<"LETS EXECUTE"<<std::endl;
-                functionMinEvalOp->trajectoryExecution(numberOfPoints, results);
-           }
+//           if(i==(numberOfPoints-1)){
+//                //std::cout<<"LETS EXECUTE"<<std::endl;
+//                functionMinEvalOp->trajectoryExecution(numberOfPoints, results);
+//           }
            //*******************************************************************************************//
 
 
