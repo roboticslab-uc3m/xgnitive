@@ -80,18 +80,28 @@ bool ConstrainedSST::advanceGeneration(StateP state, DemeP deme)
         std::vector< double > &positions_new=flp->realValue;
 
         //Calculate angular velocity between generations
-        std::vector<double> velocity;
-        velocity.push_back(0);
-        velocity.push_back(0);
+        std::vector<double> velocity_0, velocity_1;
+        //velocity.push_back(0);
+        //velocity.push_back(0);
         for( uint j = 0; j < positions_0.size(); j++ ) {
 
-            velocity[0] += abs(positions_new[j]-positions_0[j]);
-            velocity[1] += abs(positions_new[j]-positions_1[j]);
+            //velocity[0] += abs(positions_new[j]-positions_0[j]);
+            //velocity[1] += abs(positions_new[j]-positions_1[j]);
+            velocity_0.push_back(abs(positions_new[j]-positions_0[j]));
+            velocity_1.push_back(abs(positions_new[j]-positions_1[j]));
+            std::cout<<"Velocidad  - "<<velocity_0[j]<<std::endl;
+
         }
 
-        std::cout<<"VELOCIDAD:::"<< velocity[0]<<" "<< velocity[1]<<" " <<std::endl;
+        //std::cout<<"VELOCIDAD:::"<< velocity[0]<<" "<< velocity[1]<<" " <<std::endl;
 
-        if(velocity[0]<90||velocity[1]<90){
+//        if(velocity[0]<120||velocity[1]<120){
+//            // create new fitness
+//            evaluate(worst);
+//            ECF_LOG(state, 5, "New individual: " + worst->toString());
+//        }
+
+        if((velocity_0[0]<30 && velocity_0[1]<30 && velocity_0[2]<30) || (velocity_1[0]<30 && velocity_1[1]<30 && velocity_1[2]<30)){
             // create new fitness
             evaluate(worst);
             ECF_LOG(state, 5, "New individual: " + worst->toString());
