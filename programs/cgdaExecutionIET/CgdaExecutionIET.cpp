@@ -30,8 +30,8 @@ bool CgdaExecutionIET::init() {
     RaveInitialize(true); // start openrave core
     penv = RaveCreateEnvironment(); // create the main environment
     RaveSetDebugLevel(Level_Debug);
-    string viewername = "qtcoin";
-    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
+    //string viewername = "qtcoin";
+    //boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
     string scenefilename = "../../programs/models/teo_cgda_iros.env.xml";
     penv->Load(scenefilename); // load the scene
     //-- Get Robot 0
