@@ -22,8 +22,8 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 
 /************************************************************************/
 
-int numberOfPoints=17;
-//int numberOfPoints=9;
+//int numberOfPoints=17;
+int numberOfPoints=9;
 double time=0;
 double evaluations=0;
 bool CgdaExecutionIET::init() {
@@ -85,7 +85,9 @@ bool CgdaExecutionIET::init() {
            // set the evaluation operator
            //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
            //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
-           CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
+           //Constrained Cost functions
+           //CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
+           CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
            functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
 
            functionMinEvalOp->setPRobot(probot);
@@ -191,6 +193,11 @@ bool CgdaExecutionIET::init() {
            //                                      END                                                  //
            //*******************************************************************************************//
            std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
+           nalg1.reset();
+           nalg2.reset();
+           nalg3.reset();
+           state.reset();
+           delete functionMinEvalOp;
        }
 
        printf("-begin-\n");

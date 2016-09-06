@@ -9,6 +9,7 @@
 #include "CgdaPaintFitnessFunction.hpp"
 #include "CgdaWaxFitnessFunction.hpp"
 #include "CgdaConstrainedPaintFitnessFunction.hpp"
+#include "CgdaConstrainedWaxFitnessFunction.hpp"
 
 
 #include "AlgPSOInheritance.hpp"

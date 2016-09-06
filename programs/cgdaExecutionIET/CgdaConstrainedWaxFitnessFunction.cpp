@@ -26,19 +26,18 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
     std::cout << "x: FK: " << kf.p.x() << " | ";
     std::cout << "y: FK: " << kf.p.y() << " | ";
     std::cout << "z: FK: " << kf.p.z() << std::endl;
-
     // x: FK: 0 OR: 0.00630739 | y: FK: -0.3469 OR: -0.340613 | z: FK: -0.220306 OR: -2.43642e-114
 
-    //region            //Wall Coord.   //+-0.01(++Adjusted) //+-0.1(Adjusted) //+-0.2 (intermediate) //+-0.3 (large) //+-0.05 (Adjusted+)
-    float xl=0.3;      //0.6            0.59                0.5               0.4                    0.3             0.55
-    float xu=0.9;      //0.6            0.61                0.7               0.8                    0.9             0.65
-    float yl=-1.1;     //-0.8          -0.81               -0.9               -1                     -1.1            -0.85
-    float yu=0.1;     //-0.2          -0.19               -0.1               0                      0.1             -0.15
-    float zl=0;      //0.32           0.31                0.2               0.1                    0               0.25
-    float zu=1.2;      //0.92           0.93                1                 1.1                    1.2             0.95
+    //region (mm)            //Wax Coord.   //+-0.01(++Adjusted) //+-0.1(Adjusted) //+-0.2 (intermediate) //+-0.3 (large) //+-0.05 (Adjusted+)
+    float xl=35;            //235.19                                               35
+    float xu=663;            //463.08                                              663
+    float yl=-820;           //-620.8                                              -820
+    float yu=-235;            //-435.33                                             -235
+    float zl=92;              //292.91                                              92
+    float zu=506;            //306.88                                              506
 
     //if not in the allowed region
-    if(!(((kf.p.x()>xl) && (kf.p.x()<xu)) && ((kf.p.y()>yl) && (kf.p.y()<yu)) && ((kf.p.z()>zl) && (kf.p.z()<zu)))){
+    if(!(((kf.p.x()*1000>xl) && (kf.p.x()*1000<xu)) && ((kf.p.y()*1000>yl) && (kf.p.y()*1000<yu)) && ((kf.p.z()*1000>zl) && (kf.p.z()*1000<zu)))){
         std::cout<<"***************************************SPACE LIMITED********************************"<<std::endl;
         return 10000;
     }
@@ -63,11 +62,6 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
         for(int t=0;t<=*pIter;t++) {
                 std::vector<OpenRAVE::dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
                 if (t<*pIter){
-    //                cout << "< t: " << t << " *pIter: " << *pIter << std::endl;
-    //                cout << "pF0: " << pFresults->operator [](t*3+0) << std::endl;
-    //                cout << "pF1: " << pFresults->operator [](t*3+1) << std::endl;
-    //                cout << "pF2: " << pFresults->operator [](t*3+2) << std::endl;
-
                     dEncRaw[0+4] = -1*(pFresults->operator [](t*3+0))*M_PI/180.0;  // simple
                     dEncRaw[1+4] = -1*(pFresults->operator [](t*3+1))*M_PI/180.0;  // simple
                     dEncRaw[3+4] = -1*(pFresults->operator [](t*3+2))*M_PI/180.0;  // simple
@@ -75,11 +69,6 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
 
                 }
                 else if (t==*pIter){
-    //                cout << "== t: " << t << " *pIter: " << *pIter << std::endl;
-    //                cout << "gp0: " << genPoints[0] << std::endl;
-    //                cout << "gp1: " << genPoints[1] << std::endl;
-    //                cout << "gp2: " << genPoints[2] << std::endl;
-
                     dEncRaw[0+4] = -genPoints[0]*M_PI/180.0;  // simple
                     dEncRaw[1+4] = -genPoints[1]*M_PI/180.0;  // simple
                     dEncRaw[3+4] = -genPoints[2]*M_PI/180.0;  // simple
@@ -97,11 +86,6 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
                 double T_base_object_x = T_base_object.trans.x*1000.0; //pass to mm
                 double T_base_object_y = T_base_object.trans.y*1000.0; //pass to mm
                 double T_base_object_z = T_base_object.trans.z*1000.0; //pass to mm
-
-    //            target[t][0]=T_base_kinect.trans.x*1000.0 - target[t][0];
-    //            target[t][1]=T_base_kinect.trans.y*1000.0 - target[t][1];
-    //            target[t][2]=T_base_kinect.trans.z*1000.0 - target[t][2];
-
 
                 attempTrajectory.push_back({T_base_object_x,T_base_object_y,T_base_object_z});
 
@@ -151,6 +135,7 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
 
         double fit;
         featureTrajectories->compare(attempTrajectory,fit);
+        *const_evaluations=*const_evaluations+1;
 
         cout << std::endl << " fit: " << fit << " ";
 

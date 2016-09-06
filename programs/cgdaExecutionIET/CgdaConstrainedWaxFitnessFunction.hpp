@@ -45,6 +45,10 @@ class CgdaConstrainedWaxFitnessFunction : public EvaluateOp {
         pIter = _piter;
     }
 
+    void setEvaluations(int* _pconst_evaluations){
+        const_evaluations=_pconst_evaluations;
+    }
+
   public:
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
@@ -57,6 +61,7 @@ class CgdaConstrainedWaxFitnessFunction : public EvaluateOp {
     vector<double>* pFresults;
     unsigned int* pIter;
     OpenRAVE::Transform T_base_object;
+    int* const_evaluations;
 
     /** The chain. **/
     KDL::Chain chain;
