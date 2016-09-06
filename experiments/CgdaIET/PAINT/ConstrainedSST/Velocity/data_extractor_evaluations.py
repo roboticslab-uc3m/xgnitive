@@ -1,4 +1,4 @@
-f = open('20-TrajectoryterationsvsEvaluations.txt', 'r')
+f = open('60-TrajectoryterationsvsEvaluations.txt', 'r')
 data_string=""
 data_array=[]
 min_value_ev=10000
