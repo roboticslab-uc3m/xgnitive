@@ -29,12 +29,12 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
     // x: FK: 0 OR: 0.00630739 | y: FK: -0.3469 OR: -0.340613 | z: FK: -0.220306 OR: -2.43642e-114
 
     //region (mm)            //Wax Coord.   //+-0.01(++Adjusted) //+-0.1(Adjusted) //+-0.2 (intermediate) //+-0.3 (large) //+-0.05 (Adjusted+)
-    float xl=135;            //235.19                             135                  35
-    float xu=563;            //463.08                            563                  663
-    float yl=-720;           //-620.8                            -720                  -820
-    float yu=-335;            //-435.33                          -335                  -235
-    float zl=192;              //292.91                           192                   92
-    float zu=406;            //306.88                            406                  506
+    float xl=-65;            //235.19                             135                  35                 -65
+    float xu=773;            //463.08                            563                  663                  773
+    float yl=-920;           //-620.8                            -720                  -820                -920
+    float yu=-135;            //-435.33                          -335                  -235                -135
+    float zl=-8;              //292.91                           192                   92                 -8
+    float zu=606;            //306.88                            406                  506                  606
 
     //if not in the allowed region
     if(!(((kf.p.x()*1000>xl) && (kf.p.x()*1000<xu)) && ((kf.p.y()*1000>yl) && (kf.p.y()*1000<yu)) && ((kf.p.z()*1000>zl) && (kf.p.z()*1000<zu)))){
