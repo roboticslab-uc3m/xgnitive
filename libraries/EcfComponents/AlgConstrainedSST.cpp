@@ -89,22 +89,22 @@ bool ConstrainedSST::advanceGeneration(StateP state, DemeP deme)
             velocity[1] += abs(positions_new[j]-positions_1[j]);
             //velocity_0.push_back(abs(positions_new[j]-positions_0[j]));
             //velocity_1.push_back(abs(positions_new[j]-positions_1[j]));
-            std::cout<<"Velocidad  - "<<velocity[j]<<std::endl;
+            //std::cout<<"Velocidad  - "<<velocity[j]<<std::endl;
 
         }
 
-        //std::cout<<"VELOCIDAD:::"<< velocity[0]<<" "<< velocity[1]<<" " <<std::endl;
+        std::cout<<"VELOCIDAD:::"<< velocity[0]<<" "<< velocity[1]<<" " <<std::endl;
 
-//        if(velocity[0]<10000||velocity[1]<10000){
+        if(velocity[0]<120||velocity[1]<120){
             // create new fitness
             evaluate(worst);
             ECF_LOG(state, 5, "New individual: " + worst->toString());
-//        }
-//        else{
-//            std::cout<<"***************************************VELOCITY LIMITED********************************"<<std::endl;
-//            worst->fitness->setValue(10000);
-//            ECF_LOG(state, 5, "New individual: " + worst->toString());
-//        }
+        }
+        else{
+            std::cout<<"***************************************VELOCITY LIMITED********************************"<<std::endl;
+            worst->fitness->setValue(10000);
+            ECF_LOG(state, 5, "New individual: " + worst->toString());
+        }
 
         //std::cout<<"FITNESS WORST"<<worst->fitness->getValue()<<std::endl;
 	}

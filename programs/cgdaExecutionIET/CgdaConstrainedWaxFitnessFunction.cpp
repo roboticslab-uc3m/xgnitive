@@ -29,15 +29,15 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
     // x: FK: 0 OR: 0.00630739 | y: FK: -0.3469 OR: -0.340613 | z: FK: -0.220306 OR: -2.43642e-114
 
     //region (mm)            //Wax Coord.   //+-0.01(++Adjusted) //+-0.1(Adjusted) //+-0.2 (intermediate) //+-0.3 (large) //+-0.05 (Adjusted+)
-    float xl=135;            //235.19                             135                  35
-    float xu=563;            //463.08                            563                  663
-    float yl=-720;           //-620.8                            -720                  -820
-    float yu=-335;            //-435.33                          -335                  -235
-    float zl=192;              //292.91                           192                   92
-    float zu=406;            //306.88                            406                  506
+    float xl=225;            //235.19       225                     135                  35
+    float xu=473;            //463.08       473                     563                  663
+    float yl=-630;           //-620.8       -630                    -720                 -820
+    float yu=-425;           //-435.33     -425                    -335                 -235
+    float zl=282;            //292.91     282                     192                  92
+    float zu=316;            //306.88       316                     406                  506
 
     //if not in the allowed region
-    if(!(((kf.p.x()*1000>xl) && (kf.p.x()*1000<xu)) && ((kf.p.y()*1000>yl) && (kf.p.y()*1000<yu)) && ((kf.p.z()*1000>zl) && (kf.p.z()*1000<zu)))){
+    if(1==2){//!(((kf.p.x()*1000>xl) && (kf.p.x()*1000<xu)) && ((kf.p.y()*1000>yl) && (kf.p.y()*1000<yu)) && ((kf.p.z()*1000>zl) && (kf.p.z()*1000<zu)))){
         std::cout<<"***************************************SPACE LIMITED********************************"<<std::endl;
         return 10000;
     }

@@ -1,9 +1,9 @@
-f = open('60-TrajectoryterationsvsEvaluations.txt', 'r')
+f = open('120-TrajectoryterationsvsEvaluations.txt', 'r')
 data_string=""
 data_array=[]
 min_value_ev=10000
 for line in f:
-    if line.startswith('16'):
+    if line.startswith('8'):
 	    for x in line.split():
 	        data_array.append(float(x))
 
