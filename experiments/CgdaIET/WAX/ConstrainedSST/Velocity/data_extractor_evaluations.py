@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-f = open('80-TrajectoryterationsvsEvaluations.txt', 'r')
-=======
 f = open('20-TrajectoryterationsvsEvaluations.txt', 'r')
->>>>>>> 3290490144497024a582d60da1cb9b9df25e484e
 data_string=""
 data_array=[]
 min_value_ev=10000
