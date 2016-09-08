@@ -95,7 +95,11 @@ bool ConstrainedSST::advanceGeneration(StateP state, DemeP deme)
 
         std::cout<<"VELOCIDAD:::"<< velocity[0]<<" "<< velocity[1]<<" " <<std::endl;
 
+<<<<<<< HEAD
         if(velocity[0]<60||velocity[1]<60){
+=======
+        if(velocity[0]<20||velocity[1]<20){
+>>>>>>> 3290490144497024a582d60da1cb9b9df25e484e
             // create new fitness
             evaluate(worst);
             ECF_LOG(state, 5, "New individual: " + worst->toString());
