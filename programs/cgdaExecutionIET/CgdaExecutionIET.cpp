@@ -148,12 +148,12 @@ bool CgdaExecutionIET::init() {
            if (myfile1.is_open()){
                myfile1<<i<<" ";
                myfile1<<time<<" ";
-               if(const_evaluations==0){ //If we are not using the constrained version output normal
-                    myfile1<<evaluations<<" ";
-               }
-               else{
+               //if(const_evaluations==0){ //If we are not using the constrained version output normal
+               //     myfile1<<evaluations<<" ";
+               //}
+               //else{
                    myfile1<<const_evaluations<<" ";
-               }
+               //}
                myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
            }          
 

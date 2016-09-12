@@ -99,12 +99,12 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
     // x: FK: 0 OR: 0.00630739 | y: FK: -0.3469 OR: -0.340613 | z: FK: -0.220306 OR: -2.43642e-114
 
     //region            //Wall Coord.   //+-0.01(++Adjusted) //+-0.1(Adjusted) //+-0.2 (intermediate) //+-0.3 (large) //+-0.05 (Adjusted+)
-    float xl=0.3;      //0.6            0.59                0.5               0.4                    0.3             0.55
-    float xu=0.9;      //0.6            0.61                0.7               0.8                    0.9             0.65
-    float yl=-1.1;     //-0.8          -0.81               -0.9               -1                     -1.1            -0.85
-    float yu=0.1;     //-0.2          -0.19               -0.1               0                      0.1             -0.15
-    float zl=0;      //0.32           0.31                0.2               0.1                    0               0.25
-    float zu=1.2;      //0.92           0.93                1                 1.1                    1.2             0.95
+    float xl=0.55;      //0.6            0.59                0.5               0.4                    0.3             0.55
+    float xu=0.65;      //0.6            0.61                0.7               0.8                    0.9             0.65
+    float yl=-0.85;     //-0.8          -0.81               -0.9               -1                     -1.1            -0.85
+    float yu=-0.15;     //-0.2          -0.19               -0.1               0                      0.1             -0.15
+    float zl=0.25;      //0.32           0.31                0.2               0.1                    0               0.25
+    float zu=0.95;      //0.92           0.93                1                 1.1                    1.2             0.95
 
     //if not in the allowed region
     if(1==2){//!(((kf.p.x()>xl) && (kf.p.x()<xu)) && ((kf.p.y()>yl) && (kf.p.y()<yu)) && ((kf.p.z()>zl) && (kf.p.z()<zu)))){
