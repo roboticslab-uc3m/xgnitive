@@ -1,14 +1,14 @@
 time=0
 while time < 17:
-	f = open('Adjusted+-TrajectoryterationsvsEvaluations.txt', 'r')
+	f = open('Large-TrajectoryterationsvsEvaluations.txt', 'r')
 	data_string=""
 	data_array=[]
 	min_value_ev=10000
 	ev_mean=0
 	fit_mean=0
 	for line in f:
-	    #if line.startswith(str(time)):
-	    if line.startswith('1 '):
+	    if line.startswith(str(time)):
+	    #if line.startswith('1 '):
 		    for x in line.split():
 			data_array.append(float(x))
 
@@ -22,7 +22,10 @@ while time < 17:
 	    ev+=data_array[i-1]
 	    if data_array[i-1]<min_value_ev:
 		min_value_ev=data_array[i-1]
-	    fit+=data_array[i]
+	    if data_array[i]>5000:	    
+		fit+=843
+	    else: 
+		fit+=data_array[i]
 	    j+=1
 	    i+=4
 	print j
