@@ -29,12 +29,12 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
     // x: FK: 0 OR: 0.00630739 | y: FK: -0.3469 OR: -0.340613 | z: FK: -0.220306 OR: -2.43642e-114
 
     //region (mm)            //Wax Coord.   //+-0.01(++Adjusted) //+-0.1(Adjusted) //+-0.2 (intermediate) //+-0.3 (large) //+-0.05 (Adjusted+)
-    float xl=185;            //235.19       225                      135                  35                 -65              185
-    float xu=513;            //463.08       473                     563                  663                  773             513
-    float yl=-670;           //-620.8       -630                     -720                  -820                -920            -670
-    float yu=-385;            //-435.33     -425                     -335                  -235                -135            -385
-    float zl=-242;              //292.91    302                       192                   92                 -8             -242
-    float zu=356;            //306.88       296                     406                  506                  606             356
+    float xl=35;            //235.19       225                      135                  35                 -65              185
+    float xu=663;            //463.08       473                     563                  663                  773             513
+    float yl=-820;           //-620.8       -630                     -720                  -820                -920            -670
+    float yu=-235;            //-435.33     -425                     -335                  -235                -135            -385
+    float zl=92;              //292.91    302                       192                   92                 -8             -242
+    float zu=506;            //306.88       296                     406                  506                  606             356
 
     //if not in the allowed region
     if(!(((kf.p.x()*1000>xl) && (kf.p.x()*1000<xu)) && ((kf.p.y()*1000>yl) && (kf.p.y()*1000<yu)) && ((kf.p.z()*1000>zl) && (kf.p.z()*1000<zu)))){
