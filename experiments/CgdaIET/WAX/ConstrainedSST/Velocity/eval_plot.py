@@ -10,16 +10,16 @@ Low1=plt.plotfile('data-5.txt', cols=(0, 1), delimiter=' ',
                      names=('Time interval', 'Number of evaluations'), marker='s', label='Articular velocity (deg/iter) = 5')
 
 Low2=plt.plotfile('data-10.txt', cols=(0, 1), delimiter=' ', 
-                     names=('Time interval', 'Number of evaluations'), marker='+', newfig=False, label='" " = 0.05')
+                     names=('Time interval', 'Number of evaluations'), marker='+', newfig=False, label='" " = 10')
 
 Low3=plt.plotfile('data-20.txt', cols=(0, 1), delimiter=' ', 
-                     names=('Time interval', 'Number of evaluations'), marker='o', newfig=False, label='" " = 0.1')
+                     names=('Time interval', 'Number of evaluations'), marker='o', newfig=False, label='" " = 20')
 
 Mid=plt.plotfile('data-60.txt', cols=(0, 1), delimiter=' ', 
-                     names=('Time interval', 'Number of evaluations'), marker='^', newfig=False, label='" " = 0.2')
+                     names=('Time interval', 'Number of evaluations'), marker='^', newfig=False, label='" " = 60')
 
 High=plt.plotfile('data-80.txt', cols=(0, 1), delimiter=' ', 
-                     names=('Time interval', 'Number of evaluations'), marker='x', newfig=False, label='" " = 0.3')
+                     names=('Time interval', 'Number of evaluations'), marker='x', newfig=False, label='" " = 80')
  
 
 

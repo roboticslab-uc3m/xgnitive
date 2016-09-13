@@ -23,7 +23,8 @@ Large=plt.plotfile('data-Large.txt', cols=(0, 1), delimiter=' ',
  
 
 
-plt.legend(loc=2)
+leg=plt.legend(fancybox=True,loc=2)
+leg.get_frame().set_alpha(0.5)
 # plt.title('Evaluations vs time interval')
 
 #plt.plotfile('AFFG-Ev-paint.txt', 'PSO-Ev-paint.txt', 'PSOFI-Ev-paint.txt', 'SST-Ev-paint.txt', subplots=False, delimiter=' ', newfig=False, names=('Time interval', 'Wall Painted (%)', 'Number of evaluations'), marker='o')
