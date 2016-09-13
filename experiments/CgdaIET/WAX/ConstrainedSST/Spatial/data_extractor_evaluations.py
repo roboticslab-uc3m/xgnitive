@@ -1,6 +1,6 @@
 time=0
 while time < 9:
-	f = open('Adjusted++-TrajectoryterationsvsEvaluations.txt', 'r')
+	f = open('Adjusted2-TrajectoryterationsvsEvaluations.txt', 'r')
 	data_string=""
 	data_array=[]
 	min_value_ev=10000
