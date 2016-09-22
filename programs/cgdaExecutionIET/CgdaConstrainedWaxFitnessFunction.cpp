@@ -37,9 +37,38 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
     float zu=506;            //306.88       296                     406                  506                  606             356
 
     //if not in the allowed region
-    if(!(((kf.p.x()*1000>xl) && (kf.p.x()*1000<xu)) && ((kf.p.y()*1000>yl) && (kf.p.y()*1000<yu)) && ((kf.p.z()*1000>zl) && (kf.p.z()*1000<zu)))){
-        std::cout<<"***************************************SPACE LIMITED********************************"<<std::endl;
-        return 10000;
+    if(1==2){//!(((kf.p.x()*1000>xl) && (kf.p.x()*1000<xu)) && ((kf.p.y()*1000>yl) && (kf.p.y()*1000<yu)) && ((kf.p.z()*1000>zl) && (kf.p.z()*1000<zu)))){
+        //std::cout<<"***************************************SPACE LIMITED********************************"<<std::endl;
+        return 100000;
+
+        //Collision checker test
+//        //***************************************************************************************
+//        std::vector<OpenRAVE::dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
+
+//        std::cout<<"TOY AQUI"<<std::endl;
+
+//        dEncRaw[0+4] = -1*(0)*M_PI/180.0;  // simple
+//        dEncRaw[1+4] = -1*(-2)*M_PI/180.0;  // simple
+//        dEncRaw[3+4] = -1*(0)*M_PI/180.0;  // simple
+//        dEncRaw[4+4] = -45*M_PI/180.0;
+//        probot->SetJointValues(dEncRaw);
+//        pcontrol->SetDesired(dEncRaw); // This function "resets" physics
+//        while(!pcontrol->IsDone()) {
+//            boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+//        }
+
+//        penv->StepSimulation(0.0001);  // StepSimulation must be given in seconds
+
+
+//        if (penv->CheckSelfCollision(probot)){
+//            std::cout<<"He autocolisionado!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
+//        }
+
+//        //***************************************************************************************
+
+
+
+
     }
 
     else{
@@ -90,6 +119,13 @@ double CgdaConstrainedWaxFitnessFunction::getCustomFitness(vector <double> genPo
                 attempTrajectory.push_back({T_base_object_x,T_base_object_y,T_base_object_z});
 
         } //cierre bucle trayectoria completa
+
+        if (penv->CheckSelfCollision(probot)){
+            std::cout<<"*******************************************************************************************************************************************************************************************"<<std::endl;
+            std::cout<<"He autocolisionado!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
+            std::cout<<"*******************************************************************************************************************************************************************************************"<<std::endl;
+            return 100000;
+        }
 
         std::ofstream myfile3;
         myfile3.open("X.txt", std::ios_base::app);

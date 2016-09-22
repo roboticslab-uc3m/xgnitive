@@ -30,15 +30,15 @@ bool CgdaExecutionIET::init() {
     RaveInitialize(true); // start openrave core
     penv = RaveCreateEnvironment(); // create the main environment
     RaveSetDebugLevel(Level_Debug);
-    //string viewername = "qtcoin";
-    //boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
+    string viewername = "qtcoin";
+    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
     string scenefilename = "../../programs/models/teo_cgda_iros.env.xml";
     penv->Load(scenefilename); // load the scene
     //-- Get Robot 0
     std::vector<RobotBasePtr> robots;
     penv->GetRobots(robots);
     std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
-    probot = robots.at(0);
+    probot = robots.at(0);    
 
     //Uncomment for pause before start
     //std::cin.get();
@@ -121,6 +121,7 @@ bool CgdaExecutionIET::init() {
 
 
            state->run();
+
 
            vector<IndividualP> bestInd;
            FloatingPoint::FloatingPoint* genBest;
