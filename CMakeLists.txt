@@ -19,7 +19,9 @@ option(ENABLE_EcfComponents "Choose if you want to compile ECFComponents" TRUE)
 
 ### options: cpp programs
 option(ENABLE_cgdaExecution "Choose if you want to compile CgdaExecution" TRUE)
-option(ENABLE_cgdaExecutionIET "Choose if you want to compile CgdaExecutionIET" TRUE)
+option(ENABLE_cgdaExecutionIETOpenrave "Choose if you want to compile cgdaExecutionIETOpenrave" TRUE)
+option(ENABLE_cgdaExecutionIETYarp "Choose if you want to compile cgdaCGDAExecutionIETYarp " TRUE)
+
 ### options: force default
 option(ENABLE_exampleExtraOption "Enable/disable option exampleExtraOption" TRUE)
 
