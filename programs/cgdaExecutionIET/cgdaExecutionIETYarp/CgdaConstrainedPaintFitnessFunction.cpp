@@ -57,7 +57,10 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
     double fit;
 
     //Aqui meter la condición de si está fuera del limite espacial impuesto
-
+    double kdlrespoints[3];
+    double* pkdlrespoints= kdlrespoints;
+    double kdlgenpoints[3];
+    double* pkdlgenpoints= kdlgenpoints;
     KDL::JntArray qInRad = KDL::JntArray(GdL);
     qInRad(0) = -genPoints[0]*M_PI/180.0;  // simple
     qInRad(1) = -genPoints[1]*M_PI/180.0;  // simple
@@ -70,7 +73,9 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
     std::cout << "y: FK: " << kf.p.y() << " | ";
     std::cout << "z: FK: " << kf.p.z() << std::endl;
 
-    // x: FK: 0 OR: 0.00630739 | y: FK: -0.3469 OR: -0.340613 | z: FK: -0.220306 OR: -2.43642e-114
+    kdlgenpoints[0]=kf.p.x();
+    kdlgenpoints[1]=kf.p.y();
+    kdlgenpoints[2]=kf.p.z();
 
     //region            //Wall Coord.   //+-0.01(++Adjusted) //+-0.1(Adjusted) //+-0.2 (intermediate) //+-0.3 (large) //+-0.05 (Adjusted+)
     float xl=0.55;      //0.6            0.59                0.5               0.4                    0.3             0.55
@@ -92,22 +97,52 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
         std::vector<double> percentage;
         int sqPainted [rows*cols] = { }; //setting number of changed square as cero
 
-        // reset square color (Visualization)
+        //***reset square color (Visualization)***
 
-        //
-        for(int t=0;t<=*pIter;t++) {                
+        //***                                  ***
+        for(int t=0;t<=*pIter;t++) {
 
             //***MOVE ROBOT***
+            if (t<*pIter){
+                //KDL vector
+                KDL::JntArray qInRad = KDL::JntArray(GdL);
+                qInRad(0) = -1*(presults->operator [](t*3+0))*M_PI/180.0;
+                qInRad(1) = -1*(presults->operator [](t*3+1))*M_PI/180.0;
+                qInRad(2) = -1*(presults->operator [](t*3+2))*M_PI/180.0;
+                KDL::Frame kf;
+                KDL::ChainFkSolverPos_recursive fksolver = KDL::ChainFkSolverPos_recursive(chain);
+                fksolver.JntToCart(qInRad,kf);
 
-            //pos->positionMove(1, -35);
-            //Create global array
-            //pos->positionMove();
+                std::cout << "x: FK: " << kf.p.x() << " | ";
+                std::cout << "y: FK: " << kf.p.y() << " | ";
+                std::cout << "z: FK: " << kf.p.z() << std::endl;
+                kdlrespoints[0]=kf.p.x();
+                kdlrespoints[1]=kf.p.y();
+                kdlrespoints[2]=kf.p.z();
+
+                pos->positionMove(pkdlrespoints);
+                printf("Delaying 10 seconds...\n");
+                yarp::os::Time::delay(10);
+
+            }
+            else if (t==*pIter){
+                std::cout<<pkdlgenpoints[0]<<std::endl;
+                std::cout<<pkdlgenpoints[1]<<std::endl;
+                std::cout<<pkdlgenpoints[2]<<std::endl;
+                pos->positionMove(pkdlgenpoints);
+                printf("Delaying 10 seconds...\n");
+                yarp::os::Time::delay(10);
+            }
+            else{cerr << "ERROR IN pIter or t" << std::endl;}
 
             //***END MOVE***
 
             //***GET POS***
+            double d;
+            enc->getEncoder(0,&d);
+            printf("test getEncoder(0) -> is at: %f\n", d);
 
-            //***END GET
+            //***END GET***
 
             //change square color in function of dist (end-effector,square)
             for(int i=0; i<(rows*cols); i++){

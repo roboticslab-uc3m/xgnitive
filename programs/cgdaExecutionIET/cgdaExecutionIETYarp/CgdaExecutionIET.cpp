@@ -53,28 +53,28 @@ bool CgdaExecutionIET::init() {
     //Pos mode
     pos->setPositionMode(); //use the object to set the device to position mode (as opposed to velocity mode)
 
-    printf("test positionMove(1,-35)\n");
-    pos->positionMove(1, -35);
+//    printf("test positionMove(1,-35)\n");
+//    pos->positionMove(1, -35);
 
-    printf("Delaying 5 seconds...\n");
-    yarp::os::Time::delay(5);
+//    printf("Delaying 5 seconds...\n");
+//    yarp::os::Time::delay(5);
 
     ok = dd.view(enc); // connect 'enc' interface to 'dd' device
-    double d;
-    enc->getEncoder(0,&d);
-    printf("test getEncoder(0) -> is at: %f\n", d);
+//    double d;
+//    enc->getEncoder(0,&d);
+//    printf("test getEncoder(0) -> is at: %f\n", d);
 
-    ok = dd.view(vel); // connect 'vel' interface to 'dd' device
+//    ok = dd.view(vel); // connect 'vel' interface to 'dd' device
 
-    //Velocity mode
-    vel->setVelocityMode(); //use the object to set the device to velocity mode (as opposed to position mode)
-    printf("test velocityMove(0,10)\n");
-    vel->velocityMove(0,10);
+//    //Velocity mode
+//    vel->setVelocityMode(); //use the object to set the device to velocity mode (as opposed to position mode)
+//    printf("test velocityMove(0,10)\n");
+//    vel->velocityMove(0,10);
 
-    printf("Delaying 5 seconds...\n");
-    yarp::os::Time::delay(5);
+//    printf("Delaying 5 seconds...\n");
+//    yarp::os::Time::delay(5);
 
-    dd.close();
+//    dd.close();
 
     vector< double > results;
     vector< double >* presults= &results;
@@ -108,6 +108,8 @@ bool CgdaExecutionIET::init() {
 
            //Pass to the CgdaFitness the simulation variables
            functionMinEvalOp->setResults(presults);
+           functionMinEvalOp->setPControl(pos);
+           functionMinEvalOp->setEControl(enc);
 
            state->setEvalOp(functionMinEvalOp);
 
