@@ -47,7 +47,7 @@ bool CgdaExecutionIET::init() {
         return false;
     }
     else
-        printf("[success] testAsibot acquired robot interface\n");
+        printf("[success] teoSim acquired robot interface\n");
 
 
     //Pos mode

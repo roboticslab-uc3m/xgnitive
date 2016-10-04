@@ -73,9 +73,9 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
     std::cout << "y: FK: " << kf.p.y() << " | ";
     std::cout << "z: FK: " << kf.p.z() << std::endl;
 
-    kdlgenpoints[0]=kf.p.x();
-    kdlgenpoints[1]=kf.p.y();
-    kdlgenpoints[2]=kf.p.z();
+    kdlgenpoints[0]=kf.p.x()*100;
+    kdlgenpoints[1]=kf.p.y()*100;
+    kdlgenpoints[2]=kf.p.z()*100;
 
     //region            //Wall Coord.   //+-0.01(++Adjusted) //+-0.1(Adjusted) //+-0.2 (intermediate) //+-0.3 (large) //+-0.05 (Adjusted+)
     float xl=0.55;      //0.6            0.59                0.5               0.4                    0.3             0.55
@@ -116,9 +116,9 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
                 std::cout << "x: FK: " << kf.p.x() << " | ";
                 std::cout << "y: FK: " << kf.p.y() << " | ";
                 std::cout << "z: FK: " << kf.p.z() << std::endl;
-                kdlrespoints[0]=kf.p.x();
-                kdlrespoints[1]=kf.p.y();
-                kdlrespoints[2]=kf.p.z();
+                kdlrespoints[0]=kf.p.x()*100;
+                kdlrespoints[1]=kf.p.y()*100;
+                kdlrespoints[2]=kf.p.z()*100;
 
                 pos->positionMove(pkdlrespoints);
                 printf("Delaying 10 seconds...\n");
@@ -137,15 +137,9 @@ double CgdaConstrainedPaintFitnessFunction::getCustomFitness(vector <double> gen
 
             //***END MOVE***
 
-            //***GET POS***
-            double d;
-            enc->getEncoder(0,&d);
-            printf("test getEncoder(0) -> is at: %f\n", d);
-
-            //***END GET***
-
             //change square color in function of dist (end-effector,square)
             for(int i=0; i<(rows*cols); i++){
+
                 stringstream ss;
                 ss << "square" << i;
                 sqPainted[i]=1;
