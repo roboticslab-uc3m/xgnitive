@@ -5,8 +5,6 @@ First install dependencies:
 ## ECF (1.4.1)
   
 ```bash
-#In a new terminal
-cd /tmp/
 wget https://sourceforge.net/projects/ecfproject/files/ECF_1.4.1/ECF_1.4.1.tar.gz/download -O ECF_1.4.1.tar.gz
 tar -zxvf ECF_1.4.1.tar.gz
 cd ECF_1.4.1
