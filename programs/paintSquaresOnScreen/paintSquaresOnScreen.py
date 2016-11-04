@@ -72,6 +72,8 @@ class DataProcessor(yarp.PortReader):
 	x=bin.get(0).asInt()
 	y=bin.get(1).asInt()
 	print("Pos rectangle")
+	print x
+	print y
 	pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
 	
         if not(ok):
