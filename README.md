@@ -6,4 +6,4 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
 ## Installation
 
-Installation instructions for installing from source can be found [here](http://robots.uc3m.es/dox-xgnitive/xgnitive_install_on_ubuntu_14_04.html).
+Installation instructions for installing from source can be found [here](https://github.com/roboticslab-uc3m/xgnitive/blob/develop/doc/xgnitive_install_ubuntu_14_04.md).
