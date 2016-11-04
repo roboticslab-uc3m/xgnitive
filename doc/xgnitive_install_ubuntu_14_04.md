@@ -11,8 +11,7 @@ wget https://sourceforge.net/projects/ecfproject/files/ECF_1.4.1/ECF_1.4.1.tar.g
 tar -zxvf ECF_1.4.1.tar.gz
 cd ECF_1.4.1
 wget http://ecf.zemris.fer.hr/ecf_install.sh
-chmod +x ecf_install.sh
-./ecf_install.sh
+sh ./ecf_install.sh
 ```
 
 ## CMake
