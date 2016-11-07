@@ -45,7 +45,7 @@ screenSize=pygame.display.Info()
 print(screenSize.current_w, screenSize.current_h)
 
 # Number of screens
-scn=2
+scn=1
 
 # Number of rectangles
 hrect=4 #Horizontal
@@ -69,7 +69,7 @@ class DataProcessor(yarp.PortReader):
 	#self.received=bin;
 	
 	#Lets paint the rectangle
-	x=bin.get(0).asInt()
+	x=(hrect-1-bin.get(0).asInt()) #The transfromation is done to change the x axis
 	y=bin.get(1).asInt()
 	print("Pos rectangle")
 	print x
