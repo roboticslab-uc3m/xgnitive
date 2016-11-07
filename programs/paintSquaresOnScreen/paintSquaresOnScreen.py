@@ -45,7 +45,7 @@ screenSize=pygame.display.Info()
 print(screenSize.current_w, screenSize.current_h)
 
 # Number of screens
-scn=1
+scn=2
 
 # Number of rectangles
 hrect=4 #Horizontal
@@ -74,7 +74,11 @@ class DataProcessor(yarp.PortReader):
 	print("Pos rectangle")
 	print x
 	print y
-	pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
+	if(x==-1 and y==4):
+	    print("IM CLEANING")
+	    screen.fill(WHITE)
+	else:
+	    pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
 	
         if not(ok):
             print("Failed to read input")
