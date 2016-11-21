@@ -23,10 +23,18 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
 ## References
 [1] J.G. Victores. Robot Imagination System. PhD Thesis. Supervisor: C. Balaguer, A. Jardon. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2014.
+
 [2] J.G. Victores, S. Morante, A. Jardon, C. Balaguer. Towards Robot Imagination Through Object Feature Inference. IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2013), ISBN: 2153-0858, pages: 5694 - 5699, IEEE. 2013-11-05, Tokyo, Japan. 2013.
+
 [3] J.G. Victores, S. Morante, A. Jardon, C. Balaguer. On Using Humanoid Robot Imagination to Perform the Shortened Token Test. IEEE RAS International Conference on Humanoid Robots (Humanoids 2014), pages: 172 - 172, IEEE. 2014-11-18, Madrid, Spain. 2014.
+
 [4] S. Morante. PhD Thesis. Continuous Goal-Directed Actions: Advanced in Robot Learning. Supervisor: C. Balaguer, J.G. Victores. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2016.
+
 [5] S. Morante, J.G. Victores, C. Balaguer. Automatic Demonstration and Feature Selection for Robot Learning. IEEE International Conference on Humanoid Robots, pages: 428 - 433, IEEE. 2015-11-03, Seoul, South Korea. 2015.
+
 [6] S. Morante, J.G. Victores, A. Jardon, C. Balaguer. Action Effect Generalization, Recognition and Execution through Continuous Goal-Directed Actions. IEEE International Conference on Robotics and Automation (ICRA 2014), pages: 1822 - 1827, IEEE. 2014-06-03, Hong Kong, China. 2014.
+
 [7] S. Morante, J.G. Victores, A. Jardon, C. Balaguer. On Using Guided Motor Primitives to Execute Continuous Goal-Directed Actions. IEEE international symposium on robot and human interactive communication (RO-MAN 2014). , ISBN: 978-1-4799-6763-6, pages: 613 - 618, IEEE. 2014-08-28, Edinburgh, Scotland. 2014.
+
 [8] S. Morante, J.G. Victores, A. Jardon, C. Balaguer. Humanoid Robot Imitation through Continuous Goal-Directed Actions : An Evolutionary Approach. Advanced Robotics, vol: 29, number: 5, pages: 303 - 314. 2015.
+
