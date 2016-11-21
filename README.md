@@ -4,8 +4,6 @@
 
 # XGNITIVE: A Flexible Cognitive Architecture for Assistive Robots
 
-[![xgnitive Homepage](https://img.shields.io/badge/xgnitive--orange.svg)](http://robots.uc3m.es/dox-xgnitive) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/xgnitive.svg?label=Latest Release)](https://github.com/roboticslab-uc3m/xgnitive/tags)
-
 The XGNITIVE repository currently hosts two main lines of research:
 
 - Robot Imagination System (RIS)
@@ -17,3 +15,5 @@ Installation instructions for installing from source can be found [here](https:/
 ## APIs
 
 Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
+
+<!-- [![xgnitive Homepage](https://img.shields.io/badge/xgnitive--orange.svg)](http://robots.uc3m.es/dox-xgnitive) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/xgnitive.svg?label=Latest Release)](https://github.com/roboticslab-uc3m/xgnitive/tags) -->
