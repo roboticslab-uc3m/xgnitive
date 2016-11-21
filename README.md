@@ -2,6 +2,8 @@
   <img src="doc/fig/xgnitive-400px_v2.png" alt="XGNITIVE logo" width="300"/>
 </p>
 
+# XGNITIVE: A Flexible Cognitive Architecture
+
 The XGNITIVE repository currently hosts two main lines of research:
 
 - Robot Imagination System (RIS)
