@@ -1,0 +1,18 @@
+<application>
+<name>iros2017 App</name>
+
+<!-- paintSquaresOnScreen -->
+
+    <module> <!-- Xgnitive -->
+        <name>paintSquaresOnScreen</name>
+        <node>/painted_wall</node>
+    </module>
+
+    <module> <!-- teoHead -->
+        <name>voxelOccupancyDetection</name>
+        <node>/painted_wall</node>
+    </module>
+
+
+</application>
+

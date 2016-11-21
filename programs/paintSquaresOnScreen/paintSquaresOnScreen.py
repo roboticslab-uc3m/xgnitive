@@ -1,11 +1,9 @@
 """
- Simple graphics demo
- 
- Sample Python/Pygame Programs
- Simpson College Computer Science
- http://programarcadegames.com/
- http://simpson.edu/computer-science/
- 
+paintSquaresOnScreen.py program
+
+Authors: Raul Fernandez-Fernandez; Juan G. Victores
+
+Universidad Carlos III de Madrid 
 """
  
 # Import a library of functions called 'pygame'
