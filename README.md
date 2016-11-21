@@ -30,7 +30,7 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
 [4] S. Morante. PhD Thesis. Continuous Goal-Directed Actions: Advanced in Robot Learning. Supervisor: C. Balaguer, J.G. Victores. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2016.
 
-[5] S. Morante, J.G. Victores, C. Balaguer. Automatic Demonstration and Feature Selection for Robot Learning. IEEE International Conference on Humanoid Robots, pages: 428 - 433, IEEE. 2015-11-03, Seoul, South Korea. 2015.
+[5] S. Morante, J.G. Victores, C. Balaguer. Automatic Demonstration and Feature Selection for Robot Learning. IEEE International Conference on Humanoid Robots (Humanoids 2015), pages: 428 - 433, IEEE. 2015-11-03, Seoul, South Korea. 2015.
 
 [6] S. Morante, J.G. Victores, A. Jardon, C. Balaguer. Action Effect Generalization, Recognition and Execution through Continuous Goal-Directed Actions. IEEE International Conference on Robotics and Automation (ICRA 2014), pages: 1822 - 1827, IEEE. 2014-06-03, Hong Kong, China. 2014.
 
