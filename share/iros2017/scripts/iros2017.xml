@@ -4,15 +4,19 @@
 <!-- paintSquaresOnScreen -->
 
     <module> <!-- Xgnitive -->
-        <name>paintSquaresOnScreen</name>
-        <node>/painted_wall</node>
+        <name>paintSquaresOnScreen.py</name>
+	<node>localhost</node>
     </module>
 
     <module> <!-- teoHead -->
         <name>voxelOccupancyDetection</name>
-        <node>/painted_wall</node>
+        <node>localhost</node>
     </module>
 
-
+    <connection>
+        <from>/voxelOccupancyDetection/state:o</from>
+        <to>/painted_wall</to>
+    </connection>
+        
 </application>
 
