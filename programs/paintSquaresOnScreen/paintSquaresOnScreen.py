@@ -1,10 +1,12 @@
-"""
+#!/usr/bin/env python
+
+'''
 paintSquaresOnScreen.py program
 
 Authors: Raul Fernandez-Fernandez; Juan G. Victores
 
 Universidad Carlos III de Madrid 
-"""
+'''
  
 # Import a library of functions called 'pygame'
 import pygame
