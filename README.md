@@ -26,7 +26,7 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
 <a id="3">[3]</a> S. Morante, J.G. Victores, A. Jardon, C. Balaguer. On Using Guided Motor Primitives to Execute Continuous Goal-Directed Actions. IEEE international symposium on robot and human interactive communication (RO-MAN 2014). , ISBN: 978-1-4799-6763-6, pages: 613 - 618, IEEE. 2014-08-28, Edinburgh, Scotland. 2014. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/morante2014on-preprint.pdf) [[slides]](http://www.slideshare.net/JuanGVictores/morante2014onpresentation) [[bib]](doc/bib/morante2014on.bib) [[DOI]](http://dx.doi.org/10.1109/ROMAN.2014.6926320)
 
-<a id="4">[4]</a> S. Morante, J.G. Victores, A. Jardon, C. Balaguer. Humanoid Robot Imitation through Continuous Goal-Directed Actions : An Evolutionary Approach. Advanced Robotics, vol: 29, number: 5, pages: 303 - 314. 2015. [[PDF]]() [[slides]]() [[bib]]() [[DOI]]()
+<a id="4">[4]</a> S. Morante, J.G. Victores, A. Jardon, C. Balaguer. Humanoid Robot Imitation through Continuous Goal-Directed Actions : An Evolutionary Approach. Advanced Robotics, vol: 29, number: 5, pages: 303 - 314. 2015. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/morante2015humanoid-preprint.pdf) [[bib]](doc/bib/morante2015humanoid.bib) [[DOI]](http://dx.doi.org/10.1080/01691864.2014.964314)
 
 <a id="5">[5]</a> S. Morante. PhD Thesis. Continuous Goal-Directed Actions: Advanced in Robot Learning. Supervisor: C. Balaguer, J.G. Victores. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2016.
 
