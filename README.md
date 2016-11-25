@@ -22,7 +22,7 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 <!-- [![xgnitive Homepage](https://img.shields.io/badge/xgnitive--orange.svg)](http://robots.uc3m.es/dox-xgnitive) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/xgnitive.svg?label=Latest Release)](https://github.com/roboticslab-uc3m/xgnitive/tags) -->
 
 ## References
-<a id="1">[1]</a> S. Morante, J.G. Victores, C. Balaguer. Automatic Demonstration and Feature Selection for Robot Learning. IEEE International Conference on Humanoid Robots (Humanoids 2015), pages: 428 - 433, IEEE. 2015-11-03, Seoul, South Korea. 2015.
+<a id="1">[1]</a> S. Morante, J.G. Victores, C. Balaguer. Automatic Demonstration and Feature Selection for Robot Learning. IEEE International Conference on Humanoid Robots (Humanoids 2015), pages: 428 - 433, IEEE. 2015-11-03, Seoul, South Korea. 2015. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/morante2015automatic-preprint.pdf)  [[slides]](www.slideshare.net/JuanGVictores/morante2015automaticpresentation) [[bib]](doc/bib/morante2015automatic.bib) [[DOI]](http://dx.doi.org/10.1109/HUMANOIDS.2015.7363569)
 
 <a id="2">[2]</a> S. Morante, J.G. Victores, A. Jardon, C. Balaguer. Action Effect Generalization, Recognition and Execution through Continuous Goal-Directed Actions. IEEE International Conference on Robotics and Automation (ICRA 2014), pages: 1822 - 1827, IEEE. 2014-06-03, Hong Kong, China. 2014.
 
