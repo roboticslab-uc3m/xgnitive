@@ -19,8 +19,6 @@ Installation instructions for installing from source can be found [here](https:/
 
 Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
-<!-- [![xgnitive Homepage](https://img.shields.io/badge/xgnitive--orange.svg)](http://robots.uc3m.es/dox-xgnitive) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/xgnitive.svg?label=Latest Release)](https://github.com/roboticslab-uc3m/xgnitive/tags) -->
-
 ## References
 <a id="1">[1]</a> S. Morante, J.G. Victores, C. Balaguer. Automatic Demonstration and Feature Selection for Robot Learning. IEEE International Conference on Humanoid Robots (Humanoids 2015), pages: 428 - 433, IEEE. 2015-11-03, Seoul, South Korea. 2015. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/morante2015automatic-preprint.pdf)  [[slides]](http://www.slideshare.net/JuanGVictores/morante2015automaticpresentation) [[bib]](doc/bib/morante2015automatic.bib) [[DOI]](http://dx.doi.org/10.1109/HUMANOIDS.2015.7363569)
 
@@ -37,3 +35,6 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 <a id="7">[7]</a>  J.G. Victores, S. Morante, A. Jardon, C. Balaguer. On Using Humanoid Robot Imagination to Perform the Shortened Token Test. IEEE RAS International Conference on Humanoid Robots (Humanoids 2014), pages: 172 - 172, IEEE. 2014-11-18, Madrid, Spain. 2014.
 
 <a id="8">[8]</a>  J.G. Victores. Robot Imagination System. PhD Thesis. Supervisor: C. Balaguer, A. Jardon. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2014.
+
+<!-- [![xgnitive Homepage](https://img.shields.io/badge/xgnitive--orange.svg)](http://robots.uc3m.es/dox-xgnitive) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/xgnitive.svg?label=Latest Release)](https://github.com/roboticslab-uc3m/xgnitive/tags) -->
+
