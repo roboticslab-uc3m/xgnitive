@@ -1,7 +1,7 @@
 /**
   * \mainpage XGNITIVE Doxygen generated documentation
 
-<a class=el href="https://github.com/roboticslab-uc3m/xgnitive">Click here to see xgnitive on GitHub.</a>
+<a class=el href="https://github.com/roboticslab-uc3m/xgnitive">Click here to see xgnitive on GitHub (includes installation guide).</a>
 
  \li \ref xgnitive_programs
  \li \ref xgnitive_libraries
