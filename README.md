@@ -32,7 +32,7 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
 <a id="6">[6]</a>  J.G. Victores, S. Morante, A. Jardon, C. Balaguer. Towards Robot Imagination Through Object Feature Inference. IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2013), ISBN: 2153-0858, pages: 5694 - 5699, IEEE. 2013-11-05, Tokyo, Japan. 2013. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/Victores%20et%20al.%20-%202013%20-%20Towards%20Robot%20Imagination%20Through%20Object%20Feature%20Inference.pdf) [[slides]](http://www.slideshare.net/JuanGVictores/victores2013towardspresentation) [[bib]](doc/bib/victores2013towards.bib) [[DOI]](http://dx.doi.org/10.1109/IROS.2013.6697181)
 
-<a id="7">[7]</a>  J.G. Victores, S. Morante, A. Jardon, C. Balaguer. On Using Humanoid Robot Imagination to Perform the Shortened Token Test. IEEE RAS International Conference on Humanoid Robots (Humanoids 2014), pages: 172 - 172, IEEE. 2014-11-18, Madrid, Spain. 2014.
+<a id="7">[7]</a>  J.G. Victores, S. Morante, A. Jardon, C. Balaguer. On Using Humanoid Robot Imagination to Perform the Shortened Token Test. IEEE RAS International Conference on Humanoid Robots (Humanoids 2014), pages: 172 - 172, IEEE. 2014-11-18, Madrid, Spain. 2014. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/victores2014on-preprint.pdf) [[video]](https://youtu.be/KFHFW9dJfzA) [[bib]](doc/bib/victores2014on.bib) [[DOI]](http://dx.doi.org/10.1109/HUMANOIDS.2014.7041355)
 
 <a id="8">[8]</a>  J.G. Victores. Robot Imagination System. PhD Thesis. Supervisor: C. Balaguer, A. Jardon. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2014.
 
