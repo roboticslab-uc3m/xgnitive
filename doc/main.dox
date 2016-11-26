@@ -1,0 +1,24 @@
+/**
+  * \mainpage XGNITIVE Doxygen generated documentation
+
+<a class=el href="https://github.com/roboticslab-uc3m/xgnitive">Click here to see xgnitive on GitHub (includes installation guide).</a>
+
+ \li \ref xgnitive_programs
+ \li \ref xgnitive_libraries
+ \li \ref xgnitive_applications
+ \li \ref xgnitive_examples
+
+Internal links of interest:
+ \li <a class=el href="http://robots.uc3m.es">roboticslab-uc3m development wiki</a>
+ \li <a class=el href="https://github.com/roboticslab-uc3m">roboticslab-uc3m on GitHub</a>
+
+External links (related projects):
+ \li <a class=el href="http://eris.liralab.it/yarpdoc/index.html">YARP doc</a> / <a class=el href="https://github.com/robotology/yarp">YARP github</a>
+ \li <a class=el href="http://eris.liralab.it/iCub/main/dox/html/index.html">iCub Software Repository Documentation</a>
+
+<hr>
+
+This page can be edited at xgnitive/doc/main.dox
+
+*/
+
