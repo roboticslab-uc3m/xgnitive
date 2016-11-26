@@ -1,7 +1,7 @@
 /**
-  * \mainpage xgnitive Repository documentation
+  * \mainpage XGNITIVE Doxygen generated documentation
 
-Welcome to the xgnitive Repository documentation for the manipulation and locomotion PCs. <a class=el href="http://robots.uc3m.es">Click here to return to Wiki.</a> <a class=el href="https://github.com/roboticslab-uc3m/xgnitive">Click here to see xgnitive on repo.</a>
+<a class=el href="https://github.com/roboticslab-uc3m/xgnitive">Click here to see xgnitive on GitHub.</a>
 
  \li \ref xgnitive_install_on_ubuntu_14_04
 
