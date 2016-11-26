@@ -34,7 +34,7 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
 <a id="7">[7]</a>  J.G. Victores, S. Morante, A. Jardon, C. Balaguer. On Using Humanoid Robot Imagination to Perform the Shortened Token Test. IEEE RAS International Conference on Humanoid Robots (Humanoids 2014), pages: 172 - 172, IEEE. 2014-11-18, Madrid, Spain. 2014. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/victores2014on-preprint.pdf) [[video]](https://youtu.be/KFHFW9dJfzA) [[bib]](doc/bib/victores2014on.bib) [[DOI]](http://dx.doi.org/10.1109/HUMANOIDS.2014.7041355)
 
-<a id="8">[8]</a>  J.G. Victores. Robot Imagination System. PhD Thesis. Supervisor: C. Balaguer, A. Jardon. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2014.
+<a id="8">[8]</a>  J.G. Victores. Robot Imagination System. PhD Thesis. Supervisor: C. Balaguer, A. Jardon. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2014. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/victores2014thesis.pdf) [[slides]](http://www.slideshare.net/JuanGVictores/victores2014thesispresentation) [[bib]](doc/bib/victores2014phd.bib) [[URL]](http://e-archivo.uc3m.es/handle/10016/19834)
 
 <!-- [![xgnitive Homepage](https://img.shields.io/badge/xgnitive--orange.svg)](http://robots.uc3m.es/dox-xgnitive) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/xgnitive.svg?label=Latest Release)](https://github.com/roboticslab-uc3m/xgnitive/tags) -->
 
