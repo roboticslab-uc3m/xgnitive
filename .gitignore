@@ -30,3 +30,6 @@
 #Cmake
 *.user
 /build/
+
+#Superbuild
+/superbuild/

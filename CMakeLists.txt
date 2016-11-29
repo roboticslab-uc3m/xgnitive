@@ -78,6 +78,26 @@ if (ENABLE_tests)
     add_subdirectory(test)
 endif (ENABLE_tests)
 
+############################### SUPERBUILD ##########################
+
+set(YCM_USE_CMAKE_PROPOSED TRUE) # Enables unmerged patches to CMake modules, this is required for the superbuild to work
+
+# makes available local cmake modules
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+# we want to make YCM a soft dependency
+include(YCMBootstrap)
+
+# find_package(YCM 0.1 REQUIRED)
+
+include(FindOrBuildPackage)
+include(YCMEPHelper)
+
+#find_or_build_package(Xgnitive)
+find_or_build_package(Teo-openrave-models)
+
+############################### SUPERBUILD ##########################
+
 # export our variables to a XGNITIVEConfig.cmake creation
 set(XGNITIVE_LINK_DIRS ${XGNITIVE_LINK_DIRS} ${LIBRARY_OUTPUT_PATH})
 configure_file(${CMAKE_SOURCE_DIR}/cmake/template/XGNITIVEConfig.cmake.in
