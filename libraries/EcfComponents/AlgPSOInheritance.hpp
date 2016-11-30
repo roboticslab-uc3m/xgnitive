@@ -1,6 +1,28 @@
 //Copyright: Universidad Carlos III de Madrid (C) 2016
 //Authors:raulfdzbis, jgvictores,  smorante
 
+/**
+ *
+ * \defgroup algPSOInheritance
+ * @ingroup ECFComponents
+ *
+ * @brief Particle Swarm Optimization Inheritance approach.
+ *
+ * @section algPSOInheritance_legal Legal
+ *
+ * Copyright: 2016 (C) Universidad Carlos III de Madrid
+ *
+ * Author: raulfdzbis, jgvictores
+ *
+ * CopyPolicy: This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License 3.0 or later
+ *
+ * <hr>
+ *
+ * This file can be edited at algPSOInheritance
+ *
+ */
+
 #ifndef Particle_Swarm_Optimization_inheritance_h
 #define Particle_Swarm_Optimization_inheritance_h
 

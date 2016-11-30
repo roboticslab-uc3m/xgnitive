@@ -13,15 +13,36 @@
 #include <cmath>
 
 /**
- * \brief Particle swarm optimization algorithm  with inheritance (see e.g. http://en.wikipedia.org/wiki/Particle_swarm_optimization)
- * \ingroup algorithms serial
- * 
- * PSO algorithm accepts only a single FloatingPoint genotype (vector of real values).
- * Additionally, it adds the following genotypes for algorithm implementation:
- * - FloatingPoint genotype as particle velocity
- * - FloatingPoint genotype as best-so-far position
- * - FloatingPoint genotype as best-so-far fitness value
+ * \defgroup algPSOFuzzy
+ * @ingroup ECFComponents
+ *
+ * @brief Particle Swarm Optimization Algorithm (PSO) using a Fuzzy approach.
+ *
+ * @section algPSOFuzzy_legal Legal
+ *
+ * Copyright: 2016 (C) Universidad Carlos III de Madrid
+ *
+ * Author: raulfdzbis, jgvictores
+ *
+ * CopyPolicy: This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License 3.0 or later
+ *
+ * <hr>
+ *
+ * This file can be edited at algPSOFuzzy
+ *
  */
+
+//*
+// * \brief Particle swarm optimization algorithm  with inheritance (see e.g. http://en.wikipedia.org/wiki/Particle_swarm_optimization)
+// * \ingroup algorithms serial
+// *
+// * PSO algorithm accepts only a single FloatingPoint genotype (vector of real values).
+// * Additionally, it adds the following genotypes for algorithm implementation:
+// * - FloatingPoint genotype as particle velocity
+// * - FloatingPoint genotype as best-so-far position
+// * - FloatingPoint genotype as best-so-far fitness value
+
 class PSOFuzzy : public Algorithm
 {
 public:

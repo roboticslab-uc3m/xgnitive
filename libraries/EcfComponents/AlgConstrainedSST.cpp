@@ -1,5 +1,5 @@
 //Copyright: Universidad Carlos III de Madrid (C) 2016
-//Authors:raulfdzbis, jgvictores,  smorante
+//Authors:raulfdzbis, jgvictores
 
 #include "AlgConstrainedSST.hpp"
 

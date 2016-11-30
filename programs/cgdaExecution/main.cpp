@@ -3,11 +3,11 @@
 /**
  *
  * @ingroup xgnitive_programs
- * \defgroup cgdaOptimization cgdaOptimization
+ * \defgroup cgdaExecution cgdaExecution
  *
- * @brief Creates an instance of teo::CgdaOptimization
+ * @brief Executes the cgda system using a classic Full Trajectory Evolution strategy.
  *
- * @section cgdaOptimization_legal Legal
+ * @section cgdaExecution_legal Legal
  *
  * Copyright: 2016 (C) Universidad Carlos III de Madrid
  *
@@ -18,7 +18,7 @@
  *
  * <hr>
  *
- * This file can be edited at cgdaOptimization
+ * This file can be edited at cgdaExecution
  *
  */
 
