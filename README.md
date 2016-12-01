@@ -13,7 +13,7 @@ The search for the Grial of generalizing robot actions continues! In Continuous 
 Take a look at most machine learning algorithms, when trying to get something novel, you'll most probably get an average off what you already have. Robot Imagination, as described in its first international conference paper [[6]](#6), aims to generate novel mental models of objects given a previous phase of semantic supervised training. Some improvements can be seen in [[7]](#7). The transition to actions would not be easy, and it eventually lead to the foundations of CGDA research. Additional references include the original PhD thesis [[8]](#8).
 
 ## Installation
-Installation instructions for installing from source can be found [here](https://github.com/roboticslab-uc3m/xgnitive/blob/develop/doc/xgnitive_install_ubuntu_14_04.md).
+Installation instructions for installing from source can be found [here](https://github.com/roboticslab-uc3m/xgnitive/blob/develop/doc/xgnitive_install.md).
 
 ## APIs
 
