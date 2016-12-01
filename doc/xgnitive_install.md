@@ -1,4 +1,4 @@
-# Installation (Ubuntu 14.04)
+# Installation 
 
 First install dependencies:
 - [Install ECF](https://github.com/roboticslab-uc3m/installation-guides/blob/209f6f21fb4064c19ac6f8263c87c769a63488b1/install_ecf.md)
@@ -8,7 +8,7 @@ First install dependencies:
 - [Install Orocos_kdl] ( https://github.com/roboticslab-uc3m/installation-guides/blob/209f6f21fb4064c19ac6f8263c87c769a63488b1/install_orocos_kdl.md)
 - [Install pygame] ( https://github.com/roboticslab-uc3m/installation-guides/blob/209f6f21fb4064c19ac6f8263c87c769a63488b1/install_pygame.md)
 
-##Install XGNITIVE
+##Install XGNITIVE (working on all tested versions)
 
 ```bash
 cd  # go home
