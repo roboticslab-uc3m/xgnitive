@@ -7,6 +7,24 @@ Authors: Raul Fernandez-Fernandez; Juan G. Victores
 
 Universidad Carlos III de Madrid 
 '''
+
+## @ingroup xgnitive_applications
+ # \defgroup paintSquaresOnScreen
+ #
+ # @brief Application used to paint squares on screen, receives a [X,Y] coordinate via YARP.
+ #
+ # @section paintSquaresOnScreen_legal Legal
+ #
+ # Copyright: 2016 (C) Universidad Carlos III de Madrid
+ #
+ # Author: raulfdzbis, jgvictores
+ #
+ # CopyPolicy: This program is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU Lesser General Public License 3.0 or later
+ #
+ # <hr>
+ #
+ # This file can be edited at paintSquaresOnScreen
  
 # Import a library of functions called 'pygame'
 import pygame
