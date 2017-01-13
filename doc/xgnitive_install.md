@@ -9,7 +9,7 @@ First install dependencies:
 - [Install YARP] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_yarp.md)
 - [Install Aquila] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_aquila.md )
 - [Install KDL] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_kdl.md)
-- [Install pygame] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_pygame.md)
+- [Install Pygame] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_pygame.md)
 
 ##Install XGNITIVE (working on all tested versions)
 
