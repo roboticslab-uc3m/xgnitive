@@ -8,7 +8,7 @@ First install dependencies:
 - [Install ECF](https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_ecf.md)
 - [Install YARP] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_yarp.md)
 - [Install Aquila] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_aquila.md )
-- [Install Orocos_kdl] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_orocos_kdl.md)
+- [Install KDL] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_kdl.md)
 - [Install pygame] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_pygame.md)
 
 ##Install XGNITIVE (working on all tested versions)
