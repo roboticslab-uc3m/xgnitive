@@ -4,6 +4,7 @@ First install dependencies:
 - [Install build-essential] (https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_essentials.md)
 - [Install Boost] (https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_boost.md)
 - [Install CMake] (https://github.com/roboticslab-uc3m/installation-guides/blob/209f6f21fb4064c19ac6f8263c87c769a63488b1/install_cmake.md)
+- [Install PCL] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_pcl.md)
 - [Install ECF](https://github.com/roboticslab-uc3m/installation-guides/blob/209f6f21fb4064c19ac6f8263c87c769a63488b1/install_ecf.md)
 - [Install YARP] ( https://github.com/roboticslab-uc3m/installation-guides/blob/209f6f21fb4064c19ac6f8263c87c769a63488b1/install_yarp.md)
 - [Install Aquila] ( https://github.com/roboticslab-uc3m/installation-guides/blob/209f6f21fb4064c19ac6f8263c87c769a63488b1/install_aquila.md )
