@@ -15,6 +15,10 @@ Take a look at most machine learning algorithms, when trying to get something no
 ## Installation
 Installation instructions for installing from source can be found [here](https://github.com/roboticslab-uc3m/xgnitive/blob/develop/doc/xgnitive_install.md).
 
+## Experiments
+
+The database of results of the experiments performed with xgnitive can be found in the following [database](https://zenodo.org/record/168156#.WDVvLpNVKlM).
+
 ## APIs
 
 Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
