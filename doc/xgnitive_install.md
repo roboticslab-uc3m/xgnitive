@@ -6,7 +6,7 @@ First install dependencies:
 - [Install PCL] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_pcl.md)
 - [Install ECF](https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_ecf.md)
 - [Install YARP] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_yarp.md)
-- [Install OpenRave] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_openrave.md)
+- [Install OpenRAVE] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_openrave.md)
 - [Install Aquila] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_aquila.md )
 - [Install KDL] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_kdl.md)
 - [Install Pygame] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_pygame.md)
