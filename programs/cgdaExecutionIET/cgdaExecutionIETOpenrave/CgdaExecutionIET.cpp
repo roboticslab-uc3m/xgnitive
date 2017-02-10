@@ -32,7 +32,7 @@ bool CgdaExecutionIET::init() {
     RaveSetDebugLevel(Level_Debug);
     string viewername = "qtcoin";
     boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
-    string scenefilename = "../../programs/models/teo_cgda_iros.env.xml";
+    string scenefilename = "../../share/models/teo_cgda_iros.env.xml";
     penv->Load(scenefilename); // load the scene
     //-- Get Robot 0
     std::vector<RobotBasePtr> robots;
@@ -57,7 +57,7 @@ bool CgdaExecutionIET::init() {
     KinBodyPtr objPtr = penv->GetKinBody("object");
     if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
     else printf("[WorldRpcResponder] good grab\n");
-    probot->SetActiveManipulator("m2");
+    probot->SetActiveManipulator("rightArm");
     probot->Grab(objPtr);
 
     vector< double > results;
@@ -83,12 +83,12 @@ bool CgdaExecutionIET::init() {
            state->addAlgorithm(nalg3);
 
            // set the evaluation operator
-           //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+           CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
            //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
            //Constrained Cost functions
            //CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
-           CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
-           functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
+           //CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
+           //functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
 
            functionMinEvalOp->setPRobot(probot);
            functionMinEvalOp->setPenv(penv);
@@ -103,7 +103,10 @@ bool CgdaExecutionIET::init() {
 
            printf("---------------------------> i:%d\n",i);
            int newArgc = 2;
+           //PAINT
            char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
+           //WAX
+           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params_WAX.xml" };
 
 
            state->initialize(newArgc, newArgv);
