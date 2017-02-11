@@ -21,9 +21,10 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 }
 
 /************************************************************************/
-
-//int numberOfPoints=17;
-int numberOfPoints=9;
+//Uncomment for PAINT
+int numberOfPoints=17;
+//Uncomment for WAX
+//int numberOfPoints=9;
 double time=0;
 double evaluations=0;
 bool CgdaExecutionIET::init() {

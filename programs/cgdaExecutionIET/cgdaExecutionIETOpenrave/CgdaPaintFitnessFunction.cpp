@@ -34,11 +34,11 @@ void CgdaPaintFitnessFunction::trajectoryExecution(int NumberPoints, vector<doub
             std::cout<<"Time interval"<<t<<std::endl;
             std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
 
-            dEncRaw[0+4] = -result_trajectory[t*3+0]*M_PI/180.0;  // simple
+            dEncRaw[0+4] = result_trajectory[t*3+0]*M_PI/180.0;  // simple
             dEncRaw[1+4] = -result_trajectory[t*3+1]*M_PI/180.0;  // simple
-            dEncRaw[3+4] = -result_trajectory[t*3+2]*M_PI/180.0;  // simple
+            dEncRaw[3+4] = result_trajectory[t*3+2]*M_PI/180.0;  // simple
 
-            dEncRaw[4+4] = -45*M_PI/180.0;
+            dEncRaw[4+4] = 45*M_PI/180.0;
             probot->SetJointValues(dEncRaw);
             pcontrol->SetDesired(dEncRaw); // This function "resets" physics
             while(!pcontrol->IsDone()) {
@@ -106,9 +106,9 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 //                cout << "pF1: " << pFresults->operator [](t*3+1) << std::endl;
 //                cout << "pF2: " << pFresults->operator [](t*3+2) << std::endl;
 
-                dEncRaw[0+4] = -1*(pFresults->operator [](t*3+0))*M_PI/180.0;  // simple
+                dEncRaw[0+4] = 1*(pFresults->operator [](t*3+0))*M_PI/180.0;  // simple
                 dEncRaw[1+4] = -1*(pFresults->operator [](t*3+1))*M_PI/180.0;  // simple
-                dEncRaw[3+4] = -1*(pFresults->operator [](t*3+2))*M_PI/180.0;  // simple
+                dEncRaw[3+4] = 1*(pFresults->operator [](t*3+2))*M_PI/180.0;  // simple
 
 
             }
@@ -118,13 +118,13 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 //                cout << "gp1: " << genPoints[1] << std::endl;
 //                cout << "gp2: " << genPoints[2] << std::endl;
 
-                dEncRaw[0+4] = -genPoints[0]*M_PI/180.0;  // simple
+                dEncRaw[0+4] = genPoints[0]*M_PI/180.0;  // simple
                 dEncRaw[1+4] = -genPoints[1]*M_PI/180.0;  // simple
-                dEncRaw[3+4] = -genPoints[2]*M_PI/180.0;  // simple
+                dEncRaw[3+4] = genPoints[2]*M_PI/180.0;  // simple
             }
             else{cerr << "ERROR IN pIter or t" << std::endl;}
 
-            dEncRaw[4+4] = -45*M_PI/180.0;
+            dEncRaw[4+4] = 45*M_PI/180.0;
             probot->SetJointValues(dEncRaw);
             pcontrol->SetDesired(dEncRaw); // This function "resets" physics
             while(!pcontrol->IsDone()) {
