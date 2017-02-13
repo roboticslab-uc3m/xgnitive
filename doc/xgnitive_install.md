@@ -11,6 +11,7 @@ First install dependencies:
 - [Install KDL] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_kdl.md)
 - [Install OpenCV] (https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_opencv.md)
 - [Install Pygame] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_pygame.md)
+- [Instal teo-openrave-models] (https://github.com/roboticslab-uc3m/teo-openrave-models)
 
 ##Install XGNITIVE (working on all tested versions)
 
