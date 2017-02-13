@@ -9,6 +9,7 @@ First install dependencies:
 - [Install OpenRAVE] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_openrave.md)
 - [Install Aquila] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_aquila.md )
 - [Install KDL] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_kdl.md)
+- [Install OpenCV] (https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_opencv.md)
 - [Install Pygame] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install_pygame.md)
 
 ##Install XGNITIVE (working on all tested versions)
