@@ -28,38 +28,38 @@ int numberOfPoints=17;
 double time=0;
 double evaluations=0;
 bool CgdaExecutionIET::init() {
-    RaveInitialize(true); // start openrave core
-    penv = RaveCreateEnvironment(); // create the main environment
-    RaveSetDebugLevel(Level_Debug);
-    string viewername = "qtcoin";
-    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
-    string scenefilename = "../../share/models/teo_cgda_iros.env.xml";
-    penv->Load(scenefilename); // load the scene
+    //ORaveInitialize(true); // start openrave core
+    //Openv = RaveCreateEnvironment(); // create the main environment
+    //ORaveSetDebugLevel(Level_Debug);
+    //Ostring viewername = "qtcoin";
+    //Oboost::thread thviewer(boost::bind(SetViewer,penv,viewername));
+    //Ostring scenefilename = "../../share/models/teo_cgda_iros.env.xml";
+    //penv->Load(scenefilename); // load the scene
     //-- Get Robot 0
-    std::vector<RobotBasePtr> robots;
-    penv->GetRobots(robots);
-    std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
-    probot = robots.at(0);    
+    //Ostd::vector<RobotBasePtr> robots;
+    //Openv->GetRobots(robots);
+    //Ostd::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
+    //Oprobot = robots.at(0);
 
     //Uncomment for pause before start
     //std::cin.get();
 
-    pcontrol = RaveCreateController(penv,"idealcontroller");
+    //Opcontrol = RaveCreateController(penv,"idealcontroller");
     // Create the controllers, make sure to lock environment! (prevents changes)
-    {
-      EnvironmentMutex::scoped_lock lock(penv->GetMutex());
-      std::vector<int> dofindices(probot->GetDOF());
-      for(int i = 0; i < probot->GetDOF(); ++i) {
-        dofindices[i] = i;
-      }
-      probot->SetController(pcontrol,dofindices,1); // control everything
-    }
+    //O{
+    //O  EnvironmentMutex::scoped_lock lock(penv->GetMutex());
+    //O  std::vector<int> dofindices(probot->GetDOF());
+    //O  for(int i = 0; i < probot->GetDOF(); ++i) {
+    //O    dofindices[i] = i;
+    //O  }
+    //O  probot->SetController(pcontrol,dofindices,1); // control everything
+    //O}
 
-    KinBodyPtr objPtr = penv->GetKinBody("object");
-    if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
-    else printf("[WorldRpcResponder] good grab\n");
-    probot->SetActiveManipulator("rightArm");
-    probot->Grab(objPtr);
+    //OKinBodyPtr objPtr = penv->GetKinBody("object");
+    //Oif(!objPtr) printf("[WorldRpcResponder] fail grab\n");
+    //Oelse printf("[WorldRpcResponder] good grab\n");
+    //Oprobot->SetActiveManipulator("rightArm");
+    //Oprobot->Grab(objPtr);
 
     vector< double > results;
     vector< double >* presults= &results;
@@ -91,10 +91,10 @@ bool CgdaExecutionIET::init() {
            //CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
            //functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
 
-           functionMinEvalOp->setPRobot(probot);
-           functionMinEvalOp->setPenv(penv);
-           functionMinEvalOp->setPcontrol(pcontrol);
-           functionMinEvalOp->setResults(presults);
+           //OfunctionMinEvalOp->setPRobot(probot);
+           //OfunctionMinEvalOp->setPenv(penv);
+           //OfunctionMinEvalOp->setPcontrol(pcontrol);
+           //OfunctionMinEvalOp->setResults(presults);
            //Uncomment only for CgdaConstrained
 
            state->setEvalOp(functionMinEvalOp);
@@ -109,8 +109,9 @@ bool CgdaExecutionIET::init() {
            //WAX
            //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params_WAX.xml" };
 
-
-           state->initialize(newArgc, newArgv);
+           bool ok = state->initialize(newArgc, newArgv);
+           if (!ok) printf("buuu\n");
+           else printf("yeah\n");
 
 //           int parameter=100;
 //           voidP sptr;
@@ -125,7 +126,7 @@ bool CgdaExecutionIET::init() {
 
 
            state->run();
-
+           printf("HASTA AQUI LLEGUE \n");
 
            vector<IndividualP> bestInd;
            FloatingPoint::FloatingPoint* genBest;

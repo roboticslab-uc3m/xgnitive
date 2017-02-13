@@ -82,6 +82,11 @@ void CgdaPaintFitnessFunction::trajectoryExecution(int NumberPoints, vector<doub
 
 double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
+    double fit=28;
+    printf("EVALUATEEEEEEEEEEEEEEEEED\n");
+    return fit;
+    printf("EVALUATEEEEEEEEEEEEEEEEED2\n");
+
     const int rows=4; //setting wall parameters
     const int cols=4;
     std::vector<double> percentage;
@@ -201,7 +206,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
         }
     }
 
-    double fit;
+    //double fit;
     featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
 
 
@@ -221,18 +226,18 @@ void CgdaPaintFitnessFunction::registerParameters(StateP state) {
 
 bool CgdaPaintFitnessFunction::initialize(StateP state) {
 
-	voidP sptr = state->getRegistry()->getEntry("function"); // get parameter value
-    stringstream msg;
-    _objPtr = penv->GetKinBody("object");
-    _wall = penv->GetKinBody("wall");
+    //OvoidP sptr = state->getRegistry()->getEntry("function"); // get parameter value
+    //Ostringstream msg;
+    //O_objPtr = penv->GetKinBody("object");
+    //O_wall = penv->GetKinBody("wall");
 
-    if(!_objPtr) {
-        fprintf(stderr,"error: object \"object\" does not exist.\n");
-    } else printf("sucess: object \"object\" exists.\n");
+    //Oif(!_objPtr) {
+    //O    fprintf(stderr,"error: object \"object\" does not exist.\n");
+    //O} else printf("sucess: object \"object\" exists.\n");
 
-    if(!_wall) {
-        fprintf(stderr,"error: object \"wall\" does not exist.\n");
-    } else printf("sucess: object \"wall\" exists.\n");
+    //Oif(!_wall) {
+    //O    fprintf(stderr,"error: object \"wall\" does not exist.\n");
+    //O} else printf("sucess: object \"wall\" exists.\n");
 
 
     usleep(1.0 * 1000000.0);
@@ -243,6 +248,8 @@ bool CgdaPaintFitnessFunction::initialize(StateP state) {
 /************************************************************************/
 
 FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
+
+    printf("EVALUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATING\n");
 
 	// evaluation creates a new fitness object using a smart pointer
 	// in our case, we try to minimize the function value, so we use FitnessMin fitness (for minimization problems)

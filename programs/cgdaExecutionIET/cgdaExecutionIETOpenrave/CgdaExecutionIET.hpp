@@ -23,9 +23,9 @@ namespace teo
 
 class CgdaExecutionIET  {
   private:
-    RobotBasePtr probot;
-    EnvironmentBasePtr penv;
-    ControllerBasePtr pcontrol;
+    //ORobotBasePtr probot;
+    //OEnvironmentBasePtr penv;
+    //OControllerBasePtr pcontrol;
 
   public:
     bool init();
