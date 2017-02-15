@@ -22,18 +22,11 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 
 /************************************************************************/
 
-// system::run("cgdaExecutionIET parameters.txt 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0")
+// system::run("cgdaExecutionIET parameters.txt
 
 bool CgdaExecutionIET::init(int argc, char **argv)
 {
 
-    sqPainted.resize(argc-2);
-
-    for(int i=0;i<argc-2;i++)
-    {
-        stringstream ss(argv[i]);
-        ss >> sqPainted[i];
-    }
 
 
     RaveInitialize(true); // start openrave core
@@ -103,15 +96,14 @@ bool CgdaExecutionIET::init(int argc, char **argv)
            functionMinEvalOp->setPenv(penv);
            functionMinEvalOp->setPcontrol(pcontrol);
            functionMinEvalOp->setResults(presults);
-           functionMinEvalOp->setPsqPainted(&sqPainted);
            //Uncomment only for CgdaConstrained
 
            state->setEvalOp(functionMinEvalOp);
 
            //unsigned int* pIter= &i;
-           ////unsigned int j=0;
-           ////unsigned int* pIter= &j;
-           ////functionMinEvalOp->setIter(pIter);
+           unsigned int j=0;
+           unsigned int* pIter= &j;
+           functionMinEvalOp->setIter(pIter);
 
            //printf("---------------------------> i:%d\n",i);
            int newArgc = 2;
@@ -135,12 +127,10 @@ bool CgdaExecutionIET::init(int argc, char **argv)
 //               std::cout<<"Valor  "<<*par<<std::endl;
 //           }
 
-           //int numberOfPoints =1;
-
+           int numberOfPoints =1;
+    for(unsigned int i=0; i<numberOfPoints; i++) {
            state->run();
-
-           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
-//           for(unsigned int i=0; i<numberOfPoints; i++) {
+           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
 
 //           vector<IndividualP> bestInd;
 //           FloatingPoint::FloatingPoint* genBest;
@@ -218,7 +208,7 @@ bool CgdaExecutionIET::init(int argc, char **argv)
 //           nalg3.reset();
            //state.reset();
            //delete functionMinEvalOp;
-     //  }
+       }
 
 //       printf("-begin-\n");
 //       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);

@@ -1,8 +1,8 @@
 //Copyright: Universidad Carlos III de Madrid (C) 2016
 //Authors: jgvictores, raulfdzbis, smorante
 
-#ifndef CGDA_PAINT_IET_H_
-#define CGDA_PAINT_IET_H_
+#ifndef CGDA_WAX_IET_H_
+#define CGDA_WAX_IET_H_
 
 #include <cmath>
 #include <iostream>
@@ -22,7 +22,7 @@ using namespace OpenRAVE;
 namespace teo
 {
 
-class CgdaPaintFitnessFunction : public EvaluateOp {
+class CgdaWaxFitnessFunction : public EvaluateOp {
 
   public:
     void setPRobot(const RobotBasePtr& _probot) {
@@ -38,33 +38,26 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
         pFresults = _presults;
 
     }
-    void setPsqPainted( vector<int>* _psqPainted){
-        psqPainted = _psqPainted;
 
+    void setIter(unsigned int* _piter){
+        pIter = _piter;
     }
 
-//    void setIter(unsigned int* _piter){
-//        pIter = _piter;
-//    }
-
+  public:
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
-    void trajectoryExecution(int NumberPoints, vector<double> result_trajectory); //TE
     RobotBasePtr probot;
     EnvironmentBasePtr penv;
     ControllerBasePtr pcontrol;
     KinBodyPtr _objPtr;
-    KinBodyPtr _wall;
     vector<double>* pFresults;
-    //unsigned int* pIter;
+    unsigned int* pIter;
     Transform T_base_object;
-    vector<int>* psqPainted;
-
 };
 
-typedef boost::shared_ptr<CgdaPaintFitnessFunction> CgdaPaintFitnessFunctionP;
+typedef boost::shared_ptr<CgdaWaxFitnessFunction> CgdaWaxFitnessFunctionP;
 
 }  // namespace teo
 

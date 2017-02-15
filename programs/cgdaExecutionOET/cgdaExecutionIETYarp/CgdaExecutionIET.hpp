@@ -6,11 +6,7 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
-#include "CgdaPaintFitnessFunction.hpp"
-#include "CgdaWaxFitnessFunction.hpp"
 #include "CgdaConstrainedPaintFitnessFunction.hpp"
-#include "CgdaConstrainedWaxFitnessFunction.hpp"
-
 
 #include "AlgPSOInheritance.hpp"
 #include "AlgPSOFuzzy.hpp"
@@ -21,20 +17,19 @@
 namespace teo
 {
 
-class CgdaExecutionIET
-{
+class CgdaExecutionIET  {
 
 public:
-    bool init(int argc, char **argv);
+    bool init();
 
 private:
-    RobotBasePtr probot;
-    EnvironmentBasePtr penv;
-    ControllerBasePtr pcontrol;
-    vector<int> sqPainted;
+    yarp::os::Network yarp; // connect to YARP network
+    yarp::dev::PolyDriver dd; //create a YARP multi-use driver
+    yarp::dev::IPositionControl *pos; //make a position controller object we call 'pos'
+    yarp::dev::IEncoders *enc; //make an encoder controller object we call 'enc'
+    yarp::dev::IVelocityControl *vel; //make a velocity controller object we call 'vel'
 };
 
 } //namespace TEO
-
 #endif  // __EV_MONO_HPP__
 

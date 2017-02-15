@@ -31,7 +31,7 @@ private:
     RobotBasePtr probot;
     EnvironmentBasePtr penv;
     ControllerBasePtr pcontrol;
-    vector<int> sqPainted;
+
 };
 
 } //namespace TEO
