@@ -27,11 +27,11 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 bool CgdaExecutionIET::init(int argc, char **argv)
 {
 
-    sqPainted.resize(argc-3);
+    sqPainted.resize(argc-2);
 
-    for(int i=0;i<argc-3;i++)
+    for(int i=0;i<argc-2;i++)
     {
-        stringstream ss(argv[i+3]);
+        stringstream ss(argv[i+2]);
         ss >> sqPainted[i];
         printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
     }
@@ -117,8 +117,8 @@ bool CgdaExecutionIET::init(int argc, char **argv)
            //printf("---------------------------> i:%d\n",i);
            int newArgc = 2;
            //PAINT
-           //char *newArgv[2] = { (char*)"unusedFirstParam", argv[1] };
-           char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
+           char *newArgv[2] = { (char*)"unusedFirstParam", argv[1] };
+           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
            //WAX
            //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params_WAX.xml" };
 
@@ -138,6 +138,7 @@ bool CgdaExecutionIET::init(int argc, char **argv)
 
            //int numberOfPoints =1;
            printf("HASTA AQUI LLEGUE  1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+           //std::cout<<state->getPopulation()<<std::endl;
            state->run();
            printf("HASTA AQUI LLEGUE  2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 

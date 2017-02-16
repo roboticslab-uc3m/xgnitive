@@ -13,7 +13,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
-#include <valarray>     // std::valarray
+//#include <valarray>     // std::valarray
 
 #include "DtwCgdaRecognition.hpp"
 

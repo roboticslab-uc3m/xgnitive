@@ -128,7 +128,7 @@ FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
 /************************************************************************/
 
 double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
-
+    printf("    0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0");
     double percentage;
     //int sqPaintedAux [psqPainted->size()] = { };
     int sqPaintedAux [4*4] = { }; //Variable used in order to not change psqPainted
