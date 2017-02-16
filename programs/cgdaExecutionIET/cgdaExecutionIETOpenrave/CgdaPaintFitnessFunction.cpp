@@ -100,14 +100,13 @@ bool CgdaPaintFitnessFunction::initialize(StateP state) {
     } else printf("sucess: object \"wall\" exists.\n");
 
     usleep(1.0 * 1000000.0);
-
 	return true;
 }
 
 /************************************************************************/
 
 FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
-
+    printf("HASTA AQUI LLEGUE    0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0");
 	// evaluation creates a new fitness object using a smart pointer
 	// in our case, we try to minimize the function value, so we use FitnessMin fitness (for minimization problems)
 	FitnessP fitness (new FitnessMin);
@@ -119,8 +118,10 @@ FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
 	// the number of variables is read from the genotype itself (size of 'realValue' vactor)
 
     double value =0;
+    printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!3");
     value= getCustomFitness(gen->realValue);
     fitness->setValue(value);
+    printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!4");
     return fitness;
 }
 
@@ -128,9 +129,13 @@ FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
 
 double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
-    std::vector<double> percentage;
+    double percentage;
     //int sqPaintedAux [psqPainted->size()] = { };
     int sqPaintedAux [4*4] = { }; //Variable used in order to not change psqPainted
+    int timeStep;
+    int Npaint;
+
+    printf("sqPainted check %d", psqPainted->operator [](0));
 
     // Set Wall color to psqPainted variable and init sqPainted auxiliary variable
     for(int i=0; i<(psqPainted->size()); i++)
@@ -142,8 +147,25 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
         }
         else{
             sqPaintedAux[i]=1;
+            Npaint++;
         }
         rr.str("");
+    }
+
+    //Percentage of the wall painted before evolution
+    percentage=(Npaint/sizeof(sqPaintedAux))*100;
+
+    //std::valarray<int> myvalarray (sqPaintedAux,sizeof(sqPaintedAux));
+    //percentage.push_back(( (float)myvalarray.sum()/(sizeof(sqPaintedAux)))*100);
+
+    //Serch the timeStep where we are
+    double diff;
+    for(int i=0;i<sizeof(Const_target);i++){ //We give priority to the elements at the last positions
+        double diff_aux;
+        diff_aux=sqrt(pow((percentage-Const_target[i]),2)); //Diff is the euclidean distance
+        if(diff_aux<diff){
+            timeStep=i;
+        }
     }
 
     //Set new positions of the robot using dEncRaw
@@ -189,9 +211,18 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
             ss.str("");
    }
 
-   //Fitness of the actual point= percentage of wall painted
-   std::valarray<int> myvalarray (sqPaintedAux.data(),sqPaintedAux.size());
-   percentage.push_back(( (float)myvalarray.sum()/(sqPaintedAux.size()))*100);
+    //Fitness of the actual point= percentage of the wall painted
+
+    //Calculate percentage
+    for(int i=0;i<sizeof(sqPaintedAux);i++){
+        if(sqPaintedAux[i]==1){
+            Npaint++;
+        }
+    }
+    percentage=(Npaint/sizeof(sqPaintedAux))*100;
+
+//    std::valarray<int> myvalarray (sqPaintedAux,sizeof(sqPaintedAux));
+//    percentage.push_back(( (float)myvalarray.sum()/(sizeof(sqPaintedAux)))*100);
 
     //Output to file
 //    std::ofstream myfile2;
@@ -226,12 +257,13 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 //        }
 //    }
 
-   //Here we dont need the DTW since we are not comparing trajectories only points
-
-   //TODO: FIND THE TIME STEP WHERE WE ARE
+    //Here we dont need the DTW since we are not comparing trajectories only points
 
 
+    //The fit is the L2 norm between the current features, and the t+1 feature environment.
     double fit;
+    fit=sqrt(pow((percentage-Const_target[timeStep+1]),2)); //The fit is the euclidean distance between current feature and t+1
+
     //featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
 
     //TODO: fit= sqrt(percentage²-percentage_now²) This has to be equivalent to the DTW discrepancy i think is the L2 norm.
@@ -240,7 +272,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
 
 
-  //  cout << std::endl << " percentage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
+    //  cout << std::endl << " percentage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
     cout << std::endl << " fit: " << fit << " ";
     return fit;
 }

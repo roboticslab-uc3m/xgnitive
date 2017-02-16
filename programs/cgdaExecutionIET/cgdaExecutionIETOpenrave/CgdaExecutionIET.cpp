@@ -22,17 +22,18 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 
 /************************************************************************/
 
-// system::run("cgdaExecutionIET parameters.txt 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0")
+// system::run("cgdaExecutionIET parameters.txt 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0")
 
 bool CgdaExecutionIET::init(int argc, char **argv)
 {
 
-    sqPainted.resize(argc-2);
+    sqPainted.resize(argc-3);
 
-    for(int i=0;i<argc-2;i++)
+    for(int i=0;i<argc-3;i++)
     {
-        stringstream ss(argv[i]);
+        stringstream ss(argv[i+3]);
         ss >> sqPainted[i];
+        printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
     }
 
 
@@ -116,8 +117,8 @@ bool CgdaExecutionIET::init(int argc, char **argv)
            //printf("---------------------------> i:%d\n",i);
            int newArgc = 2;
            //PAINT
-           char *newArgv[2] = { (char*)"unusedFirstParam", argv[1] };
-           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
+           //char *newArgv[2] = { (char*)"unusedFirstParam", argv[1] };
+           char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
            //WAX
            //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params_WAX.xml" };
 
@@ -136,8 +137,10 @@ bool CgdaExecutionIET::init(int argc, char **argv)
 //           }
 
            //int numberOfPoints =1;
-
+           printf("HASTA AQUI LLEGUE  1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
            state->run();
+           printf("HASTA AQUI LLEGUE  2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 
            //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
 //           for(unsigned int i=0; i<numberOfPoints; i++) {
