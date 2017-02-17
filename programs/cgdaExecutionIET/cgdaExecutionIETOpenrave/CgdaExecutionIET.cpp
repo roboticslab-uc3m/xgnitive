@@ -137,8 +137,8 @@ bool CgdaExecutionIET::init(int argc, char **argv)
 //           }
 
            //int numberOfPoints =1;
-           printf("HASTA AQUI LLEGUE  1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-           //std::cout<<state->getPopulation()<<std::endl;
+           printf("HASTA AQUI LLEGUE  1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
+           //std::cout<<state->getPopulation()->at(0)<<std::endl;
            state->run();
            printf("HASTA AQUI LLEGUE  2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 

@@ -5,14 +5,15 @@
 
 #include "CgdaPaintFitnessFunction.hpp"
 
+#define NTPOINTS 17
+#define NSQUARES 16
+
 namespace teo
 {
 
 /************************************************************************/
 
 //double target[10]={0, 10, 20, 30, 40, 50, 60, 70, 80, 100};
-double Const_target[17]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
-                   , 43.75, 50, 56.25, 62.5, 68.75, 75, 81.25, 87.5, 93.75, 100};
 
 /************************************************************************/
 
@@ -106,7 +107,6 @@ bool CgdaPaintFitnessFunction::initialize(StateP state) {
 /************************************************************************/
 
 FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
-    printf("HASTA AQUI LLEGUE    0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0");
 	// evaluation creates a new fitness object using a smart pointer
 	// in our case, we try to minimize the function value, so we use FitnessMin fitness (for minimization problems)
 	FitnessP fitness (new FitnessMin);
@@ -118,25 +118,39 @@ FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
 	// the number of variables is read from the genotype itself (size of 'realValue' vactor)
 
     double value =0;
-    printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!3");
     value= getCustomFitness(gen->realValue);
     fitness->setValue(value);
-    printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!4");
     return fitness;
 }
 
 /************************************************************************/
 
 double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
-    printf("    0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0");
+
+    double Const_target[NTPOINTS]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
+                       , 43.75, 50, 56.25, 62.5, 68.75, 75, 81.25, 87.5, 93.75, 100};
+
     double percentage;
     //int sqPaintedAux [psqPainted->size()] = { };
-    int sqPaintedAux [4*4] = { }; //Variable used in order to not change psqPainted
+    int sqPaintedAux [NSQUARES] = { }; //Variable used in order to not change psqPainted
     int timeStep;
-    int Npaint;
+    double Npaint=0;
 
-    printf("sqPainted check %d", psqPainted->operator [](0));
+    //printf("sqPainted check %d \n", psqPainted->operator [](0));
 
+    //reset square color
+   for(int i=0; i<(16); i++){
+           stringstream rr;
+           rr << "square" << i;
+           _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
+           rr.str("");
+    }
+
+    // DEBUG
+    for(int i=0; i<(psqPainted->size()); i++){
+
+        //std::cout<<"El cuadrado "<<i<<" está pintado? "<<psqPainted->operator [](i)<<std::endl;
+    }
     // Set Wall color to psqPainted variable and init sqPainted auxiliary variable
     for(int i=0; i<(psqPainted->size()); i++)
     {
@@ -147,26 +161,45 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
         }
         else{
             sqPaintedAux[i]=1;
+            _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
             Npaint++;
         }
         rr.str("");
     }
-
     //Percentage of the wall painted before evolution
-    percentage=(Npaint/sizeof(sqPaintedAux))*100;
+    printf("EL NPAINT ES::::::: %f \n",Npaint);
+    percentage=(Npaint/NSQUARES)*100;
+    printf("EL PERCENTAGE ES::::::: %f \n",percentage);
 
     //std::valarray<int> myvalarray (sqPaintedAux,sizeof(sqPaintedAux));
     //percentage.push_back(( (float)myvalarray.sum()/(sizeof(sqPaintedAux)))*100);
 
     //Serch the timeStep where we are
-    double diff;
-    for(int i=0;i<sizeof(Const_target);i++){ //We give priority to the elements at the last positions
+    double diff=1000000;
+    for(int i=0;i<NTPOINTS;i++){ //We give priority to the elements at the last positions
         double diff_aux;
-        diff_aux=sqrt(pow((percentage-Const_target[i]),2)); //Diff is the euclidean distance
+        //printf("Percentage: %d \n",percentage);
+        //printf("Target: %d \n", Const_target[i]);
+        //diff_aux=sqrt(pow((percentage-Const_target[i]),2)); //Diff is the euclidean distance
+        diff_aux=percentage-Const_target[i];
+        //printf("Diff_aux %d \n",diff_aux );
+        diff_aux=diff_aux*diff_aux;
+        //printf("Diff_aux %d \n",diff_aux );
+        diff_aux=sqrt(diff_aux);
+        //printf("Diff_aux %d \n",diff_aux );
+        //printf("Diff %d \n",diff);
+
+
         if(diff_aux<diff){
+            //std::cout<<" diff aux is "<<diff_aux<<" diff is "<<diff<<" i is "<<i<<std::endl;
             timeStep=i;
+            diff=diff_aux;
+            //printf("i -> %d", i);
+            //printf("Time Step %d \n",timeStep);
+
         }
     }
+
 
     //Set new positions of the robot using dEncRaw
     std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
@@ -213,13 +246,14 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //Fitness of the actual point= percentage of the wall painted
 
-    //Calculate percentage
+    //Calculate new percentage
+    Npaint=0;
     for(int i=0;i<sizeof(sqPaintedAux);i++){
         if(sqPaintedAux[i]==1){
             Npaint++;
         }
     }
-    percentage=(Npaint/sizeof(sqPaintedAux))*100;
+    percentage=(Npaint/NSQUARES)*100;
 
 //    std::valarray<int> myvalarray (sqPaintedAux,sizeof(sqPaintedAux));
 //    percentage.push_back(( (float)myvalarray.sum()/(sizeof(sqPaintedAux)))*100);
@@ -262,8 +296,14 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //The fit is the L2 norm between the current features, and the t+1 feature environment.
     double fit;
-    fit=sqrt(pow((percentage-Const_target[timeStep+1]),2)); //The fit is the euclidean distance between current feature and t+1
-
+    printf("EL TIME STEP ES EL SIGUIENTE:: %d \n",timeStep);
+    printf("El percentage es:: %f", percentage);
+    printf("El Consta target es:: %f \n", Const_target[timeStep+1]);
+    //fit=sqrt(pow((percentage-Const_target[timeStep+1]),2)); //The fit is the euclidean distance between current feature and t+1. Since 1 dimension euclidean distance equals difference.
+    fit=percentage-Const_target[timeStep+1];
+    fit=fit*fit;
+    //printf("Diff_aux %d \n",diff_aux );
+    fit=sqrt(fit);
     //featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
 
     //TODO: fit= sqrt(percentage²-percentage_now²) This has to be equivalent to the DTW discrepancy i think is the L2 norm.
