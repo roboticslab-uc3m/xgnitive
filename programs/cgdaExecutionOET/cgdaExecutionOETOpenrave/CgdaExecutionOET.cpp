@@ -15,8 +15,8 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
     // attach it to the environment:
     penv->AttachViewer(viewer);
     // finally you call the viewer's infinite loop (this is why you need a separate thread):
-   bool showgui = true;
- //   bool showgui = false;
+    //bool showgui = true;
+    bool showgui = false;
     viewer->main(showgui);
 }
 
@@ -33,7 +33,7 @@ bool CgdaExecutionOET::init(int argc, char **argv)
     {
         stringstream ss(argv[i+2]);
         ss >> sqPainted[i];
-        printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
+        //printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
     }
 
 
@@ -76,8 +76,7 @@ bool CgdaExecutionOET::init(int argc, char **argv)
     int* pconst_evaluations= &const_evaluations;
     *pconst_evaluations=0;
 
-       //numberOfPoints=1;
-           StateP state (new State);
+    StateP state (new State);
 
            //NOTE: WITH PARALLEL EXECUTION NEW ALGORITHMS FAIL.
 //           //PSOInheritance
@@ -129,19 +128,24 @@ bool CgdaExecutionOET::init(int argc, char **argv)
            state->run();
 
 
-           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
 //           for(unsigned int i=0; i<numberOfPoints; i++) {
 
-//           vector<IndividualP> bestInd;
-//           FloatingPoint::FloatingPoint* genBest;
-//           vector<double> bestPoints;
+           vector<IndividualP> bestInd;
+           FloatingPoint::FloatingPoint* genBest;
+           vector<double> bestPoints;
 
-//           bestInd = state->getHoF()->getBest();
-//           genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
-//           bestPoints = genBest->realValue;
-//           results.push_back(bestPoints[0]);
-//           results.push_back(bestPoints[1]);
-//           results.push_back(bestPoints[2]);
+           bestInd = state->getHoF()->getBest();
+           genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
+           bestPoints = genBest->realValue;
+           results.push_back(bestPoints[0]);
+           results.push_back(bestPoints[1]);
+           results.push_back(bestPoints[2]);
+           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 1 \n");
+
+           functionMinEvalOp->individualExecution(results);
+
+           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 \n");
+
 
 //           //*******************************************************************************************//
 //           //                              FILE OUTPUT FOR DEBUGGING                                    //
@@ -206,8 +210,6 @@ bool CgdaExecutionOET::init(int argc, char **argv)
 //           nalg1.reset();
 //           nalg2.reset();
 //           nalg3.reset();
-           //state.reset();
-           //delete functionMinEvalOp;
      //  }
 
 //       printf("-begin-\n");
