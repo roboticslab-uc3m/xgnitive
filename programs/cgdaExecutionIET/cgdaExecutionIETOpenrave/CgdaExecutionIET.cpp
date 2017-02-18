@@ -21,22 +21,13 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 }
 
 /************************************************************************/
-
-// system::run("cgdaExecutionIET parameters.txt 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0")
-
-bool CgdaExecutionIET::init(int argc, char **argv)
-{
-
-    sqPainted.resize(argc-2);
-
-    for(int i=0;i<argc-2;i++)
-    {
-        stringstream ss(argv[i+2]);
-        ss >> sqPainted[i];
-        printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
-    }
-
-
+//Uncomment for PAINT
+int numberOfPoints=17;
+//Uncomment for WAX
+//int numberOfPoints=9;
+double time=0;
+double evaluations=0;
+bool CgdaExecutionIET::init() {
     RaveInitialize(true); // start openrave core
     penv = RaveCreateEnvironment(); // create the main environment
     RaveSetDebugLevel(Level_Debug);
@@ -48,7 +39,7 @@ bool CgdaExecutionIET::init(int argc, char **argv)
     std::vector<RobotBasePtr> robots;
     penv->GetRobots(robots);
     std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
-    probot = robots.at(0);
+    probot = robots.at(0);    
 
     //Uncomment for pause before start
     //std::cin.get();
@@ -76,21 +67,21 @@ bool CgdaExecutionIET::init(int argc, char **argv)
     int* pconst_evaluations= &const_evaluations;
     *pconst_evaluations=0;
 
-       //numberOfPoints=1;
+
+       for(unsigned int i=0; i<numberOfPoints; i++) {
            StateP state (new State);
 
-           //NOTE: WITH PARALLEL EXECUTION NEW ALGORITHMS FAIL.
-//           //PSOInheritance
-//           PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
-//           state->addAlgorithm(nalg1);
+           //PSOInheritance
+           PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
+           state->addAlgorithm(nalg1);
 
-//           //PSOFuzzy
-//           PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
-//           state->addAlgorithm(nalg2);
+           //PSOFuzzy
+           PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
+           state->addAlgorithm(nalg2);
 
-//           //ConstrainedSST
-//           ConstrainedSSTP nalg3 = (ConstrainedSSTP) new ConstrainedSST;
-//           state->addAlgorithm(nalg3);
+           //ConstrainedSST
+           ConstrainedSSTP nalg3 = (ConstrainedSSTP) new ConstrainedSST;
+           state->addAlgorithm(nalg3);
 
            // set the evaluation operator
            CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
@@ -104,27 +95,22 @@ bool CgdaExecutionIET::init(int argc, char **argv)
            functionMinEvalOp->setPenv(penv);
            functionMinEvalOp->setPcontrol(pcontrol);
            functionMinEvalOp->setResults(presults);
-           functionMinEvalOp->setPsqPainted(&sqPainted);
            //Uncomment only for CgdaConstrained
 
            state->setEvalOp(functionMinEvalOp);
 
-           //unsigned int* pIter= &i;
-           ////unsigned int j=0;
-           ////unsigned int* pIter= &j;
-           ////functionMinEvalOp->setIter(pIter);
+           unsigned int* pIter= &i;
+           functionMinEvalOp->setIter(pIter);
 
-           //printf("---------------------------> i:%d\n",i);
+           printf("---------------------------> i:%d\n",i);
            int newArgc = 2;
            //PAINT
-           char *newArgv[2] = { (char*)"unusedFirstParam", argv[1] };
-           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
+           char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
            //WAX
            //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params_WAX.xml" };
 
-           bool ok = state->initialize(newArgc, newArgv);
-           if (!ok) printf("buuu\n");
-           else printf("yeah\n");
+
+           state->initialize(newArgc, newArgv);
 
 //           int parameter=100;
 //           voidP sptr;
@@ -136,97 +122,92 @@ bool CgdaExecutionIET::init(int argc, char **argv)
 //               std::cout<<"Valor  "<<*par<<std::endl;
 //           }
 
-           //int numberOfPoints =1;
-           printf("HASTA AQUI LLEGUE  1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
-           //std::cout<<state->getPopulation()->at(0)<<std::endl;
+
+
            state->run();
-           printf("HASTA AQUI LLEGUE  2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 
-           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
-//           for(unsigned int i=0; i<numberOfPoints; i++) {
+           vector<IndividualP> bestInd;
+           FloatingPoint::FloatingPoint* genBest;
+           vector<double> bestPoints;
 
-//           vector<IndividualP> bestInd;
-//           FloatingPoint::FloatingPoint* genBest;
-//           vector<double> bestPoints;
+           bestInd = state->getHoF()->getBest();
+           genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
+           bestPoints = genBest->realValue;
+           results.push_back(bestPoints[0]);
+           results.push_back(bestPoints[1]);
+           results.push_back(bestPoints[2]);
 
-//           bestInd = state->getHoF()->getBest();
-//           genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
-//           bestPoints = genBest->realValue;
-//           results.push_back(bestPoints[0]);
-//           results.push_back(bestPoints[1]);
-//           results.push_back(bestPoints[2]);
+           //*******************************************************************************************//
+           //                              FILE OUTPUT FOR DEBUGGING                                    //
+           //*******************************************************************************************//
+           evaluations+=state->getEvaluations();
+           time+=state->getElapsedTime();
 
-//           //*******************************************************************************************//
-//           //                              FILE OUTPUT FOR DEBUGGING                                    //
-//           //*******************************************************************************************//
-//           evaluations+=state->getEvaluations();
-//           time+=state->getElapsedTime();
+           std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
+           std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<time <<std::endl;
+           //IndividualP bestParticle = selBestOp->select( *deme );
 
-//           std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
-//           std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<time <<std::endl;
-//           //IndividualP bestParticle = selBestOp->select( *deme );
+           std::ofstream myfile1;
+           myfile1.open("TrajectoryterationsvsEvaluations.txt", std::ios_base::app);
+           if (myfile1.is_open()){
+               myfile1<<i<<" ";
+               myfile1<<time<<" ";
+               //if(const_evaluations==0){ //If we are not using the constrained version output normal
+               //     myfile1<<evaluations<<" ";
+               //}
+               //else{
+                   myfile1<<const_evaluations<<" ";
+               //}
+               myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
+           }          
 
-//           std::ofstream myfile1;
-//           myfile1.open("TrajectoryterationsvsEvaluations.txt", std::ios_base::app);
-//           if (myfile1.is_open()){
-//               //myfile1<<i<<" ";
-//               myfile1<<time<<" ";
-//               //if(const_evaluations==0){ //If we are not using the constrained version output normal
-//               //     myfile1<<evaluations<<" ";
-//               //}
-//               //else{
-//                   myfile1<<const_evaluations<<" ";
-//               //}
-//               myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
+           std::ofstream myfile2;
+           myfile2.open("PercentageWall.txt", std::ios_base::app);
+           if (myfile2.is_open()){
+               myfile2<<std::endl;
+           }
+
+           std::ofstream myfile3;
+           myfile3.open("X.txt", std::ios_base::app);
+           if (myfile3.is_open()){
+               myfile3<<std::endl;
+           }
+
+           std::ofstream myfile4;
+           myfile4.open("Y.txt", std::ios_base::app);
+           if (myfile4.is_open()){
+               myfile4<<std::endl;
+           }
+
+           std::ofstream myfile5;
+           myfile5.open("Z.txt", std::ios_base::app);
+           if (myfile5.is_open()){
+               myfile5<<std::endl;
+           }
+
+           //This following line is only for the execution of the result trajectory of the paint task
+//           if(i==(numberOfPoints-1)){
+//                //std::cout<<"LETS EXECUTE"<<std::endl;
+//                functionMinEvalOp->trajectoryExecution(numberOfPoints, results);
 //           }
-
-//           std::ofstream myfile2;
-//           myfile2.open("PercentageWall.txt", std::ios_base::app);
-//           if (myfile2.is_open()){
-//               myfile2<<std::endl;
-//           }
-
-//           std::ofstream myfile3;
-//           myfile3.open("X.txt", std::ios_base::app);
-//           if (myfile3.is_open()){
-//               myfile3<<std::endl;
-//           }
-
-//           std::ofstream myfile4;
-//           myfile4.open("Y.txt", std::ios_base::app);
-//           if (myfile4.is_open()){
-//               myfile4<<std::endl;
-//           }
-
-//           std::ofstream myfile5;
-//           myfile5.open("Z.txt", std::ios_base::app);
-//           if (myfile5.is_open()){
-//               myfile5<<std::endl;
-//           }
-
-//           //This following line is only for the execution of the result trajectory of the paint task
-////           if(i==(numberOfPoints-1)){
-////                //std::cout<<"LETS EXECUTE"<<std::endl;
-////                functionMinEvalOp->trajectoryExecution(numberOfPoints, results);
-////           }
-//           //*******************************************************************************************//
+           //*******************************************************************************************//
 
 
-//           //*******************************************************************************************//
-//           //                                      END                                                  //
-//           //*******************************************************************************************//
-//           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
-//           nalg1.reset();
-//           nalg2.reset();
-//           nalg3.reset();
-           //state.reset();
-           //delete functionMinEvalOp;
-     //  }
+           //*******************************************************************************************//
+           //                                      END                                                  //
+           //*******************************************************************************************//
+           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
+           nalg1.reset();
+           nalg2.reset();
+           nalg3.reset();
+           state.reset();
+           delete functionMinEvalOp;
+       }
 
-//       printf("-begin-\n");
-//       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);
-//       printf("\n-end-\n");
+       printf("-begin-\n");
+       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);
+       printf("\n-end-\n");
     return true;
 }
 

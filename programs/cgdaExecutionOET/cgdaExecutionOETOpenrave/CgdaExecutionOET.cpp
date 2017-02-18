@@ -3,7 +3,7 @@
 //Copyright: Universidad Carlos III de Madrid (C) 2016
 //Authors: jgvictores, raulfdzbis, smorante
 
-#include "CgdaExecutionIET.hpp"
+#include "CgdaExecutionOET.hpp"
 
 namespace teo
 {
@@ -22,11 +22,19 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 
 /************************************************************************/
 
-// system::run("cgdaExecutionIET parameters.txt
+// system::run("cgdaExecutionOET parameters.txt 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0")
 
-bool CgdaExecutionIET::init(int argc, char **argv)
+bool CgdaExecutionOET::init(int argc, char **argv)
 {
 
+    sqPainted.resize(argc-2);
+
+    for(int i=0;i<argc-2;i++)
+    {
+        stringstream ss(argv[i+2]);
+        ss >> sqPainted[i];
+        printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
+    }
 
 
     RaveInitialize(true); // start openrave core
@@ -96,41 +104,33 @@ bool CgdaExecutionIET::init(int argc, char **argv)
            functionMinEvalOp->setPenv(penv);
            functionMinEvalOp->setPcontrol(pcontrol);
            functionMinEvalOp->setResults(presults);
+           functionMinEvalOp->setPsqPainted(&sqPainted);
            //Uncomment only for CgdaConstrained
 
            state->setEvalOp(functionMinEvalOp);
 
            //unsigned int* pIter= &i;
-           unsigned int j=0;
-           unsigned int* pIter= &j;
-           functionMinEvalOp->setIter(pIter);
+           ////unsigned int j=0;
+           ////unsigned int* pIter= &j;
+           ////functionMinEvalOp->setIter(pIter);
 
            //printf("---------------------------> i:%d\n",i);
            int newArgc = 2;
            //PAINT
            char *newArgv[2] = { (char*)"unusedFirstParam", argv[1] };
-           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params.xml" };
+           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml" };
            //WAX
-           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionIET/conf/evMono_ecf_params_WAX.xml" };
+           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params_WAX.xml" };
 
            bool ok = state->initialize(newArgc, newArgv);
-           if (!ok) printf("buuu\n");
-           else printf("yeah\n");
+           if (!ok) printf("Failed Initialization\n");
+           else printf("State Initialized\n");
 
-//           int parameter=100;
-//           voidP sptr;
-//           sptr= (voidP)&parameter;
-//           state->getRegistry()->modifyEntry("term.fitnessval", sptr);
-
-//           if(state->getRegistry()->isModified("term.fitnessval")){
-//               std::cout<<"Ha sido modificado!!!!"<<std::endl;
-//               std::cout<<"Valor  "<<*par<<std::endl;
-//           }
-
-           int numberOfPoints =1;
-    for(unsigned int i=0; i<numberOfPoints; i++) {
            state->run();
-           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
+
+
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
+//           for(unsigned int i=0; i<numberOfPoints; i++) {
 
 //           vector<IndividualP> bestInd;
 //           FloatingPoint::FloatingPoint* genBest;
@@ -208,7 +208,7 @@ bool CgdaExecutionIET::init(int argc, char **argv)
 //           nalg3.reset();
            //state.reset();
            //delete functionMinEvalOp;
-       }
+     //  }
 
 //       printf("-begin-\n");
 //       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);

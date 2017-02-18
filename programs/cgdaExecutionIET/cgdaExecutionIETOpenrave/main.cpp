@@ -31,6 +31,6 @@
 int main(int argc, char **argv) {
 
     teo::CgdaExecutionIET mod;
-    return mod.init(argc,argv);
+    return mod.init();
 }
 

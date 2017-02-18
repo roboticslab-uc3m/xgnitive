@@ -3,11 +3,11 @@
 /**
  *
  * @ingroup xgnitive_programs
- * \defgroup cgdaExecutionIETOpenrave cgdaExecutionIETOpenrave
+ * \defgroup cgdaExecutionOETOpenrave cgdaExecutionOETOpenrave
  *
  * @brief Executes the cgda system using Incrementally Evolved Trajectories (IET) strategy in an Openrave Simulation.
  *
- * @section cgdaExecutionIETOpenrave_legal Legal
+ * @section cgdaExecutionOETOpenrave_legal Legal
  *
  * Copyright: 2016 (C) Universidad Carlos III de Madrid
  *
@@ -18,7 +18,7 @@
  *
  * <hr>
  *
- * This file can be edited at cgdaExecutionIETOpenrave
+ * This file can be edited at cgdaExecutionOETOpenrave
  *
  */
 
@@ -26,11 +26,11 @@
 //Copyright: Universidad Carlos III de Madrid (C) 2016
 //Authors: jgvictores, raulfdzbis, smorante
 
-#include "CgdaExecutionIET.hpp"
+#include "CgdaExecutionOET.hpp"
 
 int main(int argc, char **argv) {
 
-    teo::CgdaExecutionIET mod;
+    teo::CgdaExecutionOET mod;
     return mod.init(argc,argv);
 }
 

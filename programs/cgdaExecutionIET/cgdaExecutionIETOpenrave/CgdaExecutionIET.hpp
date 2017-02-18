@@ -21,20 +21,16 @@
 namespace teo
 {
 
-class CgdaExecutionIET
-{
-
-public:
-    bool init(int argc, char **argv);
-
-private:
+class CgdaExecutionIET  {
+  private:
     RobotBasePtr probot;
     EnvironmentBasePtr penv;
     ControllerBasePtr pcontrol;
-    vector<int> sqPainted;
+
+  public:
+    bool init();
 };
 
 } //namespace TEO
-
 #endif  // __EV_MONO_HPP__
 

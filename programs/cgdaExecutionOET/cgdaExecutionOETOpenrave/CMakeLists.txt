@@ -2,9 +2,9 @@
 
 cmake_minimum_required(VERSION 2.6)
 
-IF (ENABLE_cgdaExecutionIETOpenrave)
+IF (ENABLE_cgdaExecutionOETOpenrave)
 
-set(KEYWORD "cgdaExecutionIETOpenrave")
+set(KEYWORD "cgdaExecutionOETOpenrave")
 
 # Find YARP.
 find_package(YARP REQUIRED)
@@ -43,7 +43,7 @@ link_directories(${OpenRAVE_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS} ${XGNITIVE_LINK_
 # Set up our main executable.
 if (folder_source)
   add_executable(${KEYWORD} ${folder_source} ${folder_header})
-  #add_executable(evMono main.cpp CgdaExecutionIET.cpp CgdaFitnessFunction.cpp)
+  #add_executable(evMono main.cpp CgdaExecutionOET.cpp CgdaFitnessFunction.cpp)
   target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${orocos_kdl_LIBRARIES} ${XGNITIVE_LIBRARIES} ${OpenCV_LIBS} ${OpenRAVE_LIBRARIES} ${OpenRAVE_CORE_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ecf)
   install(TARGETS ${KEYWORD} DESTINATION bin)
 else (folder_source)
@@ -54,5 +54,5 @@ endif (folder_source)
   #  set(XGNITIVE_DEFINITIONS ${XGNITIVE_DEFINITIONS} -std=c++ CACHE INTERNAL "appended definitions")
 
 
-ENDIF (ENABLE_cgdaExecutionIETOpenrave)
+ENDIF (ENABLE_cgdaExecutionoOETOpenrave)
 

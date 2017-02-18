@@ -13,7 +13,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
-#include <valarray>     // std::valarray
+//#include <valarray>     // std::valarray
 
 #include "DtwCgdaRecognition.hpp"
 
@@ -38,12 +38,15 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
         pFresults = _presults;
 
     }
+    void setPsqPainted( vector<int>* _psqPainted){
+        psqPainted = _psqPainted;
 
-    void setIter(unsigned int* _piter){
-        pIter = _piter;
     }
 
-  public:
+//    void setIter(unsigned int* _piter){
+//        pIter = _piter;
+//    }
+
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
 	bool initialize(StateP);
@@ -55,8 +58,10 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
     KinBodyPtr _objPtr;
     KinBodyPtr _wall;
     vector<double>* pFresults;
-    unsigned int* pIter;
+    //unsigned int* pIter;
     Transform T_base_object;
+    vector<int>* psqPainted;
+
 };
 
 typedef boost::shared_ptr<CgdaPaintFitnessFunction> CgdaPaintFitnessFunctionP;

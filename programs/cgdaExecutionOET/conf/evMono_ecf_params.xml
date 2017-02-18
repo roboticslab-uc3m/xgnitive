@@ -40,7 +40,7 @@
 		<!--<Entry key="log.level">1</Entry> -->
 		<!--<Entry key="log.filename">HallOfFame.xml</Entry> -->
 		<!--<Entry key="term.eval">20</Entry>-->
-		<!--<Entry key="term.fitnessval">0</Entry> -->
+		<Entry key="term.fitnessval">0</Entry> -->
 		<Entry key="term.stagnation">20</Entry>  <!--gens w/o improvement. def 30 -->
 		<!-- Batch mode -->
 		<!-- <Entry key="batch.repeats">1</Entry>--> <!-- number of independent runs to perform (default: 1) -->

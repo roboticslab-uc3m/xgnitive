@@ -7,9 +7,10 @@
 #define __EV_MONO_HPP__
 
 #include "CgdaPaintFitnessFunction.hpp"
-#include "CgdaWaxFitnessFunction.hpp"
-#include "CgdaConstrainedPaintFitnessFunction.hpp"
-#include "CgdaConstrainedWaxFitnessFunction.hpp"
+//The following cost functions are not yet implemented in OET
+//#include "CgdaWaxFitnessFunction.hpp"
+//#include "CgdaConstrainedPaintFitnessFunction.hpp"
+//#include "CgdaConstrainedWaxFitnessFunction.hpp"
 
 
 #include "AlgPSOInheritance.hpp"
@@ -21,7 +22,7 @@
 namespace teo
 {
 
-class CgdaExecutionIET
+class CgdaExecutionOET
 {
 
 public:
@@ -31,7 +32,7 @@ private:
     RobotBasePtr probot;
     EnvironmentBasePtr penv;
     ControllerBasePtr pcontrol;
-
+    vector<int> sqPainted;
 };
 
 } //namespace TEO
