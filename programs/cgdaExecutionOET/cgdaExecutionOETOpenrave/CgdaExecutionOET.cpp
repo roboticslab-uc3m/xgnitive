@@ -65,7 +65,7 @@ bool CgdaExecutionOET::init(int argc, char **argv)
     std::string localPaint("/cgda/");
     localPaint.append( ss.str() );
     localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
-    rpcClient.open(remotePaint);
+    rpcClient.open(localPaint);
     if( ! yarp::os::Network::connect(localPaint,remotePaint) )
     {
         CD_ERROR("Paint server not available.\n");
