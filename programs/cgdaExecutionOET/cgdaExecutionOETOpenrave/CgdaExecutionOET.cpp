@@ -26,6 +26,51 @@ void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
 
 bool CgdaExecutionOET::init(int argc, char **argv)
 {
+    portNum = -1;
+    bool open = false;
+    while( ! open )
+    {
+        portNum++;
+        std::string s("/cgda");
+        std::stringstream ss;
+        ss << portNum;
+        s.append(ss.str());
+        open = port.open(s);
+    }
+
+    //-- ROBOT ARM
+    std::stringstream ss;
+    ss << portNum;
+    yarp::os::Property ddOptions;
+    ddOptions.put("device","remote_controlboard");
+    std::string remote("/");
+    remote.append( ss.str() );
+    remote.append( "/teoSim/rightArm" );
+    ddOptions.put("remote",remote);
+    std::string local("/cgda/");
+    local.append( ss.str() );
+    local.append( "/teoSim/rightArm" );
+    ddOptions.put("local",local);
+    dd.open(ddOptions);
+    if(!dd.isValid()) {
+       CD_ERROR("Robot device not available.\n");
+       dd.close();
+       yarp::os::Network::fini();
+       return false;
+    }
+    //-- Paint server
+    std::string remotePaint("/");
+    remotePaint.append( ss.str() );
+    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+    std::string localPaint("/cgda/");
+    localPaint.append( ss.str() );
+    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+    rpcClient.open(remotePaint);
+    if( ! yarp::os::Network::connect(localPaint,remotePaint) )
+    {
+        CD_ERROR("Paint server not available.\n");
+        return false;
+    }
 
     sqPainted.resize(argc-2);
 
@@ -102,6 +147,7 @@ bool CgdaExecutionOET::init(int argc, char **argv)
            //CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
            //functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
 
+           dd.view(functionMinEvalOp->iPositionControl);
            functionMinEvalOp->setPRobot(probot);
            functionMinEvalOp->setPenv(penv);
            functionMinEvalOp->setPcontrol(pcontrol);
@@ -148,6 +194,8 @@ bool CgdaExecutionOET::init(int argc, char **argv)
            functionMinEvalOp->individualExecution(results);
 
            printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 \n");
+           port.close();
+
 
 
 //           //*******************************************************************************************//

@@ -15,6 +15,8 @@
 #include <string>
 //#include <valarray>     // std::valarray
 
+#include <yarp/dev/all.h>
+
 #include "DtwCgdaRecognition.hpp"
 
 using namespace OpenRAVE;
@@ -61,6 +63,8 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
     //unsigned int* pIter;
     Transform T_base_object;
     vector<int>* psqPainted;
+
+    yarp::dev::IPositionControl *iPositionControl;
 
 };
 

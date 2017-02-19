@@ -6,6 +6,9 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
+#include <yarp/os/all.h>
+#include <yarp/dev/all.h>
+
 #include <ctime>
 
 #include "CgdaPaintFitnessFunction.hpp"
@@ -31,10 +34,19 @@ public:
     bool init(int argc, char **argv);
 
 private:
+    // Openrave
     RobotBasePtr probot;
     EnvironmentBasePtr penv;
     ControllerBasePtr pcontrol;
     vector<int> sqPainted;
+
+    // YARP
+    yarp::os::Network yarp;
+    yarp::os::Port port;
+    int portNum;
+    yarp::dev::PolyDriver dd;
+    yarp::os::RpcClient rpcClient;
+
 };
 
 } //namespace TEO
