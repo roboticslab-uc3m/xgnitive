@@ -9,29 +9,18 @@ namespace teo
 {
 /************************************************************************/
 
-void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
-    ViewerBasePtr viewer = RaveCreateViewer(penv,viewername);
-    BOOST_ASSERT(!!viewer);
-    // attach it to the environment:
-    penv->AttachViewer(viewer);
-    // finally you call the viewer's infinite loop (this is why you need a separate thread):
-    //bool showgui = true;
-    bool showgui = false;
-    viewer->main(showgui);
-}
-
-/************************************************************************/
-
 // system::run("cgdaExecutionOET parameters.txt 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0")
 
 bool CgdaExecutionOET::init(int argc, char **argv)
 {
+    std::clock_t start = std::clock();
+
     portNum = -1;
     bool open = false;
     while( ! open )
     {
         portNum++;
-        std::string s("/cgda");
+        std::string s("/good");
         std::stringstream ss;
         ss << portNum;
         s.append(ss.str());
@@ -58,6 +47,8 @@ bool CgdaExecutionOET::init(int argc, char **argv)
        yarp::os::Network::fini();
        return false;
     }
+    CD_SUCCESS("Robot device available.\n");
+
     //-- Paint server
     std::string remotePaint("/");
     remotePaint.append( ss.str() );
@@ -66,55 +57,14 @@ bool CgdaExecutionOET::init(int argc, char **argv)
     localPaint.append( ss.str() );
     localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
     rpcClient.open(localPaint);
-    if( ! yarp::os::Network::connect(localPaint,remotePaint) )
-    {
-        CD_ERROR("Paint server not available.\n");
-        return false;
-    }
+    do {
+        yarp::os::Network::connect(localPaint,remotePaint);
+        printf("Wait to connect to paint server...\n");
+        yarp::os::Time::delay(0.1);
+    } while( rpcClient.getOutputCount() == 0 );
+    CD_SUCCESS("Paint server available.\n");
 
-    sqPainted.resize(argc-2);
-
-    for(int i=0;i<argc-2;i++)
-    {
-        stringstream ss(argv[i+2]);
-        ss >> sqPainted[i];
-        //printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
-    }
-
-    std::clock_t start = std::clock();
-
-    RaveInitialize(true); // start openrave core
-    penv = RaveCreateEnvironment(); // create the main environment
-    RaveSetDebugLevel(Level_Debug);
-    string viewername = "qtcoin";
-    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
-    string scenefilename = "../../share/models/teo_cgda_iros.env.xml";
-    penv->Load(scenefilename); // load the scene
-    //-- Get Robot 0
-    std::vector<RobotBasePtr> robots;
-    penv->GetRobots(robots);
-    std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
-    probot = robots.at(0);
-
-    //Uncomment for pause before start
-    //std::cin.get();
-
-//    pcontrol = RaveCreateController(penv,"idealcontroller");
-    // Create the controllers, make sure to lock environment! (prevents changes)
-//    {
-//      EnvironmentMutex::scoped_lock lock(penv->GetMutex());
-//      std::vector<int> dofindices(probot->GetDOF());
-//      for(int i = 0; i < probot->GetDOF(); ++i) {
-//        dofindices[i] = i;
-//      }
-//      probot->SetController(pcontrol,dofindices,1); // control everything
-//    }
-
-    KinBodyPtr objPtr = penv->GetKinBody("object");
-    if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
-    else printf("[WorldRpcResponder] good grab\n");
-    probot->SetActiveManipulator("rightArm");
-    probot->Grab(objPtr);
+    CD_SUCCESS("----- All good for %d.\n",portNum);
 
     std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 
@@ -123,6 +73,8 @@ bool CgdaExecutionOET::init(int argc, char **argv)
     int const_evaluations;
     int* pconst_evaluations= &const_evaluations;
     *pconst_evaluations=0;
+
+    yarp::os::Time::delay(1);
 
     StateP state (new State);
 
@@ -149,11 +101,11 @@ bool CgdaExecutionOET::init(int argc, char **argv)
 
            dd.view(functionMinEvalOp->iPositionControl);
            functionMinEvalOp->setPRpcClient(&rpcClient);
-           functionMinEvalOp->setPRobot(probot);
-           functionMinEvalOp->setPenv(penv);
-           functionMinEvalOp->setPcontrol(pcontrol);
-           functionMinEvalOp->setResults(presults);
-           functionMinEvalOp->setPsqPainted(&sqPainted);
+//           functionMinEvalOp->setPRobot(probot);
+//           functionMinEvalOp->setPenv(penv);
+//           functionMinEvalOp->setPcontrol(pcontrol);
+           //functionMinEvalOp->setResults(presults);
+           //functionMinEvalOp->setPsqPainted(&sqPainted);
            //Uncomment only for CgdaConstrained
 
            state->setEvalOp(functionMinEvalOp);
@@ -171,6 +123,7 @@ bool CgdaExecutionOET::init(int argc, char **argv)
            //WAX
            //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params_WAX.xml" };
 
+           printf("Pre Initialization\n");
            bool ok = state->initialize(newArgc, newArgv);
            if (!ok) printf("Failed Initialization\n");
            else printf("State Initialized\n");

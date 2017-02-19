@@ -35,10 +35,10 @@ public:
 
 private:
     // Openrave
-    RobotBasePtr probot;
-    EnvironmentBasePtr penv;
-    ControllerBasePtr pcontrol;
-    vector<int> sqPainted;
+    //RobotBasePtr probot;
+    //EnvironmentBasePtr penv;
+    //ControllerBasePtr pcontrol;
+    //vector<int> sqPainted;
 
     // YARP
     yarp::os::Network yarp;
