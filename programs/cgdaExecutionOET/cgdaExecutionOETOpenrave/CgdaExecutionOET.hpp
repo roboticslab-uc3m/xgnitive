@@ -6,6 +6,8 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
+#include <ctime>
+
 #include "CgdaPaintFitnessFunction.hpp"
 //The following cost functions are not yet implemented in OET
 //#include "CgdaWaxFitnessFunction.hpp"

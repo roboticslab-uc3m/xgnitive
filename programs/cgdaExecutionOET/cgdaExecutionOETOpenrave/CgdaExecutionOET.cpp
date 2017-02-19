@@ -36,6 +36,7 @@ bool CgdaExecutionOET::init(int argc, char **argv)
         //printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
     }
 
+    std::clock_t start = std::clock();
 
     RaveInitialize(true); // start openrave core
     penv = RaveCreateEnvironment(); // create the main environment
@@ -53,22 +54,24 @@ bool CgdaExecutionOET::init(int argc, char **argv)
     //Uncomment for pause before start
     //std::cin.get();
 
-    pcontrol = RaveCreateController(penv,"idealcontroller");
+//    pcontrol = RaveCreateController(penv,"idealcontroller");
     // Create the controllers, make sure to lock environment! (prevents changes)
-    {
-      EnvironmentMutex::scoped_lock lock(penv->GetMutex());
-      std::vector<int> dofindices(probot->GetDOF());
-      for(int i = 0; i < probot->GetDOF(); ++i) {
-        dofindices[i] = i;
-      }
-      probot->SetController(pcontrol,dofindices,1); // control everything
-    }
+//    {
+//      EnvironmentMutex::scoped_lock lock(penv->GetMutex());
+//      std::vector<int> dofindices(probot->GetDOF());
+//      for(int i = 0; i < probot->GetDOF(); ++i) {
+//        dofindices[i] = i;
+//      }
+//      probot->SetController(pcontrol,dofindices,1); // control everything
+//    }
 
     KinBodyPtr objPtr = penv->GetKinBody("object");
     if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
     else printf("[WorldRpcResponder] good grab\n");
     probot->SetActiveManipulator("rightArm");
     probot->Grab(objPtr);
+
+    std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 
     vector< double > results;
     vector< double >* presults= &results;

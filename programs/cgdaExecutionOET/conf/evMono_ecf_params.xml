@@ -43,12 +43,12 @@
 		<Entry key="term.fitnessval">0</Entry> -->
 		<Entry key="term.stagnation">20</Entry>  <!--gens w/o improvement. def 30 -->
 		<!-- Batch mode -->
-		<!-- <Entry key="batch.repeats">1</Entry>--> <!-- number of independent runs to perform (default: 1) -->
+		<!--<Entry key="batch.repeats">1</Entry>--> <!-- number of independent runs to perform (default: 1) -->
 		<!-- Parallel Execution-->
 		<Entry key="parallel.type">eval</Entry>--> <!-- implicit parallelization method: eval - evaluation, mut - mutation + eval -->
-                <Entry key="parallel.jobsize">5</Entry>--> <!-- implicit parallelization jobsize (individuals per job) -->
+                <Entry key="parallel.jobsize">1</Entry>--> <!-- implicit parallelization jobsize (individuals per job) -->
 		<Entry key="parallel.sync">1</Entry>-->-->  <!-- implicit parallelization synchronicity: 0 - async, 1 - sync (default: 0) -->
-		<!--<Entry key="population.demes">2</Entry>-->  <!-- number of demes (default: 1) -->
+		<!--<Entry key="population.demes">8</Entry>-->  <!-- number of demes (default: 1) -->
 	        <!--<Entry key="migration.freq">10</Entry>-->  <!-- individuals are exchanged each 'freq' generations (default: none) -->
 
 

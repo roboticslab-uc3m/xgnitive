@@ -79,20 +79,20 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
             for(int i=0;i<NSQUARES;i++){ //Ugly way of delimiting the size of sqpainted in the loop
                 std::cout<<psqPainted->operator[](i)<<" ";
             }
-            std::cout<<"<"<<std::endl;
+         //   std::cout<<"<"<<std::endl;
             psqPainted->operator [](i)=1;
-            for(int i=0;i<NSQUARES;i++){ //Ugly way of delimiting the size of sqpainted in the loop
-                std::cout<<psqPainted->operator[](i)<<" ";
-            }
-            std::cout<<">"<<std::endl;
-            std::cout<<"I have painted a happy little tree \n"<<std::endl;
+//            for(int i=0;i<NSQUARES;i++){ //Ugly way of delimiting the size of sqpainted in the loop
+//                std::cout<<psqPainted->operator[](i)<<" ";
+//            }
+//            std::cout<<">"<<std::endl;
+           // std::cout<<"I have painted a happy little tree \n"<<std::endl;
         }
         else{
-            std::cout<<"NO HAPPY TREE"<<std::endl;
+          //  std::cout<<"NO HAPPY TREE"<<std::endl;
         }
         ss.str("");
     }
-    std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
+    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
     std::ofstream myfile1;
     myfile1.open("memoryOET.txt", std::ios_base::out );
     if (myfile1.is_open()){
@@ -135,7 +135,7 @@ bool CgdaPaintFitnessFunction::initialize(StateP state) {
         fprintf(stderr,"error: object \"wall\" does not exist.\n");
     } else printf("sucess: object \"wall\" exists.\n");
 
-    usleep(1.0 * 1000000.0);
+    //usleep(1.0 * 1000000.0);
 	return true;
 }
 
@@ -246,10 +246,10 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //Actually move the robot
     probot->SetJointValues(dEncRaw);
-    pcontrol->SetDesired(dEncRaw); //This function "resets" physics
+    /*pcontrol->SetDesired(dEncRaw); //This function "resets" physics
     while(!pcontrol->IsDone()) {
         boost::this_thread::sleep(boost::posix_time::milliseconds(1));
-    }
+    }*/
     penv->StepSimulation(0.0001);  // StepSimulation must be given in seconds
 
     //Get new object (pen) position

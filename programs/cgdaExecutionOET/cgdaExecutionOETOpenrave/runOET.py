@@ -57,7 +57,7 @@ while 1:
     with open('memoryOET.txt', 'w'): pass
 
     #args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", "1","0", "0","0","0","0", "1","1","0","0","0","0","0","0","0","0" )
-    args = ("mpiexec", "-n", "8", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6],data_array[7],data_array[8],data_array[9],data_array[10],data_array[11],data_array[12],data_array[13],data_array[14],data_array[15] )
+    args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6],data_array[7],data_array[8],data_array[9],data_array[10],data_array[11],data_array[12],data_array[13],data_array[14],data_array[15] )
 
     popen = subprocess.Popen(args, stdout=subprocess.PIPE) #Pipe is the standard stdout
     popen.wait()
