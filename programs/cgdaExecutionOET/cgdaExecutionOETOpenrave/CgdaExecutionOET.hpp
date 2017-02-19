@@ -31,14 +31,14 @@ class CgdaExecutionOET
 {
 
 public:
-    bool init(int argc, char **argv);
+    int init(int argc, char **argv);
 
 private:
     // Openrave
     //RobotBasePtr probot;
     //EnvironmentBasePtr penv;
     //ControllerBasePtr pcontrol;
-    //vector<int> sqPainted;
+    vector<int> sqPainted;
 
     // YARP
     yarp::os::Network yarp;

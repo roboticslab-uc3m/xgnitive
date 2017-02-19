@@ -60,14 +60,14 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //printf("sqPainted check %d \n", psqPainted->operator [](0));
 
-    yarp::os::Bottle cmd,res;
-    cmd.addString("get");
-    if( ! pRpcClient->write(cmd,res) )
-        printf("write failed\n");
+//    yarp::os::Bottle cmd,res;
+//    cmd.addString("get");
+//    if( ! pRpcClient->write(cmd,res) )
+//        printf("write failed\n");
 
-    for(int i=0;i<res.size();i++)
+    for(int i=0;i<psqPainted->size();i++)
     {
-        Npaint += res.get(i).asInt();
+        Npaint += psqPainted->operator [](i);
     }
 
     //Percentage of the wall painted before evolution
@@ -124,14 +124,17 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Calculate new percentage
 
     Npaint=0;
-
+    yarp::os::Time::delay(0.040);
     yarp::os::Bottle cmd2,res2;
     cmd2.addString("get");
     pRpcClient->write(cmd2,res2);
     for(int i=0;i<res2.size();i++)
     {
-        Npaint += res2.get(i).asInt();
+        if ( res2.get(i).asInt() || psqPainted->operator [](i) )  // logic OR;
+            Npaint ++;
     }
+
+
 
 
     //Fitness of the actual point= percentage of the wall painted
@@ -190,13 +193,22 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //  cout << std::endl << " percentage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
     cout << std::endl << " fit: " << fit << " ";
+
+    std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
+    //Actually move the robot
+    iPositionControl->positionMove(dEncRaw2.data());
+
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
+
     return fit;
 }
 
 /************************************************************************/
 
 void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
-    std::cout<<"I have entered Execution"<<std::endl;
+    std::cout<<"I have entered Execution "<<std::endl;
 
     //Move robot
 
@@ -209,21 +221,20 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
     dEncRaw[4] = 45;
 
     iPositionControl->positionMove(dEncRaw.data());
-
-    /*pcontrol->SetDesired(dEncRaw); // This function "resets" physics
-    std::cout<<"I have entered Execution 2"<<std::endl;
-    while(!pcontrol->IsDone()) {
-        boost::this_thread::sleep(boost::posix_time::milliseconds(1));
-    }*/
-    std::cout<<"I have entered Execution 3"<<std::endl;
-
+    yarp::os::Time::delay(0.040);
     yarp::os::Bottle cmd,res;
     cmd.addString("get");
     pRpcClient->write(cmd,res);
-//    for(int i=0;res.size();i++)
-//    {
-
-//    }
+    printf("got: %s\n",res.toString().c_str());
+    for(int i=0;i<res.size();i++)
+    {
+        //std::cout << "past: ";
+        //std::cout << psqPainted->operator [](i);
+        //std::cout << " present: ";
+        psqPainted->operator [](i) |= res.get(i).asInt();  // logic OR
+        //std::cout << psqPainted->operator [](i);
+        //std::cout << std::endl;
+    }
 
     std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
     std::ofstream myfile1;
@@ -234,16 +245,24 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
             //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
             //myfile1<<"1 ";
             //myfile1<< psqPainted->operator[](i) << " ";
-            myfile1<< res.get(i).asInt();
+            myfile1<< psqPainted->operator [](i);
             myfile1<< " ";
             //std::cout<<psqPainted->operator[](i) << " ";
-            std::cout<<res.get(i).asInt();
-            std::cout<<myfile1<< " ";
+            std::cout<< psqPainted->operator [](i);
+            std::cout<< " ";
         }
         std::cout<<std::endl;
         //myfile1<<bestInd[0]->fitness->getValue()<<std::endl; //Fitness
     }
     myfile1.close();
+
+    std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
+    //Actually move the robot
+    iPositionControl->positionMove(dEncRaw2.data());
+
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
 
     sleep(1);
 

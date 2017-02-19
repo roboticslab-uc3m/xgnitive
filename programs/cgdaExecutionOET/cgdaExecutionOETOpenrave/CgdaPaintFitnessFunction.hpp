@@ -39,12 +39,12 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
 //    }
 //    void setResults( vector<double>* _presults){
 //        pFresults = _presults;
-
 //    }
-//    void setPsqPainted( vector<int>* _psqPainted){
-//        psqPainted = _psqPainted;
 
-//    }
+    void setPsqPainted( vector<int>* _psqPainted){
+        psqPainted = _psqPainted;
+    }
+
     void setPRpcClient( yarp::os::RpcClient* pRpcClient){
         this->pRpcClient = pRpcClient;
     }
@@ -66,7 +66,7 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
     //vector<double>* pFresults;
     //unsigned int* pIter;
     //Transform T_base_object;
-    //vector<int>* psqPainted;
+    vector<int>* psqPainted;
 
     yarp::dev::IPositionControl *iPositionControl;
     yarp::os::RpcClient* pRpcClient;

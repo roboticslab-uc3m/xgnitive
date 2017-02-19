@@ -11,9 +11,18 @@ namespace teo
 
 // system::run("cgdaExecutionOET parameters.txt 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0")
 
-bool CgdaExecutionOET::init(int argc, char **argv)
+int CgdaExecutionOET::init(int argc, char **argv)
 {
     std::clock_t start = std::clock();
+
+    sqPainted.resize(argc-2);
+
+    for(int i=0;i<argc-2;i++)
+    {
+        stringstream ss(argv[i+2]);
+        ss >> sqPainted[i];
+        //printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
+    }
 
     portNum = -1;
     bool open = false;
@@ -45,7 +54,7 @@ bool CgdaExecutionOET::init(int argc, char **argv)
        CD_ERROR("Robot device not available.\n");
        dd.close();
        yarp::os::Network::fini();
-       return false;
+       return 1;
     }
     CD_SUCCESS("Robot device available.\n");
 
@@ -105,7 +114,7 @@ bool CgdaExecutionOET::init(int argc, char **argv)
 //           functionMinEvalOp->setPenv(penv);
 //           functionMinEvalOp->setPcontrol(pcontrol);
            //functionMinEvalOp->setResults(presults);
-           //functionMinEvalOp->setPsqPainted(&sqPainted);
+           functionMinEvalOp->setPsqPainted(&sqPainted);
            //Uncomment only for CgdaConstrained
 
            state->setEvalOp(functionMinEvalOp);
@@ -220,7 +229,8 @@ bool CgdaExecutionOET::init(int argc, char **argv)
 //       printf("-begin-\n");
 //       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);
 //       printf("\n-end-\n");
-    return true;
+           printf("bye!\n");
+    return 0;
 }
 
 /************************************************************************/
