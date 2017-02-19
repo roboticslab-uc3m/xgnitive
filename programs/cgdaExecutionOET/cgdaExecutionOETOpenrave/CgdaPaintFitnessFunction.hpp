@@ -15,6 +15,7 @@
 #include <string>
 //#include <valarray>     // std::valarray
 
+#include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
 #include "DtwCgdaRecognition.hpp"
@@ -44,6 +45,9 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
         psqPainted = _psqPainted;
 
     }
+    void setPRpcClient( yarp::os::RpcClient* pRpcClient){
+        _pRpcClient = pRpcClient;
+    }
 
 //    void setIter(unsigned int* _piter){
 //        pIter = _piter;
@@ -65,6 +69,7 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
     vector<int>* psqPainted;
 
     yarp::dev::IPositionControl *iPositionControl;
+    yarp::os::RpcClient* _pRpcClient;
 
 };
 

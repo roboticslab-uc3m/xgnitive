@@ -148,6 +148,7 @@ bool CgdaExecutionOET::init(int argc, char **argv)
            //functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
 
            dd.view(functionMinEvalOp->iPositionControl);
+           functionMinEvalOp->setPRpcClient(&rpcClient);
            functionMinEvalOp->setPRobot(probot);
            functionMinEvalOp->setPenv(penv);
            functionMinEvalOp->setPcontrol(pcontrol);
