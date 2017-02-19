@@ -1,22 +1,13 @@
 <application>
-<name>iros2017 App</name>
+<name>iros2017-pga App</name>
 
-<!-- paintSquaresOnScreen -->
-
-    <module> <!-- Xgnitive -->
-        <name>paintSquaresOnScreen.py</name>
+    <module>
+        <name>/usr/bin/python</name>
+	<parameters>/home/raul/repos/openrave-yarp-plugins/examples/openrave-YarpRobotPaintSquares.py</parameters>
+	<prefix>/0</prefix>
 	<node>localhost</node>
     </module>
 
-    <module> <!-- teoHead -->
-        <name>voxelOccupancyDetection</name>
-        <node>localhost</node>
-    </module>
-
-    <connection>
-        <from>/voxelOccupancyDetection/state:o</from>
-        <to>/painted_wall</to>
-    </connection>
         
 </application>
 
