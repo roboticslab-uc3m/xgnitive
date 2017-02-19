@@ -124,7 +124,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Calculate new percentage
 
     Npaint=0;
-    yarp::os::Time::delay(0.040);
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
     yarp::os::Bottle cmd2,res2;
     cmd2.addString("get");
     pRpcClient->write(cmd2,res2);
@@ -208,10 +208,12 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 /************************************************************************/
 
 void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
-    std::cout<<"I have entered Execution "<<std::endl;
+    //yarp::os::Time::delay(1);
+    //std::cout<<"1 I have entered Execution "<<std::endl;
+    //yarp::os::Time::delay(1);
+
 
     //Move robot
-
     std::vector<double> dEncRaw(6);  // NUM_MOTORS
 
     dEncRaw[0] = results[0];  // simple
@@ -220,8 +222,16 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
 
     dEncRaw[4] = 45;
 
+    //std::cout<<"2 I have entered Execution "<<std::endl;
+    //yarp::os::Time::delay(1);
+
     iPositionControl->positionMove(dEncRaw.data());
-    yarp::os::Time::delay(0.040);
+
+    //yarp::os::Time::delay(1);
+    //std::cout<<"3 I have entered Execution "<<std::endl;
+
+
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
     yarp::os::Bottle cmd,res;
     cmd.addString("get");
     pRpcClient->write(cmd,res);

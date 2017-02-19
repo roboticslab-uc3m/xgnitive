@@ -8,8 +8,8 @@ set(KEYWORD "cgdaExecutionOETOpenrave")
 
 # Find YARP.
 find_package(YARP REQUIRED)
-find_package(OpenRAVE REQUIRED)
-find_package(Boost COMPONENTS iostreams python thread system)
+#find_package(OpenRAVE REQUIRED)
+#find_package(Boost COMPONENTS iostreams python thread system)
 
 # Find KDL
 FIND_PACKAGE(orocos_kdl REQUIRED)

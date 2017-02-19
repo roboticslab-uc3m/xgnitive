@@ -71,7 +71,7 @@ while 1:
     out, err = popen.communicate()
     errcode = popen.returncode
     #output = popen.stdout.read()
-    print out
+    ###print out
     print"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
 print "Done!!!!!"

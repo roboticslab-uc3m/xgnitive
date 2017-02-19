@@ -69,7 +69,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     do {
         yarp::os::Network::connect(localPaint,remotePaint);
         printf("Wait to connect to paint server...\n");
-        yarp::os::Time::delay(0.1);
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( rpcClient.getOutputCount() == 0 );
     CD_SUCCESS("Paint server available.\n");
 
@@ -83,7 +83,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     int* pconst_evaluations= &const_evaluations;
     *pconst_evaluations=0;
 
-    yarp::os::Time::delay(1);
+    //yarp::os::Time::delay(1);
 
     StateP state (new State);
 
@@ -137,28 +137,55 @@ int CgdaExecutionOET::init(int argc, char **argv)
            if (!ok) printf("Failed Initialization\n");
            else printf("State Initialized\n");
 
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 10 \n");
+          //yarp::os::Time::delay(1);
+
            state->run();
 
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 20 \n");
+          //yarp::os::Time::delay(1);
 
 //           for(unsigned int i=0; i<numberOfPoints; i++) {
 
-           vector<IndividualP> bestInd;
            FloatingPoint::FloatingPoint* genBest;
            vector<double> bestPoints;
 
-           bestInd = state->getHoF()->getBest();
-           genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
+           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0 \n");
+
+           HallOfFameP phof = state->getHoF();
+           //printf("phof: %p\n",phof.get());
+
+           vector<IndividualP> bestInds = phof->getBest();
+           //printf("bestInds.size: %d\n",bestInds.size());
+
+           //printf("bestInds[0]: %p\n",bestInds[0].get());
+
+           if( bestInds[0].get() == NULL )
+           {
+               //printf("bestInds[0].get() == NULL\n");
+               port.close();
+               printf("bye!\n");
+               return 0;
+           }
+
+           //printf("indiv: %s\n",(bestInds[0])->toString().c_str() );
+
+           genBest = (FloatingPoint::FloatingPoint*) (bestInds[0])->getGenotype().get();
            bestPoints = genBest->realValue;
+
            results.push_back(bestPoints[0]);
            results.push_back(bestPoints[1]);
            results.push_back(bestPoints[2]);
-           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 1 \n");
+
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 1 \n");
+
+           //yarp::os::Time::delay(20);
+
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 \n");
 
            functionMinEvalOp->individualExecution(results);
 
-           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 \n");
-           port.close();
-
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 3 \n");
 
 
 //           //*******************************************************************************************//
@@ -229,7 +256,9 @@ int CgdaExecutionOET::init(int argc, char **argv)
 //       printf("-begin-\n");
 //       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);
 //       printf("\n-end-\n");
-           printf("bye!\n");
+
+    port.close();
+    printf("bye!\n");
     return 0;
 }
 

@@ -9,7 +9,7 @@
 #include <string>
 #include <fstream>
 #include <ecf/ECF.h>
-#include <openrave-core.h>
+//#include <openrave-core.h>
 #include <vector>
 #include <sstream>
 #include <string>
@@ -20,7 +20,9 @@
 
 #include "DtwCgdaRecognition.hpp"
 
-using namespace OpenRAVE;
+#define DEFAULT_DELAY_S 0.010
+
+//using namespace OpenRAVE;
 
 namespace teo
 {
