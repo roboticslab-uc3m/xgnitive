@@ -114,7 +114,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     dEncRaw[4] = 45;
 
     //Actually move the robot
-    iPositionControl->positionMove(dEncRaw.data());
+    mentalPositionControl->positionMove(dEncRaw.data());
     /*pcontrol->SetDesired(dEncRaw); //This function "resets" physics
     while(!pcontrol->IsDone()) {
         boost::this_thread::sleep(boost::posix_time::milliseconds(1));
@@ -196,7 +196,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
     //Actually move the robot
-    iPositionControl->positionMove(dEncRaw2.data());
+    mentalPositionControl->positionMove(dEncRaw2.data());
 
     yarp::os::Bottle cmd3,res3;
     cmd3.addString("reset");
@@ -225,7 +225,7 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
     //std::cout<<"2 I have entered Execution "<<std::endl;
     //yarp::os::Time::delay(1);
 
-    iPositionControl->positionMove(dEncRaw.data());
+    mentalPositionControl->positionMove(dEncRaw.data());
 
     //yarp::os::Time::delay(1);
     //std::cout<<"3 I have entered Execution "<<std::endl;
@@ -268,7 +268,7 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
 
     std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
     //Actually move the robot
-    iPositionControl->positionMove(dEncRaw2.data());
+    mentalPositionControl->positionMove(dEncRaw2.data());
 
     yarp::os::Bottle cmd3,res3;
     cmd3.addString("reset");
