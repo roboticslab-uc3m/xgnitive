@@ -75,6 +75,8 @@ screen.fill(WHITE)
 # YARP Callback
 class DataProcessor(yarp.PortReader): 
     #received = yarp.Bottle()
+    self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+
     def read(self,connection):
         print("in DataProcessor.read")
         if not(connection.isValid()):
@@ -97,6 +99,12 @@ class DataProcessor(yarp.PortReader):
 	    screen.fill(WHITE)
 	else:
 	    pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
+            self.myMem[ (3-y) + (4*x) ] = 1
+            f = open('memoryOET.txt', 'w')
+            line = '%s' % ' '.join(map(str, self.myMem))
+            target.write(line)
+            f.close()
+
 	
         if not(ok):
             print("Failed to read input")
