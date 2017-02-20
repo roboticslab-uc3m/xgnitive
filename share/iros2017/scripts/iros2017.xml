@@ -5,6 +5,7 @@
 
     <module> <!-- Xgnitive -->
         <name>paintSquaresOnScreen.py</name>
+        <workdir>/home/teo/repos/xgnitive/build/bin</workdir>
 	<node>localhost</node>
     </module>
 

@@ -74,8 +74,9 @@ screen.fill(WHITE)
 
 # YARP Callback
 class DataProcessor(yarp.PortReader): 
-    #received = yarp.Bottle()
-    self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+
+    def myInit(self):
+        self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
 
     def read(self,connection):
         print("in DataProcessor.read")
@@ -86,23 +87,27 @@ class DataProcessor(yarp.PortReader):
         bout = yarp.Bottle()
         print("Trying to read from connection")
         ok = bin.read(connection)
-	#self.received=bin;
-	
-	#Lets paint the rectangle
-	x=(hrect-1-bin.get(0).asInt()) #The transfromation is done to change the x axis
-	y=bin.get(1).asInt()
-	print("Pos rectangle")
-	print x
-	print y
-	if(x==-1 and y==4):
-	    print("IM CLEANING")
-	    screen.fill(WHITE)
-	else:
-	    pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
-            self.myMem[ (3-y) + (4*x) ] = 1
+        #self.received=bin;
+        
+        #Lets paint the rectangle
+        x=(hrect-1-bin.get(0).asInt()) #The transfromation is done to change the x axis
+        y=bin.get(1).asInt()
+        print("Pos rectangle")
+        print x
+        print y
+        if(x==-1 and y==4):
+            print("IM CLEANING")
+            screen.fill(WHITE)
+        else:
+            pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
+            place = (3-y) + (4*x)
+            print 'place',place
+            print 'self.myMem',self.myMem
+            print 'size',len(self.myMem)
+            self.myMem[ place ] = 1
             f = open('memoryOET.txt', 'w')
             line = '%s' % ' '.join(map(str, self.myMem))
-            target.write(line)
+            f.write(line)
             f.close()
 
 	
@@ -121,6 +126,7 @@ class DataProcessor(yarp.PortReader):
 
 p = yarp.Port()
 r = DataProcessor()
+r.myInit()
 p.setReader(r)
 p.open("/painted_wall");
 # Loop as long as done == False
