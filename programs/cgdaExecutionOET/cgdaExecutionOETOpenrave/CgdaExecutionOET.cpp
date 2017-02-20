@@ -9,23 +9,11 @@ namespace teo
 {
 /************************************************************************/
 
-void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
-    ViewerBasePtr viewer = RaveCreateViewer(penv,viewername);
-    BOOST_ASSERT(!!viewer);
-    // attach it to the environment:
-    penv->AttachViewer(viewer);
-    // finally you call the viewer's infinite loop (this is why you need a separate thread):
-    //bool showgui = true;
-    bool showgui = false;
-    viewer->main(showgui);
-}
-
-/************************************************************************/
-
 // system::run("cgdaExecutionOET parameters.txt 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0")
 
-bool CgdaExecutionOET::init(int argc, char **argv)
+int CgdaExecutionOET::init(int argc, char **argv)
 {
+    std::clock_t start = std::clock();
 
     sqPainted.resize(argc-2);
 
@@ -36,40 +24,56 @@ bool CgdaExecutionOET::init(int argc, char **argv)
         //printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
     }
 
-    std::clock_t start = std::clock();
+    portNum = -1;
+    bool open = false;
+    while( ! open )
+    {
+        portNum++;
+        std::string s("/good");
+        std::stringstream ss;
+        ss << portNum;
+        s.append(ss.str());
+        open = port.open(s);
+    }
 
-    RaveInitialize(true); // start openrave core
-    penv = RaveCreateEnvironment(); // create the main environment
-    RaveSetDebugLevel(Level_Debug);
-    string viewername = "qtcoin";
-    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
-    string scenefilename = "../../share/models/teo_cgda_iros.env.xml";
-    penv->Load(scenefilename); // load the scene
-    //-- Get Robot 0
-    std::vector<RobotBasePtr> robots;
-    penv->GetRobots(robots);
-    std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
-    probot = robots.at(0);
+    //-- ROBOT ARM
+    std::stringstream ss;
+    ss << portNum;
+    yarp::os::Property ddOptions;
+    ddOptions.put("device","remote_controlboard");
+    std::string remote("/");
+    remote.append( ss.str() );
+    remote.append( "/teoSim/rightArm" );
+    ddOptions.put("remote",remote);
+    std::string local("/cgda/");
+    local.append( ss.str() );
+    local.append( "/teoSim/rightArm" );
+    ddOptions.put("local",local);
+    dd.open(ddOptions);
+    if(!dd.isValid()) {
+       CD_ERROR("Robot device not available.\n");
+       dd.close();
+       yarp::os::Network::fini();
+       return 1;
+    }
+    CD_SUCCESS("Robot device available.\n");
 
-    //Uncomment for pause before start
-    //std::cin.get();
+    //-- Paint server
+    std::string remotePaint("/");
+    remotePaint.append( ss.str() );
+    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+    std::string localPaint("/cgda/");
+    localPaint.append( ss.str() );
+    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+    rpcClient.open(localPaint);
+    do {
+        yarp::os::Network::connect(localPaint,remotePaint);
+        printf("Wait to connect to paint server...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClient.getOutputCount() == 0 );
+    CD_SUCCESS("Paint server available.\n");
 
-//    pcontrol = RaveCreateController(penv,"idealcontroller");
-    // Create the controllers, make sure to lock environment! (prevents changes)
-//    {
-//      EnvironmentMutex::scoped_lock lock(penv->GetMutex());
-//      std::vector<int> dofindices(probot->GetDOF());
-//      for(int i = 0; i < probot->GetDOF(); ++i) {
-//        dofindices[i] = i;
-//      }
-//      probot->SetController(pcontrol,dofindices,1); // control everything
-//    }
-
-    KinBodyPtr objPtr = penv->GetKinBody("object");
-    if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
-    else printf("[WorldRpcResponder] good grab\n");
-    probot->SetActiveManipulator("rightArm");
-    probot->Grab(objPtr);
+    CD_SUCCESS("----- All good for %d.\n",portNum);
 
     std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 
@@ -78,6 +82,8 @@ bool CgdaExecutionOET::init(int argc, char **argv)
     int const_evaluations;
     int* pconst_evaluations= &const_evaluations;
     *pconst_evaluations=0;
+
+    //yarp::os::Time::delay(1);
 
     StateP state (new State);
 
@@ -102,10 +108,12 @@ bool CgdaExecutionOET::init(int argc, char **argv)
            //CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
            //functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
 
-           functionMinEvalOp->setPRobot(probot);
-           functionMinEvalOp->setPenv(penv);
-           functionMinEvalOp->setPcontrol(pcontrol);
-           functionMinEvalOp->setResults(presults);
+           dd.view(functionMinEvalOp->iPositionControl);
+           functionMinEvalOp->setPRpcClient(&rpcClient);
+//           functionMinEvalOp->setPRobot(probot);
+//           functionMinEvalOp->setPenv(penv);
+//           functionMinEvalOp->setPcontrol(pcontrol);
+           //functionMinEvalOp->setResults(presults);
            functionMinEvalOp->setPsqPainted(&sqPainted);
            //Uncomment only for CgdaConstrained
 
@@ -124,30 +132,60 @@ bool CgdaExecutionOET::init(int argc, char **argv)
            //WAX
            //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params_WAX.xml" };
 
+           printf("Pre Initialization\n");
            bool ok = state->initialize(newArgc, newArgv);
            if (!ok) printf("Failed Initialization\n");
            else printf("State Initialized\n");
 
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 10 \n");
+          //yarp::os::Time::delay(1);
+
            state->run();
 
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 20 \n");
+          //yarp::os::Time::delay(1);
 
 //           for(unsigned int i=0; i<numberOfPoints; i++) {
 
-           vector<IndividualP> bestInd;
            FloatingPoint::FloatingPoint* genBest;
            vector<double> bestPoints;
 
-           bestInd = state->getHoF()->getBest();
-           genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
+           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0 \n");
+
+           HallOfFameP phof = state->getHoF();
+           //printf("phof: %p\n",phof.get());
+
+           vector<IndividualP> bestInds = phof->getBest();
+           //printf("bestInds.size: %d\n",bestInds.size());
+
+           //printf("bestInds[0]: %p\n",bestInds[0].get());
+
+           if( bestInds[0].get() == NULL )
+           {
+               //printf("bestInds[0].get() == NULL\n");
+               port.close();
+               printf("bye!\n");
+               return 0;
+           }
+
+           //printf("indiv: %s\n",(bestInds[0])->toString().c_str() );
+
+           genBest = (FloatingPoint::FloatingPoint*) (bestInds[0])->getGenotype().get();
            bestPoints = genBest->realValue;
+
            results.push_back(bestPoints[0]);
            results.push_back(bestPoints[1]);
            results.push_back(bestPoints[2]);
-           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 1 \n");
+
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 1 \n");
+
+           //yarp::os::Time::delay(20);
+
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 \n");
 
            functionMinEvalOp->individualExecution(results);
 
-           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 \n");
+           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 3 \n");
 
 
 //           //*******************************************************************************************//
@@ -218,7 +256,10 @@ bool CgdaExecutionOET::init(int argc, char **argv)
 //       printf("-begin-\n");
 //       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);
 //       printf("\n-end-\n");
-    return true;
+
+    port.close();
+    printf("bye!\n");
+    return 0;
 }
 
 /************************************************************************/

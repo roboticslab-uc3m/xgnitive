@@ -11,107 +11,6 @@
 namespace teo
 {
 
-void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
-    std::cout<<"I have entered Execution"<<std::endl;
-
-    // // reset square color
-    for(int i=0; i<NSQUARES; i++){
-           stringstream rr;
-           rr << "square" << i;
-           _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
-           rr.str("");
-    }
-
-    // set squares to sqpainted
-    for(int i=0; i<(NSQUARES); i++)
-    {
-        stringstream rr;
-        rr << "square" << i;
-        if(psqPainted->operator [](i)==0){ //Only reset the ones being zero
-            _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
-        }
-        else{
-            _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
-        }
-        rr.str("");
-    }
-
-    //Move robot
-
-    std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
-
-    dEncRaw[0+4] = results[0]*M_PI/180.0;  // simple
-    dEncRaw[1+4] = -results[1]*M_PI/180.0;  // simple
-    dEncRaw[3+4] = results[2]*M_PI/180.0;  // simple
-
-    dEncRaw[4+4] = 45*M_PI/180.0;
-
-    probot->SetJointValues(dEncRaw);
-    /*pcontrol->SetDesired(dEncRaw); // This function "resets" physics
-    std::cout<<"I have entered Execution 2"<<std::endl;
-    while(!pcontrol->IsDone()) {
-        boost::this_thread::sleep(boost::posix_time::milliseconds(1));
-    }*/
-    std::cout<<"I have entered Execution 3"<<std::endl;
-
-    penv->StepSimulation(0.0001);  // StepSimulation must be given in seconds
-    T_base_object = _objPtr->GetTransform();
-    double T_base_object_x = T_base_object.trans.x;
-    double T_base_object_y = T_base_object.trans.y;
-    double T_base_object_z = T_base_object.trans.z;
-
-
-    //Update psqpainted to the new values
-    for(int i=0; i<(NSQUARES); i++){
-        stringstream ss;
-        ss << "square" << i;
-        Transform pos_square = _wall->GetLink(ss.str())->GetGeometry(0)->GetTransform();
-
-        double pos_square_x = pos_square.trans.x;
-        double pos_square_y = pos_square.trans.y;
-        double pos_square_z = pos_square.trans.z;
-        double dist = sqrt(pow(T_base_object_x-pos_square_x,2)
-                                  + pow(T_base_object_y-pos_square_y,2)
-                                  + pow(T_base_object_z-pos_square_z,2) );
-
-        if (dist < 0.13){
-            _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
-            for(int i=0;i<NSQUARES;i++){ //Ugly way of delimiting the size of sqpainted in the loop
-                std::cout<<psqPainted->operator[](i)<<" ";
-            }
-         //   std::cout<<"<"<<std::endl;
-            psqPainted->operator [](i)=1;
-//            for(int i=0;i<NSQUARES;i++){ //Ugly way of delimiting the size of sqpainted in the loop
-//                std::cout<<psqPainted->operator[](i)<<" ";
-//            }
-//            std::cout<<">"<<std::endl;
-           // std::cout<<"I have painted a happy little tree \n"<<std::endl;
-        }
-        else{
-          //  std::cout<<"NO HAPPY TREE"<<std::endl;
-        }
-        ss.str("");
-    }
-    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
-    std::ofstream myfile1;
-    myfile1.open("memoryOET.txt", std::ios_base::out );
-    if (myfile1.is_open()){
-        for(int i=0;i<psqPainted->size();i++)
-        {
-            //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
-            //myfile1<<"1 ";
-            myfile1<< psqPainted->operator[](i) << " ";
-            std::cout<<psqPainted->operator[](i) << " ";
-        }
-        std::cout<<std::endl;
-        //myfile1<<bestInd[0]->fitness->getValue()<<std::endl; //Fitness
-    }
-    myfile1.close();
-
-    sleep(1);
-
-}
-
 /************************************************************************/
 
 void CgdaPaintFitnessFunction::registerParameters(StateP state) {
@@ -123,19 +22,7 @@ void CgdaPaintFitnessFunction::registerParameters(StateP state) {
 bool CgdaPaintFitnessFunction::initialize(StateP state) {
 
     voidP sptr = state->getRegistry()->getEntry("function"); // get parameter value
-    stringstream msg;
-    _objPtr = penv->GetKinBody("object");
-    _wall = penv->GetKinBody("wall");
 
-    if(!_objPtr) {
-        fprintf(stderr,"error: object \"object\" does not exist.\n");
-    } else printf("sucess: object \"object\" exists.\n");
-
-    if(!_wall) {
-        fprintf(stderr,"error: object \"wall\" does not exist.\n");
-    } else printf("sucess: object \"wall\" exists.\n");
-
-    //usleep(1.0 * 1000000.0);
 	return true;
 }
 
@@ -167,40 +54,22 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     double percentage;
     //int sqPaintedAux [psqPainted->size()] = { };
-    int sqPaintedAux [NSQUARES] = { }; //Variable used in order to not change psqPainted
+    //int sqPaintedAux [NSQUARES] = { }; //Variable used in order to not change psqPainted
     int timeStep;
     double Npaint=0;
 
     //printf("sqPainted check %d \n", psqPainted->operator [](0));
 
-    //reset square color
-   for(int i=0; i<(16); i++){
-           stringstream rr;
-           rr << "square" << i;
-           _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
-           rr.str("");
-    }
+//    yarp::os::Bottle cmd,res;
+//    cmd.addString("get");
+//    if( ! pRpcClient->write(cmd,res) )
+//        printf("write failed\n");
 
-    // DEBUG
-    for(int i=0; i<(psqPainted->size()); i++){
-
-        //std::cout<<"El cuadrado "<<i<<" está pintado? "<<psqPainted->operator [](i)<<std::endl;
-    }
-    // Set Wall color to psqPainted variable and init sqPainted auxiliary variable
-    for(int i=0; i<(psqPainted->size()); i++)
+    for(int i=0;i<psqPainted->size();i++)
     {
-        stringstream rr;
-        rr << "square" << i;
-        if(psqPainted->operator [](i)==0){ //Only reset the ones being zero
-            _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
-        }
-        else{
-            sqPaintedAux[i]=1;
-            _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
-            Npaint++;
-        }
-        rr.str("");
+        Npaint += psqPainted->operator [](i);
     }
+
     //Percentage of the wall painted before evolution
     printf("EL NPAINT ES::::::: %f \n",Npaint);
     percentage=(Npaint/NSQUARES)*100;
@@ -237,57 +106,39 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
 
     //Set new positions of the robot using dEncRaw
-    std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
-    dEncRaw[0+4] = genPoints[0]*M_PI/180.0;  // simple
-    dEncRaw[1+4] = -genPoints[1]*M_PI/180.0;  // simple
-    dEncRaw[3+4] = genPoints[2]*M_PI/180.0;  // simple
+    std::vector<double> dEncRaw(6);  // NUM_MOTORS
+    dEncRaw[0] = genPoints[0];  // simple
+    dEncRaw[1] = -genPoints[1];  // simple
+    dEncRaw[3] = genPoints[2];  // simple
 
-    dEncRaw[4+4] = 45*M_PI/180.0;
+    dEncRaw[4] = 45;
 
     //Actually move the robot
-    probot->SetJointValues(dEncRaw);
+    iPositionControl->positionMove(dEncRaw.data());
     /*pcontrol->SetDesired(dEncRaw); //This function "resets" physics
     while(!pcontrol->IsDone()) {
         boost::this_thread::sleep(boost::posix_time::milliseconds(1));
     }*/
-    penv->StepSimulation(0.0001);  // StepSimulation must be given in seconds
+    //penv->StepSimulation(0.0001);  // StepSimulation must be given in seconds
 
-    //Get new object (pen) position
-    T_base_object = _objPtr->GetTransform();
-    double T_base_object_x = T_base_object.trans.x;
-    double T_base_object_y = T_base_object.trans.y;
-    double T_base_object_z = T_base_object.trans.z;
+    //Calculate new percentage
 
-    //change square color in function of dist (end-effector,square)
-    for(int i=0; i<(psqPainted->size()); i++){
-        stringstream ss;
-        ss << "square" << i;
-        Transform pos_square = _wall->GetLink(ss.str())->GetGeometry(0)->GetTransform();
+    Npaint=0;
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Bottle cmd2,res2;
+    cmd2.addString("get");
+    pRpcClient->write(cmd2,res2);
+    for(int i=0;i<res2.size();i++)
+    {
+        if ( res2.get(i).asInt() || psqPainted->operator [](i) )  // logic OR;
+            Npaint ++;
+    }
 
-        double pos_square_x = pos_square.trans.x;
-        double pos_square_y = pos_square.trans.y;
-        double pos_square_z = pos_square.trans.z;
-        double dist = sqrt(pow(T_base_object_x-pos_square_x,2)
-                           + pow(T_base_object_y-pos_square_y,2)
-                           + pow(T_base_object_z-pos_square_z,2) );
 
-        if (dist < 0.13){
-            _wall->GetLink(ss.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.0, 0.0, 1.0));
-            sqPaintedAux[i]=1;
-            //std::cout<<"I have painted a happy little tree "<<std::endl;
-        }
-            ss.str("");
-   }
+
 
     //Fitness of the actual point= percentage of the wall painted
 
-    //Calculate new percentage
-    Npaint=0;
-    for(int i=0;i<NSQUARES;i++){
-        if(sqPaintedAux[i]==1){
-            Npaint++;
-        }
-    }
     percentage=(Npaint/NSQUARES)*100;
 
 //    std::valarray<int> myvalarray (sqPaintedAux,sizeof(sqPaintedAux));
@@ -342,7 +193,89 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //  cout << std::endl << " percentage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
     cout << std::endl << " fit: " << fit << " ";
+
+    std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
+    //Actually move the robot
+    iPositionControl->positionMove(dEncRaw2.data());
+
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
+
     return fit;
+}
+
+/************************************************************************/
+
+void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
+    //yarp::os::Time::delay(1);
+    //std::cout<<"1 I have entered Execution "<<std::endl;
+    //yarp::os::Time::delay(1);
+
+
+    //Move robot
+    std::vector<double> dEncRaw(6);  // NUM_MOTORS
+
+    dEncRaw[0] = results[0];  // simple
+    dEncRaw[1] = -results[1];  // simple
+    dEncRaw[3] = results[2];  // simple
+
+    dEncRaw[4] = 45;
+
+    //std::cout<<"2 I have entered Execution "<<std::endl;
+    //yarp::os::Time::delay(1);
+
+    iPositionControl->positionMove(dEncRaw.data());
+
+    //yarp::os::Time::delay(1);
+    //std::cout<<"3 I have entered Execution "<<std::endl;
+
+
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Bottle cmd,res;
+    cmd.addString("get");
+    pRpcClient->write(cmd,res);
+    printf("got: %s\n",res.toString().c_str());
+    for(int i=0;i<res.size();i++)
+    {
+        //std::cout << "past: ";
+        //std::cout << psqPainted->operator [](i);
+        //std::cout << " present: ";
+        psqPainted->operator [](i) |= res.get(i).asInt();  // logic OR
+        //std::cout << psqPainted->operator [](i);
+        //std::cout << std::endl;
+    }
+
+    std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
+    std::ofstream myfile1;
+    myfile1.open("memoryOET.txt", std::ios_base::out );
+    if (myfile1.is_open()){
+        for(int i=0;i<res.size();i++)
+        {
+            //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
+            //myfile1<<"1 ";
+            //myfile1<< psqPainted->operator[](i) << " ";
+            myfile1<< psqPainted->operator [](i);
+            myfile1<< " ";
+            //std::cout<<psqPainted->operator[](i) << " ";
+            std::cout<< psqPainted->operator [](i);
+            std::cout<< " ";
+        }
+        std::cout<<std::endl;
+        //myfile1<<bestInd[0]->fitness->getValue()<<std::endl; //Fitness
+    }
+    myfile1.close();
+
+    std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
+    //Actually move the robot
+    iPositionControl->positionMove(dEncRaw2.data());
+
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
+
+    sleep(1);
+
 }
 
 /************************************************************************/

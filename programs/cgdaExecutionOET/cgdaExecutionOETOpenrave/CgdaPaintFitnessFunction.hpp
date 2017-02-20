@@ -9,15 +9,20 @@
 #include <string>
 #include <fstream>
 #include <ecf/ECF.h>
-#include <openrave-core.h>
+//#include <openrave-core.h>
 #include <vector>
 #include <sstream>
 #include <string>
 //#include <valarray>     // std::valarray
 
+#include <yarp/os/all.h>
+#include <yarp/dev/all.h>
+
 #include "DtwCgdaRecognition.hpp"
 
-using namespace OpenRAVE;
+#define DEFAULT_DELAY_S 0.010
+
+//using namespace OpenRAVE;
 
 namespace teo
 {
@@ -25,22 +30,25 @@ namespace teo
 class CgdaPaintFitnessFunction : public EvaluateOp {
 
   public:
-    void setPRobot(const RobotBasePtr& _probot) {
-        probot = _probot;
-    }
-    void setPenv(const EnvironmentBasePtr& _penv){
-        penv = _penv;
-    }
-    void setPcontrol(const ControllerBasePtr& _pcontrol){
-        pcontrol = _pcontrol;
-    }
-    void setResults( vector<double>* _presults){
-        pFresults = _presults;
+//    void setPRobot(const RobotBasePtr& _probot) {
+//        probot = _probot;
+//    }
+//    void setPenv(const EnvironmentBasePtr& _penv){
+//        penv = _penv;
+//    }
+//    void setPcontrol(const ControllerBasePtr& _pcontrol){
+//        pcontrol = _pcontrol;
+//    }
+//    void setResults( vector<double>* _presults){
+//        pFresults = _presults;
+//    }
 
-    }
     void setPsqPainted( vector<int>* _psqPainted){
         psqPainted = _psqPainted;
+    }
 
+    void setPRpcClient( yarp::os::RpcClient* pRpcClient){
+        this->pRpcClient = pRpcClient;
     }
 
 //    void setIter(unsigned int* _piter){
@@ -52,15 +60,18 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
     void individualExecution(vector<double> results); //TE
-    RobotBasePtr probot;
-    EnvironmentBasePtr penv;
-    ControllerBasePtr pcontrol;
-    KinBodyPtr _objPtr;
-    KinBodyPtr _wall;
-    vector<double>* pFresults;
+    //RobotBasePtr probot;
+    //EnvironmentBasePtr penv;
+    //ControllerBasePtr pcontrol;
+    //KinBodyPtr _objPtr;
+    //KinBodyPtr _wall;
+    //vector<double>* pFresults;
     //unsigned int* pIter;
-    Transform T_base_object;
+    //Transform T_base_object;
     vector<int>* psqPainted;
+
+    yarp::dev::IPositionControl *iPositionControl;
+    yarp::os::RpcClient* pRpcClient;
 
 };
 
