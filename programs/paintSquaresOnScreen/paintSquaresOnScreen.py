@@ -50,7 +50,7 @@ RED = (255, 0, 0)
 
 
 # Set the height and width of the screen
-size = (0, 0)
+size = (1920, 1080)
 screen = pygame.display.set_mode(size)
 pygame.FULLSCREEN
  

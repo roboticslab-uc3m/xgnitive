@@ -35,28 +35,55 @@ int CgdaExecutionOET::init(int argc, char **argv)
         s.append(ss.str());
         open = port.open(s);
     }
-
-    //-- ROBOT ARM
     std::stringstream ss;
     ss << portNum;
-    yarp::os::Property ddOptions;
-    ddOptions.put("device","remote_controlboard");
-    std::string remote("/");
-    remote.append( ss.str() );
-    remote.append( "/teoSim/rightArm" );
-    ddOptions.put("remote",remote);
-    std::string local("/cgda/");
-    local.append( ss.str() );
-    local.append( "/teoSim/rightArm" );
-    ddOptions.put("local",local);
-    dd.open(ddOptions);
-    if(!dd.isValid()) {
-       CD_ERROR("Robot device not available.\n");
-       dd.close();
+
+    //-- MENTAL ROBOT ARM
+    yarp::os::Property mentalOptions;
+    mentalOptions.put("device","remote_controlboard");
+    std::string remoteMental("/");
+    remoteMental.append( ss.str() );
+    remoteMental.append( "/teoSim/rightArm" );
+    mentalOptions.put("remote",remoteMental);
+    std::string localMental("/cgdaMental/");
+    localMental.append( ss.str() );
+    localMental.append( "/teoSim/rightArm" );
+    mentalOptions.put("local",localMental);
+    mentalDevice.open(mentalOptions);
+    if(!mentalDevice.isValid()) {
+       CD_ERROR("Mental robot device not available.\n");
+       mentalDevice.close();
        yarp::os::Network::fini();
        return 1;
     }
-    CD_SUCCESS("Robot device available.\n");
+    CD_SUCCESS("Mental robot device available.\n");
+
+    //-- REAL ROBOT ARM
+    yarp::os::Property realOptions;
+    realOptions.put("device","remote_controlboard");
+    std::string realRemote;
+    bool realRealRemote = false;
+    if( realRealRemote )
+    {
+        realRemote.append( "/teo/rightArm" );
+    }
+    else
+    {
+        realRemote.append( "/1/teoSim/rightArm" );
+    }
+    realOptions.put("remote",realRemote);
+    std::string realLocal("/cgdaReal/");
+    realLocal.append( ss.str() );
+    realLocal.append( "/teo/rightArm" );
+    realOptions.put("local",realLocal);
+    realDevice.open(realOptions);
+    if(!realDevice.isValid()) {
+       CD_ERROR("Real robot device not available.\n");
+       realDevice.close();
+       yarp::os::Network::fini();
+       return 1;
+    }
+    CD_SUCCESS("Real robot device available.\n");
 
     //-- Paint server
     std::string remotePaint("/");
@@ -108,7 +135,8 @@ int CgdaExecutionOET::init(int argc, char **argv)
            //CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
            //functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
 
-           dd.view(functionMinEvalOp->iPositionControl);
+           mentalDevice.view(functionMinEvalOp->mentalPositionControl);
+           realDevice.view(functionMinEvalOp->realPositionControl);
            functionMinEvalOp->setPRpcClient(&rpcClient);
 //           functionMinEvalOp->setPRobot(probot);
 //           functionMinEvalOp->setPenv(penv);

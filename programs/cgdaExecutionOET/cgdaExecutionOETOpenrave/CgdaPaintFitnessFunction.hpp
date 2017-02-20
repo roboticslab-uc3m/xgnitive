@@ -70,7 +70,8 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
     //Transform T_base_object;
     vector<int>* psqPainted;
 
-    yarp::dev::IPositionControl *iPositionControl;
+    yarp::dev::IPositionControl *mentalPositionControl;
+    yarp::dev::IPositionControl *realPositionControl;
     yarp::os::RpcClient* pRpcClient;
 
 };
