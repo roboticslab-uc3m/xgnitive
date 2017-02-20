@@ -266,13 +266,15 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
     }
     myfile1.close();
 
+    //-- Move the mental robot to 0 so env can be reset
     std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
-    //Actually move the robot
     mentalPositionControl->positionMove(dEncRaw2.data());
-
+    //-- Reset the mental
     yarp::os::Bottle cmd3,res3;
     cmd3.addString("reset");
     pRpcClient->write(cmd3,res3);
+
+    realPositionControl->positionMove(dEncRaw.data());
 
     sleep(1);
 
