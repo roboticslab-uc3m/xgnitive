@@ -51,7 +51,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     mentalOptions.put("local",localMental);
     mentalDevice.open(mentalOptions);
     if(!mentalDevice.isValid()) {
-       CD_ERROR("Robot device not available.\n");
+       CD_ERROR("Mental robot device not available.\n");
        mentalDevice.close();
        yarp::os::Network::fini();
        return 1;
