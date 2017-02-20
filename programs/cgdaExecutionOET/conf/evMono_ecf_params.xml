@@ -1,0 +1,60 @@
+<ECF>
+	<Algorithm>
+        	<SteadyStateTournament>
+                	<Entry key="tsize">3</Entry> -->   <!-- tournament size. def 3 -->
+        	</SteadyStateTournament>
+	</Algorithm>--> 
+
+	<!--<Algorithm>
+		<AlgAEliGPEA> --><!-- asynchronous steady-state global parallel EA -->
+			<!--<Entry key="tsize">3</Entry>--> <!-- tournament size -->
+			<!--<Entry key="jobsize">1</Entry>--> <!-- number of individuals sent for evaluation to a worker process -->
+	 	<!--</AlgAEliGPEA>
+	</Algorithm>-->
+
+	<!--<Algorithm>
+        	<ConstrainedSST>
+                	<Entry key="tsize">3</Entry> -->     <!-- tournament size. def 3 -->
+        	<!--</ConstrainedSST>
+	</Algorithm>-->
+
+	 <!--<Algorithm>
+		<PSOInheritance>
+			<Entry key="weightType">0</Entry>   weight type update: 0 - constant, 1 - time dependant (based on max generations) -->
+			<!--<Entry key="weight">1.2</Entry>     initial inertia weight (either constant or time dependant) -->
+			<!--<Entry key="maxVelocity">5</Entry>  max particle velocity -->
+		<!--</PSOInheritance> 
+	</Algorithm>-->
+	
+
+	<Genotype>
+		<FloatingPoint>
+			<Entry key="lbound">-15</Entry>
+			<Entry key="ubound">100</Entry>
+			<Entry key="dimension">3</Entry>
+		</FloatingPoint>
+	</Genotype>
+	<Registry>
+		<Entry key="population.size">10</Entry>
+		<Entry key="mutation.indprob">0.6</Entry> <!-- individual mutation probability (default: 0.3) -->
+		<!--<Entry key="log.level">1</Entry> -->
+		<!--<Entry key="log.filename">HallOfFame.xml</Entry> -->
+		<!--<Entry key="term.eval">20</Entry>-->
+		<Entry key="term.fitnessval">0</Entry> -->
+		<Entry key="term.stagnation">20</Entry>  <!--gens w/o improvement. def 30 -->
+		<!-- Batch mode -->
+		<!--<Entry key="batch.repeats">1</Entry>--> <!-- number of independent runs to perform (default: 1) -->
+		<!-- Parallel Execution-->
+		<Entry key="parallel.type">eval</Entry>--> <!-- implicit parallelization method: eval - evaluation, mut - mutation + eval -->
+                <Entry key="parallel.jobsize">4</Entry>--> <!-- implicit parallelization jobsize (individuals per job) -->
+		<Entry key="parallel.sync">1</Entry>-->-->  <!-- implicit parallelization synchronicity: 0 - async, 1 - sync (default: 0) -->
+		<!--<Entry key="population.demes">8</Entry>-->  <!-- number of demes (default: 1) -->
+	        <!--<Entry key="migration.freq">10</Entry>-->  <!-- individuals are exchanged each 'freq' generations (default: none) -->
+
+
+
+		
+	</Registry>
+</ECF>
+
+
