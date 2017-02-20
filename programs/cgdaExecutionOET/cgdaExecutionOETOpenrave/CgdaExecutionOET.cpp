@@ -45,7 +45,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     remoteMental.append( ss.str() );
     remoteMental.append( "/teoSim/rightArm" );
     mentalOptions.put("remote",remoteMental);
-    std::string localMental("/cgda/");
+    std::string localMental("/cgdaMental/");
     localMental.append( ss.str() );
     localMental.append( "/teoSim/rightArm" );
     mentalOptions.put("local",localMental);
@@ -65,7 +65,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     realRemote.append( ss.str() );
     realRemote.append( "/teo/rightArm" );
     realOptions.put("remote",realRemote);
-    std::string realLocal("/cgda/");
+    std::string realLocal("/cgdaReal/");
     realLocal.append( ss.str() );
     realLocal.append( "/teo/rightArm" );
     realOptions.put("local",realLocal);
