@@ -62,7 +62,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     yarp::os::Property realOptions;
     realOptions.put("device","remote_controlboard");
     std::string realRemote;
-    bool realRealRemote = false;
+    bool realRealRemote = true;
     if( realRealRemote )
     {
         realRemote.append( "/teo/rightArm" );
