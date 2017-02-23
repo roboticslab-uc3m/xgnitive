@@ -87,6 +87,7 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
             if ( res2.get(i).asInt() || sqPainted[i]){  // logic OR;
                 Npaint ++;
                 sqPainted[i]=1;
+                std::cout<<"PAINTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
             }
         }
 
