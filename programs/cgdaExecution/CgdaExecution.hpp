@@ -32,7 +32,8 @@ class CgdaExecution  {
     yarp::os::Network yarp;
     yarp::os::Port port;
     int portNum;
-    yarp::dev::PolyDriver dd;
+    yarp::dev::PolyDriver mentalDevice;
+    yarp::dev::PolyDriver realDevice;
     yarp::os::RpcClient rpcClient;
 
 };

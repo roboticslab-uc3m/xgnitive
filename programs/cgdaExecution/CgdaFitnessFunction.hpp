@@ -49,7 +49,6 @@ class CgdaFitnessFunction : public EvaluateOp {
         this->pRpcClient = pRpcClient;
     }
 
-  public:
     FitnessP evaluate(IndividualP individual);
     void registerParameters(StateP);
     bool initialize(StateP);
@@ -64,7 +63,7 @@ class CgdaFitnessFunction : public EvaluateOp {
 //    Transform T_base_object;
 
 
-    yarp::dev::IPositionControl *iPositionControl;
+    yarp::dev::IPositionControl *mentalPositionControl;
     yarp::os::RpcClient* pRpcClient;
 };
 

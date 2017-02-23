@@ -19,11 +19,11 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
 //            rr.str("");
 //        }}
 
-    const int rows=4; //setting wall parameters
-    const int cols=4;
-    const int numbPoints=5;
-    double percentage[numbPoints];
-    int sqPainted [rows*cols] = { }; //setting number of changed square as zero
+//    const int rows=4; //setting wall parameters
+//    const int cols=4;
+    //const int numbPoints=16;
+    double percentage[NTPOINTS];
+    int sqPainted [NSQUARES] = { }; //setting number of changed square as zero
 
     //The Generalized feature trajectory (TEST example is):
     std::vector < std::vector < double > > generalized;
@@ -46,33 +46,52 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
     generalized.push_back({93.75});
     generalized.push_back({100});
 
-    for(int t=0;t<numbPoints;t++) {
 
-        //--------just OPENRAVE things to move TEO-----------------------------------------------------------
-        //things about moving arm. OpenRave things. dReal is a floating in dynamics ODE.
-        std::vector<double>  dEncRaw(6);  // NUM_MOTORS
-        dEncRaw[0+4] = genPoints[t*3+0];  // simple
-        dEncRaw[1+4] = -genPoints[t*3+1];  // simple
-        dEncRaw[3+4] = genPoints[t*3+2];  // simple
-        dEncRaw[4+4] = 45;
-        //NOTE: In the right arm there is an additional DOF for the wrist, that can be used if needed.
+    for(int t=0;t<NTPOINTS;t++) {
 
-        //Prorobot set the math model and pcontrol moves the model??
-        iPositionControl->positionMove(dEncRaw.data());
+//        //--------just OPENRAVE things to move TEO-----------------------------------------------------------
+//        //things about moving arm. OpenRave things. dReal is a floating in dynamics ODE.
+//        std::vector<double>  dEncRaw(6);  // NUM_MOTORS
+//        dEncRaw[0] = genPoints[t*3+0];  // simple
+//        dEncRaw[1] = -genPoints[t*3+1];  // simple
+//        dEncRaw[3] = genPoints[t*3+2];  // simple
+
+//        dEncRaw[4] = 45;
+//        //NOTE: In the right arm there is an additional DOF for the wrist, that can be used if needed.
+
+//        printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
+
+//        yarp::os::Time::delay(5);
+
+//        printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 \n");
+
+        std::vector<double> dEncRaw(6);  // NUM_MOTORS
+        dEncRaw[0] = genPoints[3*t+0];  // simple
+        dEncRaw[1] = -genPoints[3*t+1];  // simple
+        dEncRaw[3] = genPoints[3*t+2];  // simple
+
+        dEncRaw[4] = 45;
+
+        //Actually move the robot
+        mentalPositionControl->positionMove(dEncRaw.data());
 
         yarp::os::Time::delay(DEFAULT_DELAY_S);
         yarp::os::Bottle cmd2,res2;
         cmd2.addString("get");
         pRpcClient->write(cmd2,res2);
-        int Npaint=0;
+        double Npaint=0;
         for(int i=0;i<res2.size();i++)
         {
-            if ( res2.get(i).asInt() || sqPainted[i])  // logic OR;
+            //std::cout<<"The res2 string is: "<<res2.get(i).asInt()<<std::endl;
+            //std::cout<<"The sqpainted at i is: "<<sqPainted[i]<<std::endl;
+            if ( res2.get(i).asInt() || sqPainted[i]){  // logic OR;
                 Npaint ++;
                 sqPainted[i]=1;
+            }
         }
 
         percentage[t]=(Npaint/NSQUARES)*100;
+        //std::cout<<"El porcentaje es "<< percentage[t]<<std::endl;
 
 
          //Fitness = percentage of wall painted
@@ -92,7 +111,7 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Get the discrepancy value between what we have and what we want
     //Init feature attemp vector
     std::vector< std::vector< double > > attempVectforSimpleDiscrepancy;
-    for(int t=0;t<numbPoints;t++)
+    for(int t=0;t<NTPOINTS;t++)
     {
         attempVectforSimpleDiscrepancy.push_back({percentage[t]});
     }
@@ -107,6 +126,10 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     double fit;
     featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
+
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
 
     cout << std::endl << " fit: " << fit << " ";
     return fit;
