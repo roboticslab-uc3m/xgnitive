@@ -8,8 +8,8 @@ set(KEYWORD "cgdaExecution")
 
 # Find YARP.
 find_package(YARP REQUIRED)
-find_package(OpenRAVE REQUIRED)
-find_package(Boost COMPONENTS iostreams python thread system)
+#find_package(OpenRAVE REQUIRED)
+#find_package(Boost COMPONENTS iostreams python thread system)
 
 # Search for source code.
 file(GLOB folder_source *.cpp *.cc *.c)

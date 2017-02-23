@@ -4,66 +4,79 @@
 
 namespace teo
 {
-/************************************************************************/
-
-void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
-    ViewerBasePtr viewer = RaveCreateViewer(penv,viewername);
-    BOOST_ASSERT(!!viewer);
-    // attach it to the environment:
-    penv->AttachViewer(viewer);
-    // finally you call the viewer's infinite loop (this is why you need a separate thread):
-   bool showgui = true;
- //   bool showgui = false;
-    viewer->main(showgui);
-}
 
 /************************************************************************/
 
 bool CgdaExecution::init() {
 
-    RaveInitialize(true); // start openrave core
-    penv = RaveCreateEnvironment(); // create the main environment
-    RaveSetDebugLevel(Level_Debug);
-    string viewername = "qtcoin";
-    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
-    string scenefilename = "../../programs/models/teo_cgda_iros.env.xml";
-    penv->Load(scenefilename); // load the scene
-    //-- Get Robot 0
-    std::vector<RobotBasePtr> robots;
-    penv->GetRobots(robots);
-    std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
-    probot = robots.at(0);
+    std::clock_t start = std::clock();
 
-    pcontrol = RaveCreateController(penv,"idealcontroller");
-    // Create the controllers, make sure to lock environment! (prevents changes)
+    portNum = -1;
+    bool open = false;
+    while( ! open )
     {
-      EnvironmentMutex::scoped_lock lock(penv->GetMutex());
-      std::vector<int> dofindices(probot->GetDOF());
-      for(int i = 0; i < probot->GetDOF(); ++i) {
-        dofindices[i] = i;
-      }
-      probot->SetController(pcontrol,dofindices,1); // control everything
+        portNum++;
+        std::string s("/good");
+        std::stringstream ss;
+        ss << portNum;
+        s.append(ss.str());
+        open = port.open(s);
     }
 
-    KinBodyPtr objPtr = penv->GetKinBody("object");
-    if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
-    else printf("[WorldRpcResponder] good grab\n");
-    probot->SetActiveManipulator("m2");
-    probot->Grab(objPtr);
+    //-- ROBOT ARM
+    std::stringstream ss;
+    ss << portNum;
+    yarp::os::Property ddOptions;
+    ddOptions.put("device","remote_controlboard");
+    std::string remote("/");
+    remote.append( ss.str() );
+    remote.append( "/teoSim/rightArm" );
+    ddOptions.put("remote",remote);
+    std::string local("/cgda/");
+    local.append( ss.str() );
+    local.append( "/teoSim/rightArm" );
+    ddOptions.put("local",local);
+    dd.open(ddOptions);
+    if(!dd.isValid()) {
+       CD_ERROR("Robot device not available.\n");
+       dd.close();
+       yarp::os::Network::fini();
+       return 1;
+    }
+    CD_SUCCESS("Robot device available.\n");
+
+    //-- Paint server
+    std::string remotePaint("/");
+    remotePaint.append( ss.str() );
+    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+    std::string localPaint("/cgda/");
+    localPaint.append( ss.str() );
+    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+    rpcClient.open(localPaint);
+    do {
+        yarp::os::Network::connect(localPaint,remotePaint);
+        printf("Wait to connect to paint server...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClient.getOutputCount() == 0 );
+    CD_SUCCESS("Paint server available.\n");
+
+    CD_SUCCESS("----- All good for %d.\n",portNum);
+
+    std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 
 	StateP state (new State);
 
-    PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
-    state->addAlgorithm(nalg1);
+//    PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
+//    state->addAlgorithm(nalg1);
 
-    PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
-    state->addAlgorithm(nalg2);
+//    PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
+//    state->addAlgorithm(nalg2);
 
     // set the evaluation operator, init CgdaFitnessFunction
     CgdaFitnessFunction* functionMinEvalOp = new CgdaFitnessFunction; 
-    functionMinEvalOp->setPRobot(probot);
-    functionMinEvalOp->setPenv(penv);
-    functionMinEvalOp->setPcontrol(pcontrol);
+//    functionMinEvalOp->setPRobot(probot);
+//    functionMinEvalOp->setPenv(penv);
+//    functionMinEvalOp->setPcontrol(pcontrol);
     //Here the functionMinEvalOp is set as the evaulation function
     state->setEvalOp(functionMinEvalOp);
 
@@ -74,14 +87,15 @@ bool CgdaExecution::init() {
     char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecution/conf/evMono_ecf_params.xml" };
 
     state->initialize(newArgc, newArgv);
-    //Debugging
-    Population pop;
-    pop.initialize(state);
-    AlgorithmP alg;
-    alg=state->getAlgorithm();
 
-    std::cout << "Population: " << pop[0]->getSize() << std::endl;
-    std::cout << "Algorithm: " << alg->getName() << std::endl;
+    //Debugging
+//    Population pop;
+//    pop.initialize(state);
+//    AlgorithmP alg;
+//    alg=state->getAlgorithm();
+
+//    std::cout << "Population: " << pop[0]->getSize() << std::endl;
+//    std::cout << "Algorithm: " << alg->getName() << std::endl;
 
     state->run();
 
