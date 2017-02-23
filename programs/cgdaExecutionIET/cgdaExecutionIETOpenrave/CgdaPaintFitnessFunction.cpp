@@ -94,9 +94,6 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
             _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
             rr.str("");
         }
-    genPoints[0]=47.546;
-    genPoints[1]=81.3215;
-    genPoints[2]=42.7629;
 
     for(int t=0;t<=*pIter;t++) {
             std::vector<dReal> dEncRaw(probot->GetDOF());  // NUM_MOTORS
@@ -106,9 +103,9 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 //                cout << "pF1: " << pFresults->operator [](t*3+1) << std::endl;
 //                cout << "pF2: " << pFresults->operator [](t*3+2) << std::endl;
 
-                dEncRaw[0+4] = 1*(pFresults->operator [](t*3+0))*M_PI/180.0;  // simple
-                dEncRaw[1+4] = -1*(pFresults->operator [](t*3+1))*M_PI/180.0;  // simple
-                dEncRaw[3+4] = 1*(pFresults->operator [](t*3+2))*M_PI/180.0;  // simple
+                dEncRaw[0+4] = 1*(pFresults->operator [](t*3+0));  // simple
+                dEncRaw[1+4] = -1*(pFresults->operator [](t*3+1));  // simple
+                dEncRaw[3+4] = 1*(pFresults->operator [](t*3+2));  // simple
 
 
             }
@@ -118,13 +115,13 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 //                cout << "gp1: " << genPoints[1] << std::endl;
 //                cout << "gp2: " << genPoints[2] << std::endl;
 
-                dEncRaw[0+4] = genPoints[0]*M_PI/180.0;  // simple
-                dEncRaw[1+4] = -genPoints[1]*M_PI/180.0;  // simple
-                dEncRaw[3+4] = genPoints[2]*M_PI/180.0;  // simple
+                dEncRaw[0+4] = genPoints[0];  // simple
+                dEncRaw[1+4] = -genPoints[1];  // simple
+                dEncRaw[3+4] = genPoints[2];  // simple
             }
             else{cerr << "ERROR IN pIter or t" << std::endl;}
 
-            dEncRaw[4+4] = 45*M_PI/180.0;
+            dEncRaw[4+4] = 45;
             probot->SetJointValues(dEncRaw);
             pcontrol->SetDesired(dEncRaw); // This function "resets" physics
             while(!pcontrol->IsDone()) {
