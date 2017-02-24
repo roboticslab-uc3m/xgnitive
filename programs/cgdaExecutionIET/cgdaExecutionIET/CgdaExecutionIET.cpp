@@ -7,81 +7,115 @@
 
 namespace teo
 {
-/************************************************************************/
-
-void SetViewer(EnvironmentBasePtr penv, const string& viewername) {
-    ViewerBasePtr viewer = RaveCreateViewer(penv,viewername);
-    BOOST_ASSERT(!!viewer);
-    // attach it to the environment:
-    penv->AttachViewer(viewer);
-    // finally you call the viewer's infinite loop (this is why you need a separate thread):
-   bool showgui = true;
- //   bool showgui = false;
-    viewer->main(showgui);
-}
 
 /************************************************************************/
-//Uncomment for PAINT
-int numberOfPoints=17;
-//Uncomment for WAX
-//int numberOfPoints=9;
-double time=0;
-double evaluations=0;
 bool CgdaExecutionIET::init() {
-    RaveInitialize(true); // start openrave core
-    penv = RaveCreateEnvironment(); // create the main environment
-    RaveSetDebugLevel(Level_Debug);
-    string viewername = "qtcoin";
-    boost::thread thviewer(boost::bind(SetViewer,penv,viewername));
-    string scenefilename = "../../share/models/teo_cgda_iros.env.xml";
-    penv->Load(scenefilename); // load the scene
-    //-- Get Robot 0
-    std::vector<RobotBasePtr> robots;
-    penv->GetRobots(robots);
-    std::cout << "Robot 0: " << robots.at(0)->GetName() << std::endl;  // default: teo
-    probot = robots.at(0);    
 
-    //Uncomment for pause before start
-    //std::cin.get();
+    timespec tsStart; //Start first timer
+    clock_gettime(CLOCK_REALTIME, &tsStart);
 
-    pcontrol = RaveCreateController(penv,"idealcontroller");
-    // Create the controllers, make sure to lock environment! (prevents changes)
+    portNum = -1;
+    bool open = false;
+    while( ! open )
     {
-      EnvironmentMutex::scoped_lock lock(penv->GetMutex());
-      std::vector<int> dofindices(probot->GetDOF());
-      for(int i = 0; i < probot->GetDOF(); ++i) {
-        dofindices[i] = i;
-      }
-      probot->SetController(pcontrol,dofindices,1); // control everything
+        portNum++;
+        std::string s("/good");
+        std::stringstream ss;
+        ss << portNum;
+        s.append(ss.str());
+        open = port.open(s);
     }
+    std::stringstream ss;
+    ss << portNum;
 
-    KinBodyPtr objPtr = penv->GetKinBody("object");
-    if(!objPtr) printf("[WorldRpcResponder] fail grab\n");
-    else printf("[WorldRpcResponder] good grab\n");
-    probot->SetActiveManipulator("rightArm");
-    probot->Grab(objPtr);
+    //-- MENTAL ROBOT ARM
+    yarp::os::Property mentalOptions;
+    mentalOptions.put("device","remote_controlboard");
+    std::string remoteMental("/");
+    remoteMental.append( ss.str() );
+    remoteMental.append( "/teoSim/rightArm" );
+    mentalOptions.put("remote",remoteMental);
+    std::string localMental("/cgdaMental/");
+    localMental.append( ss.str() );
+    localMental.append( "/teoSim/rightArm" );
+    mentalOptions.put("local",localMental);
+    mentalDevice.open(mentalOptions);
+    if(!mentalDevice.isValid()) {
+       CD_ERROR("Mental robot device not available.\n");
+       mentalDevice.close();
+       yarp::os::Network::fini();
+       return 1;
+    }
+    CD_SUCCESS("Mental robot device available.\n");
+
+//    //-- REAL ROBOT ARM
+//    yarp::os::Property realOptions;
+//    realOptions.put("device","remote_controlboard");
+//    std::string realRemote;
+//    bool realRealRemote = true;
+//    if( realRealRemote )
+//    {
+//        realRemote.append( "/teo/rightArm" );
+//    }
+//    else
+//    {
+//        realRemote.append( "/1/teoSim/rightArm" );
+//    }
+//    realOptions.put("remote",realRemote);
+//    std::string realLocal("/cgdaReal/");
+//    realLocal.append( ss.str() );
+//    realLocal.append( "/teo/rightArm" );
+//    realOptions.put("local",realLocal);
+//    realDevice.open(realOptions);
+//    if(!realDevice.isValid()) {
+//       CD_ERROR("Real robot device not available.\n");
+//       realDevice.close();
+//       yarp::os::Network::fini();
+//       return 1;
+//    }
+//    CD_SUCCESS("Real robot device available.\n");
+
+    //-- Paint server
+    std::string remotePaint("/");
+    remotePaint.append( ss.str() );
+    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+    std::string localPaint("/cgda/");
+    localPaint.append( ss.str() );
+    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+    rpcClient.open(localPaint);
+    do {
+        yarp::os::Network::connect(localPaint,remotePaint);
+        printf("Wait to connect to paint server...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClient.getOutputCount() == 0 );
+    CD_SUCCESS("Paint server available.\n");
+
+    CD_SUCCESS("----- All good for %d.\n",portNum);
+
+    timespec tsEvStart; //Start second timer
+    clock_gettime(CLOCK_REALTIME, &tsEvStart);
 
     vector< double > results;
     vector< double >* presults= &results;
     int const_evaluations;
     int* pconst_evaluations= &const_evaluations;
     *pconst_evaluations=0;
+    int evaluations;
 
-
-       for(unsigned int i=0; i<numberOfPoints; i++) {
+       for(unsigned int i=0; i<NSQUARES; i++) {
            StateP state (new State);
 
            //PSOInheritance
-           PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
-           state->addAlgorithm(nalg1);
+//           PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
+//           state->addAlgorithm(nalg1);
 
-           //PSOFuzzy
-           PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
-           state->addAlgorithm(nalg2);
+//           //PSOFuzzy
+//           PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
+//           state->addAlgorithm(nalg2);
 
-           //ConstrainedSST
-           ConstrainedSSTP nalg3 = (ConstrainedSSTP) new ConstrainedSST;
-           state->addAlgorithm(nalg3);
+//           //ConstrainedSST
+//           ConstrainedSSTP nalg3 = (ConstrainedSSTP) new ConstrainedSST;
+//           state->addAlgorithm(nalg3);
 
            // set the evaluation operator
            CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
@@ -91,12 +125,11 @@ bool CgdaExecutionIET::init() {
            //CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
            //functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
 
-           functionMinEvalOp->setPRobot(probot);
-           functionMinEvalOp->setPenv(penv);
-           functionMinEvalOp->setPcontrol(pcontrol);
+
+           mentalDevice.view(functionMinEvalOp->mentalPositionControl);
+           functionMinEvalOp->setPRpcClient(&rpcClient);
            functionMinEvalOp->setResults(presults);
            //Uncomment only for CgdaConstrained
-
            state->setEvalOp(functionMinEvalOp);
 
            unsigned int* pIter= &i;
@@ -138,11 +171,13 @@ bool CgdaExecutionIET::init() {
            results.push_back(bestPoints[1]);
            results.push_back(bestPoints[2]);
 
+           //functionMinEvalOp->trajectoryExecution(results);
+
            //*******************************************************************************************//
            //                              FILE OUTPUT FOR DEBUGGING                                    //
            //*******************************************************************************************//
-           evaluations+=state->getEvaluations();
-           time+=state->getElapsedTime();
+           evaluations=state->getEvaluations();
+           //time=state->getElapsedTime();
 
            std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
            std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<time <<std::endl;
@@ -160,47 +195,42 @@ bool CgdaExecutionIET::init() {
                    myfile1<<const_evaluations<<" ";
                //}
                myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
-           }          
-
-           std::ofstream myfile2;
-           myfile2.open("PercentageWall.txt", std::ios_base::app);
-           if (myfile2.is_open()){
-               myfile2<<std::endl;
            }
 
-           std::ofstream myfile3;
-           myfile3.open("X.txt", std::ios_base::app);
-           if (myfile3.is_open()){
-               myfile3<<std::endl;
-           }
-
-           std::ofstream myfile4;
-           myfile4.open("Y.txt", std::ios_base::app);
-           if (myfile4.is_open()){
-               myfile4<<std::endl;
-           }
-
-           std::ofstream myfile5;
-           myfile5.open("Z.txt", std::ios_base::app);
-           if (myfile5.is_open()){
-               myfile5<<std::endl;
-           }
-
-           //This following line is only for the execution of the result trajectory of the paint task
-//           if(i==(numberOfPoints-1)){
-//                //std::cout<<"LETS EXECUTE"<<std::endl;
-//                functionMinEvalOp->trajectoryExecution(numberOfPoints, results);
+//           std::ofstream myfile2;
+//           myfile2.open("PercentageWall.txt", std::ios_base::app);
+//           if (myfile2.is_open()){
+//               myfile2<<std::endl;
 //           }
+
+//           std::ofstream myfile3;
+//           myfile3.open("X.txt", std::ios_base::app);
+//           if (myfile3.is_open()){
+//               myfile3<<std::endl;
+//           }
+
+//           std::ofstream myfile4;
+//           myfile4.open("Y.txt", std::ios_base::app);
+//           if (myfile4.is_open()){
+//               myfile4<<std::endl;
+//           }
+
+//           std::ofstream myfile5;
+//           myfile5.open("Z.txt", std::ios_base::app);
+//           if (myfile5.is_open()){
+//               myfile5<<std::endl;
+//           }
+
            //*******************************************************************************************//
 
 
            //*******************************************************************************************//
            //                                      END                                                  //
            //*******************************************************************************************//
-           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
-           nalg1.reset();
-           nalg2.reset();
-           nalg3.reset();
+//           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
+//           nalg1.reset();
+//           nalg2.reset();
+//           nalg3.reset();
            state.reset();
            delete functionMinEvalOp;
        }

@@ -9,15 +9,19 @@
 #include <string>
 #include <fstream>
 #include <ecf/ECF.h>
-#include <openrave-core.h>
 #include <vector>
 #include <sstream>
 #include <string>
 #include <valarray>     // std::valarray
 
+#include <yarp/os/all.h>
+#include <yarp/dev/all.h>
+
 #include "DtwCgdaRecognition.hpp"
 
-using namespace OpenRAVE;
+#define NTPOINTS 17
+#define NSQUARES 16
+#define DEFAULT_DELAY_S 0.010
 
 namespace teo
 {
@@ -25,15 +29,6 @@ namespace teo
 class CgdaPaintFitnessFunction : public EvaluateOp {
 
   public:
-    void setPRobot(const RobotBasePtr& _probot) {
-        probot = _probot;
-    }
-    void setPenv(const EnvironmentBasePtr& _penv){
-        penv = _penv;
-    }
-    void setPcontrol(const ControllerBasePtr& _pcontrol){
-        pcontrol = _pcontrol;
-    }
     void setResults( vector<double>* _presults){
         pFresults = _presults;
 
@@ -43,20 +38,21 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
         pIter = _piter;
     }
 
-  public:
+    void setPRpcClient( yarp::os::RpcClient* pRpcClient){
+        this->pRpcClient = pRpcClient;
+    }
+
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
-    void trajectoryExecution(int NumberPoints, vector<double> result_trajectory); //TE
-    RobotBasePtr probot;
-    EnvironmentBasePtr penv;
-    ControllerBasePtr pcontrol;
-    KinBodyPtr _objPtr;
-    KinBodyPtr _wall;
+    double trajectoryExecution(vector<double> result_trajectory); //TE
     vector<double>* pFresults;
     unsigned int* pIter;
-    Transform T_base_object;
+
+    yarp::dev::IPositionControl *mentalPositionControl;
+    yarp::dev::IPositionControl *realPositionControl;
+    yarp::os::RpcClient* pRpcClient;
 };
 
 typedef boost::shared_ptr<CgdaPaintFitnessFunction> CgdaPaintFitnessFunctionP;

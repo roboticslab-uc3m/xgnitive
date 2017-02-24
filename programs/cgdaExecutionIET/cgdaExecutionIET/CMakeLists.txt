@@ -2,9 +2,9 @@
 
 cmake_minimum_required(VERSION 2.6)
 
-IF (ENABLE_cgdaExecutionIETOpenrave)
+IF (ENABLE_cgdaExecutionIET)
 
-set(KEYWORD "cgdaExecutionIETOpenrave")
+set(KEYWORD "cgdaExecutionIET")
 
 # Find YARP.
 find_package(YARP REQUIRED)
@@ -54,5 +54,5 @@ endif (folder_source)
   #  set(XGNITIVE_DEFINITIONS ${XGNITIVE_DEFINITIONS} -std=c++ CACHE INTERNAL "appended definitions")
 
 
-ENDIF (ENABLE_cgdaExecutionIETOpenrave)
+ENDIF (ENABLE_cgdaExecutionIET)
 
