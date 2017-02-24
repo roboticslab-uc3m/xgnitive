@@ -52,6 +52,10 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     double Const_target[NTPOINTS]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
                        , 43.75, 50, 56.25, 62.5, 68.75, 75, 81.25, 87.5, 93.75, 100};
 
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
+
     double percentage;
     //int sqPaintedAux [psqPainted->size()] = { };
     //int sqPaintedAux [NSQUARES] = { }; //Variable used in order to not change psqPainted
@@ -106,6 +110,10 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
 
     //Set new positions of the robot using dEncRaw
+//    std::cout<<genPoints[0]<<std::endl;
+//    std::cout<<genPoints[1]<<std::endl;
+//    std::cout<<genPoints[3]<<std::endl;
+
     std::vector<double> dEncRaw(6);  // NUM_MOTORS
     dEncRaw[0] = genPoints[0];  // simple
     dEncRaw[1] = -genPoints[1];  // simple
@@ -198,10 +206,6 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Actually move the robot
     mentalPositionControl->positionMove(dEncRaw2.data());
 
-    yarp::os::Bottle cmd3,res3;
-    cmd3.addString("reset");
-    pRpcClient->write(cmd3,res3);
-
     return fit;
 }
 
@@ -246,13 +250,11 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
         //std::cout << std::endl;
     }
 
-    std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
     std::ofstream myfile1;
     myfile1.open("memoryOET.txt", std::ios_base::out );
     if (myfile1.is_open()){
         for(int i=0;i<res.size();i++)
         {
-            //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
             //myfile1<<"1 ";
             //myfile1<< psqPainted->operator[](i) << " ";
             myfile1<< psqPainted->operator [](i);
@@ -274,7 +276,7 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
     cmd3.addString("reset");
     pRpcClient->write(cmd3,res3);
 
-    realPositionControl->positionMove(dEncRaw.data());
+    //realPositionControl->positionMove(dEncRaw.data());
 
     sleep(1);
 

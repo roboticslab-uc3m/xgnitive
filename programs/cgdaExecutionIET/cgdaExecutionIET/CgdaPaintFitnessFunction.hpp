@@ -51,7 +51,7 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
     unsigned int* pIter;
 
     yarp::dev::IPositionControl *mentalPositionControl;
-    yarp::dev::IPositionControl *realPositionControl;
+    //yarp::dev::IPositionControl *realPositionControl;
     yarp::os::RpcClient* pRpcClient;
 };
 

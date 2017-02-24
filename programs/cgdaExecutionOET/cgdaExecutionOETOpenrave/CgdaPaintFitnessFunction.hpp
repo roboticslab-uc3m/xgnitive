@@ -22,7 +22,7 @@
 
 #define DEFAULT_DELAY_S 0.010
 
-//using namespace OpenRAVE;
+//using namespace ObpenRAVE;
 
 namespace teo
 {

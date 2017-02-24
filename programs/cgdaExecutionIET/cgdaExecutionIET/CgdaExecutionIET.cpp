@@ -98,9 +98,9 @@ bool CgdaExecutionIET::init() {
     vector< double > results;
     vector< double >* presults= &results;
     int const_evaluations;
-    int* pconst_evaluations= &const_evaluations;
-    *pconst_evaluations=0;
-    int evaluations;
+    //int* pconst_evaluations= &const_evaluations;
+    //*pconst_evaluations=0;
+    double evaluations;
 
        for(unsigned int i=0; i<NSQUARES; i++) {
            StateP state (new State);
@@ -155,10 +155,7 @@ bool CgdaExecutionIET::init() {
 //               std::cout<<"Valor  "<<*par<<std::endl;
 //           }
 
-
-
            state->run();
-
 
            vector<IndividualP> bestInd;
            FloatingPoint::FloatingPoint* genBest;

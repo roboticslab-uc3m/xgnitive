@@ -16,15 +16,14 @@ double Const_target[17]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
                    , 43.75, 50, 56.25, 62.5, 68.75, 75, 81.25, 87.5, 93.75, 100};
 
 double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
+    std::cout<<"EMPAZANDO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
 
-    yarp::os::Bottle cmd3,res3;
-    cmd3.addString("reset");
-    pRpcClient->write(cmd3,res3);
-
-    std::vector<double> percentage;
+    double percentage[NTPOINTS]={ };
     int sqPainted [NSQUARES] = { }; //setting number of changed square as cero
 
-
+//    yarp::os::Bottle cmd3,res3;
+//    cmd3.addString("reset");
+//    pRpcClient->write(cmd3,res3);
 
     for(int t=0;t<=*pIter;t++) {
             std::vector<double> dEncRaw(6);  // NUM_MOTORS
@@ -52,10 +51,17 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
             }
             else{cerr << "ERROR IN pIter or t" << std::endl;}
 
-            dEncRaw[4+4] = 45;
+            dEncRaw[4] = 45;
 
             //Actually move the robot
+            std::cout<<"NUMERO DE ITERACION: "<<*pIter<<std::endl;
+//            std::cout<<dEncRaw[0]
+//            std::cout<<dEncRaw[1]
+//            std::cout<<dEncRaw[3]
+
+            std::cout<<"LETS MOVE 1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
             mentalPositionControl->positionMove(dEncRaw.data());
+            std::cout<<"LETS MOVE 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
 
             yarp::os::Time::delay(DEFAULT_DELAY_S);
             yarp::os::Bottle cmd2,res2;
@@ -103,7 +109,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Get the discrepancy value between what we have and what we want
     //Init feature attemp vector
     std::vector< std::vector< double > > attempVectforSimpleDiscrepancy;
-    for(int t=0;t<percentage.size();t++)
+    for(int t=0;t<NTPOINTS;t++)
     {
         attempVectforSimpleDiscrepancy.push_back({percentage[t]});
         //std::cout<<std::endl<<"ATTEMP TRAJECTORY ::::"<<t<<" : "<<percentage[t]<<std::endl;
@@ -120,8 +126,18 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     double fit;
     featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
 
-  //  cout << std::endl << " percentage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
+  //  cout << std::endl << " perc   entage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
     cout << std::endl << " fit: " << fit << " ";
+    std::cout<<"HASTA AQUI LLEGUE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : "<<fit<<std::endl;
+
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
+
+    std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
+    //Actually move the robot
+    mentalPositionControl->positionMove(dEncRaw2.data());
+
     return fit;
 }
 

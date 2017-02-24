@@ -10,18 +10,6 @@ namespace teo
 
 double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
 
-     // // reset square color for opencv
-//    for(int i=0; i<4; i++){
-//        for(int j=0; j<4; j++){
-//            stringstream rr;
-//            rr << "square" << i << j;
-//            _wall->GetLink(rr.str())->GetGeometry(0)->SetDiffuseColor(RaveVector<float>(0.5, 0.5, 0.5));
-//            rr.str("");
-//        }}
-
-//    const int rows=4; //setting wall parameters
-//    const int cols=4;
-    //const int numbPoints=16;
     double percentage[NTPOINTS];
     int sqPainted [NSQUARES] = { }; //setting number of changed square as zero
 
@@ -45,6 +33,12 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
     generalized.push_back({87.5});
     generalized.push_back({93.75});
     generalized.push_back({100});
+
+    //Clean Screen
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
+
 
 
     for(int t=0;t<NTPOINTS;t++) {
@@ -127,9 +121,11 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
     double fit;
     featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
 
-    yarp::os::Bottle cmd3,res3;
-    cmd3.addString("reset");
     pRpcClient->write(cmd3,res3);
+
+    std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
+    //Actually move the robot
+    mentalPositionControl->positionMove(dEncRaw2.data());
 
     cout << std::endl << " fit: " << fit << " ";
     return fit;
@@ -201,7 +197,7 @@ double CgdaFitnessFunction::trajectoryExecution( vector<double> result_trajector
 
     //Move robot
     for(int t=0;t<=NTPOINTS;t++) {
-            std::cout<<"Time interval"<<t<<std::endl;
+            //std::cout<<"Time interval"<<t<<std::endl;
 
             std::vector<double> dEncRaw(6);  // NUM_MOTORS
             dEncRaw[0] = result_trajectory[3*t+0];  // simple
@@ -226,7 +222,7 @@ double CgdaFitnessFunction::trajectoryExecution( vector<double> result_trajector
                 }
             }
 
-            //sleep(1);
+            sleep(1);
     }
     double Npaint=0;
     for(int i=0;i<NSQUARES;i++){
@@ -235,6 +231,7 @@ double CgdaFitnessFunction::trajectoryExecution( vector<double> result_trajector
 
     double percentage;
     percentage=(Npaint/NSQUARES)*100;
+    std::cout<<"Percentage "<<percentage<<std::endl;
     return percentage;
 
     //Reset squares

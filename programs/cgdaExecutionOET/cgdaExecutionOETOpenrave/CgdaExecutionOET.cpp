@@ -58,32 +58,32 @@ int CgdaExecutionOET::init(int argc, char **argv)
     }
     CD_SUCCESS("Mental robot device available.\n");
 
-    //-- REAL ROBOT ARM
-    yarp::os::Property realOptions;
-    realOptions.put("device","remote_controlboard");
-    std::string realRemote;
-    bool realRealRemote = true;
-    if( realRealRemote )
-    {
-        realRemote.append( "/teo/rightArm" );
-    }
-    else
-    {
-        realRemote.append( "/1/teoSim/rightArm" );
-    }
-    realOptions.put("remote",realRemote);
-    std::string realLocal("/cgdaReal/");
-    realLocal.append( ss.str() );
-    realLocal.append( "/teo/rightArm" );
-    realOptions.put("local",realLocal);
-    realDevice.open(realOptions);
-    if(!realDevice.isValid()) {
-       CD_ERROR("Real robot device not available.\n");
-       realDevice.close();
-       yarp::os::Network::fini();
-       return 1;
-    }
-    CD_SUCCESS("Real robot device available.\n");
+//    //-- REAL ROBOT ARM
+//    yarp::os::Property realOptions;
+//    realOptions.put("device","remote_controlboard");
+//    std::string realRemote;
+//    bool realRealRemote = true;
+//    if( realRealRemote )
+//    {
+//        realRemote.append( "/teo/rightArm" );
+//    }
+//    else
+//    {
+//        realRemote.append( "/1/teoSim/rightArm" );
+//    }
+//    realOptions.put("remote",realRemote);
+//    std::string realLocal("/cgdaReal/");
+//    realLocal.append( ss.str() );
+//    realLocal.append( "/teo/rightArm" );
+//    realOptions.put("local",realLocal);
+//    realDevice.open(realOptions);
+//    if(!realDevice.isValid()) {
+//       CD_ERROR("Real robot device not available.\n");
+//       realDevice.close();
+//       yarp::os::Network::fini();
+//       return 1;
+//    }
+//    CD_SUCCESS("Real robot device available.\n");
 
     //-- Paint server
     std::string remotePaint("/");
@@ -101,8 +101,6 @@ int CgdaExecutionOET::init(int argc, char **argv)
     CD_SUCCESS("Paint server available.\n");
 
     CD_SUCCESS("----- All good for %d.\n",portNum);
-
-    std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 
     vector< double > results;
     vector< double >* presults= &results;
@@ -216,11 +214,12 @@ int CgdaExecutionOET::init(int argc, char **argv)
            //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 3 \n");
 
 
-//           //*******************************************************************************************//
-//           //                              FILE OUTPUT FOR DEBUGGING                                    //
-//           //*******************************************************************************************//
-//           evaluations+=state->getEvaluations();
-//           time+=state->getElapsedTime();
+           //*******************************************************************************************//
+           //                              FILE OUTPUT FOR DEBUGGING                                    //
+           //*******************************************************************************************//
+           //evaluations=state->getEvaluations();
+
+           //time=state->getElapsedTime();
 
 //           std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
 //           std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<time <<std::endl;
@@ -286,6 +285,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
 //       printf("\n-end-\n");
 
     port.close();
+    std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
     printf("bye!\n");
     return 0;
 }

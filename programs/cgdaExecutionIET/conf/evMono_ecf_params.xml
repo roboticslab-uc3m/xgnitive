@@ -1,15 +1,15 @@
 <ECF>
-	<!--<Algorithm>
-        	<SteadyStateTournament>
-                	<Entry key="tsize">3</Entry> -->     <!-- tournament size. def 3 -->
-        	<!--</SteadyStateTournament>
-	</Algorithm> -->
-
 	<Algorithm>
-        	<ConstrainedSST>
-                	<Entry key="tsize">3</Entry>       <!-- tournament size. def 3 -->
-        	</ConstrainedSST>
+        	<SteadyStateTournament>
+                	<Entry key="tsize">3</Entry>     <!-- tournament size. def 3 -->
+        	</SteadyStateTournament>
 	</Algorithm>
+
+	<!--<Algorithm>
+        	<ConstrainedSST>
+                	<Entry key="tsize">3</Entry> -->      <!-- tournament size. def 3 -->
+        	<!--</ConstrainedSST>
+	</Algorithm>-->
 
 	 <!--<Algorithm>
 		<PSOInheritance>
@@ -30,12 +30,13 @@
 	<Registry>
 		<Entry key="population.size">10</Entry>
 		<Entry key="mutation.indprob">0.6</Entry> <!-- individual mutation probability (default: 0.3) -->
-		<Entry key="log.level">1</Entry>
-		<Entry key="log.filename">HallOfFame.xml</Entry>
+		<!--<Entry key="log.level">1</Entry> -->
+		<!--<Entry key="log.filename">HallOfFame.xml</Entry> -->
 		<!--<Entry key="term.eval">20</Entry>-->
 		<Entry key="term.fitnessval">0</Entry>
-		<Entry key="term.stagnation">10</Entry>  <!--gens w/o improvement. def 30 -->
-		
+		<!-- <Entry key="term.stagnation">10</Entry>-->  <!--gens w/o improvement. def 30 -->
+		<Entry key="term.maxgen">5</Entry> <!-- max number of generations (default: none) -->
+
 	</Registry>
 </ECF>
 

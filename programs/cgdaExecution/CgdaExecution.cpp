@@ -148,18 +148,20 @@ bool CgdaExecution::init() {
     bestInd = state->getHoF()->getBest();
     genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
     bestPoints = genBest->realValue;
-    results.push_back(bestPoints[0]);
-    results.push_back(bestPoints[1]);
-    results.push_back(bestPoints[2]);
+    for(int i=0; i<NSQUARES; i++){
+        results.push_back(bestPoints[i*3+0]);
+        results.push_back(bestPoints[i*3+1]);
+        results.push_back(bestPoints[i*3+2]);
+    }
 
     //Execute best trajectory to get % of the wall painted
     percentage=functionMinEvalOp->trajectoryExecution(results);
 
-    printf("-begin-\n");
-    for(unsigned int i=0;i<bestPoints.size();i++)
-        printf("%f, ",bestPoints[i]);
-    printf("\n-end-\n");
-    port.close();
+//    printf("-begin-\n");
+//    for(unsigned int i=0;i<bestPoints.size();i++)
+//        printf("%f, ",bestPoints[i]);
+//    printf("\n-end-\n");
+//    port.close();
 
     timespec tsEnd;
     clock_gettime(CLOCK_REALTIME, &tsEnd);

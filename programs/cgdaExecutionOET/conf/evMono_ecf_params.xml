@@ -45,9 +45,9 @@
 		<!-- Batch mode -->
 		<!--<Entry key="batch.repeats">1</Entry>--> <!-- number of independent runs to perform (default: 1) -->
 		<!-- Parallel Execution-->
-		<Entry key="parallel.type">eval</Entry>--> <!-- implicit parallelization method: eval - evaluation, mut - mutation + eval -->
-                <Entry key="parallel.jobsize">4</Entry>--> <!-- implicit parallelization jobsize (individuals per job) -->
-		<Entry key="parallel.sync">1</Entry>-->-->  <!-- implicit parallelization synchronicity: 0 - async, 1 - sync (default: 0) -->
+		<!--<Entry key="parallel.type">eval</Entry>--> <!-- implicit parallelization method: eval - evaluation, mut - mutation + eval -->
+                <!--<Entry key="parallel.jobsize">4</Entry>--> <!-- implicit parallelization jobsize (individuals per job) -->
+		<!--<Entry key="parallel.sync">1</Entry>-->-->  <!-- implicit parallelization synchronicity: 0 - async, 1 - sync (default: 0) -->
 		<!--<Entry key="population.demes">8</Entry>-->  <!-- number of demes (default: 1) -->
 	        <!--<Entry key="migration.freq">10</Entry>-->  <!-- individuals are exchanged each 'freq' generations (default: none) -->
 

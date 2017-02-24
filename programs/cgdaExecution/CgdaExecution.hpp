@@ -20,11 +20,6 @@ namespace teo
 {
 
 class CgdaExecution  {
-  private:
-//    RobotBasePtr probot;
-//    EnvironmentBasePtr penv;
-//    ControllerBasePtr pcontrol;
-
   public:
     bool init();
 
@@ -37,6 +32,7 @@ class CgdaExecution  {
     yarp::os::RpcClient rpcClient;
 
 };
+
 }
 
 #endif  // __EV_MONO_HPP__
