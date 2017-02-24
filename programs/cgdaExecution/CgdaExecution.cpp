@@ -9,7 +9,8 @@ namespace teo
 
 bool CgdaExecution::init() {
 
-    std::clock_t start = std::clock();
+    timespec tsStart; //Start first timer
+    clock_gettime(CLOCK_REALTIME, &tsStart);
 
     portNum = -1;
     bool open = false;
@@ -89,7 +90,8 @@ bool CgdaExecution::init() {
 
     CD_SUCCESS("----- All good for %d.\n",portNum);
 
-    std::clock_t start_ev = std::clock();
+    timespec tsEvStart; //Start second timer
+    clock_gettime(CLOCK_REALTIME, &tsEvStart);
 
 	StateP state (new State);
 
@@ -129,8 +131,10 @@ bool CgdaExecution::init() {
 
     state->run();
     double ev_time;
-    ev_time= (std::clock() - start_ev) / (double)(CLOCKS_PER_SEC / 1000);
-    std::cout << "Evaluation Time (Only Ev): " << ev_time << " ms" << std::endl;
+    timespec tsEvEnd;
+    clock_gettime(CLOCK_REALTIME, &tsEvEnd);
+    ev_time=(tsEvEnd.tv_sec-tsEvStart.tv_sec);
+    std::cout<<"EVAL TIME IS:   "<<ev_time<<std::endl;
 
     vector<IndividualP> bestInd;
     FloatingPoint::FloatingPoint* genBest;
@@ -151,8 +155,16 @@ bool CgdaExecution::init() {
     //Execute best trajectory to get % of the wall painted
     percentage=functionMinEvalOp->trajectoryExecution(results);
 
-    total_time= (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000);
-    std::cout << "Total Time (Connection+ev): " << total_time << " ms" << std::endl;
+    printf("-begin-\n");
+    for(unsigned int i=0;i<bestPoints.size();i++)
+        printf("%f, ",bestPoints[i]);
+    printf("\n-end-\n");
+    port.close();
+
+    timespec tsEnd;
+    clock_gettime(CLOCK_REALTIME, &tsEnd);
+    total_time=(tsEnd.tv_sec-tsStart.tv_sec);
+    std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
 
     //*******************************************************************************************//
     //                              FILE OUTPUT FOR DEBUGGING                                    //
@@ -176,10 +188,6 @@ bool CgdaExecution::init() {
     //                                      END                                                  //
     //*******************************************************************************************//
 
-    printf("-begin-\n");
-    for(unsigned int i=0;i<bestPoints.size();i++)
-        printf("%f, ",bestPoints[i]);
-    printf("\n-end-\n");
     return true;
 }
 

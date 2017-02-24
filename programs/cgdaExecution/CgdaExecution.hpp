@@ -11,7 +11,7 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
-#include <ctime>
+#include <sys/time.h>
 
 
 #define DEFAULT_FILE_NAME "evMono_ecf_params.xml"
