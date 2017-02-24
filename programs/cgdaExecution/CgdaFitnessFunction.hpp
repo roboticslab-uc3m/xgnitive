@@ -36,15 +36,6 @@ namespace teo
 class CgdaFitnessFunction : public EvaluateOp {
 
   public:
-//    void setPRobot(const RobotBasePtr& _probot) {
-//        probot = _probot;
-//    }
-//    void setPenv(const EnvironmentBasePtr& _penv){
-//        penv = _penv;
-//    }
-//    void setPcontrol(const ControllerBasePtr& _pcontrol){
-//        pcontrol = _pcontrol;
-//    }
     void setPRpcClient( yarp::os::RpcClient* pRpcClient){
         this->pRpcClient = pRpcClient;
     }
@@ -53,14 +44,7 @@ class CgdaFitnessFunction : public EvaluateOp {
     void registerParameters(StateP);
     bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
-//    RobotBasePtr probot;
-//    EnvironmentBasePtr penv;
-//    ControllerBasePtr pcontrol;
-
-//    KinBodyPtr _objPtr;
-//    KinBodyPtr _wall;
-
-//    Transform T_base_object;
+    double trajectoryExecution(vector<double> result_trajectory);
 
 
     yarp::dev::IPositionControl *mentalPositionControl;

@@ -89,7 +89,7 @@ bool CgdaExecution::init() {
 
     CD_SUCCESS("----- All good for %d.\n",portNum);
 
-    std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
+    std::clock_t start_ev = std::clock();
 
 	StateP state (new State);
 
@@ -128,21 +128,58 @@ bool CgdaExecution::init() {
 //    std::cout << "Algorithm: " << alg->getName() << std::endl;
 
     state->run();
+    double ev_time;
+    ev_time= (std::clock() - start_ev) / (double)(CLOCKS_PER_SEC / 1000);
+    std::cout << "Evaluation Time (Only Ev): " << ev_time << " ms" << std::endl;
 
     vector<IndividualP> bestInd;
     FloatingPoint::FloatingPoint* genBest;
     vector<double> bestPoints;
 
     // final result
+    vector< double > results;
+    double evaluations=0;
+    double percentage=0;
+    double total_time=0;
     bestInd = state->getHoF()->getBest();
     genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
     bestPoints = genBest->realValue;
+    results.push_back(bestPoints[0]);
+    results.push_back(bestPoints[1]);
+    results.push_back(bestPoints[2]);
+
+    //Execute best trajectory to get % of the wall painted
+    percentage=functionMinEvalOp->trajectoryExecution(results);
+
+    total_time= (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000);
+    std::cout << "Total Time (Connection+ev): " << total_time << " ms" << std::endl;
+
+    //*******************************************************************************************//
+    //                              FILE OUTPUT FOR DEBUGGING                                    //
+    //*******************************************************************************************//
+    evaluations=state->getEvaluations();
+
+    std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
+
+    std::ofstream myfile1;
+    myfile1.open("DataFull.txt", std::ios_base::app);
+    if (myfile1.is_open()){
+        myfile1<<"0: ";
+        myfile1<<evaluations<<" ";
+        myfile1<<percentage<<" ";
+        myfile1<<bestInd[0]->fitness->getValue()<<" ";
+        myfile1<<total_time<<" ";
+        myfile1<<ev_time<<std::endl;
+    }
+
+    //*******************************************************************************************//
+    //                                      END                                                  //
+    //*******************************************************************************************//
 
     printf("-begin-\n");
     for(unsigned int i=0;i<bestPoints.size();i++)
         printf("%f, ",bestPoints[i]);
     printf("\n-end-\n");
-
     return true;
 }
 

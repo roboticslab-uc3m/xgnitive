@@ -87,7 +87,6 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
             if ( res2.get(i).asInt() || sqPainted[i]){  // logic OR;
                 Npaint ++;
                 sqPainted[i]=1;
-                std::cout<<"PAINTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
             }
         }
 
@@ -183,6 +182,65 @@ FitnessP CgdaFitnessFunction::evaluate(IndividualP individual) {
     value= getCustomFitness(gen->realValue);
     fitness->setValue(value);
     return fitness;
+}
+
+/************************************************************************/
+
+double CgdaFitnessFunction::trajectoryExecution( vector<double> result_trajectory){
+    //std::cout<<"I have entered Execution"<<std::endl;
+
+    int sqPainted [NSQUARES] = { }; //setting number of changed square as cero
+
+    //Reset squares
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+
+
+
+    //Move robot
+    for(int t=0;t<=NTPOINTS;t++) {
+            std::cout<<"Time interval"<<t<<std::endl;
+
+            std::vector<double> dEncRaw(6);  // NUM_MOTORS
+            dEncRaw[0] = result_trajectory[3*t+0];  // simple
+            dEncRaw[1] = -result_trajectory[3*t+1];  // simple
+            dEncRaw[3] = result_trajectory[3*t+2];  // simple
+
+            dEncRaw[4] = 45;
+
+            //Actually move the robot
+            mentalPositionControl->positionMove(dEncRaw.data());
+
+            yarp::os::Time::delay(DEFAULT_DELAY_S);
+            yarp::os::Bottle cmd2,res2;
+            cmd2.addString("get");
+            pRpcClient->write(cmd2,res2);
+            for(int i=0;i<res2.size();i++)
+            {
+                //std::cout<<"The res2 string is: "<<res2.get(i).asInt()<<std::endl;
+                //std::cout<<"The sqpainted at i is: "<<sqPainted[i]<<std::endl;
+                if ( res2.get(i).asInt()){  // logic OR;
+                    sqPainted[i]=1;
+                }
+            }
+
+            //sleep(1);
+    }
+    double Npaint=0;
+    for(int i=0;i<NSQUARES;i++){
+        if(sqPainted[i])Npaint++;
+    }
+
+    double percentage;
+    percentage=(Npaint/NSQUARES)*100;
+    return percentage;
+
+    //Reset squares
+    pRpcClient->write(cmd3,res3);
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+
 }
 
 /************************************************************************/
