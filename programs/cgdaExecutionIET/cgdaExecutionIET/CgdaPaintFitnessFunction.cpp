@@ -16,26 +16,39 @@ double Const_target[17]={0, 6.25, 12.5, 18.75, 25, 31.25, 37.5
                    , 43.75, 50, 56.25, 62.5, 68.75, 75, 81.25, 87.5, 93.75, 100};
 
 double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
-    std::cout<<"EMPAZANDO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
 
     double percentage[NTPOINTS]={ };
     int sqPainted [NSQUARES] = { }; //setting number of changed square as cero
 
-//    yarp::os::Bottle cmd3,res3;
-//    cmd3.addString("reset");
-//    pRpcClient->write(cmd3,res3);
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
+//    yarp::os::Time::delay(DEFAULT_DELAY_S);
+
+    yarp::os::Bottle cmd2,res2;
+    cmd2.addString("get");
+//    pRpcClient->write(cmd2,res2);
+//    for(int i=0;i<res2.size();i++)
+//    {
+//        if ( res2.get(i).asInt() || sqPainted[i]){  // logic OR;
+//            std::cout<<"SOMETHING GONE WRONG THERE IS A SPOT ON MY WALL:::::::::: "<<sqPainted[i]<<"   "<<res2.get(i).asInt()<<std::endl;
+//        }
+//    }
 
     for(int t=0;t<=*pIter;t++) {
             std::vector<double> dEncRaw(6);  // NUM_MOTORS
             if (t<*pIter){
-//                cout << "< t: " << t << " *pIter: " << *pIter << std::endl;
-//                cout << "pF0: " << pFresults->operator [](t*3+0) << std::endl;
-//                cout << "pF1: " << pFresults->operator [](t*3+1) << std::endl;
-//                cout << "pF2: " << pFresults->operator [](t*3+2) << std::endl;
+                //cout << "< t: " << t << " *pIter: " << *pIter << std::endl;
+//                cout << " pF0: " << pFresults->operator [](t*3+0);
+//                cout << " pF1: " << pFresults->operator [](t*3+1);
+//                cout << " pF2: " << pFresults->operator [](t*3+2);
 
-                dEncRaw[0] = 1*(pFresults->operator [](t*3+0));  // simple
-                dEncRaw[1] = -1*(pFresults->operator [](t*3+1));  // simple
-                dEncRaw[3] = 1*(pFresults->operator [](t*3+2));  // simple
+                dEncRaw[0] = (pFresults->operator [](t*3+0));  // simple
+                dEncRaw[1] = -(pFresults->operator [](t*3+1));  // simple
+                dEncRaw[3] = (pFresults->operator [](t*3+2));  // simple
+//                dEncRaw[0] = 99.4323;
+//                dEncRaw[1] = -95.336;
+//                dEncRaw[3] = 0.760061;
 
 
             }
@@ -54,18 +67,14 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
             dEncRaw[4] = 45;
 
             //Actually move the robot
-            std::cout<<"NUMERO DE ITERACION: "<<*pIter<<std::endl;
-//            std::cout<<dEncRaw[0]
-//            std::cout<<dEncRaw[1]
-//            std::cout<<dEncRaw[3]
+            //std::cout<<"NUMERO DE ITERACION: "<<*pIter<<std::endl;
+//            std::cout<<dEncRaw[0];
+//            std::cout<<dEncRaw[1];
+//            std::cout<<dEncRaw[3]<<"  t:  "<<t<<"   //////////// ";
 
-            std::cout<<"LETS MOVE 1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
             mentalPositionControl->positionMove(dEncRaw.data());
-            std::cout<<"LETS MOVE 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
 
             yarp::os::Time::delay(DEFAULT_DELAY_S);
-            yarp::os::Bottle cmd2,res2;
-            cmd2.addString("get");
             pRpcClient->write(cmd2,res2);
             double Npaint=0;
             for(int i=0;i<res2.size();i++)
@@ -73,12 +82,14 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
                 //std::cout<<"The res2 string is: "<<res2.get(i).asInt()<<std::endl;
                 //std::cout<<"The sqpainted at i is: "<<sqPainted[i]<<std::endl;
                 if ( res2.get(i).asInt() || sqPainted[i]){  // logic OR;
+                    //std::cout<<"I HAVE PAINTED SOME WALL casue sqpainted    :::::"<<sqPainted[i] <<"  or  ::"<<res2.get(i).asInt();
                     Npaint ++;
                     sqPainted[i]=1;
                 }
             }
 
             percentage[t]=(Npaint/NSQUARES)*100;
+            //std::cout<<"TRAYECTORY STEP :::  "<<t<<" HAS A PERCENTAGE WALL :::" <<percentage[t]<<std::endl;
 
             //Fitness = percentage of wall painted
 
@@ -103,16 +114,17 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     std::vector < std::vector < double > > current_target;
     for(int i=0; i<=*pIter;i++){
         current_target.push_back({Const_target[i]});
+//        std::cout<<"The current target "<<i<<"is :::::::::::::::::::::"<<current_target[i]<<std::endl;
     }
     featureTrajectories->setGeneralized(current_target);
 
     //Get the discrepancy value between what we have and what we want
     //Init feature attemp vector
     std::vector< std::vector< double > > attempVectforSimpleDiscrepancy;
-    for(int t=0;t<NTPOINTS;t++)
+    for(int t=0;t<=*pIter;t++)
     {
         attempVectforSimpleDiscrepancy.push_back({percentage[t]});
-        //std::cout<<std::endl<<"ATTEMP TRAJECTORY ::::"<<t<<" : "<<percentage[t]<<std::endl;
+//        std::cout<<std::endl<<"ATTEMP TRAJECTORY ::::"<<t<<" : "<<percentage[t]<<std::endl;
     }
 
     //Console output.
@@ -126,14 +138,13 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     double fit;
     featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
 
-  //  cout << std::endl << " perc   entage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
+    //cout << std::endl << " perc   entage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
     cout << std::endl << " fit: " << fit << " ";
-    std::cout<<"HASTA AQUI LLEGUE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : "<<fit<<std::endl;
+    //std::cout<<"HASTA AQUI LLEGUE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : "<<fit<<std::endl;
 
-    yarp::os::Bottle cmd3,res3;
-    cmd3.addString("reset");
+//    yarp::os::Bottle cmd3,res3;
+//    cmd3.addString("reset");
     pRpcClient->write(cmd3,res3);
-
     std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
     //Actually move the robot
     mentalPositionControl->positionMove(dEncRaw2.data());
@@ -239,14 +250,14 @@ double CgdaPaintFitnessFunction::trajectoryExecution(vector<double> result_traje
         if(sqPainted[i])Npaint++;
     }
 
+    //Reset squares
+    pRpcClient->write(cmd3,res3);
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+
     double percentage;
     percentage=(Npaint/NSQUARES)*100;
     std::cout<<"Percentage "<<percentage<<std::endl;
     return percentage;
-
-    //Reset squares
-    pRpcClient->write(cmd3,res3);
-    yarp::os::Time::delay(DEFAULT_DELAY_S);
 }
 
 /************************************************************************/

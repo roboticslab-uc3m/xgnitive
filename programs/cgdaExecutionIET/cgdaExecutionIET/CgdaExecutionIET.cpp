@@ -92,17 +92,17 @@ bool CgdaExecutionIET::init() {
 
     CD_SUCCESS("----- All good for %d.\n",portNum);
 
-    timespec tsEvStart; //Start second timer
-    clock_gettime(CLOCK_REALTIME, &tsEvStart);
-
     vector< double > results;
     vector< double >* presults= &results;
-    int const_evaluations;
+    //int const_evaluations;
     //int* pconst_evaluations= &const_evaluations;
     //*pconst_evaluations=0;
     double evaluations;
+    double fit;
 
-       for(unsigned int i=0; i<NSQUARES; i++) {
+    timespec tsEvStart; //Start second timer
+    clock_gettime(CLOCK_REALTIME, &tsEvStart);
+       for(unsigned int i=0; i<NTPOINTS; i++) {
            StateP state (new State);
 
            //PSOInheritance
@@ -168,31 +168,50 @@ bool CgdaExecutionIET::init() {
            results.push_back(bestPoints[1]);
            results.push_back(bestPoints[2]);
 
-           //functionMinEvalOp->trajectoryExecution(results);
+           evaluations+=state->getEvaluations(); // Evaluations is the sum of all the evluations for each iter.
+           fit=bestInd[0]->fitness->getValue(); //Fit current gen.
 
-           //*******************************************************************************************//
-           //                              FILE OUTPUT FOR DEBUGGING                                    //
-           //*******************************************************************************************//
-           evaluations=state->getEvaluations();
-           //time=state->getElapsedTime();
+//           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
+//           nalg1.reset();
+//           nalg2.reset();
+//           nalg3.reset();
+           state.reset();
+           delete functionMinEvalOp;
+       }
 
-           std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
-           std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<time <<std::endl;
-           //IndividualP bestParticle = selBestOp->select( *deme );
+       double ev_time;
+       timespec tsEvEnd;
+       clock_gettime(CLOCK_REALTIME, &tsEvEnd);
+       ev_time=(tsEvEnd.tv_sec-tsEvStart.tv_sec);
+       std::cout<<"EVAL TIME IS:   "<<ev_time<<std::endl;
 
-           std::ofstream myfile1;
-           myfile1.open("TrajectoryterationsvsEvaluations.txt", std::ios_base::app);
-           if (myfile1.is_open()){
-               myfile1<<i<<" ";
-               myfile1<<time<<" ";
-               //if(const_evaluations==0){ //If we are not using the constrained version output normal
-               //     myfile1<<evaluations<<" ";
-               //}
-               //else{
-                   myfile1<<const_evaluations<<" ";
-               //}
-               myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
-           }
+       double percentage;
+       CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+       percentage=functionMinEvalOp->trajectoryExecution(results);
+
+       //Total time
+       double total_time=0;
+       timespec tsEnd;
+       clock_gettime(CLOCK_REALTIME, &tsEnd);
+       total_time=(tsEnd.tv_sec-tsStart.tv_sec);
+       std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
+
+       //*******************************************************************************************//
+       //                              FILE OUTPUT FOR DEBUGGING                                    //
+       //*******************************************************************************************//
+
+       std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl;
+
+       std::ofstream myfile1;
+       myfile1.open("DataIET.txt", std::ios_base::app);
+       if (myfile1.is_open()){
+           myfile1<<"0: ";
+           myfile1<<evaluations<<" ";
+           myfile1<<percentage<<" ";
+           myfile1<<fit<<" "; //Take only the fit of the last gen.
+           myfile1<<total_time<<" ";
+           myfile1<<ev_time<<std::endl;
+       }
 
 //           std::ofstream myfile2;
 //           myfile2.open("PercentageWall.txt", std::ios_base::app);
@@ -218,19 +237,12 @@ bool CgdaExecutionIET::init() {
 //               myfile5<<std::endl;
 //           }
 
-           //*******************************************************************************************//
+       //*******************************************************************************************//
 
 
-           //*******************************************************************************************//
-           //                                      END                                                  //
-           //*******************************************************************************************//
-//           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
-//           nalg1.reset();
-//           nalg2.reset();
-//           nalg3.reset();
-           state.reset();
-           delete functionMinEvalOp;
-       }
+       //*******************************************************************************************//
+       //                                      END                                                  //
+       //*******************************************************************************************//
 
        printf("-begin-\n");
        for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);
