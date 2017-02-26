@@ -46,7 +46,7 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
 	void registerParameters(StateP);
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
-    double trajectoryExecution(vector<double> result_trajectory); //TE
+    std::vector<double> trajectoryExecution(vector<double> result_trajectory); //TE
     vector<double>* pFresults;
     unsigned int* pIter;
 

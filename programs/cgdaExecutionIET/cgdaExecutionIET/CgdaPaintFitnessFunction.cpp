@@ -203,11 +203,12 @@ FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
 
 /************************************************************************/
 
-double CgdaPaintFitnessFunction::trajectoryExecution(vector<double> result_trajectory){
+std::vector<double> CgdaPaintFitnessFunction::trajectoryExecution(vector<double> result_trajectory){
     //std::cout<<"I have entered Execution"<<std::endl;
 
     int sqPainted [NSQUARES] = { }; //setting number of changed square as cero
 
+    std::vector<double> percentage;
     //Reset squares
     yarp::os::Bottle cmd3,res3;
     cmd3.addString("reset");
@@ -243,20 +244,21 @@ double CgdaPaintFitnessFunction::trajectoryExecution(vector<double> result_traje
                 }
             }
 
-            sleep(1);
-    }
-    double Npaint=0;
-    for(int i=0;i<NSQUARES;i++){
-        if(sqPainted[i])Npaint++;
+            double Npaint=0;
+            for(int i=0;i<NSQUARES;i++){
+                if(sqPainted[i])Npaint++;
+            }
+
+            percentage.push_back((Npaint/NSQUARES)*100);
+            //sleep(1);
     }
 
     //Reset squares
     pRpcClient->write(cmd3,res3);
     yarp::os::Time::delay(DEFAULT_DELAY_S);
 
-    double percentage;
-    percentage=(Npaint/NSQUARES)*100;
-    std::cout<<"Percentage "<<percentage<<std::endl;
+
+    //std::cout<<"Percentage "<<percentage<<std::endl;
     return percentage;
 }
 
