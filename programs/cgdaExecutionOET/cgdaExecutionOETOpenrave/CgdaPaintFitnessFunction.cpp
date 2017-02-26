@@ -82,7 +82,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     //std::valarray<int> myvalarray (sqPaintedAux,sizeof(sqPaintedAux));
     //percentage.push_back(( (float)myvalarray.sum()/(sizeof(sqPaintedAux)))*100);
 
-    //Serch the timeStep where we are
+    //Serch the timeStep where we are (LOCALIZATION STEP)
     double diff=1000000;
     for(int i=0;i<NTPOINTS;i++){ //We give priority to the elements at the last positions
         double diff_aux;
@@ -278,7 +278,7 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
 
     //realPositionControl->positionMove(dEncRaw.data());
 
-    sleep(1);
+    //sleep(1);
 
 }
 

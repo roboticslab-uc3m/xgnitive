@@ -28,11 +28,15 @@ Universidad Carlos III de Madrid
  # This file can be edited at runOET
 
 import subprocess
+import time
 
 #TODO list:
 # 1) Implement here that zeros and ones are read from a txt and send through args. X
 # 2) Implement in CgdaExecutionOET that the outputs of paintsquared are send to the txt called before.
 # 3) Implement a while that is running until certain condition is achieved. Maybe extract this condition from evMono_ecf_params, just for simplicity.
+Gen=0
+fout= open('percentageOET.txt', 'w')
+
 while 1:
     f = open('memoryOET.txt', 'r')
     data_array=[] #Array of strings
@@ -52,9 +56,17 @@ while 1:
     sum=0
     for i in data_array:
         sum=sum+int(i)
-    if sum==16:
+    
+    #Output percentage
+    print sum
+    percentage=(sum/16.0)*100
+    percentage=str(percentage)
+    print percentage
+    fout.write(percentage)
+    fout.write(" ")
+    if sum==16 or Gen==300:
         break
-
+    
     print data_array
 
     #Now delete the content in the file
@@ -62,8 +74,11 @@ while 1:
     with open('memoryOET.txt', 'w'): pass
 
     #args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", "1","0", "0","0","0","0", "1","1","0","0","0","0","0","0","0","0" )
-    args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6],data_array[7],data_array[8],data_array[9],data_array[10],data_array[11],data_array[12],data_array[13],data_array[14],data_array[15] )
 
+    start_time = time.time()
+
+    args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6],data_array[7],data_array[8],data_array[9],data_array[10],data_array[11],data_array[12],data_array[13],data_array[14],data_array[15] )
+    
     popen = subprocess.Popen(args, stdout=subprocess.PIPE) #Pipe is the standard stdout
     #popen.wait()
     #output = popen.stdout.read()
@@ -72,6 +87,14 @@ while 1:
     errcode = popen.returncode
     #output = popen.stdout.read()
     ###print out
+
+    #Output time
+    elapsed_time=time.time() - start_time
+    elapsed_time=str(elapsed_time)
+    fout.write(elapsed_time)
+    fout.write("\n")
+
     print"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    Gen=Gen+1;
 
 print "Done!!!!!"

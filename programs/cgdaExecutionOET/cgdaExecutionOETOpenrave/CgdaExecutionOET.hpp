@@ -9,8 +9,6 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
-#include <ctime>
-
 #include "CgdaPaintFitnessFunction.hpp"
 //The following cost functions are not yet implemented in OET
 //#include "CgdaWaxFitnessFunction.hpp"
@@ -21,6 +19,8 @@
 #include "AlgPSOInheritance.hpp"
 #include "AlgPSOFuzzy.hpp"
 #include "AlgConstrainedSST.hpp"
+
+#include <sys/time.h>
 
 #define DEFAULT_FILE_NAME "evMono_ecf_params.xml"
 

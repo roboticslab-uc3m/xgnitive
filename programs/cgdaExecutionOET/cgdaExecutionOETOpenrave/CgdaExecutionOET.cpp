@@ -13,7 +13,10 @@ namespace teo
 
 int CgdaExecutionOET::init(int argc, char **argv)
 {
-    std::clock_t start = std::clock();
+    //std::clock_t start = std::clock();
+
+//    timespec tsStart; //Start first timer
+//    clock_gettime(CLOCK_REALTIME, &tsStart);
 
     sqPainted.resize(argc-2);
 
@@ -103,190 +106,156 @@ int CgdaExecutionOET::init(int argc, char **argv)
     CD_SUCCESS("----- All good for %d.\n",portNum);
 
     vector< double > results;
-    vector< double >* presults= &results;
-    int const_evaluations;
-    int* pconst_evaluations= &const_evaluations;
-    *pconst_evaluations=0;
+//    vector< double >* presults= &results;
+//    int const_evaluations;
+//    int* pconst_evaluations= &const_evaluations;
+//    *pconst_evaluations=0;
 
     //yarp::os::Time::delay(1);
 
+    timespec tsEvStart; //Start second timer
+    clock_gettime(CLOCK_REALTIME, &tsEvStart);
+
     StateP state (new State);
 
-           //NOTE: WITH PARALLEL EXECUTION NEW ALGORITHMS FAIL.
-//           //PSOInheritance
-//           PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
-//           state->addAlgorithm(nalg1);
+    //NOTE: WITH PARALLEL EXECUTION NEW ALGORITHMS FAIL.
+    //           //PSOInheritance
+    //           PSOInheritanceP nalg1 = (PSOInheritanceP) new PSOInheritance;
+    //           state->addAlgorithm(nalg1);
 
-//           //PSOFuzzy
-//           PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
-//           state->addAlgorithm(nalg2);
+    //           //PSOFuzzy
+    //           PSOFuzzyP nalg2 = (PSOFuzzyP) new PSOFuzzy;
+    //           state->addAlgorithm(nalg2);
 
-//           //ConstrainedSST
-//           ConstrainedSSTP nalg3 = (ConstrainedSSTP) new ConstrainedSST;
-//           state->addAlgorithm(nalg3);
+    //           //ConstrainedSST
+    //           ConstrainedSSTP nalg3 = (ConstrainedSSTP) new ConstrainedSST;
+    //           state->addAlgorithm(nalg3);
 
-           // set the evaluation operator
-           CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
-           //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
-           //Constrained Cost functions
-           //CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
-           //CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
-           //functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
+    // set the evaluation operator
+    CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+    //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
+    //Constrained Cost functions
+    //CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
+    //CgdaConstrainedWaxFitnessFunction* functionMinEvalOp = new CgdaConstrainedWaxFitnessFunction;
+    //functionMinEvalOp->setEvaluations(pconst_evaluations); //Uncomment only if CgdaFitnessFunction is uncomment
 
-           mentalDevice.view(functionMinEvalOp->mentalPositionControl);
-           realDevice.view(functionMinEvalOp->realPositionControl);
-           functionMinEvalOp->setPRpcClient(&rpcClient);
-//           functionMinEvalOp->setPRobot(probot);
-//           functionMinEvalOp->setPenv(penv);
-//           functionMinEvalOp->setPcontrol(pcontrol);
-           //functionMinEvalOp->setResults(presults);
-           functionMinEvalOp->setPsqPainted(&sqPainted);
-           //Uncomment only for CgdaConstrained
+    mentalDevice.view(functionMinEvalOp->mentalPositionControl);
+    realDevice.view(functionMinEvalOp->realPositionControl);
+    functionMinEvalOp->setPRpcClient(&rpcClient);
+    //           functionMinEvalOp->setPRobot(probot);
+    //           functionMinEvalOp->setPenv(penv);
+    //           functionMinEvalOp->setPcontrol(pcontrol);
+    //functionMinEvalOp->setResults(presults);
+    functionMinEvalOp->setPsqPainted(&sqPainted);
+    //Uncomment only for CgdaConstrained
 
-           state->setEvalOp(functionMinEvalOp);
+    state->setEvalOp(functionMinEvalOp);
 
-           //unsigned int* pIter= &i;
-           ////unsigned int j=0;
-           ////unsigned int* pIter= &j;
-           ////functionMinEvalOp->setIter(pIter);
+    //unsigned int* pIter= &i;
+    ////unsigned int j=0;
+    ////unsigned int* pIter= &j;
+    ////functionMinEvalOp->setIter(pIter);
 
-           //printf("---------------------------> i:%d\n",i);
-           int newArgc = 2;
-           //PAINT
-           char *newArgv[2] = { (char*)"unusedFirstParam", argv[1] };
-           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml" };
-           //WAX
-           //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params_WAX.xml" };
+    //printf("---------------------------> i:%d\n",i);
+    int newArgc = 2;
+    //PAINT
+    char *newArgv[2] = { (char*)"unusedFirstParam", argv[1] };
+    //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml" };
+    //WAX
+    //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params_WAX.xml" };
 
-           printf("Pre Initialization\n");
-           bool ok = state->initialize(newArgc, newArgv);
-           if (!ok) printf("Failed Initialization\n");
-           else printf("State Initialized\n");
+    printf("Pre Initialization\n");
+    bool ok = state->initialize(newArgc, newArgv);
+    if (!ok) printf("Failed Initialization\n");
+    else printf("State Initialized\n");
 
-           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 10 \n");
-          //yarp::os::Time::delay(1);
+    //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 10 \n");
+    //yarp::os::Time::delay(1);
 
-           state->run();
+    state->run();
 
-           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 20 \n");
-          //yarp::os::Time::delay(1);
+    //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 20 \n");
+    //yarp::os::Time::delay(1);
 
-//           for(unsigned int i=0; i<numberOfPoints; i++) {
+    //           for(unsigned int i=0; i<numberOfPoints; i++) {
 
-           FloatingPoint::FloatingPoint* genBest;
-           vector<double> bestPoints;
+    FloatingPoint::FloatingPoint* genBest;
+    vector<double> bestPoints;
 
-           printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0 \n");
+    printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0 \n");
 
-           HallOfFameP phof = state->getHoF();
-           //printf("phof: %p\n",phof.get());
+    HallOfFameP phof = state->getHoF();
+    //printf("phof: %p\n",phof.get());
 
-           vector<IndividualP> bestInds = phof->getBest();
-           //printf("bestInds.size: %d\n",bestInds.size());
+    vector<IndividualP> bestInds = phof->getBest();
+    //printf("bestInds.size: %d\n",bestInds.size());
 
-           //printf("bestInds[0]: %p\n",bestInds[0].get());
+    //printf("bestInds[0]: %p\n",bestInds[0].get());
 
-           if( bestInds[0].get() == NULL )
-           {
-               //printf("bestInds[0].get() == NULL\n");
-               port.close();
-               printf("bye!\n");
-               return 0;
-           }
+    if( bestInds[0].get() == NULL )
+    {
+        //printf("bestInds[0].get() == NULL\n");
+        port.close();
+        printf("bye!\n");
+        return 0;
+    }
 
-           //printf("indiv: %s\n",(bestInds[0])->toString().c_str() );
+    //printf("indiv: %s\n",(bestInds[0])->toString().c_str() );
 
-           genBest = (FloatingPoint::FloatingPoint*) (bestInds[0])->getGenotype().get();
-           bestPoints = genBest->realValue;
+    genBest = (FloatingPoint::FloatingPoint*) (bestInds[0])->getGenotype().get();
+    bestPoints = genBest->realValue;
 
-           results.push_back(bestPoints[0]);
-           results.push_back(bestPoints[1]);
-           results.push_back(bestPoints[2]);
+    results.push_back(bestPoints[0]);
+    results.push_back(bestPoints[1]);
+    results.push_back(bestPoints[2]);
 
-           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 1 \n");
+    functionMinEvalOp->individualExecution(results);
 
-           //yarp::os::Time::delay(20);
-
-           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 \n");
-
-           functionMinEvalOp->individualExecution(results);
-
-           //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 3 \n");
-
-
-           //*******************************************************************************************//
-           //                              FILE OUTPUT FOR DEBUGGING                                    //
-           //*******************************************************************************************//
-           //evaluations=state->getEvaluations();
-
-           //time=state->getElapsedTime();
-
-//           std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
-//           std::cout<<std::endl<<"THE TIME TAKEN TO DO THIS IS:"<<time <<std::endl;
-//           //IndividualP bestParticle = selBestOp->select( *deme );
-
-//           std::ofstream myfile1;
-//           myfile1.open("TrajectoryterationsvsEvaluations.txt", std::ios_base::app);
-//           if (myfile1.is_open()){
-//               //myfile1<<i<<" ";
-//               myfile1<<time<<" ";
-//               //if(const_evaluations==0){ //If we are not using the constrained version output normal
-//               //     myfile1<<evaluations<<" ";
-//               //}
-//               //else{
-//                   myfile1<<const_evaluations<<" ";
-//               //}
-//               myfile1<<bestInd[0]->fitness->getValue()<<std::endl;
-//           }
-
-//           std::ofstream myfile2;
-//           myfile2.open("PercentageWall.txt", std::ios_base::app);
-//           if (myfile2.is_open()){
-//               myfile2<<std::endl;
-//           }
-
-//           std::ofstream myfile3;
-//           myfile3.open("X.txt", std::ios_base::app);
-//           if (myfile3.is_open()){
-//               myfile3<<std::endl;
-//           }
-
-//           std::ofstream myfile4;
-//           myfile4.open("Y.txt", std::ios_base::app);
-//           if (myfile4.is_open()){
-//               myfile4<<std::endl;
-//           }
-
-//           std::ofstream myfile5;
-//           myfile5.open("Z.txt", std::ios_base::app);
-//           if (myfile5.is_open()){
-//               myfile5<<std::endl;
-//           }
-
-//           //This following line is only for the execution of the result trajectory of the paint task
-////           if(i==(numberOfPoints-1)){
-////                //std::cout<<"LETS EXECUTE"<<std::endl;
-////                functionMinEvalOp->trajectoryExecution(numberOfPoints, results);
-////           }
-//           //*******************************************************************************************//
-
-
-//           //*******************************************************************************************//
-//           //                                      END                                                  //
-//           //*******************************************************************************************//
-//           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
-//           nalg1.reset();
-//           nalg2.reset();
-//           nalg3.reset();
-     //  }
+    double ev_time_n;
+    double ev_time_s;
+    timespec tsEvEnd;
+    clock_gettime(CLOCK_REALTIME, &tsEvEnd);
+    ev_time_n=(tsEvEnd.tv_nsec-tsEvStart.tv_nsec);
+    ev_time_n=ev_time_n/1000000000; //nano seconds to seconds
+    ev_time_s=(tsEvEnd.tv_sec-tsEvStart.tv_sec);
 
 //       printf("-begin-\n");
 //       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);
 //       printf("\n-end-\n");
 
     port.close();
-    std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
-    printf("bye!\n");
+
+//    double total_time;
+//    timespec tsEnd;
+//    clock_gettime(CLOCK_REALTIME, &tsEnd);
+//    total_time=(tsEnd.tv_sec-tsStart.tv_sec);
+//    std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
+
+    //*******************************************************************************************//
+    //                              FILE OUTPUT FOR DEBUGGING                                    //
+    //*******************************************************************************************//
+    double evaluations;
+    evaluations=state->getEvaluations();
+
+    std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
+
+    std::ofstream myfile1;
+    myfile1.open("DataOET++.txt", std::ios_base::app);
+    if (myfile1.is_open()){
+        myfile1<<"0: ";
+        myfile1<<evaluations<<" ";
+        myfile1<<bestInds[0]->fitness->getValue()<<" ";
+//        myfile1<<total_time<<" ";
+        myfile1<<ev_time_s<<" ";;
+        myfile1<<ev_time_n<<std::endl;
+    }
+
+    //*******************************************************************************************//
+    //                                      END                                                  //
+    //*******************************************************************************************//
+
+//    std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
+    //printf("bye!\n");
     return 0;
 }
 
