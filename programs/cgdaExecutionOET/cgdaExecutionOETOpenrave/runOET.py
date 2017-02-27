@@ -35,7 +35,12 @@ import time
 # 2) Implement in CgdaExecutionOET that the outputs of paintsquared are send to the txt called before.
 # 3) Implement a while that is running until certain condition is achieved. Maybe extract this condition from evMono_ecf_params, just for simplicity.
 Gen=0
-fout= open('percentageOET.txt', 'w')
+fout= open('percentageOET.txt', 'a')
+
+fout2= open('DataOET++.txt', 'a')
+fout2.write("\n")
+fout2.write("I: ")
+fout2.close()
 
 while 1:
     f = open('memoryOET.txt', 'r')
@@ -65,6 +70,10 @@ while 1:
     fout.write(percentage)
     fout.write(" ")
     if sum==16 or Gen==300:
+	fout2= open('DataOET++.txt', 'a')
+	fout2.write("\n")
+	fout2.write("I: ")
+        fout2.close()
         break
     
     print data_array

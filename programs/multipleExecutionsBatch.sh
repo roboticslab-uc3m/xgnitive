@@ -8,7 +8,10 @@ echo "The number of iterations that will be perfomed will be $Number_of_iteratio
 cd ../build/bin
 while [ $i -le $Number_of_iterations ]
 do
-    ./cgdaExecutionIET
+    rm memoryOET.txt
+    touch memoryOET.txt
+    #./cgdaExecutionIET
+    python ./runOET.py
     echo "This is the iteration number $i ........................................................................................"
     i=$((i+1))
     wait
