@@ -69,7 +69,7 @@ while 1:
     print percentage
     fout.write(percentage)
     fout.write(" ")
-    if sum==16 or Gen==300:
+    if sum==16 or Gen==30:
 	fout2= open('DataOET++.txt', 'a')
 	fout2.write("\n")
 	fout2.write("I: ")

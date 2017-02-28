@@ -99,7 +99,8 @@ bool CgdaExecutionIET::init() {
     //*pconst_evaluations=0;
     double evaluations;
     double fit;
-    double ev_time[NTPOINTS];
+    double ev_time_n[NTPOINTS];
+    int ev_time_s[NTPOINTS];
 
     for(unsigned int i=0; i<NTPOINTS; i++) {
         timespec tsEvStart; //Start second timer
@@ -182,7 +183,9 @@ bool CgdaExecutionIET::init() {
 
         timespec tsEvEnd;
         clock_gettime(CLOCK_REALTIME, &tsEvEnd);
-        ev_time[i]=(tsEvEnd.tv_sec-tsEvStart.tv_sec);
+        ev_time_n[i]=(tsEvEnd.tv_nsec-tsEvStart.tv_nsec);
+        ev_time_n[i]=ev_time_n[i]/1000000000;
+        ev_time_s[i]=(tsEvEnd.tv_sec-tsEvStart.tv_sec);
     }
 
 
@@ -213,7 +216,12 @@ bool CgdaExecutionIET::init() {
             myfile1<<percentage[i]<<" ";
         }
         for(int i=0; i<NTPOINTS;i++){
-            myfile1<<ev_time[i]<<" ";
+            if(ev_time_s[i]==0){
+                myfile1<<ev_time_n[i]<<" ";
+            }
+            else{
+                myfile1<<ev_time_s[i]<<" ";
+            }
         }
         myfile1<<total_time<<" "<<std::endl;
     }
