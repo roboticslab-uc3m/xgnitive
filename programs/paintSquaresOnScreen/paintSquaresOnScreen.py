@@ -51,8 +51,9 @@ RED = (255, 0, 0)
 
 # Set the height and width of the screen
 size = (1920, 1080)
+#size = (0, 0)
 screen = pygame.display.set_mode(size)
-pygame.FULLSCREEN
+#pygame.FULLSCREEN
  
 pygame.display.set_caption("Teo painting Demo")
 
@@ -62,8 +63,12 @@ clock = pygame.time.Clock()
 screenSize=pygame.display.Info()
 print(screenSize.current_w, screenSize.current_h)
 
+#Since using 2 screens are presented we can not auto detect the size of screen
+screenW=1920;
+screenH=1080;
+
 # Number of screens
-scn=2
+scn=1
 
 # Number of rectangles
 hrect=4 #Horizontal
@@ -95,20 +100,21 @@ class DataProcessor(yarp.PortReader):
         print("Pos rectangle")
         print x
         print y
-        if(x==-1 and y==4):
-            print("IM CLEANING")
-            screen.fill(WHITE)
-        else:
-            pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
-            place = (3-y) + (4*x)
-            print 'place',place
-            print 'self.myMem',self.myMem
-            print 'size',len(self.myMem)
-            self.myMem[ place ] = 1
-            f = open('memoryOET.txt', 'w')
-            line = '%s' % ' '.join(map(str, self.myMem))
-            f.write(line)
-            f.close()
+        #if(x==-1 and y==4):
+        #    print("IM CLEANING")
+        #    screen.fill(WHITE)
+        #else:
+        #pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
+	pygame.draw.rect(screen, BLUE, [x*screenW/(hrect*scn), y*screenH/vrect, screenW/(hrect*scn), screenH/vrect], 0)
+        place = (3-y) + (4*x)
+        print 'place',place
+        print 'self.myMem',self.myMem
+        print 'size',len(self.myMem)
+        self.myMem[ place ] = 1
+        f = open('memoryOET.txt', 'w')
+        line = '%s' % ' '.join(map(str, self.myMem))
+        f.write(line)
+        f.close()
 
 	
         if not(ok):
