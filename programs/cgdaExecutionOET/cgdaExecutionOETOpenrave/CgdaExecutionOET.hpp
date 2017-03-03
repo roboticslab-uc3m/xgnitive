@@ -46,6 +46,7 @@ private:
     int portNum;
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
+    yarp::dev::PolyDriver realSimDevice;
     yarp::os::RpcClient rpcClient;
 
 };
