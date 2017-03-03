@@ -152,6 +152,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     mentalDevice.view(functionMinEvalOp->mentalPositionControl);
     realDevice.view(functionMinEvalOp->realPositionControl);
+    realSimDevice.view(functionMinEvalOp->realSimPositionControl);
     functionMinEvalOp->setPRpcClient(&rpcClient);
     //           functionMinEvalOp->setPRobot(probot);
     //           functionMinEvalOp->setPenv(penv);

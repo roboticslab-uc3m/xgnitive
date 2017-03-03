@@ -72,6 +72,7 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
 
     yarp::dev::IPositionControl *mentalPositionControl;
     yarp::dev::IPositionControl *realPositionControl;
+    yarp::dev::IPositionControl *realSimPositionControl;
     yarp::os::RpcClient* pRpcClient;
 
 };

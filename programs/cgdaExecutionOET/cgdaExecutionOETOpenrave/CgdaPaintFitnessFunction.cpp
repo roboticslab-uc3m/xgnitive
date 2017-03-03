@@ -277,6 +277,7 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
     pRpcClient->write(cmd3,res3);
 
     realPositionControl->positionMove(dEncRaw.data());
+    realSimPositionControl->positionMove(dEncRaw.data());
 
     //sleep(1);
 
