@@ -276,7 +276,7 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
     cmd3.addString("reset");
     pRpcClient->write(cmd3,res3);
 
-    //realPositionControl->positionMove(dEncRaw.data());
+    realPositionControl->positionMove(dEncRaw.data());
 
     //sleep(1);
 

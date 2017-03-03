@@ -61,32 +61,32 @@ int CgdaExecutionOET::init(int argc, char **argv)
     }
     CD_SUCCESS("Mental robot device available.\n");
 
-//    //-- REAL ROBOT ARM
-//    yarp::os::Property realOptions;
-//    realOptions.put("device","remote_controlboard");
-//    std::string realRemote;
-//    bool realRealRemote = true;
-//    if( realRealRemote )
-//    {
-//        realRemote.append( "/teo/rightArm" );
-//    }
-//    else
-//    {
-//        realRemote.append( "/1/teoSim/rightArm" );
-//    }
-//    realOptions.put("remote",realRemote);
-//    std::string realLocal("/cgdaReal/");
-//    realLocal.append( ss.str() );
-//    realLocal.append( "/teo/rightArm" );
-//    realOptions.put("local",realLocal);
-//    realDevice.open(realOptions);
-//    if(!realDevice.isValid()) {
-//       CD_ERROR("Real robot device not available.\n");
-//       realDevice.close();
-//       yarp::os::Network::fini();
-//       return 1;
-//    }
-//    CD_SUCCESS("Real robot device available.\n");
+    //-- REAL ROBOT ARM
+    yarp::os::Property realOptions;
+    realOptions.put("device","remote_controlboard");
+    std::string realRemote;
+    bool realRealRemote = false;
+    if( realRealRemote )
+    {
+        realRemote.append( "/teo/rightArm" );
+    }
+    else
+    {
+        realRemote.append( "/1/teoSim/rightArm" );
+    }
+    realOptions.put("remote",realRemote);
+    std::string realLocal("/cgdaReal/");
+    realLocal.append( ss.str() );
+    realLocal.append( "/teo/rightArm" );
+    realOptions.put("local",realLocal);
+    realDevice.open(realOptions);
+    if(!realDevice.isValid()) {
+       CD_ERROR("Real robot device not available.\n");
+       realDevice.close();
+       yarp::os::Network::fini();
+       return 1;
+    }
+    CD_SUCCESS("Real robot device available.\n");
 
     //-- Paint server
     std::string remotePaint("/");
