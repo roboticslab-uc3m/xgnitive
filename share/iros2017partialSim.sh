@@ -4,6 +4,8 @@ YARP_PORT_PREFIX=/0 /usr/bin/python $HOME/repos/openrave-yarp-plugins/examples/o
 
 YARP_PORT_PREFIX=/1 /usr/bin/python $HOME/repos/openrave-yarp-plugins/examples/openrave-YarpRobotPaintSquares.py &
 
+yarp connect /1/openraveYarpPaintSquares/rpc:c /painted_wall
+
 # test 1
 $HOME/repos/xgnitive/build/bin/cgdaExecutionOETOpenrave $HOME/repos/xgnitive/programs/cgdaExecutionOET/conf/evMono_ecf_params.xml 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 # run all

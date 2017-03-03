@@ -67,7 +67,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     std::string realSimRemote;
     realSimRemote.append( "/1/teoSim/rightArm" );
     realSimOptions.put("remote",realSimRemote);
-    std::string realSimLocal("/cgdaReal/");
+    std::string realSimLocal("/cgdaRealSim/");
     realSimLocal.append( ss.str() );
     realSimLocal.append( "/teo/rightArm" );
     realSimOptions.put("local",realSimLocal);
@@ -86,7 +86,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     std::string realRemote;
     realRemote.append( "/teo/rightArm" );
     realOptions.put("remote",realRemote);
-    std::string realLocal("/cgdaReal/");
+    std::string realLocal("/cgdaRealReal/");
     realLocal.append( ss.str() );
     realLocal.append( "/teo/rightArm" );
     realOptions.put("local",realLocal);
