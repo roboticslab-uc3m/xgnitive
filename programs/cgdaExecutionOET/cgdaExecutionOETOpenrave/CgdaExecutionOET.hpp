@@ -34,10 +34,6 @@ public:
     int init(int argc, char **argv);
 
 private:
-    // Openrave
-    //RobotBasePtr probot;
-    //EnvironmentBasePtr penv;
-    //ControllerBasePtr pcontrol;
     vector<int> sqPainted;
 
     // YARP

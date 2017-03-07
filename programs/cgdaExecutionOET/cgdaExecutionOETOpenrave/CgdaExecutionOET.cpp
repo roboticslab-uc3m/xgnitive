@@ -13,11 +13,6 @@ namespace teo
 
 int CgdaExecutionOET::init(int argc, char **argv)
 {
-    //std::clock_t start = std::clock();
-
-//    timespec tsStart; //Start first timer
-//    clock_gettime(CLOCK_REALTIME, &tsStart);
-
     sqPainted.resize(argc-2);
 
     for(int i=0;i<argc-2;i++)
@@ -106,12 +101,6 @@ int CgdaExecutionOET::init(int argc, char **argv)
     CD_SUCCESS("----- All good for %d.\n",portNum);
 
     vector< double > results;
-//    vector< double >* presults= &results;
-//    int const_evaluations;
-//    int* pconst_evaluations= &const_evaluations;
-//    *pconst_evaluations=0;
-
-    //yarp::os::Time::delay(1);
 
     timespec tsEvStart; //Start second timer
     clock_gettime(CLOCK_REALTIME, &tsEvStart);
@@ -142,47 +131,22 @@ int CgdaExecutionOET::init(int argc, char **argv)
     mentalDevice.view(functionMinEvalOp->mentalPositionControl);
     realDevice.view(functionMinEvalOp->realPositionControl);
     functionMinEvalOp->setPRpcClient(&rpcClient);
-    //           functionMinEvalOp->setPRobot(probot);
-    //           functionMinEvalOp->setPenv(penv);
-    //           functionMinEvalOp->setPcontrol(pcontrol);
-    //functionMinEvalOp->setResults(presults);
     functionMinEvalOp->setPsqPainted(&sqPainted);
-    //Uncomment only for CgdaConstrained
 
     state->setEvalOp(functionMinEvalOp);
 
-    //unsigned int* pIter= &i;
-    ////unsigned int j=0;
-    ////unsigned int* pIter= &j;
-    ////functionMinEvalOp->setIter(pIter);
-
-    //printf("---------------------------> i:%d\n",i);
     int newArgc = 2;
-    //PAINT
     char *newArgv[2] = { (char*)"unusedFirstParam", argv[1] };
-    //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml" };
-    //WAX
-    //char *newArgv[2] = { (char*)"unusedFirstParam", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params_WAX.xml" };
 
     printf("Pre Initialization\n");
     bool ok = state->initialize(newArgc, newArgv);
     if (!ok) printf("Failed Initialization\n");
     else printf("State Initialized\n");
 
-    //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 10 \n");
-    //yarp::os::Time::delay(1);
-
     state->run();
-
-    //printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 20 \n");
-    //yarp::os::Time::delay(1);
-
-    //           for(unsigned int i=0; i<numberOfPoints; i++) {
 
     FloatingPoint::FloatingPoint* genBest;
     vector<double> bestPoints;
-
-    printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0 \n");
 
     HallOfFameP phof = state->getHoF();
     //printf("phof: %p\n",phof.get());
@@ -225,12 +189,6 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     port.close();
 
-//    double total_time;
-//    timespec tsEnd;
-//    clock_gettime(CLOCK_REALTIME, &tsEnd);
-//    total_time=(tsEnd.tv_sec-tsStart.tv_sec);
-//    std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
-
     //*******************************************************************************************//
     //                              FILE OUTPUT FOR DEBUGGING                                    //
     //*******************************************************************************************//
@@ -245,16 +203,18 @@ int CgdaExecutionOET::init(int argc, char **argv)
         myfile1<<"0: ";
         myfile1<<evaluations<<" ";
         myfile1<<bestInds[0]->fitness->getValue()<<" ";
-//        myfile1<<total_time<<" ";
-        myfile1<<ev_time_s<<" ";;
-        myfile1<<ev_time_n<<std::endl;
+        if(ev_time_s[i]==0){
+            myfile1<<ev_time_n[i]<<" ";
+        }
+        else{
+            myfile1<<ev_time_s[i]<<" ";
+        }
     }
 
     //*******************************************************************************************//
     //                                      END                                                  //
     //*******************************************************************************************//
 
-//    std::cout << "---------------Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
     //printf("bye!\n");
     return 0;
 }

@@ -43,22 +43,6 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     for(int t=0;t<NTPOINTS;t++) {
 
-//        //--------just OPENRAVE things to move TEO-----------------------------------------------------------
-//        //things about moving arm. OpenRave things. dReal is a floating in dynamics ODE.
-//        std::vector<double>  dEncRaw(6);  // NUM_MOTORS
-//        dEncRaw[0] = genPoints[t*3+0];  // simple
-//        dEncRaw[1] = -genPoints[t*3+1];  // simple
-//        dEncRaw[3] = genPoints[t*3+2];  // simple
-
-//        dEncRaw[4] = 45;
-//        //NOTE: In the right arm there is an additional DOF for the wrist, that can be used if needed.
-
-//        printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
-
-//        yarp::os::Time::delay(5);
-
-//        printf("HASTA AQUI LLEGUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 \n");
-
         std::vector<double> dEncRaw(6);  // NUM_MOTORS
         dEncRaw[0] = genPoints[3*t+0];  // simple
         dEncRaw[1] = -genPoints[3*t+1];  // simple
@@ -89,8 +73,6 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
 
 
          //Fitness = percentage of wall painted
-//         std::valarray<int> myvalarray (sqPainted,rows*cols);
-//         percentage[t]= ( (float)myvalarray.sum()/(rows*cols))*100;
 
      //cout << std::endl << " d: " << myvalarray.sum() << " " << percentage[t] << " ";
     } //cierre bucle trayectoria completa

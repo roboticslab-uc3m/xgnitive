@@ -30,18 +30,6 @@ namespace teo
 class CgdaPaintFitnessFunction : public EvaluateOp {
 
   public:
-//    void setPRobot(const RobotBasePtr& _probot) {
-//        probot = _probot;
-//    }
-//    void setPenv(const EnvironmentBasePtr& _penv){
-//        penv = _penv;
-//    }
-//    void setPcontrol(const ControllerBasePtr& _pcontrol){
-//        pcontrol = _pcontrol;
-//    }
-//    void setResults( vector<double>* _presults){
-//        pFresults = _presults;
-//    }
 
     void setPsqPainted( vector<int>* _psqPainted){
         psqPainted = _psqPainted;
@@ -51,23 +39,11 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
         this->pRpcClient = pRpcClient;
     }
 
-//    void setIter(unsigned int* _piter){
-//        pIter = _piter;
-//    }
-
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
     void individualExecution(vector<double> results); //TE
-    //RobotBasePtr probot;
-    //EnvironmentBasePtr penv;
-    //ControllerBasePtr pcontrol;
-    //KinBodyPtr _objPtr;
-    //KinBodyPtr _wall;
-    //vector<double>* pFresults;
-    //unsigned int* pIter;
-    //Transform T_base_object;
     vector<int>* psqPainted;
 
     yarp::dev::IPositionControl *mentalPositionControl;

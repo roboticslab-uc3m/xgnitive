@@ -46,9 +46,6 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
                 dEncRaw[0] = (pFresults->operator [](t*3+0));  // simple
                 dEncRaw[1] = -(pFresults->operator [](t*3+1));  // simple
                 dEncRaw[3] = (pFresults->operator [](t*3+2));  // simple
-//                dEncRaw[0] = 99.4323;
-//                dEncRaw[1] = -95.336;
-//                dEncRaw[3] = 0.760061;
 
 
             }
@@ -140,7 +137,6 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //cout << std::endl << " perc   entage: "<< percentage[0] << ","<< percentage[1] << ","<< percentage[2] << ","<< percentage[3] << ","<< percentage[4];
     cout << std::endl << " fit: " << fit << " ";
-    //std::cout<<"HASTA AQUI LLEGUE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : "<<fit<<std::endl;
 
 //    yarp::os::Bottle cmd3,res3;
 //    cmd3.addString("reset");

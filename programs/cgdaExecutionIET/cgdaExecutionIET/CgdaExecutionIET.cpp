@@ -148,16 +148,6 @@ bool CgdaExecutionIET::init() {
 
         state->initialize(newArgc, newArgv);
 
-        //           int parameter=100;
-        //           voidP sptr;
-        //           sptr= (voidP)&parameter;
-        //           state->getRegistry()->modifyEntry("term.fitnessval", sptr);
-
-        //           if(state->getRegistry()->isModified("term.fitnessval")){
-        //               std::cout<<"Ha sido modificado!!!!"<<std::endl;
-        //               std::cout<<"Valor  "<<*par<<std::endl;
-        //           }
-
         state->run();
 
         vector<IndividualP> bestInd;
