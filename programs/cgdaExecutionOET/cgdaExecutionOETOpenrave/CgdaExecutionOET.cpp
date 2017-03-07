@@ -203,11 +203,11 @@ int CgdaExecutionOET::init(int argc, char **argv)
         myfile1<<"0: ";
         myfile1<<evaluations<<" ";
         myfile1<<bestInds[0]->fitness->getValue()<<" ";
-        if(ev_time_s[i]==0){
-            myfile1<<ev_time_n[i]<<" ";
+        if(ev_time_s==0){
+            myfile1<<ev_time_n<<" ";
         }
         else{
-            myfile1<<ev_time_s[i]<<" ";
+            myfile1<<ev_time_s<<" ";
         }
     }
 
