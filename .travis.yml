@@ -31,7 +31,8 @@ install:
   - tar -zxf ECF_1.4.1.tar.gz
   - cd ECF_1.4.1
   - wget http://ecf.zemris.fer.hr/ecf_install.sh
-  - sh ./ecf_install.sh
+  - echo "yes" > yes.txt
+  - sh ./ecf_install.sh < yes.txt
   #-- Install cmake
   - sudo apt-get install cmake
   #-- Install yarp
