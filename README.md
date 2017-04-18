@@ -23,6 +23,15 @@ The database of results of the experiments performed with xgnitive can be found 
 
 Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
+
+## Status
+
+[![Build Status (Linux/OSX)](https://travis-ci.org/roboticslab-uc3m/xgnitive.svg?branch=master)](https://travis-ci.org/roboticslab-uc3m/xgnitive)
+
+[![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/xgnitive/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/xgnitive)
+
+[![Issues](https://img.shields.io/github/issues/roboticslab-uc3m/xgnitive.svg?label=Issues)](https://github.com/roboticslab-uc3m/xgnitive/issues)
+
 ## References
 <a id="1">[1]</a> S. Morante, J.G. Victores, C. Balaguer. Automatic Demonstration and Feature Selection for Robot Learning. IEEE International Conference on Humanoid Robots (Humanoids 2015), pages: 428 - 433, IEEE. 2015-11-03, Seoul, South Korea. 2015. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/morante2015automatic-preprint.pdf)  [[slides]](http://www.slideshare.net/JuanGVictores/morante2015automaticpresentation) [[bib]](doc/bib/morante2015automatic.bib) [[DOI]](http://dx.doi.org/10.1109/HUMANOIDS.2015.7363569)
 
@@ -42,5 +51,4 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
 <a id="9">[9]</a>  J.G. Victores. Robot Imagination System. PhD Thesis. Supervisor: C. Balaguer, A. Jardon. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2014. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/victores2014thesis.pdf) [[slides]](http://www.slideshare.net/JuanGVictores/victores2014thesispresentation) [[bib]](doc/bib/victores2014phd.bib) [[URL]](http://e-archivo.uc3m.es/handle/10016/19834)
 
-<!-- [![xgnitive Homepage](https://img.shields.io/badge/xgnitive--orange.svg)](http://robots.uc3m.es/dox-xgnitive) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/xgnitive.svg?label=Latest Release)](https://github.com/roboticslab-uc3m/xgnitive/tags) -->
 
