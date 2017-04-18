@@ -62,5 +62,5 @@ configure_file(runOET.py ${PROJECT_BINARY_DIR}/installFiles/runOET.py @ONLY)
 install(PROGRAMS ${PROJECT_BINARY_DIR}/installFiles/runOET.py DESTINATION bin) 
 
 
-ENDIF (ENABLE_cgdaExecutionoOETOpenrave)
+ENDIF (ENABLE_cgdaExecutionOETOpenrave)
 
