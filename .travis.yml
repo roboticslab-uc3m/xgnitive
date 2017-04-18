@@ -23,8 +23,8 @@ before_install:
 
 install:
   #-- Install PCL
-  - sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
-  - sudo apt-get update
+  - sudo add-apt-repository --yes ppa:v-launchpad-jochen-sprickerhof-de/pcl
+  - sudo apt-get update -qq  # -qq No output except for errors
   - sudo apt-get install libpcl-all libpcl-all-dev
   #-- Install ECF
   - wget https://sourceforge.net/projects/ecfproject/files/ECF_1.4.1/ECF_1.4.1.tar.gz/download -O ECF_1.4.1.tar.gz
