@@ -33,6 +33,7 @@ install:
   - wget http://ecf.zemris.fer.hr/ecf_install.sh
   - echo "exit 0" > exit0.sh
   - echo "yes" | sh ./ecf_install.sh; sh ./exit0.sh
+  - cd ..
   #-- Install cmake
   - sudo apt-get install cmake
   #-- Install yarp
