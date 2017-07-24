@@ -7,6 +7,12 @@
         <!--port>/paint</port-->
     </dependencies>
 
+    <module>
+        <name>yarpdev</name>
+        <parameters>--device OpenNI2DeviceServer --depthVideoMode 4 --colorVideoMode 9 --noRGBMirror --noDepthMirror</parameters>
+        <node>localhost</node>
+    </module>
+
     <module> <!-- xgnitive -->
         <name>paintSquaresOnScreen.py</name>
         <workdir>/home/teo/repos/xgnitive/build/bin</workdir>
@@ -24,7 +30,7 @@
     <module>
         <name>yarpdatadumper</name>
         <parameters>--name /dumper/BasicCartesianControl/teo/lefttArm/rpc:o --type bottle </parameters>
-        <node>/teo</node>
+        <node>localhost</node>
     </module>
     <connection>
         <from>/BasicCartesianControl/teo/lefttArm/rpc:o</from>
@@ -34,7 +40,7 @@
     <module>
         <name>yarpdatadumper</name>
         <parameters>--name /dumper/BasicCartesianControl/teo/rightArm/rpc:o --type bottle </parameters>
-        <node>/teo</node>
+        <node>localhost</node>
     </module>
     <connection>
         <from>/BasicCartesianControl/teo/rightArm/rpc:o</from>
@@ -44,7 +50,7 @@
     <module>
         <name>yarpdatadumper</name>
         <parameters>--name /dumper/jr3/ch3:o --type bottle </parameters>
-        <node>/teo</node>
+        <node>localhost</node>
     </module>
     <connection>
         <from>/jr3/ch3:o</from>
@@ -54,7 +60,7 @@
     <module>
         <name>yarpdatadumper</name>
         <parameters>--name /dumper/paint --type bottle </parameters>
-        <node>/teo</node>
+        <node>localhost</node>
     </module>
     <connection>
         <from>/paint</from>
