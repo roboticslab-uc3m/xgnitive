@@ -1,29 +1,29 @@
 <application>
 	<name>icra 2018 dump</name>
 	<dependencies>
-		<port>/BasicCartesianControl/teoSim/lefttArm/rpc:o</port>
-		<port>/BasicCartesianControl/teoSim/rightArm/rpc:o</port>
+		<port>/BasicCartesianControl/teo/lefttArm/rpc:o</port>
+		<port>/BasicCartesianControl/teo/rightArm/rpc:o</port>
 		<port>/jr3/ch3:o</port>
 		<port>/paint</port>
 	</dependencies>
 	<module>
 		<name>yarpdatadumper</name>
-		<parameters>--name /dumper/BasicCartesianControl/teoSim/lefttArm/rpc:o --type bottle </parameters>
+		<parameters>--name /dumper/BasicCartesianControl/teo/lefttArm/rpc:o --type bottle </parameters>
 		<node>/teo</node>
 	</module>
 	<connection>
-		<from>/BasicCartesianControl/teoSim/lefttArm/rpc:o</from>
-		<to>/dumper/BasicCartesianControl/teoSim/lefttArm/rpc:o</to>
+		<from>/BasicCartesianControl/teo/lefttArm/rpc:o</from>
+		<to>/dumper/BasicCartesianControl/teo/lefttArm/rpc:o</to>
 		<protocol>udp</protocol>
 	</connection>
 	<module>
 		<name>yarpdatadumper</name>
-		<parameters>--name /dumper/BasicCartesianControl/teoSim/rightArm/rpc:o --type bottle </parameters>
+		<parameters>--name /dumper/BasicCartesianControl/teo/rightArm/rpc:o --type bottle </parameters>
 		<node>/teo</node>
 	</module>
 	<connection>
-		<from>/BasicCartesianControl/teoSim/rightArm/rpc:o</from>
-		<to>/dumper/BasicCartesianControl/teoSim/rightArm/rpc:o</to>
+		<from>/BasicCartesianControl/teo/rightArm/rpc:o</from>
+		<to>/dumper/BasicCartesianControl/teo/rightArm/rpc:o</to>
 		<protocol>udp</protocol>
 	</connection>
 	<module>
