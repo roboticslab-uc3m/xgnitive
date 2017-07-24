@@ -1,20 +1,5 @@
 <application>
 <name>icra 2018 App</name>
-    <!--module>
-        <name>yarpdev</name>
-        <parameters>--device OpenNI2DeviceServer --noMirror --depthVideoMode 4 --colorVideoMode 9</parameters>
-        <node>localhost</node>
-    </module-->
-    <module>
-        <name>yarpview</name>
-        <parameters>--name /rgb/yarpview/img:i</parameters>
-        <node>localhost</node>
-    </module>
-    <connection>
-        <from>/OpenNI2/imageFrame:o</from>
-        <to>/rgb/yarpview/img:i</to>
-    </connection>
-
     <module>
         <name>cv1</name>
         <parameters>--kinectDevice OpenNI2DeviceClient --kinectLocal /red/cv1 --maxNumBlobs 1 --algorithm redMinusGreen --outFeaturesFormat 1</parameters>
