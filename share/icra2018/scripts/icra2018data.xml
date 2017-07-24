@@ -1,68 +1,49 @@
 <application>
-<name>icra 2018 App</name>
-    <module>
-        <name>colorRegionDetection</name>
-        <parameters>--kinectDevice OpenNI2DeviceClient --kinectLocal /red/colorRegionDetection --maxNumBlobs 1 --algorithm redMinusGreen --outFeaturesFormat 1</parameters>
-        <node>localhost</node>
-    </module>
-    <module>
-        <name>yarpview</name>
-        <parameters>--name /red/yarpview/img:i</parameters>
-        <node>localhost</node>
-    </module>
-    <connection>
-        <from>/red/colorRegionDetection/img:o</from>
-        <to>/red/yarpview/img:i</to>
-    </connection>
-
-    <module>
-        <name>colorRegionDetection</name>
-        <parameters>--kinectDevice OpenNI2DeviceClient --kinectLocal /green/colorRegionDetection --maxNumBlobs 1 --algorithm greenMinusRed --outFeaturesFormat 1</parameters>
-        <node>localhost</node>
-    </module>
-    <module>
-        <name>yarpview</name>
-        <parameters>--name /green/yarpview/img:i</parameters>
-        <node>localhost</node>
-    </module>
-    <connection>
-        <from>/green/colorRegionDetection/img:o</from>
-        <to>/green/yarpview/img:i</to>
-    </connection>
-
-    <module>
-        <name>colorRegionDetectionToRoot</name>
-        <prefix>/red</prefix>
-        <node>localhost</node>
-    </module>
-    <connection>
-        <from>/red/colorRegionDetection/state:o</from>
-        <to>/red/in</to>
-    </connection>
-
-    <module>
-        <name>colorRegionDetectionToRoot</name>
-        <prefix>/green</prefix>
-        <node>localhost</node>
-    </module>
-    <connection>
-        <from>/green/colorRegionDetection/state:o</from>
-        <to>/green/in</to>
-    </connection>
-
-    <module>
-        <name>multipleDump</name>
-        <parameters>--file move</parameters>
-        <node>localhost</node>
-    </module>
-    <connection>
-        <from>/red/out</from>
-        <to>/in1</to>
-    </connection>
-    <connection>
-        <from>/green/out</from>
-        <to>/in2</to>
-    </connection>
-
+	<name>icra 2018 dump</name>
+	<dependencies>
+		<port>/BasicCartesianControl/teoSim/lefttArm/rpc:o</port>
+		<port>/BasicCartesianControl/teoSim/rightArm/rpc:o</port>
+		<port>/jr3/ch3:o</port>
+		<port>/paint</port>
+	</dependencies>
+	<module>
+		<name>yarpdatadumper</name>
+		<parameters>--name /dumper/BasicCartesianControl/teoSim/lefttArm/rpc:o --type bottle </parameters>
+		<node>/teo</node>
+	</module>
+	<connection>
+		<from>/BasicCartesianControl/teoSim/lefttArm/rpc:o</from>
+		<to>/dumper/BasicCartesianControl/teoSim/lefttArm/rpc:o</to>
+		<protocol>udp</protocol>
+	</connection>
+	<module>
+		<name>yarpdatadumper</name>
+		<parameters>--name /dumper/BasicCartesianControl/teoSim/rightArm/rpc:o --type bottle </parameters>
+		<node>/teo</node>
+	</module>
+	<connection>
+		<from>/BasicCartesianControl/teoSim/rightArm/rpc:o</from>
+		<to>/dumper/BasicCartesianControl/teoSim/rightArm/rpc:o</to>
+		<protocol>udp</protocol>
+	</connection>
+	<module>
+		<name>yarpdatadumper</name>
+		<parameters>--name /dumper/jr3/ch3:o --type bottle </parameters>
+		<node>/teo</node>
+	</module>
+	<connection>
+		<from>/jr3/ch3:o</from>
+		<to>/dumper/jr3/ch3:o</to>
+		<protocol>udp</protocol>
+	</connection>
+	<module>
+		<name>yarpdatadumper</name>
+		<parameters>--name /dumper/paint --type bottle </parameters>
+		<node>/teo</node>
+	</module>
+	<connection>
+		<from>/paint</from>
+		<to>/dumper/paint</to>
+		<protocol>udp</protocol>
+	</connection>
 </application>
-
