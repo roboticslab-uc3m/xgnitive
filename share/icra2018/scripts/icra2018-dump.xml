@@ -4,8 +4,23 @@
 		<port>/BasicCartesianControl/teo/lefttArm/rpc:o</port>
 		<port>/BasicCartesianControl/teo/rightArm/rpc:o</port>
 		<port>/jr3/ch3:o</port>
-		<port>/paint</port>
+		<!--port>/paint</port-->
 	</dependencies>
+
+    <module> <!-- xgnitive -->
+        <name>paintSquaresOnScreen.py</name>
+        <workdir>/home/teo/repos/xgnitive/build/bin</workdir>
+	<node>localhost</node>
+    </module>
+    <module> <!-- vision -->
+        <name>voxelOccupancyDetection</name>
+        <node>localhost</node>
+    </module>
+    <connection>
+        <from>/voxelOccupancyDetection/state:o</from>
+        <to>/painted_wall</to>
+    </connection>
+
 	<module>
 		<name>yarpdatadumper</name>
 		<parameters>--name /dumper/BasicCartesianControl/teo/lefttArm/rpc:o --type bottle </parameters>
