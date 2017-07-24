@@ -1,5 +1,5 @@
 <application>
-	<name>icra 2018 dump</name>
+	<name>icra2018-dump</name>
 	<dependencies>
 		<port>/BasicCartesianControl/teo/lefttArm/rpc:o</port>
 		<port>/BasicCartesianControl/teo/rightArm/rpc:o</port>
