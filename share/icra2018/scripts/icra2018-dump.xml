@@ -1,0 +1,71 @@
+<application>
+    <name>icra2018-dump</name>
+    <dependencies>
+        <port>/BasicCartesianControl/teo/lefttArm/state:o</port>
+        <port>/BasicCartesianControl/teo/rightArm/state:o</port>
+        <port>/jr3/ch3:o</port>
+        <!--port>/paint</port-->
+    </dependencies>
+
+    <module>
+        <name>yarpdev</name>
+        <parameters>--device OpenNI2DeviceServer --depthVideoMode 4 --colorVideoMode 9 --noRGBMirror --noDepthMirror</parameters>
+        <node>localhost</node>
+    </module>
+
+    <module> <!-- xgnitive -->
+        <name>paintSquaresOnScreen.py</name>
+        <workdir>/home/teo/repos/xgnitive/build/bin</workdir>
+    <node>localhost</node>
+    </module>
+    <module> <!-- vision -->
+        <name>voxelOccupancyDetection</name>
+        <node>localhost</node>
+    </module>
+    <connection>
+        <from>/voxelOccupancyDetection/state:o</from>
+        <to>/painted_wall</to>
+    </connection>
+
+    <module>
+        <name>yarpdatadumper</name>
+        <parameters>--name /dumper/BasicCartesianControl/teo/lefttArm/state:o --type bottle </parameters>
+        <node>localhost</node>
+    </module>
+    <connection>
+        <from>/BasicCartesianControl/teo/lefttArm/state:o</from>
+        <to>/dumper/BasicCartesianControl/teo/lefttArm/state:o</to>
+        <protocol>udp</protocol>
+    </connection>
+    <module>
+        <name>yarpdatadumper</name>
+        <parameters>--name /dumper/BasicCartesianControl/teo/rightArm/state:o --type bottle </parameters>
+        <node>localhost</node>
+    </module>
+    <connection>
+        <from>/BasicCartesianControl/teo/rightArm/state:o</from>
+        <to>/dumper/BasicCartesianControl/teo/rightArm/state:o</to>
+        <protocol>udp</protocol>
+    </connection>
+    <module>
+        <name>yarpdatadumper</name>
+        <parameters>--name /dumper/jr3/ch3:o --type bottle </parameters>
+        <node>localhost</node>
+    </module>
+    <connection>
+        <from>/jr3/ch3:o</from>
+        <to>/dumper/jr3/ch3:o</to>
+        <protocol>udp</protocol>
+    </connection>
+    <module>
+        <name>yarpdatadumper</name>
+        <parameters>--name /dumper/paint --type bottle </parameters>
+        <node>localhost</node>
+    </module>
+    <connection>
+        <from>/paint</from>
+        <to>/dumper/paint</to>
+        <protocol>udp</protocol>
+    </connection>
+</application>
+
