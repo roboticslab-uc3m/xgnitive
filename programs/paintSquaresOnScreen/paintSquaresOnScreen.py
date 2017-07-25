@@ -29,6 +29,7 @@ Universidad Carlos III de Madrid
 # Import a library of functions called 'pygame'
 import pygame
 import yarp
+
  
 # Initialize the game engine
 pygame.init()
@@ -134,7 +135,10 @@ p = yarp.Port()
 r = DataProcessor()
 r.myInit()
 p.setReader(r)
-p.open("/painted_wall");
+pout = yarp.Port()
+
+p.open("/voxelOccupancyDetection/state:i")
+pout.open("/paintSquaresOnScreen/state:o")
 # Loop as long as done == False
 while not done: 
     for event in pygame.event.get():  # User did something
@@ -143,12 +147,22 @@ while not done:
        
     # Go ahead and update the screen with what we've drawn.
     # This MUST happen after all the other drawing commands.
-    pygame.display.flip()
- 
+    pygame.display.flip() 
+
+    percent = 0
+    for elem in r.myMem:
+        percent += elem
+    percent = 100.0 * percent / float(len(r.myMem))
+    out = yarp.Bottle()
+    out.addDouble(percent)
+    pout.write(out)
+
     # This limits the while loop to a max of 60 times per second.
     # Leave this out and we will use all CPU we can.
     clock.tick(60)
  
 # Be IDLE friendly
+p.close()
+pout.close()
 yarp.Network.fini() # disconnect from the YARP network
 pygame.quit()
