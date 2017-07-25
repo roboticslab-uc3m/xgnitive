@@ -16,7 +16,7 @@
 
     <connection>
         <from>/voxelOccupancyDetection/state:o</from>
-        <to>/painted_wall</to>
+        <to>/voxelOccupancyDetection/state:i</to>
     </connection>
         
 </application>

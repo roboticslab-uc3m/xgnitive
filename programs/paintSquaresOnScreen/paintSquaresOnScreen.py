@@ -134,7 +134,7 @@ p = yarp.Port()
 r = DataProcessor()
 r.myInit()
 p.setReader(r)
-p.open("/painted_wall");
+p.open("/voxelOccupancyDetection/state:i");
 # Loop as long as done == False
 while not done: 
     for event in pygame.event.get():  # User did something
