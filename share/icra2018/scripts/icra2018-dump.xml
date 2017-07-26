@@ -3,7 +3,7 @@
     <dependencies>
         <port>/teo/leftArm/CartesianControl/state:o</port>
         <port>/teo/rightArm/CartesianControl/state:o</port>
-        <port>/jr3/ch3:o</port>
+        <port>/jr3/ch2:o</port>
         <port>/paintSquaresOnScreen/state:o</port>
     </dependencies>
 
@@ -48,12 +48,12 @@
     </connection>
     <module>
         <name>yarpdatadumper</name>
-        <parameters>--name /dumper/jr3/ch3:o --type bottle </parameters>
+        <parameters>--name /dumper/jr3/ch2:o --type bottle </parameters>
         <node>localhost</node>
     </module>
     <connection>
-        <from>/jr3/ch3:o</from>
-        <to>/dumper/jr3/ch3:o</to>
+        <from>/jr3/ch2:o</from>
+        <to>/dumper/jr3/ch2:o</to>
         <protocol>udp</protocol>
     </connection>
     <module>
