@@ -3,14 +3,14 @@
 
 Welcome to the xgnitive repository documentation. <a class=el href="https://github.com/roboticslab-uc3m/xgnitive">Click here to see xgnitive on GitHub.</a>
 
- \li <a class=el href="https://github.com/roboticslab-uc3m/xgnitive/blob/develop/doc/xgnitive_install.md">xgnitive install guide</a>
+ \li <a class=el href="https://github.com/roboticslab-uc3m/xgnitive/blob/develop/doc/xgnitive-install.md">xgnitive install guide</a>
 
 Other internal links of interest:
 
- \li \ref xgnitive_programs
- \li \ref xgnitive_libraries
- \li \ref xgnitive_applications
- \li \ref xgnitive_examples
+ \li \ref xgnitive-programs
+ \li \ref xgnitive-libraries
+ \li \ref xgnitive-applications
+ \li \ref xgnitive-examples
 
 Internal links of interest:
  \li <a class=el href="http://robots.uc3m.es">roboticslab-uc3m development wiki</a>

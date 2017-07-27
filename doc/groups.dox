@@ -5,26 +5,26 @@
 namespace teo {}
 
 /**
- * \defgroup xgnitive_libraries xgnitive Libraries
+ * \defgroup xgnitive-libraries xgnitive Libraries
  *
  * @brief xgnitive libraries.
  *
  */
 
 /**
- * \defgroup xgnitive_programs xgnitive Programs
+ * \defgroup xgnitive-programs xgnitive Programs
  *
  * @brief xgnitive programs.
  */
 
 /**
- * \defgroup xgnitive_applications xgnitive Applications (Collections of Programs)
+ * \defgroup xgnitive-applications xgnitive Applications (Collections of Programs)
  *
  * @brief xgnitive applications (collections of programs).
  */
 
 /**
- * \defgroup xgnitive_examples xgnitive Examples
+ * \defgroup xgnitive-examples xgnitive Examples
  *
  * @brief xgnitive examples.
  */
