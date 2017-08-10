@@ -16,10 +16,11 @@ import libmddtw
 NORM_FOLDER = "NONE" # NONE MINMAX STANDARDIZED WHOLE-EXPERIMENT PHYSICAL
 SUM_FOLDER = "cols" # rows cols
 ALPHA_FOLDER=0.5
-DATABASE_FOLDER = "/icra2018"
-EXPERIMENT_FOLDER= "/iron1"
-FEATURE_FOLDER= "/jr3/ch2:o" #for icra2018 there are 4 possible folders: "jr3/ch2:o", "paintSquaresOnScreen/state:o", "teo/leftArm/CartesianControl/state:o" and "teo/rightArm/CartesianControl/state:o" .
-PATH ="../datasets/raw"+ DATABASE_FOLDER + EXPERIMENT_FOLDER + FEATURE_FOLDER + "/data.log"
+EXPERIMENT_FOLDER = "/icra2018"
+ACTION_FOLDER= "/iron"
+FEATURE_FOLDER= "/jr3" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "teo/leftArm" and "teo/rightArm".
+
+PATH ="../datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER + "/*.log"
 print (PATH)
 
 ############### TO USE NOW #####################
