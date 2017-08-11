@@ -25,5 +25,5 @@ make  # Compile
 sudo make install  # Install :-)
 cp ../scripts/gnome/xgnitive.desktop $HOME/Desktop
 ```
-For additional options use ccmake instead of cmake.nstead of cmake.
+For additional options use ccmake instead of cmake.
 
