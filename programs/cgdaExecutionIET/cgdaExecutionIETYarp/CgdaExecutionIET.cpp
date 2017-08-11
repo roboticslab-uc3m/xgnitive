@@ -49,9 +49,19 @@ bool CgdaExecutionIET::init() {
     else
         printf("[success] teoSim acquired robot interface\n");
 
+    ok = dd.view(enc); // connect 'enc' interface to 'dd' device
+
+    int axes;
+    enc->getAxes(&axes);
+
+    ok = dd.view(mode); // connect 'mode' interface to 'dd' device
 
     //Pos mode
-    pos->setPositionMode(); //use the object to set the device to position mode (as opposed to velocity mode)
+    //use the 'mode' object to set the device to position mode (as opposed to velocity mode)
+    for (unsigned int i = 0; i < axes; i++)
+    {
+        mode->setPositionMode(i);
+    }
 
 //    printf("test positionMove(1,-35)\n");
 //    pos->positionMove(1, -35);
@@ -59,7 +69,6 @@ bool CgdaExecutionIET::init() {
 //    printf("Delaying 5 seconds...\n");
 //    yarp::os::Time::delay(5);
 
-    ok = dd.view(enc); // connect 'enc' interface to 'dd' device
 //    double d;
 //    enc->getEncoder(0,&d);
 //    printf("test getEncoder(0) -> is at: %f\n", d);
@@ -67,7 +76,11 @@ bool CgdaExecutionIET::init() {
 //    ok = dd.view(vel); // connect 'vel' interface to 'dd' device
 
 //    //Velocity mode
-//    vel->setVelocityMode(); //use the object to set the device to velocity mode (as opposed to position mode)
+//    //use the 'mode' object to set the device to velocity mode (as opposed to position mode)
+//    for (unsigned int i = 0; i < axes; i++)
+//    {
+//        mode->setVelocityMode(i);
+//    }
 //    printf("test velocityMove(0,10)\n");
 //    vel->velocityMove(0,10);
 
