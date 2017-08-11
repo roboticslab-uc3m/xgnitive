@@ -1,20 +1,6 @@
 # Installation 
 
 First install dependencies:
-<<<<<<< HEAD:doc/xgnitive-install.md
-- [Install Boost] (https://github.com/roboticslab-uc3m/installation-guides/blob/develop/instal-_boost.md)
-- [Install CMake] (https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install-cmake.md)
-- [Install PCL] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install-pcl.md)
-- [Install ECF](https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install-ecf.md)
-- [Install YARP with OpenNI2DeviceServer and Python bindings] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install-yarp.md)
-- [Install OpenRAVE] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install-openrave.md)
-- [Install Aquila] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install-aquila.md )
-- [Install KDL] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install-kdl.md)
-- [Install OpenCV] (https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install-opencv.md)
-- [Install Pygame] ( https://github.com/roboticslab-uc3m/installation-guides/blob/develop/install-pygame.md)
-- [Install teo-openrave-models] (https://github.com/roboticslab-uc3m/teo-openrave-models)
-=======
->>>>>>> 1c2da880d4f4d08c7b4b64f991bd0721dae0e5cf:doc/xgnitive_install.md
 
 - [Install Boost](https://github.com/roboticslab-uc3m/installation-guides/blob/master/install-boost.md)
 - [Install CMake](https://github.com/roboticslab-uc3m/installation-guides/blob/master/install-cmake.md)
@@ -38,5 +24,7 @@ cd xgnitive; mkdir build; cd build; cmake ..  # Configure the xgnitive software
 make  # Compile
 sudo make install  # Install :-)
 cp ../scripts/gnome/xgnitive.desktop $HOME/Desktop
+cd..;sudo pip install -r requirements.txt #Install python requirements
 ```
 For additional options use ccmake instead of cmake.
+
