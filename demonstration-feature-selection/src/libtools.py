@@ -59,7 +59,7 @@ def plot_zscores(ALPHA, zscores, xtitle):
     plt.show()
 
 
-def normalize(normalization, demoNames):
+def normalize(normalization, demoNames,FEATURE_RANGE):
     
     demons=[]
     print "[INFO] Normalization: ", normalization
@@ -68,14 +68,14 @@ def normalize(normalization, demoNames):
         ## for demonstration normalization
             for elem in demoNames:
                 tmp = np.loadtxt(elem)
-                tmp_clean = tmp[:,1:]
+                tmp_clean = tmp[:,FEATURE_RANGE]
                 demons.append(tmp_clean)
             return demons
     elif normalization == "MINMAX":
         ## for demonstration normalization
             for elem in demoNames:
                 tmp = np.loadtxt(elem)
-                tmp_clean = tmp[:,1:]
+                tmp_clean = tmp[:,FEATURE_RANGE]
                 tmp_clean = minmaxscale(tmp_clean)
                 demons.append(tmp_clean)
             return demons
@@ -84,7 +84,7 @@ def normalize(normalization, demoNames):
         ## for demonstration normalization
             for elem in demoNames:
                 tmp = np.loadtxt(elem)
-                tmp_clean = tmp[:,1:]
+                tmp_clean = tmp[:,FEATURE_RANGE]
                 tmp_clean = standardize(tmp_clean)
                 demons.append(tmp_clean)     
             return demons
@@ -93,7 +93,7 @@ def normalize(normalization, demoNames):
         ## for demonstration normalization
             for elem in demoNames:
                 tmp = np.loadtxt(elem)
-                tmp_clean = tmp[:,1:]
+                tmp_clean = tmp[:,FEATURE_RANGE]
                 tmp_clean = physical_limits(tmp_clean)
                 demons.append(tmp_clean)  
             return demons
@@ -103,7 +103,7 @@ def normalize(normalization, demoNames):
             demons_temp =[]
             for elem in demoNames:
                 tmp = np.loadtxt(elem)
-                tmp_clean = tmp[:,1:]
+                tmp_clean = tmp[:,FEATURE_RANGE]
                 demons.append(tmp_clean)
                 demons_temp.extend(tmp_clean.tolist())
             ranges = np.max(np.array(demons_temp), axis=0) 

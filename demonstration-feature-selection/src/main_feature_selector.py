@@ -26,16 +26,21 @@ print (PATH)
 ############### TO USE NOW #####################
 NORMALIZATION = "PHYSICAL" # NONE MINMAX STANDARDIZED WHOLE-EXPERIMENT PHYSICAL
 ALPHA = 0.5
-#################################        
+FEATURE_RANGE= slice(2,None) #Specify the range of feature columns you want to use. First param=start, second param=stop.
+#FEATURE_RANGE=[2,3,4] #Another option take only the columns we want to use
+################################################
 
 def main():
-    
+
     demoNames = sorted(glob.glob(PATH))
     if not demoNames:
         print "[ERROR] No files to read in PATH!"
         return False
     demons=[]
-    demons = libtools.normalize(NORMALIZATION,demoNames)
+    demons = libtools.normalize(NORMALIZATION,demoNames,FEATURE_RANGE)
+    print demons
+    print "size is "
+    print demons[0].shape[1]
      
     ##########################   DTW  + SUM #############################
 
