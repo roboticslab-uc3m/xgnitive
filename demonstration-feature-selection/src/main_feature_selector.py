@@ -13,18 +13,18 @@ import libmddtw
 ###########################################################
 
 ########## TO READ FILES ###################
-NORM_FOLDER = "NONE" # NONE MINMAX STANDARDIZED WHOLE-EXPERIMENT PHYSICAL
-SUM_FOLDER = "cols" # rows cols
-ALPHA_FOLDER=0.5
+#NORM_FOLDER = "NONE" # NONE MINMAX STANDARDIZED WHOLE-EXPERIMENT PHYSICAL
+#SUM_FOLDER = "cols" # rows cols
+#ALPHA_FOLDER=0.5
 EXPERIMENT_FOLDER = "/icra2018"
-ACTION_FOLDER= "/iron"
-FEATURE_FOLDER= "/jr3" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "teo/leftArm" and "teo/rightArm".
+ACTION_FOLDER= "/paint"
+FEATURE_FOLDER= "/teo/leftArm" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
 
 PATH ="../datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER + "/*.log"
 print (PATH)
 
 ############### TO USE NOW #####################
-NORMALIZATION = "PHYSICAL" # NONE MINMAX STANDARDIZED WHOLE-EXPERIMENT PHYSICAL
+NORMALIZATION = "NONE" # NONE MINMAX STANDARDIZED WHOLE-EXPERIMENT PHYSICAL
 ALPHA = 0.5
 FEATURE_RANGE= slice(2,None) #Specify the range of feature columns you want to use. First param=start, second param=stop.
 #FEATURE_RANGE=[2,3,4] #Another option take only the columns we want to use
@@ -38,10 +38,7 @@ def main():
         return False
     demons=[]
     demons = libtools.normalize(NORMALIZATION,demoNames,FEATURE_RANGE)
-    print demons
-    print "size is "
-    print demons[0].shape[1]
-     
+    #print demons 
     ##########################   DTW  + SUM #############################
 
     dist=np.zeros((demons[0].shape[1])) # one per feature. minus one because timestamp
