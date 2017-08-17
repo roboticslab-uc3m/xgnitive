@@ -57,7 +57,7 @@ def plot_zscores(ALPHA, zscores, xtitle, SAVE_PATH,norm):
     plt.legend()
     plt.tight_layout()
     #plt.show()
-    plt.savefig(SAVE_PATH+norm+".pdf")
+    plt.savefig(SAVE_PATH+ "/"+norm+".pdf")
     
     
 def normalize(normalization, demoNames,FEATURE_RANGE):

@@ -18,7 +18,7 @@ import libmddtw
 #ALPHA_FOLDER=0.5
 EXPERIMENT_FOLDER = "/icra2018"
 ACTION_FOLDER= "/iron"
-FEATURE_FOLDER= "/teo/leftArm/" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
+FEATURE_FOLDER= "/jr3" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
 
 PATH ="../datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER +"/*.csv"
 print (PATH)
@@ -29,7 +29,7 @@ SAVE_PATH="../datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER
 ALPHA = 0.5
 FEATURE_RANGE= slice(2,None) #Specify the range of feature columns you want to use. First param=start, second param=stop.
 #FEATURE_RANGE=[2,3,4] #Another option take only the columns we want to use
-norm_array=["NONE", "MINMAX", "STANDARDIZED", "WHOLE-EXPERIMENT"]
+norm_array=["NONE", "MINMAX", "STANDARDIZED", "WHOLE-EXPERIMENT"] #Normalization that will be computed
 ################################################
 
 def main():
@@ -72,7 +72,7 @@ def main():
         print "[INFO] Detected outliers: ", boolzscores, zscores
         results.append(boolzscores)
         results.append(zscores)
-        np.savetxt(SAVE_PATH+norm+".txt",results,"%f")
+        np.savetxt(SAVE_PATH+ "/"+norm+".txt",results,"%f")
     
         #####################  PLOT  ###########################################
 
