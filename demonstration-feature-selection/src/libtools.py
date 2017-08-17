@@ -43,22 +43,23 @@ def sumAll(demo1, demo2, method):
 
     return x, y
 
-def plot_zscores(ALPHA, zscores, xtitle):
+def plot_zscores(ALPHA, zscores, xtitle, SAVE_PATH,norm):
     fig = plt.figure()
     plt.bar(np.arange(len(zscores)), zscores, alpha=0.4, color='b')
 
     plt.xlabel(xtitle, fontsize=30)
     plt.xticks( fontsize=20)
     plt.xlim(0,len(zscores))
-    plt.ylabel('Score', fontsize=30)
+    plt.ylabel(norm + ' normalization', fontsize=30)
     plt.yticks( fontsize=20)
 
     plt.axhline(y=ALPHA, xmin=0, xmax=1, hold=None, color='red', lw=4, linestyle='--')
     plt.legend()
     plt.tight_layout()
-    plt.show()
-
-
+    #plt.show()
+    plt.savefig(SAVE_PATH+norm+".pdf")
+    
+    
 def normalize(normalization, demoNames,FEATURE_RANGE):
     
     demons=[]
