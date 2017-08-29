@@ -13,38 +13,41 @@ namespace teo
 
 int CgdaExecutionOET::init(int argc, char **argv)
 {
+
     sqPainted.resize(argc-2);
 
     for(int i=0;i<argc-2;i++)
     {
         stringstream ss(argv[i+2]);
         ss >> sqPainted[i];
-        //printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
+        printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
     }
 
-    portNum = -1;
-    bool open = false;
-    while( ! open )
-    {
-        portNum++;
-        std::string s("/good");
-        std::stringstream ss;
-        ss << portNum;
-        s.append(ss.str());
-        open = port.open(s);
-    }
-    std::stringstream ss;
-    ss << portNum;
+//    portNum = -1;
+//    bool open = false;
+//    while( ! open )
+//    {
+//        portNum++;
+//        std::string s("/good");
+//        std::stringstream ss;
+//        ss << portNum;
+//        s.append(ss.str());
+//        open = port.open(s);
+//    }
+//    std::stringstream ss;
+//    ss << portNum;
 
     //-- MENTAL ROBOT ARM
     yarp::os::Property mentalOptions;
     mentalOptions.put("device","remote_controlboard");
-    std::string remoteMental("/");
-    remoteMental.append( ss.str() );
-    remoteMental.append( "/teoSim/rightArm" );
+    //std::string remoteMental("/");
+    //remoteMental.append( ss.str() );
+    //remoteMental.append( "/teoSim/rightArm" );
+    std::string remoteMental("/teoSim/rightArm");
     mentalOptions.put("remote",remoteMental);
-    std::string localMental("/cgdaMental/");
-    localMental.append( ss.str() );
+    //std::string localMental("/cgdaMental/");
+    //localMental.append( ss.str() );
+    std::string localMental("/cgdaMental");
     localMental.append( "/teoSim/rightArm" );
     mentalOptions.put("local",localMental);
     mentalDevice.open(mentalOptions);
@@ -84,11 +87,13 @@ int CgdaExecutionOET::init(int argc, char **argv)
 //    CD_SUCCESS("Real robot device available.\n");
 
     //-- Paint server
-    std::string remotePaint("/");
-    remotePaint.append( ss.str() );
-    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
-    std::string localPaint("/cgda/");
-    localPaint.append( ss.str() );
+    //std::string remotePaint("/");
+    //remotePaint.append( ss.str() );
+    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
+    //std::string localPaint("/cgda/");
+    //localPaint.append( ss.str() );
+    std::string localPaint("/cgda");
     localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
     rpcClient.open(localPaint);
     do {
