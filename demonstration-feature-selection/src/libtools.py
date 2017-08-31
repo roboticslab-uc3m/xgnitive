@@ -154,5 +154,11 @@ def physical_limits(X):
 def get_outlier(points, thresh=2):
     if len(points.shape) == 1:
         points = points[:,None]
-    results = stats.zscore(points) 
+    
+    print points
+    if all(points==points[0]): #All the points are the same
+	results=np.zeros(points.shape) 
+        print('ALL THE POINTS ARE THE SAME, ZSCORE=0 for all the points')
+    else:
+        results = stats.zscore(points) 
     return results.flatten() > thresh, results
