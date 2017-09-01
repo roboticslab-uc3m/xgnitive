@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Author: Santiago Morante, Raul Fernandez-Fernandez
+Author: Santiago Morante, Raul Fernandez-Fernandez (rauferna@ing.uc3m.es)
 Robotics Lab. Universidad Carlos III de Madrid
 """
 ################### GENERAL ##############################
