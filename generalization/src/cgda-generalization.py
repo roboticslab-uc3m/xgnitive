@@ -19,10 +19,10 @@ SAVE_PATH="../results"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER
 
 ######################## CONFIG PARAMS ###################
 
+T=1
 TIME_COLUMN=1 #Specify the column where the timestamp is saved in the dataset.
-
 FEATURES=[2,3,4] #Specify the columns (feature) used for generalization.
-FEATURES= slice(2,None)
+#FEATURES= slice(2,None)
 
 
 ##########################################################
@@ -45,8 +45,7 @@ def main():
         tmp=np.loadtxt(elem)
         #print tmp
         #select only choosen columns
-        tmp_clean=tmp[:,FEATURES]
-        #select time column
+        tmp_clean=tmp[:,FEATURES] #tmp_clean [time_step][feature index]
         temp0=tmp[:,TIME_COLUMN]
         # Get Number of time intervals of action
         timeDiff.append(np.ceil(temp0[-1] - temp0[0]))
@@ -59,11 +58,33 @@ def main():
         demons.append(tmp_clean)
         #TODO: 1) UNDERSTAND DEMOS; 2) CALCULATE AVERAGE OF N INTERVAL POINTS (timeIntervals) USING DEMONS AND TEMP_DEMONS; 3) INTERPOLATE WITH RBF.
 
-    #print temp_demons[0][50]
-    #print demons [0] [: 2]
-    #print(demons)
+    #print demons[0][:,5] #demons[demons_index][time_step, feature_number]
 
-    timeIntervals=int(np.mean(timeDiff)) #Get the average duration of the demonstration
+    ############################### TIME INTERVAL ########################################
+
+    timeIntervals=int(np.mean(timeDiff))/T #Get number of time intervals using period T
+
+    timeIntervalsDuration=1.0/timeIntervals
+
+    print timeIntervalsDuration
+
+    #timeStep=demons[0][:,0].shape[0]/float(timeIntervals) #Time step
+    #print temp_demons
+
+    ###############################GET THE AVERAGED TRAJECTORY#######################################
+
+    #PSEUDOCODE
+    #for each time step i
+    #   for each feature j
+    #       for each demon k
+    #           sum  k values between demon_time[timeIntervalsDuration*(i),timeIntervalsDuration*(i+1)]
+    #           numberofpoints++
+    #   generalized[i][j]=sum/numberofpoints
+
+    generalizedTrajectory=[]
+
+    #for i in range(0,demons[0].shape[0],timeStep):
+    #    generalizedTrajectory.append()
 
     #print 'EL NUMERO DE INTERVALOS DE TIEMPO ES::::'
     #print timeIntervals
