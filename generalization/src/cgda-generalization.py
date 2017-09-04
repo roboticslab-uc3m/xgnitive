@@ -7,11 +7,12 @@ Robotics Lab. Universidad Carlos III de Madrid
 ################### GENERAL ##############################
 import glob
 import numpy as np
+import matplotlib.pyplot as plt
 
 ######################## TO READ FILES ###################
 EXPERIMENT_FOLDER = "/icra2018"
 ACTION_FOLDER= "/paint"
-FEATURE_FOLDER= "/jr3" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
+FEATURE_FOLDER= "/paintSquaresOnScreen" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
 
 PATH ="../../demonstration-feature-selection/datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER +"/*.csv"
 #print (PATH)
@@ -19,9 +20,9 @@ SAVE_PATH="../results"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER
 
 ######################## CONFIG PARAMS ###################
 
-T=1
+T=5
 TIME_COLUMN=1 #Specify the column where the timestamp is saved in the dataset.
-FEATURES=[2,3,4] #Specify the columns (feature) used for generalization.
+FEATURES=[2] #Specify the columns (feature) used for generalization.
 #FEATURES= slice(2,None)
 
 
@@ -76,12 +77,57 @@ def main():
     #PSEUDOCODE
     #for each time step i
     #   for each feature j
+    #       numberofpoints=0
     #       for each demon k
     #           sum  k values between demon_time[timeIntervalsDuration*(i),timeIntervalsDuration*(i+1)]
     #           numberofpoints++
     #   generalized[i][j]=sum/numberofpoints
 
     generalizedTrajectory=[]
+
+    #centers[time_interval][feature]
+
+    #featureSum=[len()]
+
+    centers=np.zeros((timeIntervals,demons[1].shape[1]));
+
+    for i in range(timeIntervals): #time intervals
+        npoints=0
+        for j in range(len(demoNames)): #demons
+            for k in range(demons[j].shape[0]):  # sample
+                if (timeIntervalsDuration*(i)<=temp_demons[j][k]<timeIntervalsDuration*(i+1)):
+                    for l in range(demons[j].shape[1]):  # features
+                        centers[i][l]=centers[i][l]+demons[j][k,l]
+                        npoints=npoints+1
+        for j in range(demons[1].shape[1]):  # features
+            centers[i][j]=centers[i][j]/npoints
+
+    print centers
+
+    ############################### PLOT #######################################
+
+    print np.linspace(0,1,timeIntervals)
+    print centers[:][:,0]
+
+    plt.plot(np.linspace(0,1,timeIntervals),centers[:][:,0],'ro')
+
+    for i in range(len(demoNames)): #demons
+        plt.plot(temp_demons[i],demons[i][:,0])
+
+    plt.show()
+    #plt.savefig('foo.png')
+
+
+
+
+
+
+
+
+
+
+
+
 
     #for i in range(0,demons[0].shape[0],timeStep):
     #    generalizedTrajectory.append()
