@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 ######################## TO READ FILES ###################
 EXPERIMENT_FOLDER = "/icra2018"
 ACTION_FOLDER= "/paint"
-FEATURE_FOLDER= "/paintSquaresOnScreen" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
+FEATURE_FOLDER= "/teo/leftArm" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
 
 PATH ="../../demonstration-feature-selection/datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER +"/*.csv"
 #print (PATH)
@@ -22,9 +22,8 @@ SAVE_PATH="../results"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER
 
 T=5
 TIME_COLUMN=1 #Specify the column where the timestamp is saved in the dataset.
-FEATURES=[2] #Specify the columns (feature) used for generalization.
+FEATURES=[2,3,4] #Specify the columns (feature) used for generalization.
 #FEATURES= slice(2,None)
-
 
 ##########################################################
 
@@ -98,21 +97,27 @@ def main():
                 if (timeIntervalsDuration*(i)<=temp_demons[j][k]<timeIntervalsDuration*(i+1)):
                     for l in range(demons[j].shape[1]):  # features
                         centers[i][l]=centers[i][l]+demons[j][k,l]
-                        npoints=npoints+1
-        for j in range(demons[1].shape[1]):  # features
+                    npoints=npoints+1
+        for j in range(demons[0].shape[1]):  # features
             centers[i][j]=centers[i][j]/npoints
 
     print centers
 
+    ############################### RBF ########################################
+
+
     ############################### PLOT #######################################
 
-    print np.linspace(0,1,timeIntervals)
-    print centers[:][:,0]
+    #print np.linspace(0,1,timeIntervals)
+    #print centers[:][:,0]
 
-    plt.plot(np.linspace(0,1,timeIntervals),centers[:][:,0],'ro')
+    for i in range(demons[0].shape[1]):  # features
+        print i
+        plt.figure()
+        plt.plot(np.linspace(0,1,timeIntervals),centers[:][:,i],'ro')
 
-    for i in range(len(demoNames)): #demons
-        plt.plot(temp_demons[i],demons[i][:,0])
+        for j in range(len(demoNames)): #demons
+            plt.plot(temp_demons[j],demons[j][:,i])
 
     plt.show()
     #plt.savefig('foo.png')
