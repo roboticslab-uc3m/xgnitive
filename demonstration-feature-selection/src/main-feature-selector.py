@@ -8,6 +8,7 @@ import glob
 import numpy as np
 import libtools
 
+
 ##########################   DTW   ########################
 import libmddtw
 ###########################################################
@@ -53,7 +54,7 @@ def main():
                     mddtw = libmddtw.Mddtw()
                     singleDist, singleCost, singlePath = mddtw.compute(demons[i][:,f], demons[j][:,f])
                     dist[f]+=singleDist
-                    print 'Minimum distance found:', singleDist
+                    print 'Total DTW distance (per feature across demos):', singleDist
     #               fig = plt.figure()
     #         #         plt.title(str(i)+","+str(j))
 #                   plt.imshow(singleCost.T, origin='lower', cmap=plt.cm.gray, interpolation='nearest')
