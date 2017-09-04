@@ -8,11 +8,13 @@ Robotics Lab. Universidad Carlos III de Madrid
 import glob
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.interpolate import Rbf
+from mpl_toolkits.mplot3d import Axes3D
 
 ######################## TO READ FILES ###################
 EXPERIMENT_FOLDER = "/icra2018"
-ACTION_FOLDER= "/paint"
-FEATURE_FOLDER= "/teo/leftArm" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
+ACTION_FOLDER= "/iron"
+FEATURE_FOLDER= "/teo/rightArm" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
 
 PATH ="../../demonstration-feature-selection/datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER +"/*.csv"
 #print (PATH)
@@ -20,8 +22,9 @@ SAVE_PATH="../results"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER
 
 ######################## CONFIG PARAMS ###################
 
-T=5
+T=3
 TIME_COLUMN=1 #Specify the column where the timestamp is saved in the dataset.
+#NOTE: YOU HAVE TO CHANGE THE DEFINITION OF RBF TOO TO ADJUST TO THE NUMBER OF FEATURES
 FEATURES=[2,3,4] #Specify the columns (feature) used for generalization.
 #FEATURES= slice(2,None)
 
@@ -101,61 +104,26 @@ def main():
         for j in range(demons[0].shape[1]):  # features
             centers[i][j]=centers[i][j]/npoints
 
-    print centers
-
-    ############################### RBF ########################################
+    #print centers
 
 
-    ############################### PLOT #######################################
+    ############################### PLOT + RBF #######################################
 
     #print np.linspace(0,1,timeIntervals)
     #print centers[:][:,0]
 
     for i in range(demons[0].shape[1]):  # features
-        print i
+        interpolatedFunction = Rbf(np.linspace(0,1,timeIntervals),centers[:][:,i])
+        fi=interpolatedFunction(np.linspace(0,1,1000))
         plt.figure()
         plt.plot(np.linspace(0,1,timeIntervals),centers[:][:,i],'ro')
+        plt.plot(np.linspace(0,1,1000), fi)
 
         for j in range(len(demoNames)): #demons
             plt.plot(temp_demons[j],demons[j][:,i])
 
     plt.show()
     #plt.savefig('foo.png')
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #for i in range(0,demons[0].shape[0],timeStep):
-    #    generalizedTrajectory.append()
-
-    #print 'EL NUMERO DE INTERVALOS DE TIEMPO ES::::'
-    #print timeIntervals
-    #print 'EL NUEVO REESCALATION MATRIX ES::::::::::'
-    #print realDataMatrix
-    #print 'LAS FEATURES SON'
-    #print demons
-
-    #Time rescale
-    #r = float(tmp[-1][TIME_COLUMN] - tmp[0][TIME_COLUMN])
-    #tmp[:,1] = map(lambda x: (x - tmp[0][TIME_COLUMN]) / r, tmp[:,TIME_COLUMN])
-
-    #print tmp
-
-    #realDataMatrix = []
-    #realDataMatrix.append(tmp.tolist())
-
-
-
-
 
 
 
