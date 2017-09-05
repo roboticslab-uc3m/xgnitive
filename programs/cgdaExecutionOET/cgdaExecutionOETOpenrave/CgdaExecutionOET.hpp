@@ -9,7 +9,7 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
-#include "CgdaPaintFitnessFunction.hpp"
+#include "CgdaIronFitnessFunction.hpp"
 //The following cost functions are not yet implemented in OET
 //#include "CgdaWaxFitnessFunction.hpp"
 //#include "CgdaConstrainedPaintFitnessFunction.hpp"
@@ -39,6 +39,8 @@ private:
     // YARP
     yarp::os::Network yarp;
     yarp::os::Port port;
+    yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
+    yarp::os::RpcClient rpcClientWorld;
     int portNum;
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;

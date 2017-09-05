@@ -39,16 +39,29 @@ class CgdaIronFitnessFunction : public EvaluateOp {
         this->pRpcClient = pRpcClient;
     }
 
+    void setPForcePort( yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort){
+        this->pForcePort = pForcePort;
+    }
+
+    void setPRpcClientWorld( yarp::os::RpcClient* pRpcClientWorld){
+        this->pRpcClientWorld = pRpcClientWorld;
+    }
+
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
     void individualExecution(vector<double> results); //TE
+
+
     vector<int>* psqIroned;
 
     yarp::dev::IPositionControl *mentalPositionControl;
     yarp::dev::IPositionControl *realPositionControl;
     yarp::os::RpcClient* pRpcClient;
+    yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort;
+
+    yarp::os::RpcClient* pRpcClientWorld;
 
 };
 

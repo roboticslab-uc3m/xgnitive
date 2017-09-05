@@ -37,6 +37,24 @@ int CgdaExecutionOET::init(int argc, char **argv)
 //    std::stringstream ss;
 //    ss << portNum;
 
+    forcePort.open("/force:i");
+    do {
+        yarp::os::Network::connect("/jr3ch3:o","/force:i");
+        printf("Wait to connect to forces...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( forcePort.getInputCount() == 0 );
+
+    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
+
+    rpcClientWorld.open("/world:c");
+    do {
+        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
+        printf("Wait to connect to world...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientWorld.getOutputCount() == 0 );
+
+    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
+
     //-- MENTAL ROBOT ARM
     yarp::os::Property mentalOptions;
     mentalOptions.put("device","remote_controlboard");
@@ -126,7 +144,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     //           state->addAlgorithm(nalg3);
 
     // set the evaluation operator
-    CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+    CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
     //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
     //Constrained Cost functions
     //CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
@@ -136,7 +154,9 @@ int CgdaExecutionOET::init(int argc, char **argv)
     mentalDevice.view(functionMinEvalOp->mentalPositionControl);
     realDevice.view(functionMinEvalOp->realPositionControl);
     functionMinEvalOp->setPRpcClient(&rpcClient);
-    functionMinEvalOp->setPsqPainted(&sqPainted);
+    functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
+    functionMinEvalOp->setPForcePort(&forcePort);
+    //functionMinEvalOp->setPsqPainted(&sqPainted);
 
     state->setEvalOp(functionMinEvalOp);
 

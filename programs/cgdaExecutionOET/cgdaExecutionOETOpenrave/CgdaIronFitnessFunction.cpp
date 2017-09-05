@@ -54,11 +54,49 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     std::vector<std::vector<double>> target;
 
+    //This is sqIroned
+
     //target.push_back(feature1T1,feature2T2,feature3T3...);
 
     //*****************************************OBSERVATION STEP*****************************************************//
 
-    std::vector<std::vector<double>> observation;
+    std::vector<double> observation;
+
+    //FORCE
+
+    yarp::os::Bottle* b = pForcePort->read(false);
+    if(!b)
+    {
+        printf("No force yet\n");
+    }
+    printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
+    for(size_t i=0; i<b->size(); i++)
+    {
+        observation.push_back( b->get(i).asDouble() );
+        //std(observation[i]);
+    }
+
+    //POSITION
+
+    yarp::os::Bottle cmd,res;
+    cmd.addString("world");
+    cmd.addString("whereis");
+    cmd.addString("tcp");
+    cmd.addString("rightArm");
+    pRpcClientWorld->write(cmd,res);
+    /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
+    for(size_t i=0; i<res.size(); i++)
+    {
+        observation.push_back( res.get(i).asDouble() );
+        //std(observation[i]);
+    }*/
+    yarp::os::Bottle* pos = res.get(0).asList();
+    printf("El parámetro de posicion es %s\n", pos->toString().c_str());
+    for(size_t i=0; i<pos->size(); i++)
+    {
+        observation.push_back( pos->get(i).asDouble() );
+        //std(observation[i]);
+    }
 
     //Obtain TEO state
     //P:yarp::os::Bottle cmd3,res3;
@@ -87,7 +125,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         double aux_dist=0;
         for(int j=0;j<NFEATURES;j++){
             double aux_elem;
-            aux_elem=observation[0][j]-target[i][j];
+            aux_elem=observation[j]-target[i][j];
             aux_elem=aux_elem*aux_elem;
             aux_dist=aux_dist+aux_elem;
         }
@@ -126,6 +164,37 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //********************************SECOND OBSERVATION STEP*******************************************************//
 
+    observation.clear();
+
+    //FORCE
+
+    //yarp::os::Bottle* b = pForcePort->read(false);
+    if(!b)
+    {
+        printf("No force yet\n");
+    }
+    printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
+    for(size_t i=0; i<b->size(); i++)
+    {
+        observation.push_back( b->get(i).asDouble() );
+        //std(observation[i]);
+    }
+
+    //POSITION
+
+    //yarp::os::Bottle cmd,res;
+    cmd.addString("world");
+    cmd.addString("whereis");
+    cmd.addString("tcp");
+    cmd.addString("rightArm");
+    pRpcClientWorld->write(cmd,res);
+    printf("El parámetro de posicion es %s\n", res.toString().c_str());
+    for(size_t i=0; i<res.size(); i++)
+    {
+        observation.push_back( res.get(i).asDouble() );
+        //std(observation[i]);
+    }
+
     //P:Npaint=0;
     //P:yarp::os::Time::delay(DEFAULT_DELAY_S);
     //P:yarp::os::Bottle cmd2,res2;
@@ -153,8 +222,8 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //fit=sqrt(pow((percentage-Const_target[timeStep+1]),2)); //The fit is the euclidean distance between current feature and t+1. Since 1 dimension euclidean distance equals difference.
 
     for(int i=0;i<NFEATURES;i++){
-        double aux_fit;
-        aux_fit=observation[0][j]-target[timeStep][j];
+        double aux_fit,aux_elem;
+        aux_elem=observation[i]-target[timeStep][i];
         aux_fit=aux_elem*aux_elem;
         fit=fit+aux_fit;
     }
@@ -195,8 +264,40 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //Obtain the actual state of the feature environment.
 
+    std::vector<double> observation;
+
+    //FORCE
+
+    yarp::os::Bottle* b = pForcePort->read(false);
+    if(!b)
+    {
+        printf("No force yet\n");
+    }
+    printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
+    for(size_t i=0; i<b->size(); i++)
+    {
+        observation.push_back( b->get(i).asDouble() );
+        //std(observation[i]);
+    }
+
+    //POSITION
+
+    yarp::os::Bottle cmd,res;
+    cmd.addString("world");
+    cmd.addString("whereis");
+    cmd.addString("obj");
+    cmd.addString("r15");
+    pRpcClientWorld->write(cmd,res);
+    printf("El parámetro de posicion es %s\n", res.toString().c_str());
+    for(size_t i=0; i<res.size(); i++)
+    {
+        observation.push_back( res.get(i).asDouble() );
+        //std(observation[i]);
+    }
+
+
     //P:yarp::os::Time::delay(DEFAULT_DELAY_S);
-    //P:yarp::os::Bottle cmd,res;
+    //yarp::os::Bottle cmd,res;
     //P:cmd.addString("get");
     //P:pRpcClient->write(cmd,res);
     //P:printf("got: %s\n",res.toString().c_str());
@@ -215,8 +316,9 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::ofstream myfile1;
     myfile1.open("memoryOET.txt", std::ios_base::out );
     if (myfile1.is_open()){
-        for(int i=0;i<res.size();i++)
+        for(int i=0;i<observation.size();i++)
         {
+            myfile1<<observation[i];
             //myfile1<<"1 ";
             //myfile1<< psqIroned->operator[](i) << " ";
             //P myfile1<< psqIroned->operator [](i);

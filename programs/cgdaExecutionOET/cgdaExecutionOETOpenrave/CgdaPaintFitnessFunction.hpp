@@ -39,6 +39,7 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
         this->pRpcClient = pRpcClient;
     }
 
+
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
 	bool initialize(StateP);
