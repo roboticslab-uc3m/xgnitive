@@ -31,8 +31,8 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
 
   public:
 
-    void setPsqPainted( vector<int>* _psqPainted){
-        psqPainted = _psqPainted;
+    void setPsqFeatures( vector<int>* _psqFeatures){
+        psqFeatures = _psqFeatures;
     }
 
     void setPRpcClient( yarp::os::RpcClient* pRpcClient){
@@ -45,7 +45,7 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
     void individualExecution(vector<double> results); //TE
-    vector<int>* psqPainted;
+    vector<int>* psqFeatures;
 
     yarp::dev::IPositionControl *mentalPositionControl;
     yarp::dev::IPositionControl *realPositionControl;

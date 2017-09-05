@@ -14,13 +14,13 @@ namespace teo
 int CgdaExecutionOET::init(int argc, char **argv)
 {
 
-    sqPainted.resize(argc-2);
+    sqFeatures.resize(argc-2);
 
     for(int i=0;i<argc-2;i++)
     {
         stringstream ss(argv[i+2]);
-        ss >> sqPainted[i];
-        printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
+        ss >> sqFeatures[i];
+        printf("EL valor de sqFeatures %d es:::: %d \n", i, sqFeatures[i]);
     }
 
 //    portNum = -1;
@@ -156,7 +156,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     functionMinEvalOp->setPRpcClient(&rpcClient);
     functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
     functionMinEvalOp->setPForcePort(&forcePort);
-    //functionMinEvalOp->setPsqPainted(&sqPainted);
+    //functionMinEvalOp->setPsqFeatures(&sqFeatures);
 
     state->setEvalOp(functionMinEvalOp);
 

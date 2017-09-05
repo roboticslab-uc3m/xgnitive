@@ -34,7 +34,7 @@ public:
     int init(int argc, char **argv);
 
 private:
-    vector<int> sqPainted;
+    vector<int> sqFeatures;
 
     // YARP
     yarp::os::Network yarp;
