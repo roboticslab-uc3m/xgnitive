@@ -54,7 +54,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     std::vector<std::vector<double>> target;
 
-    //This is sqIroned
+    //This is sqFeatures
 
     //target.push_back(feature1T1,feature2T2,feature3T3...);
 
@@ -106,9 +106,9 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //P:double percentage;
     //P:double Npaint=0;
 
-    //P:for(int i=0;i<psqIroned->size();i++)
+    //P:for(int i=0;i<psqFeatures->size();i++)
     //P:{
-    //P:    Npaint += psqIroned->operator [](i);
+    //P:    Npaint += psqFeatures->operator [](i);
     //P: }
 
     //Percentage of the wall painted before evolution
@@ -202,7 +202,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //P:pRpcClient->write(cmd2,res2);
     //P:for(int i=0;i<res2.size();i++)
     //P:{
-    //P:    if ( res2.get(i).asInt() || psqIroned->operator [](i) )  // logic OR;
+    //P:    if ( res2.get(i).asInt() || psqFeatures->operator [](i) )  // logic OR;
     //P:        Npaint ++;
     //P:}
 
@@ -304,10 +304,10 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     //P:for(int i=0;i<res.size();i++)
     //P:{
         //std::cout << "past: ";
-        //std::cout << psqIroned->operator [](i);
+        //std::cout << psqFeatures->operator [](i);
         //std::cout << " present: ";
-        //P:psqIroned->operator [](i) |= res.get(i).asInt();  // logic OR
-        //std::cout << psqIroned->operator [](i);
+        //P:psqFeatures->operator [](i) |= res.get(i).asInt();  // logic OR
+        //std::cout << psqFeatures->operator [](i);
         //std::cout << std::endl;
     //P:}
 
@@ -320,11 +320,11 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         {
             myfile1<<observation[i];
             //myfile1<<"1 ";
-            //myfile1<< psqIroned->operator[](i) << " ";
-            //P myfile1<< psqIroned->operator [](i);
+            //myfile1<< psqFeatures->operator[](i) << " ";
+            //P myfile1<< psqFeatures->operator [](i);
             //Pmyfile1<< " ";
-            //std::cout<<psqIroned->operator[](i) << " ";
-            //Pstd::cout<< psqIroned->operator [](i);
+            //std::cout<<psqFeatures->operator[](i) << " ";
+            //Pstd::cout<< psqFeatures->operator [](i);
             //Pstd::cout<< " ";
         }
         std::cout<<std::endl;
