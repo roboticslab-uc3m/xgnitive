@@ -62,41 +62,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     std::vector<double> observation;
 
-    //FORCE
-
-    yarp::os::Bottle* b = pForcePort->read(false);
-    if(!b)
-    {
-        printf("No force yet\n");
-    }
-    printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
-    for(size_t i=0; i<b->size(); i++)
-    {
-        observation.push_back( b->get(i).asDouble() );
-        //std(observation[i]);
-    }
-
-    //POSITION
-
-    yarp::os::Bottle cmd,res;
-    cmd.addString("world");
-    cmd.addString("whereis");
-    cmd.addString("tcp");
-    cmd.addString("rightArm");
-    pRpcClientWorld->write(cmd,res);
-    /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
-    for(size_t i=0; i<res.size(); i++)
-    {
-        observation.push_back( res.get(i).asDouble() );
-        //std(observation[i]);
-    }*/
-    yarp::os::Bottle* pos = res.get(0).asList();
-    printf("El parámetro de posicion es %s\n", pos->toString().c_str());
-    for(size_t i=0; i<pos->size(); i++)
-    {
-        observation.push_back( pos->get(i).asDouble() );
-        //std(observation[i]);
-    }
+    //READ FROM PsqFeatures
 
     //Obtain TEO state
     //P:yarp::os::Bottle cmd3,res3;
@@ -168,7 +134,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //FORCE
 
-    //yarp::os::Bottle* b = pForcePort->read(false);
+    yarp::os::Bottle* b = pForcePort->read(false);
     if(!b)
     {
         printf("No force yet\n");
@@ -182,16 +148,23 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //POSITION
 
-    //yarp::os::Bottle cmd,res;
+    yarp::os::Bottle cmd,res;
     cmd.addString("world");
     cmd.addString("whereis");
     cmd.addString("tcp");
     cmd.addString("rightArm");
     pRpcClientWorld->write(cmd,res);
-    printf("El parámetro de posicion es %s\n", res.toString().c_str());
+    /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
     for(size_t i=0; i<res.size(); i++)
     {
         observation.push_back( res.get(i).asDouble() );
+        //std(observation[i]);
+    }*/
+    yarp::os::Bottle* pos = res.get(0).asList();
+    printf("El parámetro de posicion es %s\n", pos->toString().c_str());
+    for(size_t i=0; i<pos->size(); i++)
+    {
+        observation.push_back( pos->get(i).asDouble() );
         //std(observation[i]);
     }
 
@@ -282,16 +255,37 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //POSITION
 
+    yarp::os::Bottle* b = pForcePort->read(false);
+    if(!b)
+    {
+        printf("No force yet\n");
+    }
+    printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
+    for(size_t i=0; i<b->size(); i++)
+    {
+        observation.push_back( b->get(i).asDouble() );
+        //std(observation[i]);
+    }
+
+    //POSITION
+
     yarp::os::Bottle cmd,res;
     cmd.addString("world");
     cmd.addString("whereis");
-    cmd.addString("obj");
-    cmd.addString("r15");
+    cmd.addString("tcp");
+    cmd.addString("rightArm");
     pRpcClientWorld->write(cmd,res);
-    printf("El parámetro de posicion es %s\n", res.toString().c_str());
+    /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
     for(size_t i=0; i<res.size(); i++)
     {
         observation.push_back( res.get(i).asDouble() );
+        //std(observation[i]);
+    }*/
+    yarp::os::Bottle* pos = res.get(0).asList();
+    printf("El parámetro de posicion es %s\n", pos->toString().c_str());
+    for(size_t i=0; i<pos->size(); i++)
+    {
+        observation.push_back( pos->get(i).asDouble() );
         //std(observation[i]);
     }
 
@@ -311,7 +305,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         //std::cout << std::endl;
     //P:}
 
-    //********************************MEMORY STEP*******************************************************************//
+    //********************************MEMORY UPDATE STEP*******************************************************************//
 
     std::ofstream myfile1;
     myfile1.open("memoryOET.txt", std::ios_base::out );

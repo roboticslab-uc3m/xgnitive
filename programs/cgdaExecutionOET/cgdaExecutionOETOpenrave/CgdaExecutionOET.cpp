@@ -104,22 +104,22 @@ int CgdaExecutionOET::init(int argc, char **argv)
 //    }
 //    CD_SUCCESS("Real robot device available.\n");
 
-    //-- Paint server
-    //std::string remotePaint("/");
-    //remotePaint.append( ss.str() );
-    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
-    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
-    //std::string localPaint("/cgda/");
-    //localPaint.append( ss.str() );
-    std::string localPaint("/cgda");
-    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
-    rpcClient.open(localPaint);
-    do {
-        yarp::os::Network::connect(localPaint,remotePaint);
-        printf("Wait to connect to paint server...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( rpcClient.getOutputCount() == 0 );
-    CD_SUCCESS("Paint server available.\n");
+//    //-- Paint server
+//    //std::string remotePaint("/");
+//    //remotePaint.append( ss.str() );
+//    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+//    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
+//    //std::string localPaint("/cgda/");
+//    //localPaint.append( ss.str() );
+//    std::string localPaint("/cgda");
+//    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+//    rpcClient.open(localPaint);
+//    do {
+//        yarp::os::Network::connect(localPaint,remotePaint);
+//        printf("Wait to connect to paint server...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClient.getOutputCount() == 0 );
+//    CD_SUCCESS("Paint server available.\n");
 
     CD_SUCCESS("----- All good for %d.\n",portNum);
 
@@ -145,6 +145,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     // set the evaluation operator
     CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
+    //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
     //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
     //Constrained Cost functions
     //CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
@@ -156,7 +157,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     functionMinEvalOp->setPRpcClient(&rpcClient);
     functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
     functionMinEvalOp->setPForcePort(&forcePort);
-    //functionMinEvalOp->setPsqFeatures(&sqFeatures);
+    functionMinEvalOp->setPsqFeatures(&sqFeatures);
 
     state->setEvalOp(functionMinEvalOp);
 
