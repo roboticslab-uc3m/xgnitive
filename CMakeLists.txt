@@ -22,6 +22,7 @@ option(ENABLE_cgdaExecution "Choose if you want to compile CgdaExecution" TRUE)
 option(ENABLE_cgdaExecutionIET "Choose if you want to compile cgdaExecutionIET" TRUE)
 option(ENABLE_cgdaExecutionIETYarp "Choose if you want to compile cgdaCGDAExecutionIETYarp " TRUE)
 option(ENABLE_cgdaExecutionOETOpenrave "Choose if you want to compile cgdaExecutionOETOpenrave" TRUE)
+option(ENABLE_gmmExecution "Choose if you want to compile gmmExecution" TRUE)
 
 ### options: force default
 option(ENABLE_exampleExtraOption "Enable/disable option exampleExtraOption" TRUE)

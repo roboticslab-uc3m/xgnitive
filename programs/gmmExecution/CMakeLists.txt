@@ -53,14 +53,5 @@ endif (folder_source)
 # Exporting dependencies for XGNITIVEConfig.cmake quite manually for now...
 #  set(XGNITIVE_DEFINITIONS ${XGNITIVE_DEFINITIONS} -std=c++ CACHE INTERNAL "appended definitions")
 
-#Exporting python files
-set(CONFIG_PY_DIR ${PROJECT_SOURCE_DIR})
-configure_file(runOET.py ${PROJECT_BINARY_DIR}/bin/runOET.py @ONLY)
-
-set(CONFIG_PY_DIR ${PYTHON_INSTALL_DIR})
-configure_file(runOET.py ${PROJECT_BINARY_DIR}/installFiles/runOET.py @ONLY)
-install(PROGRAMS ${PROJECT_BINARY_DIR}/installFiles/runOET.py DESTINATION bin) 
-
-
 ENDIF (ENABLE_gmmExecution)
 

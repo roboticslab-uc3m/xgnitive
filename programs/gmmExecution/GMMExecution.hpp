@@ -37,6 +37,7 @@ private:
     // YARP
     yarp::os::Network yarp;
     yarp::os::Port port;
+    //yarp::os::B forcePort;
     int portNum;
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
