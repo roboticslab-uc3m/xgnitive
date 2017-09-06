@@ -6,7 +6,7 @@
 #include "CgdaIronFitnessFunction.hpp"
 
 #define NTPOINTS 17
-#define NFEATURES 3
+#define NFEATURES 6
 #define NSQUARES 16
 
 namespace teo
@@ -53,6 +53,15 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //***********************Define the generalized feature trajectory**********************************************//
 
     std::vector<std::vector<double>> target;
+    //double target[NFEATURES][NTPOINTS];
+
+
+
+//    int a[3][4] = {
+//       {0, 1, 2, 3} ,   /*  initializers for row indexed by 0 */
+//       {4, 5, 6, 7} ,   /*  initializers for row indexed by 1 */
+//       {8, 9, 10, 11}   /*  initializers for row indexed by 2 */
+//    };
 
     //This is sqFeatures
 
@@ -63,6 +72,10 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     std::vector<double> observation;
 
     //READ FROM PsqFeatures
+    for(int i=0;i<psqFeatures->size();i++)
+    {
+        observation.push_back(psqFeatures->operator [](i));
+    }
 
     //Obtain TEO state
     //P:yarp::os::Bottle cmd3,res3;
@@ -87,11 +100,11 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Serch the timeStep where we are (LOCALIZATION STEP)
     int timeStep;
     double diff=1000000;
-    for(int i=0;i<NTPOINTS;i++){ //We give priority to the elements at the last positions
+    for(int i=0;i<NFEATURES;i++){
         double aux_dist=0;
-        for(int j=0;j<NFEATURES;j++){
-            double aux_elem;
-            aux_elem=observation[j]-target[i][j];
+        double aux_elem;
+        for(int j=0;j<NTPOINTS;j++){ //We give priority to the elements at the last positions
+            aux_elem=observation[i]-target[i][j];
             aux_elem=aux_elem*aux_elem;
             aux_dist=aux_dist+aux_elem;
         }
@@ -240,20 +253,6 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::vector<double> observation;
 
     //FORCE
-
-    yarp::os::Bottle* b = pForcePort->read(false);
-    if(!b)
-    {
-        printf("No force yet\n");
-    }
-    printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
-    for(size_t i=0; i<b->size(); i++)
-    {
-        observation.push_back( b->get(i).asDouble() );
-        //std(observation[i]);
-    }
-
-    //POSITION
 
     yarp::os::Bottle* b = pForcePort->read(false);
     if(!b)
