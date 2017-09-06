@@ -56,10 +56,15 @@ endif (folder_source)
 #Exporting python files
 set(CONFIG_PY_DIR ${PROJECT_SOURCE_DIR})
 configure_file(runPaintOET.py ${PROJECT_BINARY_DIR}/bin/runPaintOET.py @ONLY)
+configure_file(runIronOET.py ${PROJECT_BINARY_DIR}/bin/runIronOET.py @ONLY)
 
 set(CONFIG_PY_DIR ${PYTHON_INSTALL_DIR})
 configure_file(runPaintOET.py ${PROJECT_BINARY_DIR}/installFiles/runPaintOET.py @ONLY)
-install(PROGRAMS ${PROJECT_BINARY_DIR}/installFiles/runPaintOET.py DESTINATION bin) 
+install(PROGRAMS ${PROJECT_BINARY_DIR}/installFiles/runPaintOET.py DESTINATION bin)
+configure_file(runIronOET.py ${PROJECT_BINARY_DIR}/installFiles/runIronOET.py @ONLY)
+install(PROGRAMS ${PROJECT_BINARY_DIR}/installFiles/runIronOET.py DESTINATION bin)
+
+
 
 
 ENDIF (ENABLE_cgdaExecutionOETOpenrave)
