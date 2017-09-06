@@ -82,7 +82,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     std::vector<double> observation;
 
     //READ FROM PsqFeatures the last NFEATURES points wich is the actual state of the environment
-    for(int i=(psqFeatures->size()-NFEATURES);i<psqFeatures->size();i++)
+    for(int i=0;i<psqFeatures->size();i++)
     {
         observation.push_back(psqFeatures->operator [](i));
     }
@@ -156,7 +156,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     observation.clear();
 
     //FORCE
-
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
     yarp::os::Bottle* b = pForcePort->read(false);
     if(!b)
     {
@@ -263,7 +263,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::vector<double> observation;
 
     //FORCE
-
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
     yarp::os::Bottle* b = pForcePort->read(false);
     if(!b)
     {
@@ -295,7 +295,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     for(size_t i=0; i<pos->size(); i++)
     {
         observation.push_back( pos->get(i).asDouble() );
-        //std(observation[i]);
+
     }
 
 
@@ -318,11 +318,12 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //TODO: FIX THIS TO ADAPT IT TO IRON
     std::ofstream myfile1;
+    std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
     myfile1.open("memoryOET.txt", std::ios_base::out );
     if (myfile1.is_open()){
         for(int i=0;i<observation.size();i++)
         {
-            //myfile1<<observation[i];
+            myfile1<<observation[i]<< " ";
             //myfile1<<"1 ";
             //myfile1<< psqFeatures->operator[](i) << " ";
             //P myfile1<< psqFeatures->operator [](i);
