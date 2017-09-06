@@ -73,6 +73,7 @@ while 1:
     fout2.write("\n")
     fout2.write("I: ")
     for i in range(len(data_array)):
+        fout2.write(" ")
         fout2.write(data_array[i])
     #,data_array[1], data_array[2],data_array[3],data_array[4],data_array[5])
     if sum==16 or Gen==30:

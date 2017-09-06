@@ -226,7 +226,6 @@ int CgdaExecutionOET::init(int argc, char **argv)
     std::ofstream myfile1;
     myfile1.open("DataOET++.txt", std::ios_base::app);
     if (myfile1.is_open()){
-        myfile1<<"0: ";
         myfile1<<evaluations<<" ";
         myfile1<<bestInds[0]->fitness->getValue()<<" ";
         if(ev_time_s==0){

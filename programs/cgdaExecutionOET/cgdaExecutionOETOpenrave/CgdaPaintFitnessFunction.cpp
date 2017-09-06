@@ -57,7 +57,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     pRpcClient->write(cmd3,res3);
 
     double percentage;
-    int timeStep;
+    int timeStep=0;
     double Npaint=0;
 
     //printf("sqFeatures check %d \n", psqFeatures->operator [](0));
