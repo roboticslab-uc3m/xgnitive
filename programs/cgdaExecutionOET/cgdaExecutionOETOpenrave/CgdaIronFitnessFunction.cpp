@@ -5,7 +5,7 @@
 
 #include "CgdaIronFitnessFunction.hpp"
 
-#define NTPOINTS 17
+#define NTPOINTS 9
 #define NFEATURES 6
 #define NSQUARES 16
 
@@ -53,7 +53,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //***********************Define the generalized feature trajectory**********************************************//
 
     //std::vector<std::vector<double>> target;
-    double target[NFEATURES][NTPOINTS] = {
+    double target[NTPOINTS][NFEATURES] = {
         {0.272805, -0.500201, 0.012808, -2.705315, -1.320802, 5.775318},
         {0.272620, -0.502092, 0.012907, -2.733236, -1.338366, 5.918067},
         {0.266961, -0.508060, -0.000334, -2.957992, -2.483874, 8.253265},
@@ -81,8 +81,8 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     std::vector<double> observation;
 
-    //READ FROM PsqFeatures
-    for(int i=0;i<psqFeatures->size();i++)
+    //READ FROM PsqFeatures the last NFEATURES points wich is the actual state of the environment
+    for(int i=(psqFeatures->size()-NFEATURES);i<psqFeatures->size();i++)
     {
         observation.push_back(psqFeatures->operator [](i));
     }
@@ -314,14 +314,15 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         //std::cout << std::endl;
     //P:}
 
-    //********************************MEMORY UPDATE STEP*******************************************************************//
+    //********************************MEMORY UPDATE STEP *******************************************************************//
 
+    //TODO: FIX THIS TO ADAPT IT TO IRON
     std::ofstream myfile1;
     myfile1.open("memoryOET.txt", std::ios_base::out );
     if (myfile1.is_open()){
         for(int i=0;i<observation.size();i++)
         {
-            myfile1<<observation[i];
+            //myfile1<<observation[i];
             //myfile1<<"1 ";
             //myfile1<< psqFeatures->operator[](i) << " ";
             //P myfile1<< psqFeatures->operator [](i);
