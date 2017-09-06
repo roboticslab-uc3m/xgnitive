@@ -31,7 +31,7 @@ class CgdaIronFitnessFunction : public EvaluateOp {
 
   public:
 
-    void setPsqFeatures( vector<int>* _psqFeatures){
+    void setPsqFeatures( vector<double>* _psqFeatures){
         psqFeatures = _psqFeatures;
     }
 
@@ -54,7 +54,7 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     void individualExecution(vector<double> results); //TE
 
 
-    vector<int>* psqFeatures;
+    vector<double>* psqFeatures;
 
     yarp::dev::IPositionControl *mentalPositionControl;
     yarp::dev::IPositionControl *realPositionControl;

@@ -94,20 +94,24 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
                 aux_elem=observation[j]-target[i][j];
                 aux_elem=aux_elem*aux_elem;
                 aux_dist=aux_dist+aux_elem;
+                //std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
             }
 
             else{ //FORCE
                 if(j==5){
                     aux_elem=(observation[j]-(target[i][j]-5)); //the best way we have right now to delete some noise
-                    aux_elem=aux_elem;
+                    aux_elem=aux_elem/10000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
+                    //std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
+
                 }
                 else{
                     aux_elem=(observation[j]-(target[i][j]+2)); //the best way we have right now to delete some noise
-                    aux_elem=aux_elem;
+                    aux_elem=aux_elem/10000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
+                    //std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
                 }
 
             }
@@ -212,13 +216,13 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         else{ //FORCE
             if(i==5){
                 aux_elem=(observation[i]-(target[timeStep][i]-5)); //the best way we have right now to delete some noise
-                aux_elem=aux_elem/1000;
+                aux_elem=aux_elem/10000;
                 aux_elem=aux_elem*aux_elem;
                 fit=fit+aux_elem;
             }
             else{
                 aux_elem=(observation[i]-(target[timeStep][i]+2)); //the best way we have right now to delete some noise
-                aux_elem=aux_elem/1000;
+                aux_elem=aux_elem/10000;
                 aux_elem=aux_elem*aux_elem;
                 fit=fit+aux_elem;
             }
@@ -292,13 +296,13 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
             else{ //FORCE
                 if(j==5){
                     aux_elem=(observation[j]-(target[i][j]-5)); //the best way we have right now to delete some noise
-                    aux_elem=aux_elem;
+                    aux_elem=aux_elem/10000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
                 }
                 else{
                     aux_elem=(observation[j]-(target[i][j]+2)); //the best way we have right now to delete some noise
-                    aux_elem=aux_elem;
+                    aux_elem=aux_elem/10000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
                 }
@@ -326,7 +330,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     dEncRaw[1] = -results[1];  // simple
     dEncRaw[3] = results[2];  // simple
 
-    dEncRaw[4] = 45;
+    dEncRaw[4] = 0;
 
     mentalPositionControl->positionMove(dEncRaw.data());
 
