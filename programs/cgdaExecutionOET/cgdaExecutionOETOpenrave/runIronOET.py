@@ -79,8 +79,8 @@ while 1:
     #print data_array
 
     #Now delete the content in the file
-    f.close()
-    with open('memoryOET.txt', 'w'): pass
+    #f.close()
+    #with open('memoryOET.txt', 'w'): pass
 
     #args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", "1","0", "0","0","0","0", "1","1","0","0","0","0","0","0","0","0" )
 
@@ -100,8 +100,8 @@ while 1:
     #Output time
     elapsed_time=time.time() - start_time
     elapsed_time=str(elapsed_time)
-    fout.write(elapsed_time)
-    fout.write("\n")
+    #fout.write(elapsed_time)
+    #fout.write("\n")
 
     print"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     Gen=Gen+1;
