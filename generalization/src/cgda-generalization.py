@@ -14,11 +14,11 @@ from mpl_toolkits.mplot3d import Axes3D
 ######################## TO READ FILES ###################
 EXPERIMENT_FOLDER = "/icra2018"
 ACTION_FOLDER= "/iron"
-FEATURE_FOLDER= "/teo/rightArm" #for icra2018 there are 4 possible folders: "jr3", "paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
+FEATURE_FOLDER= "/jr3" #for icra2018 there are 4 possible folders: "/jr3", "/paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
 
 PATH ="../../demonstration-feature-selection/datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER +"/*.csv"
 #print (PATH)
-SAVE_PATH="../results"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER
+SAVE_PATH="results/jr3"
 
 ######################## CONFIG PARAMS ###################
 
@@ -105,6 +105,10 @@ def main():
             centers[i][j]=centers[i][j]/npoints
 
     #print centers
+    ############################### SAVE #############################################
+    
+    #fh = open(SAVE_PATH+"-centers.txt", 'w')
+    np.savetxt(SAVE_PATH+"-centers.txt", centers,"%f");
 
 
     ############################### PLOT + RBF #######################################
