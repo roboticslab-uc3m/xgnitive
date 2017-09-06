@@ -35,7 +35,7 @@ import time
 # 2) Implement in CgdaExecutionOET that the outputs of paintsquared are send to the txt called before.
 # 3) Implement a while that is running until certain condition is achieved. Maybe extract this condition from evMono_ecf_params, just for simplicity.
 Gen=0
-fout= open('percentageOET.txt', 'a')
+#fout= open('percentageOET.txt', 'a')
 
 fout2= open('DataOET++.txt', 'a')
 fout2.write("\n")
@@ -58,25 +58,25 @@ while 1:
         data_array=[ "0","0","0","0", "0","0","0","0", "0","0","0","0","0","0","0","0","0","0","0","0", "0","0","0","0", "0","0","0","0","0","0","0","0","0","0"]
 	print"Empty Memory"
 
-    sum=0
-    for i in data_array:
-        sum=sum+int(i)
+    #sum=0
+    #for i in data_array:
+    #    sum=sum+int(i)
     
     #Output percentage
-    print sum
-    percentage=(sum/16.0)*100
-    percentage=str(percentage)
-    print percentage
-    fout.write(percentage)
-    fout.write(" ")
-    if sum==16 or Gen==30:
-	fout2= open('DataOET++.txt', 'a')
-	fout2.write("\n")
-	fout2.write("I: ")
-        fout2.close()
-        break
+    #print sum
+    #percentage=(sum/16.0)*100
+    #percentage=str(percentage)
+    #print percentage
+    #fout.write(percentage)
+    #fout.write(" ")
+    #if sum==16 or Gen==30:
+	#fout2= open('DataOET++.txt', 'a')
+	#fout2.write("\n")
+	#fout2.write("I: ")
+    #    fout2.close()
+    #    break
     
-    print data_array
+    #print data_array
 
     #Now delete the content in the file
     f.close()
@@ -86,7 +86,7 @@ while 1:
 
     start_time = time.time()
 
-    args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6],data_array[7],data_array[8],data_array[9],data_array[10],data_array[11],data_array[12],data_array[13],data_array[14],data_array[15] )
+    args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6],data_array[7],data_array[8],data_array[9],data_array[10],data_array[11],data_array[12],data_array[13],data_array[14],data_array[15], data_array[16], data_array[17], data_array[18], data_array[19], data_array[20], data_array[21], data_array[22], data_array[23], data_array[24], data_array[25], data_array[26], data_array[27], data_array[28], data_array[29], data_array[30], data_array[31], data_array[32], data_array[33])
     
     popen = subprocess.Popen(args, stdout=subprocess.PIPE) #Pipe is the standard stdout
     #popen.wait()
