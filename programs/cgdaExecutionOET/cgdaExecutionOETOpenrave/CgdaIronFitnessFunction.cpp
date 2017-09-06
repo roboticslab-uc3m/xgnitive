@@ -161,6 +161,15 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     if(!b)
     {
         printf("No force yet\n");
+        do{
+            yarp::os::Time::delay(DEFAULT_DELAY_S);
+            b = pForcePort->read(false);
+            if(b){
+                break;
+            }
+            printf("Waiting receiving force\n");
+
+        }while(1);
     }
     printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
     for(size_t i=0; i<b->size(); i++)
@@ -268,6 +277,15 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     if(!b)
     {
         printf("No force yet\n");
+        do{
+            yarp::os::Time::delay(DEFAULT_DELAY_S);
+            b = pForcePort->read(false);
+            if(b){
+                break;
+            }
+            printf("Waiting receiving force\n");
+
+        }while(1);
     }
     printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
     for(size_t i=0; i<b->size(); i++)

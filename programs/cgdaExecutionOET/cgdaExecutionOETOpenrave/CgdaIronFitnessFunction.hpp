@@ -20,7 +20,7 @@
 
 #include "DtwCgdaRecognition.hpp"
 
-#define DEFAULT_DELAY_S 0.100
+#define DEFAULT_DELAY_S 0.020
 
 //using namespace ObpenRAVE;
 
