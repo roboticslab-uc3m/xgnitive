@@ -95,7 +95,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
                 aux_elem=observation[j+1]-target[i][j];
                 aux_elem=aux_elem*aux_elem;
                 aux_dist=aux_dist+aux_elem;
-                std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
+                std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j+1]<<" DIS OBTAINED IS " <<aux_elem<<std::endl;
             }
 
             else{ //FORCE
@@ -104,7 +104,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
                     aux_elem=aux_elem/100000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
-                    std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
+                    std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j+1]<<" DIS OBTAINED IS " <<aux_elem<<std::endl;
 
                 }
                 else{
@@ -112,14 +112,14 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
                     aux_elem=aux_elem/100000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
-                    std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
+                    std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j+1]<<" DIS OBTAINED IS " <<aux_elem<<std::endl;
                 }
 
             }
         }
 
         aux_dist=sqrt(aux_dist);
-        //std::cout<<"LA DIST PARA EL TIME STEP "<<i<<" ES "<<aux_dist<<std::endl;
+        std::cout<<"LA DIST PARA EL TIME STEP "<<i<<" ES "<<aux_dist<<std::endl;
 
         if(aux_dist<diff){
             timeStep=i;
