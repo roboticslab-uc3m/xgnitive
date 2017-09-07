@@ -92,34 +92,34 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         for(int j=0;j<NFEATURES;j++){
             double aux_elem=0;
             if(j<3){ //POS
-                aux_elem=observation[j]-target[i][j];
+                aux_elem=observation[j+1]-target[i][j];
                 aux_elem=aux_elem*aux_elem;
                 aux_dist=aux_dist+aux_elem;
-                //std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
+                std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
             }
 
             else{ //FORCE
                 if(j==5){
-                    aux_elem=(observation[j]-(target[i][j]-5)); //the best way we have right now to delete some noise
+                    aux_elem=(observation[j+1]-(target[i][j]-5)); //the best way we have right now to delete some noise
                     aux_elem=aux_elem/100000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
-                    //std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
+                    std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
 
                 }
                 else{
-                    aux_elem=(observation[j]-(target[i][j]+2)); //the best way we have right now to delete some noise
+                    aux_elem=(observation[j+1]-(target[i][j]+2)); //the best way we have right now to delete some noise
                     aux_elem=aux_elem/100000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
-                    //std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
+                    std::cout<<" TARGET IS " << target[i][j]<<" OBSERVATION IS "<<observation[j]<<" DIS OBTAINED IS " <<aux_dist<<std::endl;
                 }
 
             }
         }
 
         aux_dist=sqrt(aux_dist);
-        std::cout<<"LA DIST PARA EL TIME STEP "<<i<<" ES "<<aux_dist<<std::endl;
+        //std::cout<<"LA DIST PARA EL TIME STEP "<<i<<" ES "<<aux_dist<<std::endl;
 
         if(aux_dist<diff){
             timeStep=i;
@@ -209,20 +209,20 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     for(int i=0;i<NFEATURES;i++){
         double aux_elem;
         if(i<3){ //POSITION
-            aux_elem=observation[i]-target[timeStep+1][i];
+            aux_elem=observation[i+1]-target[timeStep+1][i];
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
         }
 
         else{ //FORCE
             if(i==5){
-                aux_elem=(observation[i]-(target[timeStep+1][i]-5)); //the best way we have right now to delete some noise
+                aux_elem=(observation[i+1]-(target[timeStep+1][i]-5)); //the best way we have right now to delete some noise
                 aux_elem=aux_elem/100000;
                 aux_elem=aux_elem*aux_elem;
                 fit=fit+aux_elem;
             }
             else{
-                aux_elem=(observation[i]-(target[timeStep+1][i]+2)); //the best way we have right now to delete some noise
+                aux_elem=(observation[i+1]-(target[timeStep+1][i]+2)); //the best way we have right now to delete some noise
                 aux_elem=aux_elem/100000;
                 aux_elem=aux_elem*aux_elem;
                 fit=fit+aux_elem;
@@ -232,9 +232,9 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     fit=sqrt(fit);
 
-    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observation[0]<<std::endl;
-    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observation[1]<<std::endl;
-    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observation[2]<<std::endl;
+    //std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observation[0]<<std::endl;
+    //std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observation[1]<<std::endl;
+    //std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observation[2]<<std::endl;
 
 
 
@@ -299,20 +299,20 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         for(int j=0;j<NFEATURES;j++){
             double aux_elem=0;
             if(j<3){ //POS
-                aux_elem=observation[j]-target[i][j];
+                aux_elem=observation[j+1]-target[i][j];
                 aux_elem=aux_elem*aux_elem;
                 aux_dist=aux_dist+aux_elem;
             }
 
             else{ //FORCE
                 if(j==5){
-                    aux_elem=(observation[j]-(target[i][j]-5)); //the best way we have right now to delete some noise
+                    aux_elem=(observation[j+1]-(target[i][j]-5)); //the best way we have right now to delete some noise
                     aux_elem=aux_elem/100000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
                 }
                 else{
-                    aux_elem=(observation[j]-(target[i][j]+2)); //the best way we have right now to delete some noise
+                    aux_elem=(observation[j+1]-(target[i][j]+2)); //the best way we have right now to delete some noise
                     aux_elem=aux_elem/100000;
                     aux_elem=aux_elem*aux_elem;
                     aux_dist=aux_dist+aux_elem;
@@ -400,6 +400,53 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     {
         observation.push_back( b->get(i).asDouble() );
         std::cout<<observation[i]<<std::endl;
+    }
+
+
+    //***************************************LOCALIZATION STEP******************************************************//
+
+    //Serch the timeStep where we are (LOCALIZATION STEP)
+    timeStep=0;
+    diff=1000000;
+
+    //Position
+    for(int i=observation[0]; i<NTPOINTS;i++){
+        double aux_dist=0;
+        for(int j=0;j<NFEATURES;j++){
+            double aux_elem=0;
+            if(j<3){ //POS
+                aux_elem=observation[j+1]-target[i][j];
+                aux_elem=aux_elem*aux_elem;
+                aux_dist=aux_dist+aux_elem;
+            }
+
+            else{ //FORCE
+                if(j==5){
+                    aux_elem=(observation[j+1]-(target[i][j]-5)); //the best way we have right now to delete some noise
+                    aux_elem=aux_elem/100000;
+                    aux_elem=aux_elem*aux_elem;
+                    aux_dist=aux_dist+aux_elem;
+                }
+                else{
+                    aux_elem=(observation[j+1]-(target[i][j]+2)); //the best way we have right now to delete some noise
+                    aux_elem=aux_elem/100000;
+                    aux_elem=aux_elem*aux_elem;
+                    aux_dist=aux_dist+aux_elem;
+                }
+
+            }
+        }
+
+        aux_dist=sqrt(aux_dist);
+        //std::cout<<"LA DIST PARA EL TIME STEP "<<i<<" ES "<<aux_dist<<std::endl;
+
+        if(aux_dist<diff){
+            timeStep=i;
+            diff=aux_dist;
+            //printf("i -> %d", i);
+            //printf("Time Step %d \n",timeStep);
+
+        }
     }
 
     //********************************FITNESS CALCULATION STEP******************************************************//
