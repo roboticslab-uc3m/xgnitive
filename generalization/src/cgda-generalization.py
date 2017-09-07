@@ -14,18 +14,18 @@ from mpl_toolkits.mplot3d import Axes3D
 ######################## TO READ FILES ###################
 EXPERIMENT_FOLDER = "/icra2018"
 ACTION_FOLDER= "/iron"
-FEATURE_FOLDER= "/jr3" #for icra2018 there are 4 possible folders: "/jr3", "/paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
+FEATURE_FOLDER= "/teo/rightArm" #for icra2018 there are 4 possible folders: "/jr3", "/paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
 
 PATH ="../../demonstration-feature-selection/datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER +"/*.csv"
 #print (PATH)
-SAVE_PATH="results/jr3"
+SAVE_PATH="results/rightArm"
 
 ######################## CONFIG PARAMS ###################
 
 T=3
 TIME_COLUMN=1 #Specify the column where the timestamp is saved in the dataset.
 #NOTE: YOU HAVE TO CHANGE THE DEFINITION OF RBF TOO TO ADJUST TO THE NUMBER OF FEATURES
-FEATURES=[2,3,4] #Specify the columns (feature) used for generalization.
+FEATURES=[2,3,4,5,6,7,8] #Specify the columns (feature) used for generalization.
 #FEATURES= slice(2,None)
 
 ##########################################################
@@ -69,7 +69,7 @@ def main():
 
     timeIntervalsDuration=1.0/timeIntervals
 
-    print timeIntervalsDuration
+    #print timeIntervalsDuration
 
     #timeStep=demons[0][:,0].shape[0]/float(timeIntervals) #Time step
     #print temp_demons
