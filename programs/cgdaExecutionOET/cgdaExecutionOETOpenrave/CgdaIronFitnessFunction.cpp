@@ -78,6 +78,8 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     for(int i=0;i<psqFeatures->size();i++)
     {
         memory.push_back(psqFeatures->operator [](i));
+        //std::cout<<psqFeatures->operator [](i)<<std::endl;
+
     }
 
     //***************************************LOCALIZATION STEP******************************************************//
@@ -171,7 +173,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     {
         observation.push_back(pos->get(i).asDouble());
         //printf("%f",observation[i+3]);
-        std::cout<<observation[i]<<std::endl;
+        //std::cout<<observation[i]<<std::endl;
     }
 
     //FORCE
@@ -231,11 +233,11 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     fit=sqrt(fit);
 
-    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observation[0]<<std::endl;
-    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observation[1]<<std::endl;
-    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observation[2]<<std::endl;
+    //std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observation[0]<<std::endl;
+    //std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observation[1]<<std::endl;
+    //std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observation[2]<<std::endl;
 
-    std::cout<<" FIT "<<fit<<std::endl;
+    //std::cout<<" FIT "<<fit<<std::endl;
 
 
 
@@ -284,6 +286,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     for(int i=0;i<psqFeatures->size();i++)
     {
         memory.push_back(psqFeatures->operator [](i));
+        //std::cout<<"LA FEATURE "<<i<<" IN THE LAST STEP VALUES" <<psqFeatures->operator [](i)<<std::endl;
     }
 
 
@@ -338,10 +341,10 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     std::vector<double> dEncRaw(6);  // NUM_MOTORS
 
-    std::cout<<"Los resultados obtenidos son: "<<std::endl;
-    std::cout<<"0: "<<results[0]<<std::endl;
-    std::cout<<"1: "<<results[1]<<std::endl;
-    std::cout<<"2: "<<results[2]<<std::endl;
+    //std::cout<<"Los resultados obtenidos son: "<<std::endl;
+    //std::cout<<"0: "<<results[0]<<std::endl;
+    //std::cout<<"1: "<<results[1]<<std::endl;
+    //std::cout<<"2: "<<results[2]<<std::endl;
 
 
     dEncRaw[0] = results[0];  // simple
@@ -359,6 +362,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::vector<double> observation;
     observation.clear();
     observation.push_back(timeStep);
+    std::cout<<"LAST TIME STEP"<<timeStep<<std::endl;
 
     //POSITION
     //yarp::os::Time::delay(DEFAULT_DELAY_S);
@@ -401,7 +405,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     for(size_t i=0; i<(b->size()-3); i++)
     {
         observation.push_back( b->get(i).asDouble() );
-        std::cout<<observation[i]<<std::endl;
+        //std::cout<<observation[i+4]<<std::endl;
     }
 
 
@@ -451,6 +455,8 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         }
     }
 
+    observation[0]=timeStep; //Update timeStep
+
     //********************************FITNESS CALCULATION STEP******************************************************//
 
     //The fit is the L2 norm between the current features, and the t+1 feature environment.
@@ -484,11 +490,11 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     fit=sqrt(fit);
 
-    std::cout<<" TARGET X "<< target[timeStep][0]<<" OBERVACIÓN "<<observation[1]<<std::endl;
-    std::cout<<" TARGET Y "<< target[timeStep][1]<<" OBERVACIÓN "<<observation[2]<<std::endl;
-    std::cout<<" TARGET Z "<< target[timeStep][2]<<" OBERVACIÓN "<<observation[3]<<std::endl;
+    //std::cout<<" TARGET X "<< target[timeStep][0]<<" OBERVACIÓN "<<observation[1]<<std::endl;
+    //std::cout<<" TARGET Y "<< target[timeStep][1]<<" OBERVACIÓN "<<observation[2]<<std::endl;
+    //std::cout<<" TARGET Z "<< target[timeStep][2]<<" OBERVACIÓN "<<observation[3]<<std::endl;
 
-    std::cout<<" FITNESS "<<fit<<std::endl;
+    //std::cout<<" FITNESS "<<fit<<std::endl;
 
 
     //********************************MEMORY UPDATE STEP *******************************************************************//
@@ -500,9 +506,12 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     std::ofstream myfile2;
     myfile2.open("Trajectory.txt", std::ios_base::app);
+
+    std::cout<<" THE SIZE OF OBSERVATION IS "<<observation.size()<<std::endl;
     if (myfile1.is_open() && myfile2.is_open()){
         for(int i=0;i<observation.size();i++)
         {
+            //std::cout<<" LA OBSERVACIÓN ES "<<observation[i]<<std::endl;
             myfile1<<observation[i]<< " ";
             myfile2<<observation[i]<< " ";
             //myfile1<<"1 ";

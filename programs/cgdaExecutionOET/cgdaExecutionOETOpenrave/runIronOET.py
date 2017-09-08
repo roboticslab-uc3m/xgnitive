@@ -45,18 +45,16 @@ fout2.close()
 while 1:
     f = open('memoryOET.txt', 'r')
     data_array=[] #Array of strings
-    suma = 0
 
     #Read all the numbers in memoryOET.txt
     for line in f:
         for x in line.split():
             data_array.append(x)
-            if x == "1":
-                suma += 1
-        print("sum:",suma)
     if not data_array:
-        data_array=[ "0","0","0","0", "0","0"]
+        data_array=[ "0","0","0","0", "0","0", "0"]
 	print"Empty Memory"
+
+    print(data_array[0])
 
     #sum=0
     #for i in data_array:
@@ -76,34 +74,35 @@ while 1:
         fout2.write(" ")
         fout2.write(data_array[i])
     #,data_array[1], data_array[2],data_array[3],data_array[4],data_array[5])
-    if sum==16 or Gen==30:
+    if data_array[0]==8 or Gen==200:
         fout2.close()
         break
     
     #print data_array
 
     #Now delete the content in the file
-    #f.close()
-    #with open('memoryOET.txt', 'w'): pass
+    f.close()
+    with open('memoryOET.txt', 'w'): pass
 
     #args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", "1","0", "0","0","0","0", "1","1","0","0","0","0","0","0","0","0" )
 
-    start_time = time.time()
+    #start_time = time.time()
 
-    args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5])
+    #args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5])
+    args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6])
     
     popen = subprocess.Popen(args, stdout=subprocess.PIPE) #Pipe is the standard stdout
-    #popen.wait()
-    #output = popen.stdout.read()
-    #print output
-    out, err = popen.communicate()
-    errcode = popen.returncode
+    popen.wait()
+    output = popen.stdout.read()
+    #print output #Prints all the results of the popen process
+    #out, err = popen.communicate()
+    #errcode = popen.returncode
     #output = popen.stdout.read()
     ###print out
 
     #Output time
-    elapsed_time=time.time() - start_time
-    elapsed_time=str(elapsed_time)
+    #elapsed_time=time.time() - start_time
+    #elapsed_time=str(elapsed_time)
     #fout.write(elapsed_time)
     #fout.write("\n")
 
