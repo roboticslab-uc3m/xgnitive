@@ -35,7 +35,7 @@
 		</FloatingPoint>
 	</Genotype>
 	<Registry>
-		<Entry key="population.size">50</Entry>
+		<Entry key="population.size">10</Entry>
 		<Entry key="mutation.indprob">0.6</Entry> <!-- individual mutation probability (default: 0.3) -->
 		<!--<Entry key="log.level">1</Entry> -->
 		<!--<Entry key="log.filename">HallOfFame.xml</Entry> -->
