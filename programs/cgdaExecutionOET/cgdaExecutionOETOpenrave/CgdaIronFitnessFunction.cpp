@@ -151,6 +151,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //********************************SECOND OBSERVATION STEP*******************************************************//
 
     std::vector<double> observation;
+    observation.clear();
 
     //POSITION
     //yarp::os::Time::delay(DEFAULT_DELAY_S);
@@ -252,9 +253,9 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     std::cout<<" "<<std::endl;
 
     //GOING BACK TO INIT POSITION
-    std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
+    //std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
     //Actually move the robot
-    mentalPositionControl->positionMove(dEncRaw2.data());
+    //mentalPositionControl->positionMove(dEncRaw2.data());
 
     return fit;
 }
@@ -531,8 +532,8 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //********************************RESET STEP*******************************************************************//
     //-- Move the mental robot to 0 so env can be reset
-    std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
-    mentalPositionControl->positionMove(dEncRaw2.data());
+    //std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
+    //mentalPositionControl->positionMove(dEncRaw2.data());
     //-- Reset the wall
     //P:yarp::os::Bottle cmd3,res3;
     //P:cmd3.addString("reset");
