@@ -78,7 +78,7 @@ while 1:
         fout2.close()
         break
     
-    #print data_array
+    print data_array
 
     #Now delete the content in the file
     f.close()
@@ -92,9 +92,8 @@ while 1:
     args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6])
     
     popen = subprocess.Popen(args, stdout=subprocess.PIPE) #Pipe is the standard stdout
-    popen.wait()
     output = popen.stdout.read()
-    print output #Prints all the results of the popen process
+    #print output #Prints all the results of the popen proces
     #out, err = popen.communicate()
     #errcode = popen.returncode
     #output = popen.stdout.read()
