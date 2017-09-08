@@ -85,15 +85,14 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
             dEncRaw[3] = genPoints[2];  // simple
         }
         else{cerr << "ERROR IN pIter or t" << std::endl;}
+        dEncRaw[4] = 0;
+        //Actually move the robot
+        mentalPositionControl->positionMove(dEncRaw.data());
     }
 
-        dEncRaw[4] = 0;
 
 
     //std::cout<<" LO QUE ME VOY A MOVER ES :::::: "<<genPoints[0]<<" "<<genPoints[1]<<" "<<genPoints[2]<<std::endl;
-
-    //Actually move the robot
-    mentalPositionControl->positionMove(dEncRaw.data());
 
 
     //********************************OBSERVATION STEP*******************************************************//
@@ -209,7 +208,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
 /************************************************************************/
 
-void CgdaIronFitnessFunction::individualExecution(vector<double> results){
+void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajectory){
 
     //GOAL: Execute the obtained best values to obtain the STATS executed trajectory
 
@@ -226,33 +225,15 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         {0.340740, -0.560490, 0.019368, -2.510248, -1.748680, -1.851854}
     };
 
-    //********************************EXECUTION STEP****************************************************************//
-
-    std::vector<double> dEncRaw(6);  // NUM_MOTORS
-
-    //std::cout<<"Los resultados obtenidos son: "<<std::endl;
-    //std::cout<<"0: "<<results[0]<<std::endl;
-    //std::cout<<"1: "<<results[1]<<std::endl;
-    //std::cout<<"2: "<<results[2]<<std::endl;
-
-
-    dEncRaw[0] = results[0];  // simple
-    dEncRaw[1] = -results[1];  // simple
-    dEncRaw[3] = results[2];  // simple
-
-    dEncRaw[4] = 70;
-
-    mentalPositionControl->positionMove(dEncRaw.data());
-
     //Obtain the actual state of the feature environment.
 
     double fit=0;
+    std::vector<double> observation;
+    observation.clear();
 
     for(int t=0;t<=NTPOINTS;t++) {
 
         //********************************FINAL OBSERVATION STEP********************************************************//
-        std::vector<double> observation;
-        observation.clear();
 
         //std::cout<<"Time interval"<<t<<std::endl;
 
@@ -319,20 +300,20 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         for(int i=0;i<NFEATURES;i++){
             double aux_elem;
             if(i<3){ //POSITION
-                aux_elem=observation[i]-target[t][i];
+                aux_elem=observation[i+NFEATURES*t]-target[t][i];
                 aux_elem=aux_elem*aux_elem;
                 aux_fit=aux_fit+aux_elem;
             }
 
             else{ //FORCE
                 if(i==5){
-                    aux_elem=(observation[i]-(target[t][i]-5)); //the best way we have right now to delete some noise
+                    aux_elem=(observation[i+NFEATURES*t]-(target[t][i]-5)); //the best way we have right now to delete some noise
                     aux_elem=aux_elem/100000;
                     aux_elem=aux_elem*aux_elem;
                     aux_fit=aux_fit+aux_elem;
                 }
                 else{
-                    aux_elem=(observation[i]-(target[t][i]+2)); //the best way we have right now to delete some noise
+                    aux_elem=(observation[i+NFEATURES*t]-(target[t][i]+2)); //the best way we have right now to delete some noise
                     aux_elem=aux_elem/100000;
                     aux_elem=aux_elem*aux_elem;
                     aux_fit=aux_fit+aux_elem;
@@ -345,9 +326,9 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     fit=sqrt(fit);
 
-    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observation[1]<<std::endl;
-    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observation[2]<<std::endl;
-    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observation[3]<<std::endl;
+    //std::cout<<" TARGET X "<< target[*+1][0]<<" OBERVACIÓN "<<observation[1]<<std::endl;
+    //std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observation[2]<<std::endl;
+    //std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observation[3]<<std::endl;
 
     std::cout<<" FITNESS "<<fit<<std::endl;
 

@@ -31,8 +31,13 @@ class CgdaIronFitnessFunction : public EvaluateOp {
 
   public:
 
-    void setPsqFeatures( vector<double>* _psqFeatures){
-        psqFeatures = _psqFeatures;
+    void setResults( vector<double>* _presults){
+        pFresults = _presults;
+
+    }
+
+    void setIter(unsigned int* _piter){
+        pIter = _piter;
     }
 
     void setPRpcClient( yarp::os::RpcClient* pRpcClient){
@@ -52,9 +57,8 @@ class CgdaIronFitnessFunction : public EvaluateOp {
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
     void individualExecution(vector<double> results); //TE
-
-
-    vector<double>* psqFeatures;
+    vector<double>* pFresults;
+    unsigned int* pIter;
 
     yarp::dev::IPositionControl *mentalPositionControl;
     yarp::dev::IPositionControl *realPositionControl;
