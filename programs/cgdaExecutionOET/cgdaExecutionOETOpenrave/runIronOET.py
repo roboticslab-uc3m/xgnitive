@@ -74,7 +74,7 @@ while 1:
         fout2.write(" ")
         fout2.write(data_array[i])
     #,data_array[1], data_array[2],data_array[3],data_array[4],data_array[5])
-    if data_array[0]==8 or Gen==200:
+    if data_array[0]==8:
         fout2.close()
         break
     
@@ -94,7 +94,7 @@ while 1:
     popen = subprocess.Popen(args, stdout=subprocess.PIPE) #Pipe is the standard stdout
     popen.wait()
     output = popen.stdout.read()
-    #print output #Prints all the results of the popen process
+    print output #Prints all the results of the popen process
     #out, err = popen.communicate()
     #errcode = popen.returncode
     #output = popen.stdout.read()
