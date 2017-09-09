@@ -2,13 +2,13 @@
 <name>ICRA2018-ironSim App</name>
 
     <module>
-        <name>teoSim</name>
-        <parameters>--env /home/yo/repos/textiles/ironing/manipulation/ironingSim/ironingSim.env.xml</parameters>
+        <name>/usr/bin/python</name>
+        <parameters>/home/raul/repos/openrave-yarp-plugins/examples/openrave-YarpForce.py</parameters>
         <node>localhost</node>
     </module>
 
     <module>
-        <name>launchTeoYarp</name>
+        <name>yarpdev</name>
         <parameters>--from /usr/local/share/teo/contexts/kinematics/rightArmKinematics-pan45-tilt30.ini --device BasicCartesianControl --angleRepr axisAngle --robot remote_controlboard --local /BasicCartesianControl/teoSim/rightArm --remote /teoSim/rightArm</parameters>
         <node>localhost</node>
     </module>
