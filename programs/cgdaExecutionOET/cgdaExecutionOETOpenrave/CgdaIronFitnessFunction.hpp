@@ -52,6 +52,8 @@ class CgdaIronFitnessFunction : public EvaluateOp {
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
     void individualExecution(vector<double> results); //TE
+    int localization(std::vector<double> state);
+    std::vector<double> observation();
 
 
     vector<double>* psqFeatures;
