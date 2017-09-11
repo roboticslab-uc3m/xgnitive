@@ -51,7 +51,7 @@ while 1:
         for x in line.split():
             data_array.append(x)
     if not data_array:
-        data_array=[ "0","0","0","0", "0","0", "0"]
+        data_array=[ "0","0","0","0"]
 	print"Empty Memory"
 
     print(data_array[0])
@@ -89,12 +89,12 @@ while 1:
     #start_time = time.time()
 
     #args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5])
-    args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6])
+    args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3])
     
     popen = subprocess.Popen(args, stdout=subprocess.PIPE) #Pipe is the standard stdout
     output = popen.stdout.read()
-    #print output #Prints all the results of the popen proces
-    #out, err = popen.communicate()
+    print output #Prints all the results of the popen proces
+    out, err = popen.communicate()
     #errcode = popen.returncode
     #output = popen.stdout.read()
     ###print out
