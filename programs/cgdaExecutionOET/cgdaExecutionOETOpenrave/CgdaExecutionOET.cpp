@@ -39,7 +39,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     forcePort.open("/force:i");
     do {
-        yarp::os::Network::connect("/jr3ch3:o","/force:i");
+        yarp::os::Network::connect("/forceEstimator:o","/force:i");
         printf("Wait to connect to forces...\n");
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( forcePort.getInputCount() == 0 );
