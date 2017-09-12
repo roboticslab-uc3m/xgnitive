@@ -74,18 +74,18 @@ int CgdaIronFitnessFunction::localization(std::vector<double> state){
     double diff=1000000;
 
     //Position
-    for(int i=state[0]; i<state[0]+2;i++){ //Note that going back in the trajectory has no sense. memory [0] is the last timeStep of the trajectory.
+    for(int i=state[0]; i<NTPOINTS;i++){ //Note that going back in the trajectory has no sense. memory [0] is the last timeStep of the trajectory.
         double aux_dist=0;
         for(int j=0;j<NFEATURES;j++){
             double aux_elem=0;
             aux_elem=state[j+1]-target[i][j];
             aux_elem=aux_elem*aux_elem;
             aux_dist=aux_dist+aux_elem;
-            std::cout<<" TARGET IS " << target[i][j]<<" memory IS "<<state[j+1]<<" DIS OBTAINED IS " <<aux_elem<<std::endl;
+            //std::cout<<" TARGET IS " << target[i][j]<<" memory IS "<<state[j+1]<<" DIS OBTAINED IS " <<aux_elem<<std::endl;
         }
 
         aux_dist=sqrt(aux_dist);
-        std::cout<<"LA DIST PARA EL TIME STEP "<<i<<" ES "<<aux_dist<<std::endl;
+        //std::cout<<"LA DIST PARA EL TIME STEP "<<i<<" ES "<<aux_dist<<std::endl;
 
         if(aux_dist<diff){
             timeStep=i;
@@ -200,12 +200,12 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //-1.951544 -44.622798 -37.498539 79.687256 -0.406794 -14.854639
     //-2.441159 -44.947978 -37.58001 80.114206 -0.389922 -14.743856
     //(-2.399277 -45.104218 -37.491525 79.966313 0.378349 -14.809414) //for 1 position
-    dEncRaw[0] = -2.399277;  // simple
-    dEncRaw[1] = -45.104218;  // simple
-    dEncRaw[2] = -37.491525;
-    dEncRaw[3] = 79.966313;  // simple
-    dEncRaw[4] = 0.378349;  // simple
-    dEncRaw[5] = -14.809414;  // simple
+//    dEncRaw[0] = -2.399277;  // simple
+//    dEncRaw[1] = -45.104218;  // simple
+//    dEncRaw[2] = -37.491525;
+//    dEncRaw[3] = 79.966313;  // simple
+//    dEncRaw[4] = 0.378349;  // simple
+//    dEncRaw[5] = -14.809414;  // simple
 
 
 
@@ -235,13 +235,15 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
             aux_elem=observationData[i]-target[timeStep+1][i];
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem/60;
+            //std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationData[i]<<" FIT "<<aux_elem<<std::endl;
 
         }
         else{
             aux_elem=observationData[i]-target[timeStep+1][i];
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
-            std::cout<<"Fit is at some time step: "<<fit<<std::endl;
+            //std::cout<<"Fit is at some time step: "<<fit<<std::endl;
+            //std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationData[i]<<" FIT "<<aux_elem<<std::endl;
 
         }
 
@@ -316,21 +318,21 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::vector<double> dEncRaw(6);  // NUM_MOTORS
 
 //    std::cout<<"Los resultados obtenidos son: "<<std::endl;
-    std::cout<<"0: "<<results[0]<<std::endl;
-    std::cout<<"1: "<<results[1]<<std::endl;
-    std::cout<<"2: "<<results[2]<<std::endl;
+//    std::cout<<"0: "<<results[0]<<std::endl;
+//    std::cout<<"1: "<<results[1]<<std::endl;
+//    std::cout<<"2: "<<results[2]<<std::endl;
 
 
-//    dEncRaw[0] = results[0];  // simple
-//    dEncRaw[1] = -results[1];  // simple
-//    dEncRaw[3] = results[2];  // simple
+    dEncRaw[0] = results[0];  // simple
+    dEncRaw[1] = -results[1];  // simple
+    dEncRaw[3] = results[2];  // simple
 
-    dEncRaw[0] = -2.399277;  // simple
-    dEncRaw[1] = -45.104218;  // simple
-    dEncRaw[2] = -37.491525;
-    dEncRaw[3] = 79.966313;  // simple
-    dEncRaw[4] = 0.378349;  // simple
-    dEncRaw[5] = -14.809414;  // simple
+//    dEncRaw[0] = -2.399277;  // simple
+//    dEncRaw[1] = -45.104218;  // simple
+//    dEncRaw[2] = -37.491525;
+//    dEncRaw[3] = 79.966313;  // simple
+//    dEncRaw[4] = 0.378349;  // simple
+//    dEncRaw[5] = -14.809414;  // simple
 
 
     //dEncRaw[4] = 70;
