@@ -74,14 +74,22 @@ int CgdaIronFitnessFunction::localization(std::vector<double> state){
     double diff=1000000;
 
     //Position
-    for(int i=state[0]; i<NTPOINTS;i++){ //Note that going back in the trajectory has no sense. memory [0] is the last timeStep of the trajectory.
+    for(int i=state[0]; i<state[0]+3 && i<NTPOINTS;i++){ //Note that going back in the trajectory has no sense. memory [0] is the last timeStep of the trajectory.
         double aux_dist=0;
         for(int j=0;j<NFEATURES;j++){
             double aux_elem=0;
-            aux_elem=state[j+1]-target[i][j];
-            aux_elem=aux_elem*aux_elem;
-            aux_dist=aux_dist+aux_elem;
-            //std::cout<<" TARGET IS " << target[i][j]<<" memory IS "<<state[j+1]<<" DIS OBTAINED IS " <<aux_elem<<std::endl;
+            if (j==3){
+                aux_elem=(state[j+1]-target[i][j])/600;
+                aux_elem=aux_elem*aux_elem;
+                aux_dist=aux_dist+aux_elem;
+                //std::cout<<" TARGET IS " << target[i][j]<<" memory IS "<<state[j+1]<<" DIS OBTAINED IS " <<aux_elem<<std::endl;
+            }
+            else{
+                aux_elem=state[j+1]-target[i][j];
+                aux_elem=aux_elem*aux_elem;
+                aux_dist=aux_dist+aux_elem;
+                //std::cout<<" TARGET IS " << target[i][j]<<" memory IS "<<state[j+1]<<" DIS OBTAINED IS " <<aux_elem<<std::endl;
+            }
         }
 
         aux_dist=sqrt(aux_dist);
@@ -162,7 +170,7 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
         //std(observationData[i]);
     }
 
-    //std::cout<<observationData<<std::endl;
+   // std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
 
     return observationData;
 }
@@ -217,9 +225,14 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Actually move the robot
     mentalPositionControl->positionMove(dEncRaw.data());
 
-    //********************************SECOND OBSERVATION STEP*******************************************************//
-    std::vector<double> observationData;
+    //************************************** OBSERVATION STEP*******************************************************//
+    std::vector<double> observationData, observationClean;
     observationData=observation();
+
+    observationClean.push_back(observationData[0]); //X
+    observationClean.push_back(observationData[1]); //Y
+    observationClean.push_back(observationData[2]); //Z
+    observationClean.push_back(observationData[7]); //Fz
 
 
     //********************************FITNESS CALCULATION STEP******************************************************//
@@ -232,18 +245,19 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     for(int i=0;i<NFEATURES;i++){
         double aux_elem;
         if(i==3){
-            aux_elem=observationData[i]-target[timeStep+1][i];
+            aux_elem=(observationClean[i]-target[timeStep+1][i])/600;
             aux_elem=aux_elem*aux_elem;
-            fit=fit+aux_elem/60;
-            //std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationData[i]<<" FIT "<<aux_elem<<std::endl;
+            fit=fit+aux_elem;
+            std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
         }
         else{
-            aux_elem=observationData[i]-target[timeStep+1][i];
+            aux_elem=observationClean[i]-target[timeStep+1][i];
+            std::cout<<aux_elem<<" "<<std::endl;
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
             //std::cout<<"Fit is at some time step: "<<fit<<std::endl;
-            //std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationData[i]<<" FIT "<<aux_elem<<std::endl;
+            std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
         }
 
@@ -256,7 +270,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 //    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationData[1]<<std::endl;
 //    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationData[2]<<std::endl;
 
-//    std::cout<<" FIT "<<fit<<std::endl;
+    std::cout<<" FIT "<<fit<<std::endl;
 
 
 
@@ -341,8 +355,13 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //********************************FINAL OBSERVATION STEP********************************************************//
 
-    std::vector<double> observationData;
+    std::vector<double> observationData, observationClean;
     observationData=observation();
+
+    observationClean.push_back(observationData[0]); //X
+    observationClean.push_back(observationData[1]); //Y
+    observationClean.push_back(observationData[2]); //Z
+    observationClean.push_back(observationData[7]); //Fz
 
     //std::cout<<observationData<<std::endl;
 
@@ -350,8 +369,8 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     state.clear();
     state.push_back(timeStep);
-    for (int i=0; i<(observationData.size()-4);i++){
-        state.push_back(observationData[i]);
+    for (int i=0; i<observationClean.size();i++){
+        state.push_back(observationClean[i]);
     }
 
     timeStep=localization(state);
@@ -364,16 +383,17 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     printf("EL TIME STEP ES :: %d \n",timeStep);
     //fit=sqrt(pow((percentage-Const_target[timeStep+1]),2)); //The fit is the euclidean distance between current feature and t+1. Since 1 dimension euclidean distance equals difference.
 
+
     for(int i=0;i<NFEATURES;i++){
         double aux_elem;
         if(i==3){
-            aux_elem=observationData[i]-target[timeStep+1][i];
+            aux_elem=(observationClean[i]-target[timeStep+1][i])/300; //Force is the feature 7
             aux_elem=aux_elem*aux_elem;
-            fit=fit+aux_elem/60;
+            fit=fit+aux_elem;
 
         }
         else{
-            aux_elem=observationData[i]-target[timeStep+1][i];
+            aux_elem=observationClean[i]-target[timeStep+1][i];
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
             std::cout<<"Fit is at some time step: "<<fit<<std::endl;
@@ -384,11 +404,12 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     fit=sqrt(fit);
 
-    std::cout<< observationData<<std::endl;
+//    std::cout<< observationClean<<std::endl;
 
-//    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observationData[0]<<std::endl;
-//    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationData[1]<<std::endl;
-//    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationData[2]<<std::endl;
+//    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observationClean[0]<<std::endl;
+//    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationClean[1]<<std::endl;
+//    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationClean[2]<<std::endl;
+//    std::cout<<" TARGET Fz "<< target[timeStep+1][3]<<" OBERVACIÓN "<<observationClean[7]<<std::endl;
 
 //    std::cout<<" FITNESS "<<fit<<std::endl;
 
@@ -403,15 +424,15 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::ofstream myfile2;
     myfile2.open("Trajectory.txt", std::ios_base::app);
 
-    std::cout<<" THE SIZE OF OBSERVATION IS "<<observationData.size()<<std::endl;
+    //std::cout<<" THE SIZE OF OBSERVATION IS "<<observationData.size()<<std::endl;
     if (myfile1.is_open() && myfile2.is_open()){
         myfile1<<timeStep<<" ";
         myfile2<<timeStep<<" ";
-        for(int i=0;i<(observationData.size()-4);i++)
+        for(int i=0;i<observationClean.size();i++)
         {
             //std::cout<<" LA OBSERVACIÓN ES "<<observation[i]<<std::endl;
-            myfile1<<observationData[i]<< " ";
-            myfile2<<observationData[i]<< " ";
+            myfile1<<observationClean[i]<< " ";
+            myfile2<<observationClean[i]<< " ";
             //myfile1<<"1 ";
             //myfile1<< psqFeatures->operator[](i) << " ";
             //P myfile1<< psqFeatures->operator [](i);
@@ -420,8 +441,6 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
             //Pstd::cout<< psqFeatures->operator [](i);
             //Pstd::cout<< " ";
         }
-        myfile1<<observationData[7]<< " ";
-        myfile1<<observationData[7]<< " ";
         std::cout<<std::endl;
     }
     myfile1.close();
