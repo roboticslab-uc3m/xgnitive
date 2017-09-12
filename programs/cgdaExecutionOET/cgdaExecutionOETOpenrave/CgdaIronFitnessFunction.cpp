@@ -6,7 +6,7 @@
 #include "CgdaIronFitnessFunction.hpp"
 
 #define NTPOINTS 9
-#define NFEATURES 3
+#define NFEATURES 4
 #define NSQUARES 16
 
 namespace teo
@@ -52,15 +52,15 @@ FitnessP CgdaIronFitnessFunction::evaluate(IndividualP individual) {
 
 //std::vector<std::vector<double>> target;
 double target[NTPOINTS][NFEATURES] = {
-    {0.272805, -0.500201, 0.012808},
-    {0.272620, -0.502092, 0.012907},
-    {0.266961, -0.508060, -0.000334},
-    {0.251811, -0.514240, -0.034490},
-    {0.238970, -0.514431, -0.067436},
-    {0.275419, -0.523437, -0.045262},
-    {0.319814, -0.541889, -0.003238},
-    {0.334939, -0.561616, 0.015075},
-    {0.340740, -0.560490, 0.019368}
+    {0.272805, -0.500201, 0.012808, 5.775318},
+    {0.272620, -0.502092, 0.012907, 5.918067},
+    {0.266961, -0.508060, -0.000334, 8.253265},
+    {0.251811, -0.514240, -0.034490, 15.243059},
+    {0.238970, -0.514431, -0.067436, -6.968969},
+    {0.275419, -0.523437, -0.045262, -30.054635},
+    {0.319814, -0.541889, -0.003238, -11.918344},
+    {0.334939, -0.561616, 0.015075, -1.851854},
+    {0.340740, -0.560490, 0.019368, -1.511597}
 };
 
 /********************************LOCALIZATION****************************/
@@ -140,29 +140,29 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
         //std(observationData[i]);
     }
 
-//    //FORCE
-//    yarp::os::Bottle* b = pForcePort->read(false);
-//    if(!b)
-//    {
-//        printf("No force yet\n");
-//        do{
-//            yarp::os::Time::delay(DEFAULT_DELAY_S);
-//            b = pForcePort->read(false);
-//            if(b){
-//                break;
-//            }
-//            printf("Waiting receiving force\n");
+    //FORCE
+    yarp::os::Bottle* b = pForcePort->read(false);
+    if(!b)
+    {
+        printf("No force yet\n");
+        do{
+            yarp::os::Time::delay(DEFAULT_DELAY_S);
+            b = pForcePort->read(false);
+            if(b){
+                break;
+            }
+            printf("Waiting receiving force\n");
 
-//        }while(1);
-//    }
-//    //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
-//    for(size_t i=0; i<b->size(); i++)
-//    {
-//        observationData.push_back( b->get(i).asDouble() );
-//        //std(observationData[i]);
-//    }
+        }while(1);
+    }
+    //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
+    for(size_t i=0; i<b->size(); i++)
+    {
+        observationData.push_back( b->get(i).asDouble() );
+        //std(observationData[i]);
+    }
 
-//    //std::cout<<observationData<<std::endl;
+    //std::cout<<observationData<<std::endl;
 
     return observationData;
 }
@@ -420,6 +420,8 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
             //Pstd::cout<< psqFeatures->operator [](i);
             //Pstd::cout<< " ";
         }
+        myfile1<<observationData[7]<< " ";
+        myfile1<<observationData[7]<< " ";
         std::cout<<std::endl;
     }
     myfile1.close();
