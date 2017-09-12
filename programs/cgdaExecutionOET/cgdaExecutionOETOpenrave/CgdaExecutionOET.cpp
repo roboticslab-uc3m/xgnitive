@@ -55,7 +55,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     rpcClientCart.open("/cart:c");
     do {
-        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc:s");
+        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
         printf("Wait to connect to world...\n");
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( rpcClientCart.getOutputCount() == 0 );
