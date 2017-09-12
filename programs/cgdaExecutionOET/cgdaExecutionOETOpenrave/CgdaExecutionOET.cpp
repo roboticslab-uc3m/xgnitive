@@ -53,6 +53,13 @@ int CgdaExecutionOET::init(int argc, char **argv)
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( rpcClientWorld.getOutputCount() == 0 );
 
+    rpcClientCart.open("/cart:c");
+    do {
+        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc:s");
+        printf("Wait to connect to world...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientCart.getOutputCount() == 0 );
+
     //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
     //-- MENTAL ROBOT ARM
@@ -156,6 +163,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     realDevice.view(functionMinEvalOp->realPositionControl);
     functionMinEvalOp->setPRpcClient(&rpcClient);
     functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
+    functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
     functionMinEvalOp->setPForcePort(&forcePort);
     functionMinEvalOp->setPsqFeatures(&sqFeatures);
 

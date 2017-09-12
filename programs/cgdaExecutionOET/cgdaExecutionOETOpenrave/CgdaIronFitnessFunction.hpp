@@ -20,7 +20,7 @@
 
 #include "DtwCgdaRecognition.hpp"
 
-#define DEFAULT_DELAY_S 0.01
+#define DEFAULT_DELAY_S 0.1
 
 //using namespace ObpenRAVE;
 
@@ -46,6 +46,9 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     void setPRpcClientWorld( yarp::os::RpcClient* pRpcClientWorld){
         this->pRpcClientWorld = pRpcClientWorld;
     }
+    void setPRpcClientCart( yarp::os::RpcClient* pRpcClientCart){
+        this->pRpcClientCart = pRpcClientCart;
+    }
 
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
@@ -64,6 +67,7 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort;
 
     yarp::os::RpcClient* pRpcClientWorld;
+    yarp::os::RpcClient* pRpcClientCart;
 
 };
 

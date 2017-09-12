@@ -108,27 +108,36 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
     observationData.clear();
 
     //POSITION
-    //yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
     yarp::os::Bottle cmd,res;
-    cmd.addString("world");
+    cmd.addString("stat");
+
+    /*cmd.addString("world");
     cmd.addString("whereis");
     cmd.addString("tcp");
-    cmd.addString("rightArm");
-    pRpcClientWorld->write(cmd,res);
+    cmd.addString("rightArm");*/
+    pRpcClientCart->write(cmd,res);
+    printf("Got: %s\n",res.toString().c_str());
     /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
     for(size_t i=0; i<res.size(); i++)
     {
         observationData.push_back( res.get(i).asDouble() );
         //std(observationData[i]);
     }*/
-    yarp::os::Bottle* pos = res.get(0).asList();
+    //yarp::os::Bottle* pos = res.get(0).asList();
     //printf("El parámetro de posicion es %s\n", pos->toString().c_str());
     //std::cout<<"LA POSICIÓN A LA QUE ME MOVÍ ES ESTA:::::"<<std::endl;
-    for(size_t i=0; i<pos->size(); i++)
+    /*for(size_t i=0; i<pos->size(); i++)
     {
         observationData.push_back(pos->get(i).asDouble());
         //printf("%f",observationData[i+3]);
         //std::cout<<observationData[i]<<std::endl;
+    }*/
+
+    for(size_t i=1; i<res.size(); i++)
+    {
+        observationData.push_back( res.get(i).asDouble() );
+        //std(observationData[i]);
     }
 
 //    //FORCE
@@ -219,6 +228,8 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
             aux_elem=observationData[i]-target[timeStep+1][i];
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
+            std::cout<<"Fit is at some time step: "<<fit<<std::endl;
+
         }
 
 
@@ -310,6 +321,8 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::vector<double> observationData;
     observationData=observation();
 
+    //std::cout<<observationData<<std::endl;
+
     //***************************************CURRENT LOCALIZATION STEP******************************************************//
 
     state.clear();
@@ -330,15 +343,16 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     for(int i=0;i<NFEATURES;i++){
         double aux_elem;
         if(i==3){
-            aux_elem=observationData[i+1]-target[timeStep+1][i];
+            aux_elem=observationData[i]-target[timeStep+1][i];
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem/60;
 
         }
         else{
-            aux_elem=observationData[i+1]-target[timeStep+1][i];
+            aux_elem=observationData[i]-target[timeStep+1][i];
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
+            std::cout<<"Fit is at some time step: "<<fit<<std::endl;
         }
 
 
@@ -348,9 +362,9 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     std::cout<< observationData<<std::endl;
 
-    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observationData[1]<<std::endl;
-    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationData[2]<<std::endl;
-    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationData[3]<<std::endl;
+    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observationData[0]<<std::endl;
+    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationData[1]<<std::endl;
+    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationData[2]<<std::endl;
 
     std::cout<<" FITNESS "<<fit<<std::endl;
 
@@ -369,7 +383,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     if (myfile1.is_open() && myfile2.is_open()){
         myfile1<<timeStep<<" ";
         myfile2<<timeStep<<" ";
-        for(int i=0;i<observationData.size();i++)
+        for(int i=0;i<(observationData.size()-3);i++)
         {
             //std::cout<<" LA OBSERVACIÓN ES "<<observation[i]<<std::endl;
             myfile1<<observationData[i]<< " ";
