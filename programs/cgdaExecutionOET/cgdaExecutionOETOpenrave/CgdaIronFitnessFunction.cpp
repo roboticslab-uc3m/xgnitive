@@ -79,7 +79,7 @@ int CgdaIronFitnessFunction::localization(std::vector<double> state){
         for(int j=0;j<NFEATURES;j++){
             double aux_elem=0;
             if (j==3){
-                aux_elem=(state[j+1]-target[i][j])/600;
+                aux_elem=(state[j+1]-target[i][j])/300;
                 aux_elem=aux_elem*aux_elem;
                 aux_dist=aux_dist+aux_elem;
                 //std::cout<<" TARGET IS " << target[i][j]<<" memory IS "<<state[j+1]<<" DIS OBTAINED IS " <<aux_elem<<std::endl;
@@ -245,7 +245,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     for(int i=0;i<NFEATURES;i++){
         double aux_elem;
         if(i==3){
-            aux_elem=(observationClean[i]-target[timeStep+1][i])/600;
+            aux_elem=(observationClean[i]-target[timeStep+1][i])/300;
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
             std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
@@ -443,6 +443,8 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         }
         std::cout<<std::endl;
     }
+    myfile1<<fit<< " ";
+    myfile2<<fit<<" ";
     myfile1.close();
 
     myfile2<<"\n";
