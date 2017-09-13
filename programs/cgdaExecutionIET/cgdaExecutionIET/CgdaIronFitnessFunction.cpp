@@ -96,38 +96,26 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     observationData.clear();
 
     //POSITION
-    yarp::os::Time::delay(DEFAULT_DELAY_S);
-    yarp::os::Bottle cmd,res;
-    cmd.addString("stat");
+    //yarp::os::Time::delay(DEFAULT_DELAY_S);
+    //yarp::os::Bottle cmd,res;
+    //cmd.addString("stat");
 
     /*cmd.addString("world");
     cmd.addString("whereis");
     cmd.addString("tcp");
     cmd.addString("rightArm");*/
-    pRpcClientCart->write(cmd,res);
-    printf("Got: %s\n",res.toString().c_str());
+    //pRpcClientCart->write(cmd,res);
+    yarp::os::Bottle* res = pRpcClientCart->read(true);
+    printf("Got: %s\n",res->toString().c_str());
 
-    for(size_t i=1; i<res.size(); i++)
+    for(size_t i=0; i<res->size(); i++)
     {
-        observationData.push_back( res.get(i).asDouble() );
+        observationData.push_back( res->get(i).asDouble() );
         //std(observationData[i]);
     }
 
     //FORCE
-    yarp::os::Bottle* b = pForcePort->read(false);
-    if(!b)
-    {
-        printf("No force yet\n");
-        do{
-            yarp::os::Time::delay(DEFAULT_DELAY_S);
-            b = pForcePort->read(false);
-            if(b){
-                break;
-            }
-            printf("Waiting receiving force\n");
-
-        }while(1);
-    }
+    yarp::os::Bottle* b = pForcePort->read(true);
     //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
     for(size_t i=0; i<b->size(); i++)
     {
@@ -229,16 +217,16 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         observationData.clear();
 
         //POSITION
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-        yarp::os::Bottle cmd,res;
-        cmd.addString("stat");
+       // yarp::os::Time::delay(DEFAULT_DELAY_S);
+        //yarp::os::Bottle cmd,res;
+        //cmd.addString("stat");
 
         /*cmd.addString("world");
         cmd.addString("whereis");
         cmd.addString("tcp");
         cmd.addString("rightArm");*/
-        pRpcClientCart->write(cmd,res);
-        printf("Got: %s\n",res.toString().c_str());
+        yarp::os::Bottle *res = pRpcClientCart->read(true);
+        printf("Got: %s\n",res->toString().c_str());
         /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
         for(size_t i=0; i<res.size(); i++)
         {
@@ -255,27 +243,14 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
             //std::cout<<observationData[i]<<std::endl;
         }*/
 
-        for(size_t i=1; i<res.size(); i++)
+        for(size_t i=0; i<res->size(); i++)
         {
-            observationData.push_back( res.get(i).asDouble() );
+            observationData.push_back( res->get(i).asDouble() );
             //std(observationData[i]);
         }
 
         //FORCE
-        yarp::os::Bottle* b = pForcePort->read(false);
-        if(!b)
-        {
-            printf("No force yet\n");
-            do{
-                yarp::os::Time::delay(DEFAULT_DELAY_S);
-                b = pForcePort->read(false);
-                if(b){
-                    break;
-                }
-                printf("Waiting receiving force\n");
-
-            }while(1);
-        }
+        yarp::os::Bottle* b = pForcePort->read(true);
         //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
         for(size_t i=0; i<b->size(); i++)
         {

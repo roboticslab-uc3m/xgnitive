@@ -40,7 +40,7 @@ class CgdaExecutionIET  {
     yarp::dev::PolyDriver realDevice;
     yarp::os::RpcClient rpcClient;
     yarp::os::RpcClient rpcClientWorld;
-    yarp::os::RpcClient rpcClientCart;
+    yarp::os::BufferedPort<yarp::os::Bottle> readCart;
     yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
 
 
