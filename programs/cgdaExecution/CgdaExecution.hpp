@@ -3,7 +3,9 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
-#include "CgdaFitnessFunction.hpp"
+#include "CgdaIronFitnessFunction.hpp"
+//#include "CgdaPaintFitnessFunction.hpp"
+
 
 //#include "AlgPSOInheritance.hpp"
 //#include "AlgPSOFuzzy.hpp"
@@ -22,7 +24,7 @@ namespace teo
 class CgdaExecution  {
   public:
     bool init();
-
+  private:
     // YARP
     yarp::os::Network yarp;
     yarp::os::Port port;

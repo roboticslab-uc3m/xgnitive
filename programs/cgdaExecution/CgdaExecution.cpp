@@ -117,10 +117,15 @@ bool CgdaExecution::init() {
 //    state->addAlgorithm(nalg2);
 
     // set the evaluation operator, init CgdaFitnessFunction
-    CgdaFitnessFunction* functionMinEvalOp = new CgdaFitnessFunction; 
+    CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
 
     mentalDevice.view(functionMinEvalOp->mentalPositionControl);
     functionMinEvalOp->setPRpcClient(&rpcClient);
+
+    functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
+    functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
+    functionMinEvalOp->setPForcePort(&forcePort);
+
 //    functionMinEvalOp->setPRobot(probot);
 //    functionMinEvalOp->setPenv(penv);
 //    functionMinEvalOp->setPcontrol(pcontrol);
@@ -163,14 +168,14 @@ bool CgdaExecution::init() {
     bestInd = state->getHoF()->getBest();
     genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
     bestPoints = genBest->realValue;
-    for(int i=0; i<NSQUARES; i++){
+    for(int i=0; i<NTPOINTS; i++){
         results.push_back(bestPoints[i*3+0]);
         results.push_back(bestPoints[i*3+1]);
         results.push_back(bestPoints[i*3+2]);
     }
 
     //Execute best trajectory to get % of the wall painted
-    percentage=functionMinEvalOp->trajectoryExecution(results);
+    functionMinEvalOp->trajectoryExecution(results);
 
 //    printf("-begin-\n");
 //    for(unsigned int i=0;i<bestPoints.size();i++)

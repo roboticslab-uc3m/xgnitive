@@ -1,6 +1,6 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#include "CgdaFitnessFunction.hpp"
+#include "CgdaPaintFitnessFunction.hpp"
 
 
 namespace teo
@@ -8,7 +8,7 @@ namespace teo
 
 /************************************************************************/
 
-double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
+double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     double percentage[NTPOINTS];
     int sqPainted [NSQUARES] = { }; //setting number of changed square as zero
@@ -16,23 +16,23 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
     //The Generalized feature trajectory (TEST example is):
     std::vector < std::vector < double > > generalized;
     //The first dimension is the feature trajectory the second is the number of features
-    generalized.push_back({0});
-    generalized.push_back({6.25});
-    generalized.push_back({12.5});
-    generalized.push_back({18.75});
-    generalized.push_back({25});
-    generalized.push_back({31.25});
-    generalized.push_back({37.5});
-    generalized.push_back({43.75});
-    generalized.push_back({50});
-    generalized.push_back({56.25});
-    generalized.push_back({62.5});
-    generalized.push_back({68.75});
-    generalized.push_back({75});
-    generalized.push_back({81.25});
-    generalized.push_back({87.5});
-    generalized.push_back({93.75});
-    generalized.push_back({100});
+//    generalized.push_back({0});
+//    generalized.push_back({6.25});
+//    generalized.push_back({12.5});
+//    generalized.push_back({18.75});
+//    generalized.push_back({25});
+//    generalized.push_back({31.25});
+//    generalized.push_back({37.5});
+//    generalized.push_back({43.75});
+//    generalized.push_back({50});
+//    generalized.push_back({56.25});
+//    generalized.push_back({62.5});
+//    generalized.push_back({68.75});
+//    generalized.push_back({75});
+//    generalized.push_back({81.25});
+//    generalized.push_back({87.5});
+//    generalized.push_back({93.75});
+//    generalized.push_back({100});
 
     //Clean Screen
     yarp::os::Bottle cmd3,res3;
@@ -115,13 +115,13 @@ double CgdaFitnessFunction::getCustomFitness(vector <double> genPoints){
 
 /************************************************************************/
 
-void CgdaFitnessFunction::registerParameters(StateP state) {
+void CgdaPaintFitnessFunction::registerParameters(StateP state) {
     state->getRegistry()->registerEntry("function", (voidP) (new uint(1)), ECF::UINT);
 }
 
 /************************************************************************/
 
-bool CgdaFitnessFunction::initialize(StateP state) {
+bool CgdaPaintFitnessFunction::initialize(StateP state) {
 
     voidP sptr = state->getRegistry()->getEntry("function"); // get parameter value
 //    stringstream msg;
@@ -144,7 +144,7 @@ bool CgdaFitnessFunction::initialize(StateP state) {
 
 /************************************************************************/
 
-FitnessP CgdaFitnessFunction::evaluate(IndividualP individual) {
+FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
 
     // evaluation creates a new fitness object using a smart pointer
     // in our case, we try to minimize the function value, so we use FitnessMin fitness (for minimization problems)
@@ -164,7 +164,7 @@ FitnessP CgdaFitnessFunction::evaluate(IndividualP individual) {
 
 /************************************************************************/
 
-std::vector<double> CgdaFitnessFunction::trajectoryExecution( vector<double> result_trajectory){
+std::vector<double> CgdaPaintFitnessFunction::trajectoryExecution( vector<double> result_trajectory){
     //std::cout<<"I have entered Execution"<<std::endl;
 
     int sqPainted [NSQUARES] = { }; //setting number of changed square as cero

@@ -24,7 +24,7 @@
 
 //using namespace OpenRAVE;
 
-//This file comes from CgdaFitnessFunction.hpp from the package evMono6.
+//This file comes from CgdaPaintFitnessFunction.hpp from the package evMono6.
 
 #define NTPOINTS 17
 #define NSQUARES 16
@@ -33,7 +33,7 @@
 namespace teo
 {
 
-class CgdaFitnessFunction : public EvaluateOp {
+class CgdaPaintFitnessFunction : public EvaluateOp {
 
   public:
     void setPRpcClient( yarp::os::RpcClient* pRpcClient){
@@ -51,7 +51,7 @@ class CgdaFitnessFunction : public EvaluateOp {
     yarp::os::RpcClient* pRpcClient;
 };
 
-typedef boost::shared_ptr<CgdaFitnessFunction> CgdaFitnessFunctionP;
+typedef boost::shared_ptr<CgdaPaintFitnessFunction> CgdaPaintFitnessFunctionP;
 
 }  // namespace teo
 
