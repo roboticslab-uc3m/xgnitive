@@ -24,6 +24,10 @@
 
 //using namespace ObpenRAVE;
 
+#define NTPOINTS 9
+#define NFEATURES 4
+#define NSQUARES 16
+
 namespace teo
 {
 
