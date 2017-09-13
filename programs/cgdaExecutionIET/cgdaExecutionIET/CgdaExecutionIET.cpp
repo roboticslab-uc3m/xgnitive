@@ -123,7 +123,8 @@ bool CgdaExecutionIET::init() {
         //           state->addAlgorithm(nalg3);
 
         // set the evaluation operator
-        CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+        CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
+        //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
         //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
         //Constrained Cost functions
         //CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
@@ -136,6 +137,9 @@ bool CgdaExecutionIET::init() {
         functionMinEvalOp->setResults(presults);
         //Uncomment only for CgdaConstrained
         state->setEvalOp(functionMinEvalOp);
+        functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
+        functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
+        functionMinEvalOp->setPForcePort(&forcePort);
 
         unsigned int* pIter= &i;
         functionMinEvalOp->setIter(pIter);
@@ -181,9 +185,11 @@ bool CgdaExecutionIET::init() {
     }
 
 
-    std::vector<double> percentage;
-    CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
-    percentage=functionMinEvalOp->trajectoryExecution(results);
+//    std::vector<double> percentage;
+//    CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+//    percentage=functionMinEvalOp->trajectoryExecution(results);
+
+
 
     //Total time
     double total_time=0;
@@ -203,10 +209,10 @@ bool CgdaExecutionIET::init() {
     if (myfile1.is_open()){
         myfile1<<"0: ";
         myfile1<<evaluations<<" ";
-        myfile1<<fit<<" "; //Take only the fit of the last gen.
-        for(int i=0; i<NTPOINTS;i++){
-            myfile1<<percentage[i]<<" ";
-        }
+//        myfile1<<fit<<" "; //Take only the fit of the last gen.
+//        for(int i=0; i<NTPOINTS;i++){
+//            myfile1<<percentage[i]<<" ";
+//        }
         for(int i=0; i<NTPOINTS;i++){
             if(ev_time_s[i]==0){
                 myfile1<<ev_time_n[i]<<" ";

@@ -1,8 +1,8 @@
 //Copyright: Universidad Carlos III de Madrid (C) 2016
 //Authors: jgvictores, raulfdzbis, smorante
 
-#ifndef CGDA_IRON_OET_H_
-#define CGDA_IRON_OET_H_
+#ifndef CGDA_IRON_IET_H_
+#define CGDA_IRON_IET_H_
 
 #include <cmath>
 #include <iostream>
@@ -21,6 +21,10 @@
 #include "DtwCgdaRecognition.hpp"
 
 #define DEFAULT_DELAY_S 0.01
+
+#define NTPOINTS 9
+#define NFEATURES 4
+#define NSQUARES 16
 
 //using namespace ObpenRAVE;
 
@@ -52,6 +56,11 @@ class CgdaIronFitnessFunction : public EvaluateOp {
         this->pRpcClientWorld = pRpcClientWorld;
     }
 
+    void setPRpcClientCart( yarp::os::RpcClient* pRpcClientCart){
+        this->pRpcClientCart = pRpcClientCart;
+    }
+
+
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
 	bool initialize(StateP);
@@ -66,6 +75,7 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort;
 
     yarp::os::RpcClient* pRpcClientWorld;
+    yarp::os::RpcClient* pRpcClientCart;
 
 };
 
@@ -73,5 +83,5 @@ typedef boost::shared_ptr<CgdaIronFitnessFunction> CgdaIronFitnessFunctionP;
 
 }  // namespace teo
 
-#endif /* CGDA_IRON_OET_H_ */
+#endif /* CGDA_IRON_IET_H_ */
 
