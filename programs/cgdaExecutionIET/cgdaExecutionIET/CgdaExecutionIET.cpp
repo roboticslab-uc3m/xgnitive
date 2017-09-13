@@ -83,16 +83,25 @@ bool CgdaExecutionIET::init() {
     std::string remotePaint( "/openraveYarpPaintSquares/rpc:s" );
     std::string localPaint("/cgda");
     //localPaint.append( ss.str() );
-    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
-    rpcClient.open(localPaint);
-    do {
-        yarp::os::Network::connect(localPaint,remotePaint);
-        printf("Wait to connect to paint server...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( rpcClient.getOutputCount() == 0 );
-    CD_SUCCESS("Paint server available.\n");
+//    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+//    rpcClient.open(localPaint);
+//    do {
+//        yarp::os::Network::connect(localPaint,remotePaint);
+//        printf("Wait to connect to paint server...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClient.getOutputCount() == 0 );
+//    CD_SUCCESS("Paint server available.\n");
 
     CD_SUCCESS("----- All good for %d.\n",portNum);
+
+    //force connect
+    forcePort.open("/force:i");
+    do {
+        yarp::os::Network::connect("/forceEstimator:o","/force:i");
+        printf("Wait to connect to forces...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( forcePort.getInputCount() == 0 );
+
 
     vector< double > results;
     vector< double >* presults= &results;

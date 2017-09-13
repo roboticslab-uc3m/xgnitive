@@ -20,7 +20,7 @@
 
 #include "DtwCgdaRecognition.hpp"
 
-#define DEFAULT_DELAY_S 0.01
+#define DEFAULT_DELAY_S 0.1
 
 #define NTPOINTS 9
 #define NFEATURES 4
