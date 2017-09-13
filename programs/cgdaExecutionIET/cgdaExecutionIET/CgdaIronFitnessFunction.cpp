@@ -106,21 +106,6 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     cmd.addString("rightArm");*/
     pRpcClientCart->write(cmd,res);
     printf("Got: %s\n",res.toString().c_str());
-    /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
-    for(size_t i=0; i<res.size(); i++)
-    {
-        observationData.push_back( res.get(i).asDouble() );
-        //std(observationData[i]);
-    }*/
-    //yarp::os::Bottle* pos = res.get(0).asList();
-    //printf("El parámetro de posicion es %s\n", pos->toString().c_str());
-    //std::cout<<"LA POSICIÓN A LA QUE ME MOVÍ ES ESTA:::::"<<std::endl;
-    /*for(size_t i=0; i<pos->size(); i++)
-    {
-        observationData.push_back(pos->get(i).asDouble());
-        //printf("%f",observationData[i+3]);
-        //std::cout<<observationData[i]<<std::endl;
-    }*/
 
     for(size_t i=1; i<res.size(); i++)
     {
@@ -150,7 +135,8 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         //std(observationData[i]);
     }
 
-   // std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
+    //std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
+    std::cout<<" In the iteration "<<*pIter<<" the position of the robot is "<<observationData<<std::endl;
 
 
     observationClean.push_back(observationData[0]); //X
@@ -222,7 +208,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
 
     //Obtain the actual state of the feature environment.
 
-    for(int t=0;t<=NTPOINTS;t++) {
+    for(int t=0;t<NTPOINTS;t++) {
 
         //********************************SIMULATED EXECUTION****************************************************//
 
@@ -297,13 +283,15 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
             //std(observationData[i]);
         }
 
-       // std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
+        //std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
+
 
 
         observationClean.push_back(observationData[0]); //X
         observationClean.push_back(observationData[1]); //Y
         observationClean.push_back(observationData[2]); //Z
         observationClean.push_back(observationData[7]); //Fz
+        std::cout<<" In the iteration "<<t<<" the trajectory obtained was "<<observationClean<<std::endl;
 
         //********************************FITNESS CALCULATION STEP******************************************************//
 
@@ -314,19 +302,19 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         for(int i=0;i<NFEATURES;i++){
             double aux_elem;
             if(i==3){
-                aux_elem=(observationClean[i]-target_iron[*pIter][i])/300;
+                aux_elem=(observationClean[i]-target_iron[t][i])/300;
                 aux_elem=aux_elem*aux_elem;
                 fit=fit+aux_elem;
-                std::cout<<" target_iron "<< target_iron[*pIter][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
+                std::cout<<" target_iron "<< target_iron[t][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
             }
             else{
-                aux_elem=observationClean[i]-target_iron[*pIter][i];
+                aux_elem=observationClean[i]-target_iron[t][i];
                 std::cout<<aux_elem<<" "<<std::endl;
                 aux_elem=aux_elem*aux_elem;
                 fit=fit+aux_elem;
                 //std::cout<<"Fit is at some time step: "<<fit<<std::endl;
-                std::cout<<" target_iron "<< target_iron[*pIter][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
+                std::cout<<" target_iron "<< target_iron[t][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
             }
 
@@ -364,12 +352,12 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         std::ofstream myfile1;
         myfile1.open("Trajectory.txt", std::ios_base::app);
 
-        std::cout<<" THE SIZE OF OBSERVATION IS "<<observationData.size()<<std::endl;
+        std::cout<<" THE SIZE OF OBSERVATION IS "<<observationClean.size()<<std::endl;
         if (myfile1.is_open()){
-            for(int i=0;i<observationData.size();i++)
+            for(int i=0;i<observationClean.size();i++)
             {
                 //std::cout<<" LA OBSERVACIÓN ES "<<observation[i]<<std::endl;
-                myfile1<<observationData[i]<< " ";
+                myfile1<<observationClean[i]<< " ";
                 //myfile1<<"1 ";
                 //myfile1<< psqFeatures->operator[](i) << " ";
                 //P myfile1<< psqFeatures->operator [](i);

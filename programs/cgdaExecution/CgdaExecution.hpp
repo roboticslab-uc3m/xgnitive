@@ -30,6 +30,9 @@ class CgdaExecution  {
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
     yarp::os::RpcClient rpcClient;
+    yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
+    yarp::os::RpcClient rpcClientWorld;
+    yarp::os::RpcClient rpcClientCart;
 
 };
 

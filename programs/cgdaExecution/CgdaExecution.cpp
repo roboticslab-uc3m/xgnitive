@@ -12,29 +12,42 @@ bool CgdaExecution::init() {
     timespec tsStart; //Start first timer
     clock_gettime(CLOCK_REALTIME, &tsStart);
 
-    portNum = -1;
-    bool open = false;
-    while( ! open )
-    {
-        portNum++;
-        std::string s("/good");
-        std::stringstream ss;
-        ss << portNum;
-        s.append(ss.str());
-        open = port.open(s);
-    }
-    std::stringstream ss;
-    ss << portNum;
+    forcePort.open("/force:i");
+    do {
+        yarp::os::Network::connect("/forceEstimator:o","/force:i");
+        printf("Wait to connect to forces...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( forcePort.getInputCount() == 0 );
+
+    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
+
+    rpcClientWorld.open("/world:c");
+    do {
+        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
+        printf("Wait to connect to world...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientWorld.getOutputCount() == 0 );
+
+    rpcClientCart.open("/cart:c");
+    do {
+        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
+        printf("Wait to connect to world...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientCart.getOutputCount() == 0 );
+
+    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
     //-- MENTAL ROBOT ARM
     yarp::os::Property mentalOptions;
     mentalOptions.put("device","remote_controlboard");
-    std::string remoteMental("/");
-    remoteMental.append( ss.str() );
-    remoteMental.append( "/teoSim/rightArm" );
+    //std::string remoteMental("/");
+    //remoteMental.append( ss.str() );
+    //remoteMental.append( "/teoSim/rightArm" );
+    std::string remoteMental("/teoSim/rightArm");
     mentalOptions.put("remote",remoteMental);
-    std::string localMental("/cgdaMental/");
-    localMental.append( ss.str() );
+    //std::string localMental("/cgdaMental/");
+    //localMental.append( ss.str() );
+    std::string localMental("/cgdaMental");
     localMental.append( "/teoSim/rightArm" );
     mentalOptions.put("local",localMental);
     mentalDevice.open(mentalOptions);
@@ -73,20 +86,22 @@ bool CgdaExecution::init() {
 //    }
 //    CD_SUCCESS("Real robot device available.\n");
 
-    //-- Paint server
-    std::string remotePaint("/");
-    remotePaint.append( ss.str() );
-    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
-    std::string localPaint("/cgda/");
-    localPaint.append( ss.str() );
-    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
-    rpcClient.open(localPaint);
-    do {
-        yarp::os::Network::connect(localPaint,remotePaint);
-        printf("Wait to connect to paint server...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( rpcClient.getOutputCount() == 0 );
-    CD_SUCCESS("Paint server available.\n");
+//    //-- Paint server
+//    //std::string remotePaint("/");
+//    //remotePaint.append( ss.str() );
+//    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+//    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
+//    //std::string localPaint("/cgda/");
+//    //localPaint.append( ss.str() );
+//    std::string localPaint("/cgda");
+//    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+//    rpcClient.open(localPaint);
+//    do {
+//        yarp::os::Network::connect(localPaint,remotePaint);
+//        printf("Wait to connect to paint server...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClient.getOutputCount() == 0 );
+//    CD_SUCCESS("Paint server available.\n");
 
     CD_SUCCESS("----- All good for %d.\n",portNum);
 

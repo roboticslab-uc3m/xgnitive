@@ -102,6 +102,20 @@ bool CgdaExecutionIET::init() {
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( forcePort.getInputCount() == 0 );
 
+    rpcClientWorld.open("/world:c");
+    do {
+        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
+        printf("Wait to connect to world...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientWorld.getOutputCount() == 0 );
+
+    rpcClientCart.open("/cart:c");
+    do {
+        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
+        printf("Wait to connect to world...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientCart.getOutputCount() == 0 );
+
 
     vector< double > results;
     vector< double >* presults= &results;
@@ -196,7 +210,10 @@ bool CgdaExecutionIET::init() {
 
 //    std::vector<double> percentage;
 //    CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
-//    percentage=functionMinEvalOp->trajectoryExecution(results);
+
+    //Execute final trajectory
+    CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
+    functionMinEvalOp->individualExecution(results);
 
 
 
