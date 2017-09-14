@@ -28,7 +28,7 @@
 
 #define NTPOINTS 9
 #define NFEATURES 4
-#define DEFAULT_DELAY_S 0.1
+#define DEFAULT_DELAY_S 0.01
 
 namespace teo
 {
@@ -47,7 +47,7 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     void setPRpcClientWorld( yarp::os::RpcClient* pRpcClientWorld){
         this->pRpcClientWorld = pRpcClientWorld;
     }
-    void setPRpcClientCart( yarp::os::RpcClient* pRpcClientCart){
+    void setPRpcClientCart( yarp::os::BufferedPort<yarp::os::Bottle>* pRpcClientCart){
         this->pRpcClientCart = pRpcClientCart;
     }
 
@@ -65,7 +65,7 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort;
 
     yarp::os::RpcClient* pRpcClientWorld;
-    yarp::os::RpcClient* pRpcClientCart;
+    yarp::os::BufferedPort<yarp::os::Bottle>* pRpcClientCart;
 
 };
 

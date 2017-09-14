@@ -28,12 +28,13 @@ bool CgdaExecution::init() {
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( rpcClientWorld.getOutputCount() == 0 );
 
-    rpcClientCart.open("/cart:c");
+    readCart.open("/cart:i");
     do {
-        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
-        printf("Wait to connect to world...\n");
+        yarp::os::Network::connect("/CartesianControl/state:o","/cart:i");
+        printf("Wait to connect to cart...\n");
         yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( rpcClientCart.getOutputCount() == 0 );
+    } while( readCart.getInputCount() == 0 );
+    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
     //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
@@ -123,7 +124,7 @@ bool CgdaExecution::init() {
     functionMinEvalOp->setPRpcClient(&rpcClient);
 
     functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
-    functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
+    functionMinEvalOp->setPRpcClientCart(&readCart);
     functionMinEvalOp->setPForcePort(&forcePort);
 
 //    functionMinEvalOp->setPRobot(probot);
