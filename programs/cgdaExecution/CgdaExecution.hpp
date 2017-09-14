@@ -34,7 +34,8 @@ class CgdaExecution  {
     yarp::os::RpcClient rpcClient;
     yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
     yarp::os::RpcClient rpcClientWorld;
-    yarp::os::BufferedPort<yarp::os::Bottle> readCart;
+    yarp::dev::PolyDriver cartDevice;
+    roboticslab::ICartesianControl* readCart;
 
 };
 

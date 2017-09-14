@@ -96,7 +96,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     observationData.clear();
 
     //POSITION
-    //yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
     //yarp::os::Bottle cmd,res;
     //cmd.addString("stat");
 
@@ -105,14 +105,16 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     cmd.addString("tcp");
     cmd.addString("rightArm");*/
     //pRpcClientCart->write(cmd,res);
-    yarp::os::Bottle* res = pRpcClientCart->read(true);
-    printf("Got: %s\n",res->toString().c_str());
+    //yarp::os::Bottle* res = pRpcClientCart->read(true);
+    /*printf("Got: %s\n",res->toString().c_str());
 
     for(size_t i=0; i<res->size(); i++)
     {
         observationData.push_back( res->get(i).asDouble() );
         //std(observationData[i]);
-    }
+    }*/
+    int stat;
+    while( ! pRpcClientCart->stat(stat,observationData) );
 
     //FORCE
     yarp::os::Bottle* b = pForcePort->read(true);
@@ -123,14 +125,14 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         //std(observationData[i]);
     }
 
-    //std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
+    std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
     std::cout<<" In the iteration "<<*pIter<<" the position of the robot is "<<observationData<<std::endl;
 
 
     observationClean.push_back(observationData[0]); //X
     observationClean.push_back(observationData[1]); //Y
     observationClean.push_back(observationData[2]); //Z
-    observationClean.push_back(observationData[7]); //Fz
+    observationClean.push_back(observationData[6]); //Fz
 
     //********************************FITNESS CALCULATION STEP******************************************************//
 
@@ -206,6 +208,10 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         dEncRaw[1] = -result_trajectory[3*t+1];  // simple
         dEncRaw[3] = result_trajectory[3*t+2];  // simple
 
+        std::cout<<"EL JOINT UNO ES :"<<result_trajectory[3*t+0]<<std::endl;
+        std::cout<<"EL JOINT DOS ES :"<<result_trajectory[3*t+1]<<std::endl;
+        std::cout<<"EL JOINT TRES ES :"<<result_trajectory[3*t+2]<<std::endl;
+
         //Actually move the robot
         mentalPositionControl->positionMove(dEncRaw.data());
 
@@ -217,7 +223,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         observationData.clear();
 
         //POSITION
-       // yarp::os::Time::delay(DEFAULT_DELAY_S);
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
         //yarp::os::Bottle cmd,res;
         //cmd.addString("stat");
 
@@ -225,8 +231,8 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         cmd.addString("whereis");
         cmd.addString("tcp");
         cmd.addString("rightArm");*/
-        yarp::os::Bottle *res = pRpcClientCart->read(true);
-        printf("Got: %s\n",res->toString().c_str());
+//        yarp::os::Bottle *res = pRpcClientCart->read(true);
+  //      printf("Got: %s\n",res->toString().c_str());
         /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
         for(size_t i=0; i<res.size(); i++)
         {
@@ -243,11 +249,14 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
             //std::cout<<observationData[i]<<std::endl;
         }*/
 
-        for(size_t i=0; i<res->size(); i++)
+    /*    for(size_t i=0; i<res->size(); i++)
         {
             observationData.push_back( res->get(i).asDouble() );
             //std(observationData[i]);
-        }
+        }*/
+        int stat;
+        while( ! pRpcClientCart->stat(stat,observationData) );
+
 
         //FORCE
         yarp::os::Bottle* b = pForcePort->read(true);
@@ -258,14 +267,14 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
             //std(observationData[i]);
         }
 
-        //std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
+        std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
 
 
 
         observationClean.push_back(observationData[0]); //X
         observationClean.push_back(observationData[1]); //Y
         observationClean.push_back(observationData[2]); //Z
-        observationClean.push_back(observationData[7]); //Fz
+        observationClean.push_back(observationData[6]); //Fz
         std::cout<<" In the iteration "<<t<<" the trajectory obtained was "<<observationClean<<std::endl;
 
         //********************************FITNESS CALCULATION STEP******************************************************//
@@ -297,6 +306,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         }
 
         fit=sqrt(fit);
+
 
     //    std::cout<<" target_iron X "<< target_iron[timeStep+1][0]<<" OBERVACIÓN "<<observationData[0]<<std::endl;
     //    std::cout<<" target_iron Y "<< target_iron[timeStep+1][1]<<" OBERVACIÓN "<<observationData[1]<<std::endl;

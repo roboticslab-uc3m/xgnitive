@@ -46,7 +46,9 @@ private:
     int portNum;
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
-    yarp::os::BufferedPort<yarp::os::Bottle> readCart;
+    roboticslab::ICartesianControl* readCart;
+    yarp::dev::PolyDriver cartDevice;
+
 
 };
 

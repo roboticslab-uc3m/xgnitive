@@ -18,9 +18,11 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
+#include "ICartesianControl.h"
+
 #include "DtwCgdaRecognition.hpp"
 
-#define DEFAULT_DELAY_S 0.01
+#define DEFAULT_DELAY_S 0.1
 
 #define NTPOINTS 9
 #define NFEATURES 4
@@ -56,7 +58,7 @@ class CgdaIronFitnessFunction : public EvaluateOp {
         this->pRpcClientWorld = pRpcClientWorld;
     }
 
-    void setPRpcClientCart( yarp::os::BufferedPort<yarp::os::Bottle>* pRpcClientCart){
+    void setPRpcClientCart( roboticslab::ICartesianControl* pRpcClientCart){
         this->pRpcClientCart = pRpcClientCart;
     }
 
@@ -75,7 +77,7 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort;
 
     yarp::os::RpcClient* pRpcClientWorld;
-    yarp::os::BufferedPort<yarp::os::Bottle>* pRpcClientCart;
+    roboticslab::ICartesianControl* pRpcClientCart;
 
 };
 

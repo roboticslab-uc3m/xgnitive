@@ -53,12 +53,28 @@ int CgdaExecutionOET::init(int argc, char **argv)
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( rpcClientWorld.getOutputCount() == 0 );
 
-    readCart.open("/cart:i");
-    do {
-        yarp::os::Network::connect("/CartesianControl/state:o","/cart:i");
-        printf("Wait to connect to cart...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( readCart.getInputCount() == 0 );
+    // cart connect
+    yarp::os::Property cartOptions;
+    cartOptions.put("device","BasicCartesianControl");
+    cartOptions.put("name","/teo/rightArm/CartesianControl");
+    //cartOptions.put("from","/usr/local/share/teo-configuration-files/contexts/kinematics/rightArmKinematics.ini");
+    cartOptions.put("kinematics","/usr/local/share/teo-configuration-files/contexts/kinematics/rightArmKinematics.ini");
+    cartOptions.put("angleRepr","axisAngle");
+    cartOptions.put("robot","remote_controlboard");
+    cartOptions.put("local","/BasicCartesianControl/teo/rightArm");
+    cartOptions.put("remote","/teoSim/rightArm");
+    cartDevice.open(cartOptions);
+    if( ! cartDevice.isValid() )
+    {
+        CD_ERROR("\n");
+        return 1;
+    }
+    if( ! cartDevice.view(readCart) )
+    {
+        CD_ERROR("\n");
+        return 1;
+    }
+
     //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
     //-- MENTAL ROBOT ARM
@@ -162,7 +178,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     realDevice.view(functionMinEvalOp->realPositionControl);
     //functionMinEvalOp->setPRpcClient(&rpcClient);
     functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
-    functionMinEvalOp->setPRpcClientCart(&readCart);
+    functionMinEvalOp->setPRpcClientCart(readCart);
     functionMinEvalOp->setPForcePort(&forcePort);
     functionMinEvalOp->setPsqFeatures(&sqFeatures);
 

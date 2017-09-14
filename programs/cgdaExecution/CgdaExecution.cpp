@@ -28,12 +28,27 @@ bool CgdaExecution::init() {
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( rpcClientWorld.getOutputCount() == 0 );
 
-    readCart.open("/cart:i");
-    do {
-        yarp::os::Network::connect("/CartesianControl/state:o","/cart:i");
-        printf("Wait to connect to cart...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( readCart.getInputCount() == 0 );
+    // cart connect
+    yarp::os::Property cartOptions;
+    cartOptions.put("device","BasicCartesianControl");
+    cartOptions.put("name","/teo/rightArm/CartesianControl");
+    //cartOptions.put("from","/usr/local/share/teo-configuration-files/contexts/kinematics/rightArmKinematics.ini");
+    cartOptions.put("kinematics","/usr/local/share/teo-configuration-files/contexts/kinematics/rightArmKinematics.ini");
+    cartOptions.put("angleRepr","axisAngle");
+    cartOptions.put("robot","remote_controlboard");
+    cartOptions.put("local","/BasicCartesianControl/teo/rightArm");
+    cartOptions.put("remote","/teoSim/rightArm");
+    cartDevice.open(cartOptions);
+    if( ! cartDevice.isValid() )
+    {
+        CD_ERROR("\n");
+        return 1;
+    }
+    if( ! cartDevice.view(readCart) )
+    {
+        CD_ERROR("\n");
+        return 1;
+    }
     //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
     //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
@@ -124,7 +139,7 @@ bool CgdaExecution::init() {
     functionMinEvalOp->setPRpcClient(&rpcClient);
 
     functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
-    functionMinEvalOp->setPRpcClientCart(&readCart);
+    functionMinEvalOp->setPRpcClientCart(readCart);
     functionMinEvalOp->setPForcePort(&forcePort);
 
 //    functionMinEvalOp->setPRobot(probot);
@@ -188,6 +203,8 @@ bool CgdaExecution::init() {
     clock_gettime(CLOCK_REALTIME, &tsEnd);
     total_time=(tsEnd.tv_sec-tsStart.tv_sec);
     std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
+
+    total_time=total_time-0.1*evaluations; //In the next version we plan to get the position faster than each 0.1s.
 
     //*******************************************************************************************//
     //                              FILE OUTPUT FOR DEBUGGING                                    //

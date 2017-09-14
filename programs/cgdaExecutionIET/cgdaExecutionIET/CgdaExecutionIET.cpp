@@ -109,12 +109,33 @@ bool CgdaExecutionIET::init() {
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( rpcClientWorld.getOutputCount() == 0 );
 
-    readCart.open("/cart:i");
-    do {
+    // cart connect
+    yarp::os::Property cartOptions;
+    cartOptions.put("device","BasicCartesianControl");
+    cartOptions.put("name","/teo/rightArm/CartesianControl");
+    //cartOptions.put("from","/usr/local/share/teo-configuration-files/contexts/kinematics/rightArmKinematics.ini");
+    cartOptions.put("kinematics","/usr/local/share/teo-configuration-files/contexts/kinematics/rightArmKinematics.ini");
+    cartOptions.put("angleRepr","axisAngle");
+    cartOptions.put("robot","remote_controlboard");
+    cartOptions.put("local","/BasicCartesianControl/teo/rightArm");
+    cartOptions.put("remote","/teoSim/rightArm");
+    cartDevice.open(cartOptions);
+    if( ! cartDevice.isValid() )
+    {
+        CD_ERROR("\n");
+        return 1;
+    }
+    if( ! cartDevice.view(readCart) )
+    {
+        CD_ERROR("\n");
+        return 1;
+    }
+
+    /*do {
         yarp::os::Network::connect("/CartesianControl/state:o","/cart:i");
         printf("Wait to connect to cart...\n");
         yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( readCart.getInputCount() == 0 );
+    } while( readCart.getInputCount() == 0 );*/
 
 
     vector< double > results;
@@ -161,7 +182,7 @@ bool CgdaExecutionIET::init() {
         //Uncomment only for CgdaConstrained
         state->setEvalOp(functionMinEvalOp);
         functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
-        functionMinEvalOp->setPRpcClientCart(&readCart);
+        functionMinEvalOp->setPRpcClientCart(readCart);
         functionMinEvalOp->setPForcePort(&forcePort);
 
         unsigned int* pIter= &i;
@@ -191,7 +212,10 @@ bool CgdaExecutionIET::init() {
         results.push_back(bestPoints[2]);
 
         evaluations+=state->getEvaluations(); // Evaluations is the sum of all the evluations for each iter.
+
         fit=bestInd[0]->fitness->getValue(); //Fit current gen.
+
+        int evaluations_now=state->getEvaluations();
 
         //           std::cout<<"EL NUMERO DE EVALUACIONES ES::::"<<const_evaluations<<std::endl;
         //           nalg1.reset();
@@ -200,11 +224,15 @@ bool CgdaExecutionIET::init() {
         state.reset();
         delete functionMinEvalOp;
 
+        std::cout<<evaluations_now<<std::endl;
         timespec tsEvEnd;
         clock_gettime(CLOCK_REALTIME, &tsEvEnd);
         ev_time_n[i]=(tsEvEnd.tv_nsec-tsEvStart.tv_nsec);
         ev_time_n[i]=ev_time_n[i]/1000000000;
+        ev_time_n[i]=ev_time_n[i]-(0.1*evaluations_now);
         ev_time_s[i]=(tsEvEnd.tv_sec-tsEvStart.tv_sec);
+        ev_time_s[i]=ev_time_s[i]-(0.1*evaluations_now);
+
     }
 
 
@@ -223,6 +251,9 @@ bool CgdaExecutionIET::init() {
     clock_gettime(CLOCK_REALTIME, &tsEnd);
     total_time=(tsEnd.tv_sec-tsStart.tv_sec);
     std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
+
+    total_time=total_time-0.1*evaluations; //In the next version we plan to get the position faster than each 0.1s.
+
 
     //*******************************************************************************************//
     //                              FILE OUTPUT FOR DEBUGGING                                    //

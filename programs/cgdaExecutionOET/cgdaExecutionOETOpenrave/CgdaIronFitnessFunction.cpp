@@ -112,7 +112,7 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
     observationData.clear();
 
     //POSITION
-    //yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
     //yarp::os::Bottle cmd,res;
     //cmd.addString("stat");
 
@@ -120,15 +120,18 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
     cmd.addString("whereis");
     cmd.addString("tcp");
     cmd.addString("rightArm");*/
-    //pRpcClientCart->write(cmd,res);
-    yarp::os::Bottle* res = pRpcClientCart->read(true);
+    //pRpcClientCart->write(cmd,res);/usr/local/share/teo/contexts/kinematics/rightArmKinematics.ini
+    /*yarp::os::Bottle* res = pRpcClientCart->read(true);
     printf("Got: %s\n",res->toString().c_str());
 
     for(size_t i=0; i<res->size(); i++)
     {
         observationData.push_back( res->get(i).asDouble() );
         //std(observationData[i]);
-    }
+    }*/
+    int stat;
+    while( ! pRpcClientCart->stat(stat,observationData) );
+
 
     //FORCE
     yarp::os::Bottle* b = pForcePort->read(false);
@@ -214,7 +217,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     observationClean.push_back(observationData[0]); //X
     observationClean.push_back(observationData[1]); //Y
     observationClean.push_back(observationData[2]); //Z
-    observationClean.push_back(observationData[7]); //Fz
+    observationClean.push_back(observationData[6]); //Fz
 
 
     //********************************FITNESS CALCULATION STEP******************************************************//
@@ -248,9 +251,9 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     fit=sqrt(fit);
 
-//    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observationData[0]<<std::endl;
-//    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationData[1]<<std::endl;
-//    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationData[2]<<std::endl;
+    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observationData[0]<<std::endl;
+    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationData[1]<<std::endl;
+    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationData[2]<<std::endl;
 
     std::cout<<" FIT "<<fit<<std::endl;
 
@@ -314,9 +317,9 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::vector<double> dEncRaw(6);  // NUM_MOTORS
 
 //    std::cout<<"Los resultados obtenidos son: "<<std::endl;
-//    std::cout<<"0: "<<results[0]<<std::endl;
-//    std::cout<<"1: "<<results[1]<<std::endl;
-//    std::cout<<"2: "<<results[2]<<std::endl;
+    std::cout<<"0: "<<results[0]<<std::endl;
+    std::cout<<"1: "<<results[1]<<std::endl;
+    std::cout<<"2: "<<results[2]<<std::endl;
 
 
     dEncRaw[0] = results[0];  // simple
@@ -343,7 +346,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     observationClean.push_back(observationData[0]); //X
     observationClean.push_back(observationData[1]); //Y
     observationClean.push_back(observationData[2]); //Z
-    observationClean.push_back(observationData[7]); //Fz
+    observationClean.push_back(observationData[6]); //Fz
 
     //std::cout<<observationData<<std::endl;
 
@@ -362,6 +365,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //The fit is the L2 norm between the current features, and the t+1 feature environment.
     double fit=0;
+    timeStep=memory[0];
     printf("EL TIME STEP ES :: %d \n",timeStep);
     //fit=sqrt(pow((percentage-Const_target[timeStep+1]),2)); //The fit is the euclidean distance between current feature and t+1. Since 1 dimension euclidean distance equals difference.
 
@@ -388,10 +392,10 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
 //    std::cout<< observationClean<<std::endl;
 
-//    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observationClean[0]<<std::endl;
-//    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationClean[1]<<std::endl;
-//    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationClean[2]<<std::endl;
-//    std::cout<<" TARGET Fz "<< target[timeStep+1][3]<<" OBERVACIÓN "<<observationClean[7]<<std::endl;
+    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observationClean[0]<<std::endl;
+    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationClean[1]<<std::endl;
+    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationClean[2]<<std::endl;
+    std::cout<<" TARGET Fz "<< target[timeStep+1][3]<<" OBERVACIÓN "<<observationClean[3]<<std::endl;
 
     std::cout<<" FITNESS "<<fit<<std::endl;
 

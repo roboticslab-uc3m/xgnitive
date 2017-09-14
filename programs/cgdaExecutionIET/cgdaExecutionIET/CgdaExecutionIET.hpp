@@ -39,8 +39,9 @@ class CgdaExecutionIET  {
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
     yarp::os::RpcClient rpcClient;
-    yarp::os::RpcClient rpcClientWorld;
-    yarp::os::BufferedPort<yarp::os::Bottle> readCart;
+    yarp::os::RpcClient rpcClientWorld;    
+    yarp::dev::PolyDriver cartDevice;
+    roboticslab::ICartesianControl* readCart;
     yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
 
 

@@ -20,6 +20,8 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
+#include "ICartesianControl.h"
+
 #include "DtwCgdaRecognition.hpp"
 
 //using namespace OpenRAVE;
@@ -28,7 +30,7 @@
 
 #define NTPOINTS 9
 #define NFEATURES 4
-#define DEFAULT_DELAY_S 0.01
+#define DEFAULT_DELAY_S 0.1
 
 namespace teo
 {
@@ -47,10 +49,10 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     void setPRpcClientWorld( yarp::os::RpcClient* pRpcClientWorld){
         this->pRpcClientWorld = pRpcClientWorld;
     }
-    void setPRpcClientCart( yarp::os::BufferedPort<yarp::os::Bottle>* pRpcClientCart){
+
+    void setPRpcClientCart( roboticslab::ICartesianControl* pRpcClientCart){
         this->pRpcClientCart = pRpcClientCart;
     }
-
 
     FitnessP evaluate(IndividualP individual);
     void registerParameters(StateP);
@@ -65,7 +67,7 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort;
 
     yarp::os::RpcClient* pRpcClientWorld;
-    yarp::os::BufferedPort<yarp::os::Bottle>* pRpcClientCart;
+    roboticslab::ICartesianControl* pRpcClientCart;
 
 };
 

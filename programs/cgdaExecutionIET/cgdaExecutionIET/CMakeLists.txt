@@ -10,6 +10,7 @@ set(KEYWORD "cgdaExecutionIET")
 find_package(YARP REQUIRED)
 find_package(OpenRAVE REQUIRED)
 find_package(Boost COMPONENTS iostreams python thread system)
+find_package(ROBOTICSLAB_KINEMATICS_DYNAMICS REQUIRED)
 
 # Find KDL
 FIND_PACKAGE(orocos_kdl REQUIRED)
@@ -32,7 +33,7 @@ endif( CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX )
 
 add_definitions(-std=c++11)
 
-include_directories(${OpenRAVE_INCLUDE_DIRS} ${orocos_kdl_INCLUDE_DIRS} ${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${OpenRAVE_INCLUDE_DIRS} ${orocos_kdl_INCLUDE_DIRS} ${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${ROBOTICSLAB_KINEMATICS_DYNAMICS_INCLUDE_DIRS})
 
 if( Boost_INCLUDE_DIRS )
   include_directories(${Boost_INCLUDE_DIRS})

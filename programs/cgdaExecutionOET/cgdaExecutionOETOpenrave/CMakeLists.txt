@@ -14,6 +14,8 @@ find_package(YARP REQUIRED)
 # Find KDL
 FIND_PACKAGE(orocos_kdl REQUIRED)
 
+find_package(ROBOTICSLAB_KINEMATICS_DYNAMICS REQUIRED)
+
 # Search for source code.
 file(GLOB folder_source *.cpp *.cc *.c)
 file(GLOB folder_header *.h)
@@ -32,7 +34,7 @@ endif( CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX )
 
 add_definitions(-std=c++11)
 
-include_directories(${OpenRAVE_INCLUDE_DIRS} ${orocos_kdl_INCLUDE_DIRS} ${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${OpenRAVE_INCLUDE_DIRS} ${orocos_kdl_INCLUDE_DIRS} ${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${ROBOTICSLAB_KINEMATICS_DYNAMICS_INCLUDE_DIRS})
 
 if( Boost_INCLUDE_DIRS )
   include_directories(${Boost_INCLUDE_DIRS})

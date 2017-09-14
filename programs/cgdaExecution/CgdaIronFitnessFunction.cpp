@@ -46,7 +46,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         observationData.clear();
 
         //POSITION
-        //yarp::os::Time::delay(DEFAULT_DELAY_S);
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
         //yarp::os::Bottle cmd,res;
         //cmd.addString("stat");
 
@@ -54,15 +54,17 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         cmd.addString("whereis");
         cmd.addString("tcp");
         cmd.addString("rightArm");*/
-        //pRpcClientCart->write(cmd,res);
-        yarp::os::Bottle* res = pRpcClientCart->read(true);
+        //pRpcClientCart->write(cmd,res);/usr/local/share/teo/contexts/kinematics/rightArmKinematics.ini
+        /*yarp::os::Bottle* res = pRpcClientCart->read(true);
         printf("Got: %s\n",res->toString().c_str());
 
         for(size_t i=0; i<res->size(); i++)
         {
             observationData.push_back( res->get(i).asDouble() );
             //std(observationData[i]);
-        }
+        }*/
+        int stat;
+        while( ! pRpcClientCart->stat(stat,observationData) );
 
         //FORCE
         yarp::os::Bottle* b = pForcePort->read(false);
@@ -222,7 +224,7 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
         observationData.clear();
 
         //POSITION
-        //yarp::os::Time::delay(DEFAULT_DELAY_S);
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
         //yarp::os::Bottle cmd,res;
         //cmd.addString("stat");
 
@@ -230,15 +232,17 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
         cmd.addString("whereis");
         cmd.addString("tcp");
         cmd.addString("rightArm");*/
-        //pRpcClientCart->write(cmd,res);
-        yarp::os::Bottle* res = pRpcClientCart->read(true);
+        //pRpcClientCart->write(cmd,res);/usr/local/share/teo/contexts/kinematics/rightArmKinematics.ini
+        /*yarp::os::Bottle* res = pRpcClientCart->read(true);
         printf("Got: %s\n",res->toString().c_str());
 
         for(size_t i=0; i<res->size(); i++)
         {
             observationData.push_back( res->get(i).asDouble() );
             //std(observationData[i]);
-        }
+        }*/
+        int stat;
+        while( ! pRpcClientCart->stat(stat,observationData) );
 
         //FORCE
         yarp::os::Bottle* b = pForcePort->read(false);
