@@ -95,7 +95,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         observationClean.push_back(observationData[0]); //X
         observationClean.push_back(observationData[1]); //Y
         observationClean.push_back(observationData[2]); //Z
-        observationClean.push_back(observationData[7]); //Fz
+        observationClean.push_back(observationData[6]); //Fz
 
         //********************************FITNESS CALCULATION STEP******************************************************//
 
@@ -273,7 +273,7 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
         observationClean.push_back(observationData[0]); //X
         observationClean.push_back(observationData[1]); //Y
         observationClean.push_back(observationData[2]); //Z
-        observationClean.push_back(observationData[7]); //Fz
+        observationClean.push_back(observationData[3]); //Fz
         std::cout<<" In the iteration "<<t<<" the trajectory obtained was "<<observationClean<<std::endl;
 
         //********************************FITNESS CALCULATION STEP******************************************************//
@@ -330,7 +330,7 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
         //mentalPositionControl->positionMove(dEncRaw2.data());
 
 
-        //********************************MEMORY UPDATE STEP *******************************************************************//
+        //********************************Trajectory *******************************************************************//
 
         std::ofstream myfile1;
         myfile1.open("Trajectory.txt", std::ios_base::app);
@@ -349,8 +349,8 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
                 //Pstd::cout<< psqFeatures->operator [](i);
                 //Pstd::cout<< " ";
             }
-            std::cout<<std::endl;
             myfile1<<fit<<" ";
+            myfile1<<std::endl;
         }
         myfile1.close();
 

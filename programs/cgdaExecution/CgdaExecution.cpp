@@ -178,7 +178,6 @@ bool CgdaExecution::init() {
 
     // final result
     vector< double > results;
-    std::vector<double> percentage;
     double evaluations=0;
     double total_time=0;
     bestInd = state->getHoF()->getBest();
@@ -219,9 +218,9 @@ bool CgdaExecution::init() {
         myfile1<<"0: ";
         myfile1<<evaluations<<" ";
         myfile1<<bestInd[0]->fitness->getValue()<<" ";
-        for(int i=0; i<NTPOINTS;i++){
-            myfile1<<percentage[i]<<" ";
-        }
+//        for(int i=0; i<NTPOINTS;i++){
+//            myfile1<<percentage[i]<<" ";
+//        }
         myfile1<<total_time<<" ";
         myfile1<<ev_time<<std::endl;
     }

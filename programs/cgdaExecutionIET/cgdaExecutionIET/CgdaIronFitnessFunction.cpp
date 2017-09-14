@@ -332,7 +332,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         //mentalPositionControl->positionMove(dEncRaw2.data());
 
 
-        //********************************MEMORY UPDATE STEP *******************************************************************//
+        //********************************Trajectory Save *******************************************************************//
 
         std::ofstream myfile1;
         myfile1.open("Trajectory.txt", std::ios_base::app);
@@ -351,8 +351,8 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
                 //Pstd::cout<< psqFeatures->operator [](i);
                 //Pstd::cout<< " ";
             }
-            std::cout<<std::endl;
             myfile1<<fit<<" ";
+            myfile1<<std::endl;
         }
         myfile1.close();
 
