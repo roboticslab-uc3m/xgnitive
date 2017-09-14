@@ -22,10 +22,12 @@ SAVE_PATH="results/rightArm"
 
 ######################## CONFIG PARAMS ###################
 
-T=3
+#T=7
+T=3 #Iron
 TIME_COLUMN=1 #Specify the column where the timestamp is saved in the dataset.
 #NOTE: YOU HAVE TO CHANGE THE DEFINITION OF RBF TOO TO ADJUST TO THE NUMBER OF FEATURES
-FEATURES=[2,3,4,5,6,7,8] #Specify the columns (feature) used for generalization.
+#FEATURES=[2,3,4,5,6,7,8] #Specify the columns (feature) used for generalization.
+FEATURES=[2,3,4]
 #FEATURES= slice(2,None)
 
 ##########################################################
@@ -105,29 +107,35 @@ def main():
             centers[i][j]=centers[i][j]/npoints
 
     #print centers
-    ############################### SAVE #############################################
-    
-    #fh = open(SAVE_PATH+"-centers.txt", 'w')
-    np.savetxt(SAVE_PATH+"-centers.txt", centers,"%f");
 
 
     ############################### PLOT + RBF #######################################
 
     #print np.linspace(0,1,timeIntervals)
     #print centers[:][:,0]
+    #f=open(SAVE_PATH+"-points.txt",'ab')
+    fi=[]
 
     for i in range(demons[0].shape[1]):  # features
         interpolatedFunction = Rbf(np.linspace(0,1,timeIntervals),centers[:][:,i])
-        fi=interpolatedFunction(np.linspace(0,1,1000))
+        fi.append(interpolatedFunction(np.linspace(0,1,1000)))
         plt.figure()
         plt.plot(np.linspace(0,1,timeIntervals),centers[:][:,i],'ro')
-        plt.plot(np.linspace(0,1,1000), fi)
+        plt.plot(np.linspace(0,1,1000), fi[i])
+        
 
         for j in range(len(demoNames)): #demons
             plt.plot(temp_demons[j],demons[j][:,i])
 
     plt.show()
     #plt.savefig('foo.png')
+
+    ############################### SAVE #############################################
+    
+    #fh = open(SAVE_PATH+"-centers.txt", 'w')
+    np.savetxt(SAVE_PATH+"-centers.txt", centers,"%f");
+    np.savetxt(SAVE_PATH+"-points.txt",np.c_[fi[0]],"%f"); #Hardcoded to choose the columns you want to save from fi. this is now as good as it could be.
+
 
 
 
