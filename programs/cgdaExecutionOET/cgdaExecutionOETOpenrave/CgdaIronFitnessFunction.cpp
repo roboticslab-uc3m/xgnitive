@@ -393,7 +393,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 //    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationClean[2]<<std::endl;
 //    std::cout<<" TARGET Fz "<< target[timeStep+1][3]<<" OBERVACIÓN "<<observationClean[7]<<std::endl;
 
-//    std::cout<<" FITNESS "<<fit<<std::endl;
+    std::cout<<" FITNESS "<<fit<<std::endl;
 
 
     //********************************MEMORY UPDATE STEP *******************************************************************//
