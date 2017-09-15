@@ -13,19 +13,21 @@ from mpl_toolkits.mplot3d import Axes3D
 
 ######################## TO READ FILES ###################
 EXPERIMENT_FOLDER = "/icra2018"
-ACTION_FOLDER= "/iron"
-FEATURE_FOLDER= "/teo/rightArm" #for icra2018 there are 4 possible folders: "/jr3", "/paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
+ACTION_FOLDER= "/paint"
+FEATURE_FOLDER= "/paintSquaresOnScreen" #for icra2018 there are 4 possible folders: "/jr3", "/paintSquaresOnScreen", "/teo/leftArm" and "/teo/rightArm".
 
 PATH ="../../demonstration-feature-selection/datasets/raw"+ EXPERIMENT_FOLDER + ACTION_FOLDER + FEATURE_FOLDER +"/*.csv"
 #print (PATH)
-SAVE_PATH="results/rightArm"
+SAVE_PATH="results/percentage-painted"
 
 ######################## CONFIG PARAMS ###################
 
-T=3
+T=10 #For paint
+#T=3 #For Iron
 TIME_COLUMN=1 #Specify the column where the timestamp is saved in the dataset.
 #NOTE: YOU HAVE TO CHANGE THE DEFINITION OF RBF TOO TO ADJUST TO THE NUMBER OF FEATURES
-FEATURES=[2,3,4,5,6,7,8] #Specify the columns (feature) used for generalization.
+#FEATURES=[2,3,4,5,6,7,8] #Specify the columns (feature) used for generalization.
+FEATURES=[2]
 #FEATURES= slice(2,None)
 
 ##########################################################
