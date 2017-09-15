@@ -31,7 +31,7 @@
 		<FloatingPoint>
 			<Entry key="lbound">-15</Entry>
 			<Entry key="ubound">100</Entry>
-			<Entry key="dimension">48</Entry>
+			<Entry key="dimension">27</Entry>
 		</FloatingPoint>
 	</Genotype>
 	<Registry>
