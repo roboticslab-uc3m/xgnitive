@@ -162,7 +162,7 @@ bool CgdaExecution::init() {
 
     // final result
     vector< double > results;
-    std::vector<double> percentage;
+    //std::vector<double> percentage;
     double evaluations=0;
     double total_time=0;
     bestInd = state->getHoF()->getBest();
@@ -186,12 +186,16 @@ bool CgdaExecution::init() {
     timespec tsEnd;
     clock_gettime(CLOCK_REALTIME, &tsEnd);
     total_time=(tsEnd.tv_sec-tsStart.tv_sec);
-    std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
 
     //*******************************************************************************************//
     //                              FILE OUTPUT FOR DEBUGGING                                    //
     //*******************************************************************************************//
     evaluations=state->getEvaluations();
+
+    total_time=total_time-(0.1*evaluations);
+    ev_time=ev_time-(0.1*evaluations);
+
+    std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
 
     std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
 
@@ -201,9 +205,9 @@ bool CgdaExecution::init() {
         myfile1<<"0: ";
         myfile1<<evaluations<<" ";
         myfile1<<bestInd[0]->fitness->getValue()<<" ";
-        for(int i=0; i<NTPOINTS;i++){
-            myfile1<<percentage[i]<<" ";
-        }
+//        for(int i=0; i<NTPOINTS;i++){
+//            myfile1<<percentage[i]<<" ";
+//        }
         myfile1<<total_time<<" ";
         myfile1<<ev_time<<std::endl;
     }

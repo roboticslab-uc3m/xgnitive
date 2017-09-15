@@ -13,7 +13,7 @@ features1=[4] #column features to use from trajectory1
 
 #features1=[] #column features to use from trajectory1
 
-d1="data/Trajectory-IET-Iron.txt" #Trajectory 1 file name
+d1="data/trajectory-IET.txt" #Trajectory 1 file name
 
 #d2="data/Data2.txt" #Trajectory 2 file name
 
