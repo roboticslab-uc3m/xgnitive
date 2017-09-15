@@ -132,7 +132,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     vector< double > results;
 
-    timespec tsEvStart; //Start second timer
+    timespec tsEvStart; //Start second timer (first in this code file)
     clock_gettime(CLOCK_REALTIME, &tsEvStart);
 
     StateP state (new State);
@@ -209,6 +209,9 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     functionMinEvalOp->individualExecution(results);
 
+    double evaluations;
+    evaluations=state->getEvaluations();
+
     double ev_time_n;
     double ev_time_s;
     timespec tsEvEnd;
@@ -216,6 +219,9 @@ int CgdaExecutionOET::init(int argc, char **argv)
     ev_time_n=(tsEvEnd.tv_nsec-tsEvStart.tv_nsec);
     ev_time_n=ev_time_n/1000000000; //nano seconds to seconds
     ev_time_s=(tsEvEnd.tv_sec-tsEvStart.tv_sec);
+
+    ev_time_n=ev_time_n-(0.1*evaluations);
+    ev_time_s=ev_time_s-(0.1*evaluations);
 
 //       printf("-begin-\n");
 //       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);
@@ -226,8 +232,6 @@ int CgdaExecutionOET::init(int argc, char **argv)
     //*******************************************************************************************//
     //                              FILE OUTPUT FOR DEBUGGING                                    //
     //*******************************************************************************************//
-    double evaluations;
-    evaluations=state->getEvaluations();
 
     std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
 
@@ -236,7 +240,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     if (myfile1.is_open()){
         myfile1<<evaluations<<" ";
         myfile1<<bestInds[0]->fitness->getValue()<<" ";
-        if(ev_time_s==0){
+        if(ev_time_s<=0){
             myfile1<<ev_time_n<<" ";
         }
         else{

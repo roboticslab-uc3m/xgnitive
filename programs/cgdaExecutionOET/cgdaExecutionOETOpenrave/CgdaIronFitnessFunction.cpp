@@ -439,11 +439,11 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         }
         std::cout<<std::endl;
     }
-    myfile1<<fit<< " ";
+    //myfile1<<fit<< " ";
     myfile2<<fit<<" ";
     myfile1.close();
 
-    myfile2<<"\n";
+    //myfile2<<"\n";
     myfile2.close();
 
     //********************************RESET STEP*******************************************************************//

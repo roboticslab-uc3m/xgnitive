@@ -37,10 +37,10 @@ import time
 Gen=0
 #fout= open('percentageOET.txt', 'a')
 
-fout2= open('DataOET++.txt', 'a')
-fout2.write("\n")
-fout2.write("I: ")
-fout2.close()
+#fout2= open('DataOET++.txt', 'a')
+#fout2.write("\n")
+#fout2.write("I: ")
+#fout2.close()
 
 while 1:
     f = open('memoryOET.txt', 'r')
@@ -68,13 +68,14 @@ while 1:
     #fout.write(percentage)
     #fout.write(" ")
     fout2= open('DataOET++.txt', 'a')
-    fout2.write("\n")
-    fout2.write("I: ")
+    #fout2.write("\n")
+    #fout2.write("I: ")
     for i in range(len(data_array)):
-        fout2.write(" ")
         fout2.write(data_array[i])
+        fout2.write(" ")
+
     #,data_array[1], data_array[2],data_array[3],data_array[4],data_array[5])
-    if data_array[0]==8:
+    if data_array[0]=='8':
         fout2.close()
         break
     
@@ -86,7 +87,7 @@ while 1:
 
     #args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", "1","0", "0","0","0","0", "1","1","0","0","0","0","0","0","0","0" )
 
-    #start_time = time.time()
+    start_time = time.time()
 
     #args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5])
     args = ("./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml",data_array[0],data_array[1], data_array[2],data_array[3])
@@ -100,10 +101,10 @@ while 1:
     ###print out
 
     #Output time
-    #elapsed_time=time.time() - start_time
-    #elapsed_time=str(elapsed_time)
-    #fout.write(elapsed_time)
-    #fout.write("\n")
+    elapsed_time=time.time() - start_time
+    elapsed_time=str(elapsed_time)
+    fout2.write(elapsed_time)
+    fout2.write("\n")
 
     print"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     Gen=Gen+1;
