@@ -35,17 +35,31 @@ def main():
     
     #TODO implement this to be automatic
 
-    ############################### PLOT #######################################
+    ############################### PLOT 3D ###########################################
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+ 
+    ax.plot(Traj1[:][:,0],Traj1[:][:,1],Traj1[:][:,2])
+    ax.plot(Traj2[:][:,1],Traj2[:][:,2],Traj2[:][:,3])
+    ax.plot(Traj3[:][:,0],Traj3[:][:,1],Traj3[:][:,2])
+    ax.plot(Traj4[:][:,0],Traj4[:][:,1],Traj4[:][:,2])
 
-    for i in range(4):  # features
-        plt.figure()
-	plt.xlabel('Force (N)')
-	plt.ylabel('Time Interval')
-        plt.plot(np.linspace(0,9,Traj1.shape[0]),Traj1[:][:,i])
-        #plt.plot(Traj2[:][:,0]*1/8,Traj2[:][:,i+1])
-	plt.plot(Traj2[:][:,0],Traj2[:][:,i+1])
-	plt.plot(np.linspace(0,9,9),Traj3[:][:,i])
-        plt.plot(np.linspace(0,9,9),Traj4[:][:,i])
+
+    ############################### PLOT ALL 2D #######################################
+
+	
+
+    ############################### PLOT ALL 2D #######################################
+
+    #for i in range(4):  # features
+#        plt.figure()
+#	plt.xlabel('Force (N)') #Features
+#	plt.ylabel('Time Interval')
+#        plt.plot(np.linspace(0,9,Traj1.shape[0]),Traj1[:][:,i])
+#        #plt.plot(Traj2[:][:,0]*1/8,Traj2[:][:,i+1])
+#	plt.plot(Traj2[:][:,0],Traj2[:][:,i+1])
+#	plt.plot(np.linspace(0,9,9),Traj3[:][:,i])
+#        plt.plot(np.linspace(0,9,9),Traj4[:][:,i])
    
 
 
