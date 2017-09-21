@@ -3,10 +3,6 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
-#include "CgdaIronFitnessFunction.hpp"
-//#include "CgdaPaintFitnessFunction.hpp"
-
-
 //#include "AlgPSOInheritance.hpp"
 //#include "AlgPSOFuzzy.hpp"
 
@@ -17,6 +13,10 @@
 
 
 #define DEFAULT_FILE_NAME "evMono_ecf_params.xml"
+
+//#include "CgdaIronFitnessFunction.hpp"
+
+#include "CgdaPaintFitnessFunction.hpp"
 
 namespace teo
 {

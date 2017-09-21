@@ -15,24 +15,25 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     //The Generalized feature trajectory (TEST example is):
     std::vector < std::vector < double > > generalized;
+
     //The first dimension is the feature trajectory the second is the number of features
-//    generalized.push_back({0});
-//    generalized.push_back({6.25});
-//    generalized.push_back({12.5});
-//    generalized.push_back({18.75});
-//    generalized.push_back({25});
-//    generalized.push_back({31.25});
-//    generalized.push_back({37.5});
-//    generalized.push_back({43.75});
-//    generalized.push_back({50});
-//    generalized.push_back({56.25});
-//    generalized.push_back({62.5});
-//    generalized.push_back({68.75});
-//    generalized.push_back({75});
-//    generalized.push_back({81.25});
-//    generalized.push_back({87.5});
-//    generalized.push_back({93.75});
-//    generalized.push_back({100});
+    generalized.push_back({0});
+    generalized.push_back({6.25});
+    generalized.push_back({12.5});
+    generalized.push_back({18.75});
+    generalized.push_back({25});
+    generalized.push_back({31.25});
+    generalized.push_back({37.5});
+    generalized.push_back({43.75});
+    generalized.push_back({50});
+    generalized.push_back({56.25});
+    generalized.push_back({62.5});
+    generalized.push_back({68.75});
+    generalized.push_back({75});
+    generalized.push_back({81.25});
+    generalized.push_back({87.5});
+    generalized.push_back({93.75});
+    generalized.push_back({100});
 
     //Clean Screen
     yarp::os::Bottle cmd3,res3;
