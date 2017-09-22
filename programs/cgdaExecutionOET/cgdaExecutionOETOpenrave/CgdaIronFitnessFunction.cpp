@@ -180,11 +180,11 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     std::vector<double> memory;
     memory.clear();
 
-    //READ FROM PsqFeatures the last NFEATURES points wich is the actual state of the environment
-    for(int i=0;i<psqFeatures->size();i++)
+    //READ FROM sqFeatures the last NFEATURES points wich is the actual state of the environment
+    for(int i=0;i<sqFeatures->size();i++)
     {
-        memory.push_back(psqFeatures->operator [](i));
-        //std::cout<<psqFeatures->operator [](i)<<std::endl;
+        memory.push_back(sqFeatures->operator [](i));
+        //std::cout<<sqFeatures->operator [](i)<<std::endl;
 
     }
 
@@ -306,11 +306,11 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     std::vector<double> memory;
 
-    //READ FROM PsqFeatures the last NFEATURES points wich is the actual state of the environment
-    for(int i=0;i<psqFeatures->size();i++)
+    //READ FROM sqFeatures the last NFEATURES points wich is the actual state of the environment
+    for(int i=0;i<sqFeatures->size();i++)
     {
-        memory.push_back(psqFeatures->operator [](i));
-        //std::cout<<"LA FEATURE "<<i<<" IN THE LAST STEP VALUES" <<psqFeatures->operator [](i)<<std::endl;
+        memory.push_back(sqFeatures->operator [](i));
+        //std::cout<<"LA FEATURE "<<i<<" IN THE LAST STEP VALUES" <<sqFeatures->operator [](i)<<std::endl;
     }
 
 
@@ -430,11 +430,11 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
             myfile1<<observationClean[i]<< " ";
             myfile2<<observationClean[i]<< " ";
             //myfile1<<"1 ";
-            //myfile1<< psqFeatures->operator[](i) << " ";
-            //P myfile1<< psqFeatures->operator [](i);
+            //myfile1<< sqFeatures->operator[](i) << " ";
+            //P myfile1<< sqFeatures->operator [](i);
             //Pmyfile1<< " ";
-            //std::cout<<psqFeatures->operator[](i) << " ";
-            //Pstd::cout<< psqFeatures->operator [](i);
+            //std::cout<<sqFeatures->operator[](i) << " ";
+            //Pstd::cout<< sqFeatures->operator [](i);
             //Pstd::cout<< " ";
         }
         std::cout<<std::endl;
