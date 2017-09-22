@@ -164,7 +164,8 @@ bool CgdaExecution::init() {
 
     // final result
     vector< double > results;
-    //std::vector<double> percentage;
+    //Uncomment for paint
+    std::vector<double> percentage;
     double evaluations=0;
     double total_time=0;
     bestInd = state->getHoF()->getBest();
@@ -177,7 +178,11 @@ bool CgdaExecution::init() {
     }
 
     //Execute best trajectory to get % of the wall painted
-    functionMinEvalOp->trajectoryExecution(results);
+
+    //Uncomment for iron
+    //functionMinEvalOp->trajectoryExecution(results);
+    //uncomment for paint
+    percentage=functionMinEvalOp->trajectoryExecution(results);
 
 //    printf("-begin-\n");
 //    for(unsigned int i=0;i<bestPoints.size();i++)
@@ -207,9 +212,17 @@ bool CgdaExecution::init() {
         myfile1<<"0: ";
         myfile1<<evaluations<<" ";
         myfile1<<bestInd[0]->fitness->getValue()<<" ";
-//        for(int i=0; i<NTPOINTS;i++){
-//            myfile1<<percentage[i]<<" ";
-//        }
+
+        //uncomment for paint
+        for(int i=0; i<NTPOINTS;i++){
+            myfile1<<percentage[i]<<" ";
+        }
+
+        for(int i=0; i<NSQUARES; i++){
+            myfile1<<results[i*3+0]<<" ";
+            myfile1<<results[i*3+1]<<" ";
+            myfile1<<results[i*3+2]<<" ";
+        }
         myfile1<<total_time<<" ";
         myfile1<<ev_time<<std::endl;
     }

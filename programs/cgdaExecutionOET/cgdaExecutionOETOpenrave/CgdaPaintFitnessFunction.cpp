@@ -193,6 +193,25 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
     }
     myfile1.close();
 
+    std::ofstream myfile2;
+    myfile2.open("trajectoryOET.txt", std::ios_base::app);
+    if (myfile2.is_open()){
+        for(int i=0;i<res.size();i++)
+        {
+            myfile2<< results[0];
+            myfile2<< " ";
+            myfile2<< results[0];
+            myfile2<< " ";
+            myfile2<< results[0];
+            myfile2<<"\n";
+        }
+        std::cout<<std::endl;
+        //myfile1<<bestInd[0]->fitness->getValue()<<std::endl; //Fitness
+    }
+    myfile1.close();
+
+
+
     //-- Move the mental robot to 0 so env can be reset
     std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS
     mentalPositionControl->positionMove(dEncRaw2.data());
