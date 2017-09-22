@@ -21,7 +21,7 @@
 
 #define NTPOINTS 17
 #define NSQUARES 16
-#define DEFAULT_DELAY_S 0.010
+#define DEFAULT_DELAY_S 0.10
 
 namespace teo
 {
@@ -46,7 +46,7 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
 	void registerParameters(StateP);
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
-    std::vector<double> trajectoryExecution(vector<double> result_trajectory); //TE
+    std::vector<double> individualExecution(vector<double> result_trajectory); //TE
     vector<double>* pFresults;
     unsigned int* pIter;
 

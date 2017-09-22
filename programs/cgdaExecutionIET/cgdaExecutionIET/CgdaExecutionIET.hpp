@@ -6,11 +6,11 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
-//#include "CgdaPaintFitnessFunction.hpp"
+#include "CgdaPaintFitnessFunction.hpp"
 //#include "CgdaWaxFitnessFunction.hpp"
 //#include "CgdaConstrainedPaintFitnessFunction.hpp"
 //#include "CgdaConstrainedWaxFitnessFunction.hpp"
-#include "CgdaIronFitnessFunction.hpp"
+//#include "CgdaIronFitnessFunction.hpp"
 
 
 //#include "AlgPSOInheritance.hpp"
