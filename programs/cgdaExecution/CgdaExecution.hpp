@@ -3,8 +3,6 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
-#include "CgdaFitnessFunction.hpp"
-
 //#include "AlgPSOInheritance.hpp"
 //#include "AlgPSOFuzzy.hpp"
 
@@ -16,13 +14,17 @@
 
 #define DEFAULT_FILE_NAME "evMono_ecf_params.xml"
 
+//#include "CgdaIronFitnessFunction.hpp"
+
+#include "CgdaPaintFitnessFunction.hpp"
+
 namespace teo
 {
 
 class CgdaExecution  {
   public:
     bool init();
-
+  private:
     // YARP
     yarp::os::Network yarp;
     yarp::os::Port port;
@@ -30,6 +32,9 @@ class CgdaExecution  {
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
     yarp::os::RpcClient rpcClient;
+    yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
+    yarp::os::RpcClient rpcClientWorld;
+    yarp::os::RpcClient rpcClientCart;
 
 };
 

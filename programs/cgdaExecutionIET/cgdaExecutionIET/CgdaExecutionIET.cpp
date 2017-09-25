@@ -14,29 +14,30 @@ bool CgdaExecutionIET::init() {
     timespec tsStart; //Start first timer
     clock_gettime(CLOCK_REALTIME, &tsStart);
 
-    portNum = -1;
-    bool open = false;
-    while( ! open )
-    {
-        portNum++;
-        std::string s("/good");
-        std::stringstream ss;
-        ss << portNum;
-        s.append(ss.str());
-        open = port.open(s);
-    }
-    std::stringstream ss;
-    ss << portNum;
+//    portNum = -1;
+//    bool open = false;
+//    while( ! open )
+//    {
+//        portNum++;
+//        std::string s("/good");
+//        std::stringstream ss;
+//        ss << portNum;
+//        s.append(ss.str());
+//        open = port.open(s);
+//    }
+//    std::stringstream ss;
+//    ss << portNum;
 
     //-- MENTAL ROBOT ARM
     yarp::os::Property mentalOptions;
     mentalOptions.put("device","remote_controlboard");
-    std::string remoteMental("/");
-    remoteMental.append( ss.str() );
-    remoteMental.append( "/teoSim/rightArm" );
+    //std::string remoteMental("/");
+    //remoteMental.append( ss.str() );
+    //remoteMental.append( "/teoSim/rightArm" );
+    std::string remoteMental( "/teoSim/rightArm" );
     mentalOptions.put("remote",remoteMental);
-    std::string localMental("/cgdaMental/");
-    localMental.append( ss.str() );
+    std::string localMental("/cgdaMental");
+    //localMental.append( ss.str() );
     localMental.append( "/teoSim/rightArm" );
     mentalOptions.put("local",localMental);
     mentalDevice.open(mentalOptions);
@@ -75,12 +76,13 @@ bool CgdaExecutionIET::init() {
 //    }
 //    CD_SUCCESS("Real robot device available.\n");
 
-    //-- Paint server
-    std::string remotePaint("/");
-    remotePaint.append( ss.str() );
-    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
-    std::string localPaint("/cgda/");
-    localPaint.append( ss.str() );
+    //-- Paint server (uncomment for Paint)
+//    std::string remotePaint("/");
+//    remotePaint.append( ss.str() );
+//    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+    std::string remotePaint( "/openraveYarpPaintSquares/rpc:s" );
+    std::string localPaint("/cgda");
+    //localPaint.append( ss.str() );
     localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
     rpcClient.open(localPaint);
     do {
@@ -88,9 +90,36 @@ bool CgdaExecutionIET::init() {
         printf("Wait to connect to paint server...\n");
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( rpcClient.getOutputCount() == 0 );
+
+
     CD_SUCCESS("Paint server available.\n");
 
     CD_SUCCESS("----- All good for %d.\n",portNum);
+
+
+    //Uncomment iron
+//    //force connect
+//    forcePort.open("/force:i");
+//    do {
+//        yarp::os::Network::connect("/forceEstimator:o","/force:i");
+//        printf("Wait to connect to forces...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( forcePort.getInputCount() == 0 );
+
+//    rpcClientWorld.open("/world:c");
+//    do {
+//        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
+//        printf("Wait to connect to world...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClientWorld.getOutputCount() == 0 );
+
+//    rpcClientCart.open("/cart:c");
+//    do {
+//        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
+//        printf("Wait to connect to world...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClientCart.getOutputCount() == 0 );
+
 
     vector< double > results;
     vector< double >* presults= &results;
@@ -121,6 +150,7 @@ bool CgdaExecutionIET::init() {
         //           state->addAlgorithm(nalg3);
 
         // set the evaluation operator
+        //CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
         CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
         //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
         //Constrained Cost functions
@@ -134,6 +164,11 @@ bool CgdaExecutionIET::init() {
         functionMinEvalOp->setResults(presults);
         //Uncomment only for CgdaConstrained
         state->setEvalOp(functionMinEvalOp);
+
+        //Uncomment iron
+        //functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
+        //functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
+        //functionMinEvalOp->setPForcePort(&forcePort);
 
         unsigned int* pIter= &i;
         functionMinEvalOp->setIter(pIter);
@@ -179,9 +214,14 @@ bool CgdaExecutionIET::init() {
     }
 
 
-    std::vector<double> percentage;
+//    std::vector<double> percentage;
     CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
-    percentage=functionMinEvalOp->trajectoryExecution(results);
+
+    //Execute final trajectory
+    //CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
+    functionMinEvalOp->individualExecution(results);
+
+
 
     //Total time
     double total_time=0;
@@ -201,10 +241,10 @@ bool CgdaExecutionIET::init() {
     if (myfile1.is_open()){
         myfile1<<"0: ";
         myfile1<<evaluations<<" ";
-        myfile1<<fit<<" "; //Take only the fit of the last gen.
-        for(int i=0; i<NTPOINTS;i++){
-            myfile1<<percentage[i]<<" ";
-        }
+//        myfile1<<fit<<" "; //Take only the fit of the last gen.
+//        for(int i=0; i<NTPOINTS;i++){
+//            myfile1<<percentage[i]<<" ";
+//        }
         for(int i=0; i<NTPOINTS;i++){
             if(ev_time_s[i]==0){
                 myfile1<<ev_time_n[i]<<" ";

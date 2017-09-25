@@ -199,7 +199,7 @@ FitnessP CgdaPaintFitnessFunction::evaluate(IndividualP individual) {
 
 /************************************************************************/
 
-std::vector<double> CgdaPaintFitnessFunction::trajectoryExecution(vector<double> result_trajectory){
+std::vector<double> CgdaPaintFitnessFunction::individualExecution(vector<double> result_trajectory){
     //std::cout<<"I have entered Execution"<<std::endl;
 
     int sqPainted [NSQUARES] = { }; //setting number of changed square as cero

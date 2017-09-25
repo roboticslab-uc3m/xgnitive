@@ -31,7 +31,7 @@
 		<FloatingPoint>
 			<Entry key="lbound">-15</Entry>
 			<Entry key="ubound">100</Entry>
-			<Entry key="dimension">48</Entry>
+			<Entry key="dimension">27</Entry>
 		</FloatingPoint>
 	</Genotype>
 	<Registry>
@@ -42,7 +42,7 @@
 		<!--<Entry key="term.eval">20</Entry>-->
 		<Entry key="term.fitnessval">0</Entry> -->
 		<Entry key="term.maxgen">300</Entry> <!-- max number of generations (default: none) -->
-		<!--<Entry key="term.stagnation">20</Entry>-->  <!--gens w/o improvement. def 30 -->
+		<Entry key="term.stagnation">75</Entry>  <!--gens w/o improvement. def 30 -->
 		<!-- Batch mode -->
 		<!--<Entry key="batch.repeats">1</Entry>--> <!-- number of independent runs to perform (default: 1) -->
 		<!-- Parallel Execution-->

@@ -57,14 +57,14 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     pRpcClient->write(cmd3,res3);
 
     double percentage;
-    int timeStep;
+    int timeStep=0;
     double Npaint=0;
 
-    //printf("sqPainted check %d \n", psqPainted->operator [](0));
+    //printf("sqFeatures check %d \n", psqFeatures->operator [](0));
 
-    for(int i=0;i<psqPainted->size();i++)
+    for(int i=0;i<psqFeatures->size();i++)
     {
-        Npaint += psqPainted->operator [](i);
+        Npaint += psqFeatures->operator [](i);
     }
 
     //Percentage of the wall painted before evolution
@@ -113,7 +113,7 @@ double CgdaPaintFitnessFunction::getCustomFitness(vector <double> genPoints){
     pRpcClient->write(cmd2,res2);
     for(int i=0;i<res2.size();i++)
     {
-        if ( res2.get(i).asInt() || psqPainted->operator [](i) )  // logic OR;
+        if ( res2.get(i).asInt() || psqFeatures->operator [](i) )  // logic OR;
             Npaint ++;
     }
 
@@ -168,10 +168,10 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
     for(int i=0;i<res.size();i++)
     {
         //std::cout << "past: ";
-        //std::cout << psqPainted->operator [](i);
+        //std::cout << psqFeatures->operator [](i);
         //std::cout << " present: ";
-        psqPainted->operator [](i) |= res.get(i).asInt();  // logic OR
-        //std::cout << psqPainted->operator [](i);
+        psqFeatures->operator [](i) |= res.get(i).asInt();  // logic OR
+        //std::cout << psqFeatures->operator [](i);
         //std::cout << std::endl;
     }
 
@@ -181,17 +181,36 @@ void CgdaPaintFitnessFunction::individualExecution(vector<double> results){
         for(int i=0;i<res.size();i++)
         {
             //myfile1<<"1 ";
-            //myfile1<< psqPainted->operator[](i) << " ";
-            myfile1<< psqPainted->operator [](i);
+            //myfile1<< psqFeatures->operator[](i) << " ";
+            myfile1<< psqFeatures->operator [](i);
             myfile1<< " ";
-            //std::cout<<psqPainted->operator[](i) << " ";
-            std::cout<< psqPainted->operator [](i);
+            //std::cout<<psqFeatures->operator[](i) << " ";
+            std::cout<< psqFeatures->operator [](i);
             std::cout<< " ";
         }
         std::cout<<std::endl;
         //myfile1<<bestInd[0]->fitness->getValue()<<std::endl; //Fitness
     }
     myfile1.close();
+
+    std::ofstream myfile2;
+    myfile2.open("trajectoryOET.txt", std::ios_base::app);
+    if (myfile2.is_open()){
+        for(int i=0;i<res.size();i++)
+        {
+            myfile2<< results[0];
+            myfile2<< " ";
+            myfile2<< results[0];
+            myfile2<< " ";
+            myfile2<< results[0];
+            myfile2<<"\n";
+        }
+        std::cout<<std::endl;
+        //myfile1<<bestInd[0]->fitness->getValue()<<std::endl; //Fitness
+    }
+    myfile1.close();
+
+
 
     //-- Move the mental robot to 0 so env can be reset
     std::vector<double> dEncRaw2(6,0);  // NUM_MOTORS

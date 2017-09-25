@@ -12,29 +12,41 @@ bool CgdaExecution::init() {
     timespec tsStart; //Start first timer
     clock_gettime(CLOCK_REALTIME, &tsStart);
 
-    portNum = -1;
-    bool open = false;
-    while( ! open )
-    {
-        portNum++;
-        std::string s("/good");
-        std::stringstream ss;
-        ss << portNum;
-        s.append(ss.str());
-        open = port.open(s);
-    }
-    std::stringstream ss;
-    ss << portNum;
+    //Uncomment for iron
+//    forcePort.open("/force:i");
+//    do {
+//        yarp::os::Network::connect("/forceEstimator:o","/force:i");
+//        printf("Wait to connect to forces...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( forcePort.getInputCount() == 0 );
+
+//    rpcClientWorld.open("/world:c");
+//    do {
+//        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
+//        printf("Wait to connect to world...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClientWorld.getOutputCount() == 0 );
+
+//    rpcClientCart.open("/cart:c");
+//    do {
+//        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
+//        printf("Wait to connect to world...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClientCart.getOutputCount() == 0 );
+
+    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
     //-- MENTAL ROBOT ARM
     yarp::os::Property mentalOptions;
     mentalOptions.put("device","remote_controlboard");
-    std::string remoteMental("/");
-    remoteMental.append( ss.str() );
-    remoteMental.append( "/teoSim/rightArm" );
+    //std::string remoteMental("/");
+    //remoteMental.append( ss.str() );
+    //remoteMental.append( "/teoSim/rightArm" );
+    std::string remoteMental("/teoSim/rightArm");
     mentalOptions.put("remote",remoteMental);
-    std::string localMental("/cgdaMental/");
-    localMental.append( ss.str() );
+    //std::string localMental("/cgdaMental/");
+    //localMental.append( ss.str() );
+    std::string localMental("/cgdaMental");
     localMental.append( "/teoSim/rightArm" );
     mentalOptions.put("local",localMental);
     mentalDevice.open(mentalOptions);
@@ -73,12 +85,14 @@ bool CgdaExecution::init() {
 //    }
 //    CD_SUCCESS("Real robot device available.\n");
 
-    //-- Paint server
-    std::string remotePaint("/");
-    remotePaint.append( ss.str() );
-    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
-    std::string localPaint("/cgda/");
-    localPaint.append( ss.str() );
+    //-- Paint server (uncomment for paint)
+    //std::string remotePaint("/");
+    //remotePaint.append( ss.str() );
+    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
+    //std::string localPaint("/cgda/");
+    //localPaint.append( ss.str() );
+    std::string localPaint("/cgda");
     localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
     rpcClient.open(localPaint);
     do {
@@ -102,10 +116,18 @@ bool CgdaExecution::init() {
 //    state->addAlgorithm(nalg2);
 
     // set the evaluation operator, init CgdaFitnessFunction
-    CgdaFitnessFunction* functionMinEvalOp = new CgdaFitnessFunction; 
+    //CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
+    CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+
 
     mentalDevice.view(functionMinEvalOp->mentalPositionControl);
     functionMinEvalOp->setPRpcClient(&rpcClient);
+
+    //Uncomment for iron
+//    functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
+//    functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
+//    functionMinEvalOp->setPForcePort(&forcePort);
+
 //    functionMinEvalOp->setPRobot(probot);
 //    functionMinEvalOp->setPenv(penv);
 //    functionMinEvalOp->setPcontrol(pcontrol);
@@ -142,19 +164,24 @@ bool CgdaExecution::init() {
 
     // final result
     vector< double > results;
+    //Uncomment for paint
     std::vector<double> percentage;
     double evaluations=0;
     double total_time=0;
     bestInd = state->getHoF()->getBest();
     genBest = (FloatingPoint::FloatingPoint*) bestInd.at(0)->getGenotype().get();
     bestPoints = genBest->realValue;
-    for(int i=0; i<NSQUARES; i++){
+    for(int i=0; i<NTPOINTS; i++){
         results.push_back(bestPoints[i*3+0]);
         results.push_back(bestPoints[i*3+1]);
         results.push_back(bestPoints[i*3+2]);
     }
 
     //Execute best trajectory to get % of the wall painted
+
+    //Uncomment for iron
+    //functionMinEvalOp->trajectoryExecution(results);
+    //uncomment for paint
     percentage=functionMinEvalOp->trajectoryExecution(results);
 
 //    printf("-begin-\n");
@@ -166,12 +193,16 @@ bool CgdaExecution::init() {
     timespec tsEnd;
     clock_gettime(CLOCK_REALTIME, &tsEnd);
     total_time=(tsEnd.tv_sec-tsStart.tv_sec);
-    std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
 
     //*******************************************************************************************//
     //                              FILE OUTPUT FOR DEBUGGING                                    //
     //*******************************************************************************************//
     evaluations=state->getEvaluations();
+
+    total_time=total_time-(0.1*evaluations);
+    ev_time=ev_time-(0.1*evaluations);
+
+    std::cout<<"TOTAL TIME IS:   "<<total_time<<std::endl;
 
     std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
 
@@ -181,8 +212,16 @@ bool CgdaExecution::init() {
         myfile1<<"0: ";
         myfile1<<evaluations<<" ";
         myfile1<<bestInd[0]->fitness->getValue()<<" ";
+
+        //uncomment for paint
         for(int i=0; i<NTPOINTS;i++){
             myfile1<<percentage[i]<<" ";
+        }
+
+        for(int i=0; i<NSQUARES; i++){
+            myfile1<<results[i*3+0]<<" ";
+            myfile1<<results[i*3+1]<<" ";
+            myfile1<<results[i*3+2]<<" ";
         }
         myfile1<<total_time<<" ";
         myfile1<<ev_time<<std::endl;

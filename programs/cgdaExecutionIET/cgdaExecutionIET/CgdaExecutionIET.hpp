@@ -10,6 +10,8 @@
 //#include "CgdaWaxFitnessFunction.hpp"
 //#include "CgdaConstrainedPaintFitnessFunction.hpp"
 //#include "CgdaConstrainedWaxFitnessFunction.hpp"
+//#include "CgdaIronFitnessFunction.hpp"
+
 
 //#include "AlgPSOInheritance.hpp"
 //#include "AlgPSOFuzzy.hpp"
@@ -37,6 +39,10 @@ class CgdaExecutionIET  {
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
     yarp::os::RpcClient rpcClient;
+    yarp::os::RpcClient rpcClientWorld;
+    yarp::os::RpcClient rpcClientCart;
+    yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
+
 
 };
 

@@ -13,38 +13,79 @@ namespace teo
 
 int CgdaExecutionOET::init(int argc, char **argv)
 {
-    sqPainted.resize(argc-2);
 
-    for(int i=0;i<argc-2;i++)
-    {
-        stringstream ss(argv[i+2]);
-        ss >> sqPainted[i];
-        //printf("EL valor de sqPainted %d es:::: %d \n", i, sqPainted[i]);
-    }
+    //Uncomment for Iron
+//    sqFeatures.resize(argc-2);
 
-    portNum = -1;
-    bool open = false;
-    while( ! open )
-    {
-        portNum++;
-        std::string s("/good");
-        std::stringstream ss;
-        ss << portNum;
-        s.append(ss.str());
-        open = port.open(s);
-    }
-    std::stringstream ss;
-    ss << portNum;
+//    for(int i=0;i<argc-2;i++)
+//    {
+//        stringstream ss(argv[i+2]);
+//        ss >> sqFeatures[i];
+//        printf("EL valor de sqFeatures %d es:::: %d \n", i, sqFeatures[i]);
+//    }
+
+    //Uncomment for Paint
+        psqFeatures.resize(argc-2);
+
+        for(int i=0;i<argc-2;i++)
+        {
+            stringstream ss(argv[i+2]);
+            ss >> psqFeatures[i];
+            printf("EL valor de sqFeatures %d es:::: %d \n", i, psqFeatures[i]);
+        }
+
+//    portNum = -1;
+//    bool open = false;
+//    while( ! open )
+//    {
+//        portNum++;
+//        std::string s("/good");
+//        std::stringstream ss;
+//        ss << portNum;
+//        s.append(ss.str());
+//        open = port.open(s);
+//    }
+//    std::stringstream ss;
+//    ss << portNum;
+
+    //Uncomment for iron
+
+//    forcePort.open("/force:i");
+//    do {
+//        yarp::os::Network::connect("/forceEstimator:o","/force:i");
+//        printf("Wait to connect to forces...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( forcePort.getInputCount() == 0 );
+
+//    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
+
+//    rpcClientWorld.open("/world:c");
+//    do {
+//        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
+//        printf("Wait to connect to world...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClientWorld.getOutputCount() == 0 );
+
+//    rpcClientCart.open("/cart:c");
+//    do {
+//        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
+//        printf("Wait to connect to world...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClientCart.getOutputCount() == 0 );
+
+    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
     //-- MENTAL ROBOT ARM
     yarp::os::Property mentalOptions;
     mentalOptions.put("device","remote_controlboard");
-    std::string remoteMental("/");
-    remoteMental.append( ss.str() );
-    remoteMental.append( "/teoSim/rightArm" );
+    //std::string remoteMental("/");
+    //remoteMental.append( ss.str() );
+    //remoteMental.append( "/teoSim/rightArm" );
+    std::string remoteMental("/teoSim/rightArm");
     mentalOptions.put("remote",remoteMental);
-    std::string localMental("/cgdaMental/");
-    localMental.append( ss.str() );
+    //std::string localMental("/cgdaMental/");
+    //localMental.append( ss.str() );
+    std::string localMental("/cgdaMental");
     localMental.append( "/teoSim/rightArm" );
     mentalOptions.put("local",localMental);
     mentalDevice.open(mentalOptions);
@@ -83,12 +124,14 @@ int CgdaExecutionOET::init(int argc, char **argv)
 //    }
 //    CD_SUCCESS("Real robot device available.\n");
 
-    //-- Paint server
-    std::string remotePaint("/");
-    remotePaint.append( ss.str() );
-    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
-    std::string localPaint("/cgda/");
-    localPaint.append( ss.str() );
+//    //-- Paint server (uncomment for paint)
+    //std::string remotePaint("/");
+    //remotePaint.append( ss.str() );
+    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
+    //std::string localPaint("/cgda/");
+    //localPaint.append( ss.str() );
+    std::string localPaint("/cgda");
     localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
     rpcClient.open(localPaint);
     do {
@@ -102,7 +145,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     vector< double > results;
 
-    timespec tsEvStart; //Start second timer
+    timespec tsEvStart; //Start second timer (first in this code file)
     clock_gettime(CLOCK_REALTIME, &tsEvStart);
 
     StateP state (new State);
@@ -121,6 +164,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
     //           state->addAlgorithm(nalg3);
 
     // set the evaluation operator
+    //CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
     CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
     //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
     //Constrained Cost functions
@@ -131,7 +175,14 @@ int CgdaExecutionOET::init(int argc, char **argv)
     mentalDevice.view(functionMinEvalOp->mentalPositionControl);
     realDevice.view(functionMinEvalOp->realPositionControl);
     functionMinEvalOp->setPRpcClient(&rpcClient);
-    functionMinEvalOp->setPsqPainted(&sqPainted);
+    //Uncomment for paint
+    functionMinEvalOp->setPsqFeatures(&psqFeatures);
+
+    //Uncomment for iron
+//    functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
+//    functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
+//    functionMinEvalOp->setPForcePort(&forcePort);
+//    functionMinEvalOp->setsqFeatures(&sqFeatures);
 
     state->setEvalOp(functionMinEvalOp);
 
@@ -175,6 +226,9 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     functionMinEvalOp->individualExecution(results);
 
+    double evaluations;
+    evaluations=state->getEvaluations();
+
     double ev_time_n;
     double ev_time_s;
     timespec tsEvEnd;
@@ -182,6 +236,9 @@ int CgdaExecutionOET::init(int argc, char **argv)
     ev_time_n=(tsEvEnd.tv_nsec-tsEvStart.tv_nsec);
     ev_time_n=ev_time_n/1000000000; //nano seconds to seconds
     ev_time_s=(tsEvEnd.tv_sec-tsEvStart.tv_sec);
+
+    ev_time_n=ev_time_n-(0.1*evaluations);
+    ev_time_s=ev_time_s-(0.1*evaluations);
 
 //       printf("-begin-\n");
 //       for(unsigned int i=0;i<results.size();i++) printf("%f, ",results[i]);
@@ -192,18 +249,15 @@ int CgdaExecutionOET::init(int argc, char **argv)
     //*******************************************************************************************//
     //                              FILE OUTPUT FOR DEBUGGING                                    //
     //*******************************************************************************************//
-    double evaluations;
-    evaluations=state->getEvaluations();
 
     std::cout<<std::endl<<"THE TOTAL NUMBER OF EVALUATIONS IS: "<<evaluations<<std::endl<<"THE NUMBER OF EVALUATIONS IN THIS ITERATION IS: "<<state->getEvaluations() <<std::endl;
 
     std::ofstream myfile1;
     myfile1.open("DataOET++.txt", std::ios_base::app);
     if (myfile1.is_open()){
-        myfile1<<"0: ";
         myfile1<<evaluations<<" ";
         myfile1<<bestInds[0]->fitness->getValue()<<" ";
-        if(ev_time_s==0){
+        if(ev_time_s<=0){
             myfile1<<ev_time_n<<" ";
         }
         else{

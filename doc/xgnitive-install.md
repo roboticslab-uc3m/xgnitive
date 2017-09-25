@@ -24,6 +24,7 @@ cd xgnitive; mkdir build; cd build; cmake ..  # Configure the xgnitive software
 make  # Compile
 sudo make install  # Install :-)
 cp ../scripts/gnome/xgnitive.desktop $HOME/Desktop
+cd..;sudo pip install -r requirements.txt #Install python requirements
 ```
 For additional options use ccmake instead of cmake.
 

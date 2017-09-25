@@ -20,7 +20,7 @@
 
 #include "DtwCgdaRecognition.hpp"
 
-#define DEFAULT_DELAY_S 0.010
+#define DEFAULT_DELAY_S 0.10
 
 //using namespace ObpenRAVE;
 
@@ -31,20 +31,21 @@ class CgdaPaintFitnessFunction : public EvaluateOp {
 
   public:
 
-    void setPsqPainted( vector<int>* _psqPainted){
-        psqPainted = _psqPainted;
+    void setPsqFeatures( vector<int>* _psqFeatures){
+        psqFeatures = _psqFeatures;
     }
 
     void setPRpcClient( yarp::os::RpcClient* pRpcClient){
         this->pRpcClient = pRpcClient;
     }
 
+
     FitnessP evaluate(IndividualP individual);
 	void registerParameters(StateP);
 	bool initialize(StateP);
     double getCustomFitness(vector<double> genPoints);
     void individualExecution(vector<double> results); //TE
-    vector<int>* psqPainted;
+    vector<int>* psqFeatures;
 
     yarp::dev::IPositionControl *mentalPositionControl;
     yarp::dev::IPositionControl *realPositionControl;

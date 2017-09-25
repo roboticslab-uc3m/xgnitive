@@ -9,6 +9,7 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
+//#include "CgdaIronFitnessFunction.hpp"
 #include "CgdaPaintFitnessFunction.hpp"
 //The following cost functions are not yet implemented in OET
 //#include "CgdaWaxFitnessFunction.hpp"
@@ -34,11 +35,15 @@ public:
     int init(int argc, char **argv);
 
 private:
-    vector<int> sqPainted;
+    vector<double> sqFeatures;
+    vector<int> psqFeatures;
 
     // YARP
     yarp::os::Network yarp;
     yarp::os::Port port;
+    yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
+    yarp::os::RpcClient rpcClientWorld;
+    yarp::os::RpcClient rpcClientCart;
     int portNum;
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
