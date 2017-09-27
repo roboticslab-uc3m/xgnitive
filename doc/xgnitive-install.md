@@ -13,6 +13,7 @@ First install dependencies:
 - [Install OpenCV](https://github.com/roboticslab-uc3m/installation-guides/blob/master/install-opencv.md)
 - [Install Pygame]( https://github.com/roboticslab-uc3m/installation-guides/blob/master/install-pygame.md)
 - [Install teo-openrave-models](https://github.com/roboticslab-uc3m/teo-openrave-models)
+- [Install openrave-yarp-plugins](https://github.com/roboticslab-uc3m/openrave-yarp-plugins/blob/master/doc/openrave-yarp-plugins-install.md)
 
 ## Install XGNITIVE (working on all tested Ubuntu versions)
 
