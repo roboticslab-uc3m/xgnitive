@@ -1,6 +1,6 @@
 # CGDA IET Execution
 
-Right now two different actions are available for it's execution using IET with CGDA.
+Right now two different actions are available for it's execution using IET with CGDA. These actions are the "paint" and "iron" actions.
 
 ## IET + Paint action
 
