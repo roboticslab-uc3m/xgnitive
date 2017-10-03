@@ -14,5 +14,7 @@ algo = TRPO(
     env=env,
     policy=policy,
     baseline=baseline,
+    # Uncomment both lines (this and the plot parameter below) to enable plotting
+    #plot=True,
 )
 algo.train()

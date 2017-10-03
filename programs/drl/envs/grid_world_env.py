@@ -1,5 +1,5 @@
 import numpy as np
-from rllab.envs.base import Env
+from .base import Env
 from rllab.spaces import Discrete
 from rllab.envs.base import Step
 from rllab.core.serializable import Serializable
@@ -139,9 +139,9 @@ class GridWorldEnv(Env, Serializable):
         coords = np.array([x, y])
 
         #print(coords)
-        now=np.array(list(map(list, self.desc)))
-        now[x, y]='X'
-        print(now)
+        #now=np.array(list(map(list, self.desc)))
+        #now[x, y]='X'
+        #print(now)
 	
 
         increments = np.array([[0, -1], [1, 0], [0, 1], [-1, 0]])
