@@ -15,10 +15,18 @@ MAPS = {
         "WFFG"
     ],
     "4x4": [
+     [
         "SFFF",
         "FHFH",
         "FFFH",
         "HFFG"
+    ],
+    [
+        "FFFF",
+        "FHFH",
+        "FFFH",
+        "HFFG"
+    ]
     ],
     "8x8": [
         "SFFFFFFF",
@@ -46,15 +54,26 @@ class GridWorld3DEnv(Env, Serializable):
 
     def __init__(self, desc='4x4'):
         Serializable.quick_init(self, locals())
+        print("desc before isinstance",desc)
         if isinstance(desc, str):
             desc = MAPS[desc]
-        desc = np.array(list(map(list, desc)))
+        #print("desc before nparray \n",desc)
+        desc[0] = list(map(list, desc[0]))
+        #print(desc[0])
+        desc[1] = list(map(list, desc[1]))
+        #print(desc[1])
+        desc= np.array(list(desc))
+        #print("desc after nparray \n",desc)
         desc[desc == '.'] = 'F'
         desc[desc == 'o'] = 'H'
         desc[desc == 'x'] = 'W'
         self.desc = desc
-        self.n_row, self.n_col = desc.shape
-        (start_x,), (start_y,) = np.nonzero(desc == 'S')
+        self.n_row, self.n_col = desc.shape[1:]
+        #print("desc before search start \n", desc)
+        (start_x,), (start_y,), (start_z,) = np.nonzero(desc == 'S')
+        #print('x', start_x)
+        #print('y', start_y)
+        #print('z', start_z)
         self.start_state = start_x * self.n_col + start_y
         self.state = None
         self.domain_fig = None
