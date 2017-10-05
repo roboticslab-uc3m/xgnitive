@@ -33,7 +33,7 @@ MAPS = {
 }
 
 
-class GridWorld2DEnv(Env, Serializable):
+class GridWorld3DEnv(Env, Serializable):
     """
     'S' : starting point
     'F' or '.': free space

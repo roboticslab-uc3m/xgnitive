@@ -1,11 +1,11 @@
 from rllab.algos.trpo import TRPO
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
 #from rllab.envs.grid_world_env import GridWorldEnv
-from envs.grid_world_2D_env import GridWorld2DEnv
+from envs.grid_world_3D_env import GridWorld3DEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.categorical_mlp_policy import CategoricalMLPPolicy
 
-env = normalize(GridWorld2DEnv())
+env = normalize(GridWorld3DEnv())
 policy = CategoricalMLPPolicy(
     env_spec=env.spec,
 )
