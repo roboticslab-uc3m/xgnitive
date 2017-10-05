@@ -33,7 +33,7 @@ MAPS = {
 }
 
 
-class GridWorldEnv(Env, Serializable):
+class GridWorld2DEnv(Env, Serializable):
     """
     'S' : starting point
     'F' or '.': free space
@@ -139,9 +139,9 @@ class GridWorldEnv(Env, Serializable):
         coords = np.array([x, y])
 
         #print(coords)
-        #now=np.array(list(map(list, self.desc)))
-        #now[x, y]='X'
-        #print(now)
+        now=np.array(list(map(list, self.desc)))
+        now[x, y]='X'
+        print(now)
 	
 
         increments = np.array([[0, -1], [1, 0], [0, 1], [-1, 0]])
