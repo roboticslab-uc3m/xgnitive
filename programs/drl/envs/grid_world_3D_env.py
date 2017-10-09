@@ -19,7 +19,7 @@ MAPS = {
         "SFFF",
         "FHFH",
         "FFFH",
-        "HFFG"
+        "HFFF"
     ],
     [
         "FFFF",
@@ -29,7 +29,7 @@ MAPS = {
     ]
     ],
     "8x8": [
-        "SFFFFFFF",
+        "FFFFSFFF",
         "FFFFFFFF",
         "FFFHFFFF",
         "FFFFFHFF",
@@ -68,13 +68,13 @@ class GridWorld3DEnv(Env, Serializable):
         desc[desc == 'o'] = 'H'
         desc[desc == 'x'] = 'W'
         self.desc = desc
-        self.n_row, self.n_col = desc.shape[1:]
+        self.levels, self.n_row, self.n_col = desc.shape[:]
         #print("desc before search start \n", desc)
-        (start_x,), (start_y,), (start_z,) = np.nonzero(desc == 'S')
-        #print('x', start_x)
-        #print('y', start_y)
-        #print('z', start_z)
-        self.start_state = start_x * self.n_col + start_y
+        (start_z,), (start_x,), (start_y,) = np.nonzero(desc == 'S')
+        print('x', start_x)
+        print('y', start_y)
+        print('z', start_z)
+        self.start_state = start_x * self.n_col + start_y + start_z * (self.n_col + self.n_row)
         self.state = None
         self.domain_fig = None
 
@@ -93,7 +93,9 @@ class GridWorld3DEnv(Env, Serializable):
             left=0,
             down=1,
             right=2,
-            up=3
+            up=3,
+            climb_up=4,
+            climb_down=5
         )[d]
 
     def step(self, action):
@@ -103,6 +105,8 @@ class GridWorld3DEnv(Env, Serializable):
         1: down
         2: right
         3: up
+        4: climb_up
+        5: climb_down
         :param action: should be a one-hot vector encoding the action
         :return:
         """
@@ -123,12 +127,21 @@ class GridWorld3DEnv(Env, Serializable):
 
         next_x = next_state // self.n_col
         next_y = next_state % self.n_col
+        next_z = next_state % self.levels
 
-        next_state_type = self.desc[next_x, next_y]
+        #print(self.n_col)
+        #print(self.n_row)
+        #print(self.levels)
+        print(next_z)
+        print(next_x)
+        print(next_y)
+
+        next_state_type = self.desc[next_z, next_x, next_y]
         
         #print(next_state_type)
         #print(self.desc)
-        
+
+        # Here we fix what each position does.
         if next_state_type == 'H':
             done = True
             reward = 0
@@ -155,23 +168,33 @@ class GridWorld3DEnv(Env, Serializable):
         # assert self.action_space.contains(action)
         x = self.state // self.n_col
         y = self.state % self.n_col
-        coords = np.array([x, y])
+        z = self.state % self.levels
+        coords = np.array([z, x, y])
 
         #print(coords)
-        now=np.array(list(map(list, self.desc)))
-        now[x, y]='X'
+        self.desc[0] = list(map(list, self.desc[0]))
+        #print(desc[0])
+        self.desc[1] = list(map(list, self.desc[1]))
+        #print(desc[1])
+        now= np.array(list(self.desc))
+        #now=np.array(list(map(list, self.desc)))
+
+        now[z, x, y]='X'
         print(now)
 	
-
-        increments = np.array([[0, -1], [1, 0], [0, 1], [-1, 0]])
+        #Possible increments produced by the actions.
+        increments = np.array([[0, -1, 0], [1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1]])
         next_coords = np.clip(
             coords + increments[action],
-            [0, 0],
-            [self.n_row - 1, self.n_col - 1]
+            [0, 0, 0],
+            [self.levels -1, self.n_row - 1, self.n_col - 1]
         )
-        next_state = next_coords[0] * self.n_col + next_coords[1]
-        state_type = self.desc[x, y]
-        next_state_type = self.desc[next_coords[0], next_coords[1]]
+        #print(next_coords)
+        next_state = next_coords[0] * (self.n_col + self.n_row) + next_coords[1] * self.n_col + next_coords[2] #Calculate next step
+        #print(next_state)
+        state_type = self.desc[z, x, y]
+        next_state_type = self.desc[next_coords[0], next_coords[1], next_coords[2]]
+        #print(next_state_type)
         if next_state_type == 'W' or state_type == 'H' or state_type == 'G':
             return [(state, 1.)]
         else:
