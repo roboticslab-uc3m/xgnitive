@@ -16,12 +16,16 @@ MAPS = {
     ],
     "4x4": [
      [
-        "SF",
-        "FH",
+        "SFFF",
+        "FHFH",
+        "FFFH",
+        "HFFF"
     ],
     [
-        "FH",
-        "FG"
+        "FFFF",
+        "FHFH",
+        "FFFH",
+        "HFFG"
     ]
     ],
     "8x8": [

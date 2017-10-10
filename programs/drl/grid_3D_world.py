@@ -16,7 +16,7 @@ def run_task(*_):
         env=env,
         policy=policy,
         baseline=baseline,
-        n_itr=20,
+        n_itr=200,
         # Uncomment both lines (this and the plot parameter below) to enable plotting
         #plot=True,
     )
