@@ -52,16 +52,31 @@ class Env(object):
         return self.action_space.flat_dim
 
     def render(self):
-         print('current state:')
-         x = self.state // self.n_col
-         y = self.state % self.n_col
-         coords = np.array([x, y])
+         #2D output
+         #print('current state:')
+         #x = self.state // self.n_col
+         #y = self.state % self.n_col
+         #coords = np.array([x, y])
 
+         #now=np.array(list(map(list, self.desc)))
+         #now[x, y]='X'
+         #print(now)
+         
+         #3D output
+         #z = self.state // (self.n_col * self.n_row)
+         #x = (self.state - z*(self.n_col * self.n_row)) // self.n_col #Note: this is not a comment :D
+         #y = (self.state - z*(self.n_col * self.n_row)) % self.n_col
+         #coords = np.array([z, x, y])
+      
+         #self.desc[0] = list(map(list, self.desc[0]))
+         #self.desc[1] = list(map(list, self.desc[1]))
+         #now= np.array(list(self.desc))
+         
+         #now[z, x, y]='X'
+         #print(now)
          #print(coords)
-         now=np.array(list(map(list, self.desc)))
-         now[x, y]='X'
-         print(now)
-         #pass
+
+         pass
 
     def log_diagnostics(self, paths):
         """

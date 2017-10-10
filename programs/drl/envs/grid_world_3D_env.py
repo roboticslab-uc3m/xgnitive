@@ -16,16 +16,12 @@ MAPS = {
     ],
     "4x4": [
      [
-        "SFFF",
-        "FHFH",
-        "FFFH",
-        "HFFF"
+        "SF",
+        "FH",
     ],
     [
-        "FFFF",
-        "FHFH",
-        "FFFH",
-        "HFFG"
+        "FH",
+        "FG"
     ]
     ],
     "8x8": [
@@ -54,7 +50,7 @@ class GridWorld3DEnv(Env, Serializable):
 
     def __init__(self, desc='4x4'):
         Serializable.quick_init(self, locals())
-        print("desc before isinstance",desc)
+        #print("desc before isinstance",desc)
         if isinstance(desc, str):
             desc = MAPS[desc]
         #print("desc before nparray \n",desc)
@@ -127,16 +123,16 @@ class GridWorld3DEnv(Env, Serializable):
 
         print("next state is", next_state)
 
-        next_z = next_state // (self.n_col + self.n_row)
-        next_x = (next_state/next_z) // self.n_col #Note: this is not a comment :D
-        next_y = next_state % self.n_col
+        next_z = next_state // (self.n_col * self.n_row)
+        next_x = (next_state - next_z*(self.n_col * self.n_row)) // self.n_col #Note: this is not a comment :D
+        next_y = (next_state - next_z*(self.n_col * self.n_row)) % self.n_col
 
         #print(self.n_col)
         #print(self.n_row)
         #print(self.levels)
-        print(next_z)
-        print(next_x)
-        print(next_y)
+        #print("the next z is", next_z)
+        #print("the next x is", next_x)
+        #print("the next y is", next_y)
 
         next_state_type = self.desc[next_z, next_x, next_y]
         
@@ -168,13 +164,13 @@ class GridWorld3DEnv(Env, Serializable):
         """
         # assert self.observation_space.contains(state)
         # assert self.action_space.contains(action)
-        z = self.state // (self.n_col + self.n_row)
-        x = (self.state//z) // self.n_col #Note: this is not a comment :D
-        y = (self.state//z) % self.n_col
+        z = self.state // (self.n_col * self.n_row)
+        x = (self.state - z*(self.n_col * self.n_row)) // self.n_col #Note: this is not a comment :D
+        y = (self.state - z*(self.n_col * self.n_row)) % self.n_col
         coords = np.array([z, x, y])
 
-        print('NEW STEP')
-        print(coords)
+        #print('NEW STEP')
+        #print(coords)
 
         #print(coords)
         self.desc[0] = list(map(list, self.desc[0]))
@@ -183,6 +179,8 @@ class GridWorld3DEnv(Env, Serializable):
         #print(desc[1])
         now= np.array(list(self.desc))
         #now=np.array(list(map(list, self.desc)))
+
+        #print(now)
 
         now[z, x, y]='X'
         print(now)
@@ -195,9 +193,9 @@ class GridWorld3DEnv(Env, Serializable):
             [0, 0, 0],
             [self.levels -1, self.n_row - 1, self.n_col - 1]
         )
-        print(next_coords)
+        #print(next_coords)
         next_state = next_coords[0] * (self.n_col + self.n_row) + next_coords[1] * self.n_col + next_coords[2] #Calculate next step
-        print(next_state)
+        #print(next_state)
         state_type = self.desc[z, x, y]
         next_state_type = self.desc[next_coords[0], next_coords[1], next_coords[2]]
         #print(next_state_type)
@@ -208,8 +206,8 @@ class GridWorld3DEnv(Env, Serializable):
 
     @property
     def action_space(self):
-        return Discrete(4)
+        return Discrete(6)
 
     @property
     def observation_space(self):
-        return Discrete(self.n_row * self.n_col)
+        return Discrete(self.n_row * self.n_col * self.levels)
