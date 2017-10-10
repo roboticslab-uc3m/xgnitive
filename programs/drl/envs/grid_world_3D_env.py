@@ -125,9 +125,11 @@ class GridWorld3DEnv(Env, Serializable):
         next_state_idx = np.random.choice(len(probs), p=probs)
         next_state = possible_next_states[next_state_idx][0]
 
-        next_x = next_state // self.n_col
+        print("next state is", next_state)
+
+        next_z = next_state // (self.n_col + self.n_row)
+        next_x = (next_state/next_z) // self.n_col #Note: this is not a comment :D
         next_y = next_state % self.n_col
-        next_z = next_state % self.levels
 
         #print(self.n_col)
         #print(self.n_row)
@@ -166,10 +168,13 @@ class GridWorld3DEnv(Env, Serializable):
         """
         # assert self.observation_space.contains(state)
         # assert self.action_space.contains(action)
-        x = self.state // self.n_col
-        y = self.state % self.n_col
-        z = self.state % self.levels
+        z = self.state // (self.n_col + self.n_row)
+        x = (self.state//z) // self.n_col #Note: this is not a comment :D
+        y = (self.state//z) % self.n_col
         coords = np.array([z, x, y])
+
+        print('NEW STEP')
+        print(coords)
 
         #print(coords)
         self.desc[0] = list(map(list, self.desc[0]))
@@ -183,15 +188,16 @@ class GridWorld3DEnv(Env, Serializable):
         print(now)
 	
         #Possible increments produced by the actions.
-        increments = np.array([[0, -1, 0], [1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1]])
+        #print(action)
+        increments = np.array([[0, 0, -1], [0, 1, 0], [0, 0, 1], [0, -1, 0], [1, 0, 0], [-1, 0, 0]])
         next_coords = np.clip(
             coords + increments[action],
             [0, 0, 0],
             [self.levels -1, self.n_row - 1, self.n_col - 1]
         )
-        #print(next_coords)
+        print(next_coords)
         next_state = next_coords[0] * (self.n_col + self.n_row) + next_coords[1] * self.n_col + next_coords[2] #Calculate next step
-        #print(next_state)
+        print(next_state)
         state_type = self.desc[z, x, y]
         next_state_type = self.desc[next_coords[0], next_coords[1], next_coords[2]]
         #print(next_state_type)
