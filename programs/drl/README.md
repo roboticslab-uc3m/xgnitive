@@ -23,10 +23,10 @@ First train the policy using DRL
 python grid_2D_world.py
 ```
 
-The policy params are then saved in the following paths **PATH** of your local rllab repository. To simulate an execution of the task using the policy trained, you can use the following commands:
+The policy params are then saved in the following paths *data/local/experiment_{timestamp}* of your local rllab repository. To simulate an execution of the task using the policy trained, you can use the following commands:
 
 ```
-python sim_policy.py **PATH**
+python sim_policy.py home/repos/rllab/data/local/experiment_{timestamp}/params.pkl
 ```
 
 ## Tutorials: 3D grid world example
@@ -37,8 +37,8 @@ First train the policy using DRL
 python grid_3D_world.py
 ```
 
-The policy params are then saved in the following paths **PATH** of your local rllab repository. To simulate an execution of the task using the policy trained, you can use the following commands:
+The policy params are then saved in the following paths *data/local/experiment_{timestamp}* of your local rllab repository. To simulate an execution of the task using the policy trained, you can use the following commands:
 
 ```
-python sim_policy.py **PATH**
+python sim_policy.py home/repos/rllab/data/local/experiment_{timestamp}/params.pkl
 ```
