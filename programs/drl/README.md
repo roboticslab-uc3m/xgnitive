@@ -6,6 +6,12 @@ The goal of this repository is to develop DRL inside the CGDA framework.
 
 This repository uses **rllab** as the framework for the developing DRL algorithms. The instructions to install rllab can be found [here](http://rllab.readthedocs.io/en/latest/user/installation.html).
 
+**Add YARP inside rllab environment**
+```bash
+cp /usr/local/lib/python3.5/site-packages/yarp.py  ~/anaconda2/envs/rllab3/lib/python3.5/site-packages/
+cp /usr/local/lib/python3.5/site-packages/_yarp.so  ~/anaconda2/envs/rllab3/lib/python3.5/site-packages/
+```
+
 **To start rllab, run the following commands in a terminal:**
 
 ```
