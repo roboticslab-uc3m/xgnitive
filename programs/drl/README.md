@@ -15,6 +15,7 @@ cp /usr/local/lib/python3.5/site-packages/_yarp.so  ~/anaconda2/envs/rllab3/lib/
 **To start rllab, run the following commands in a terminal:**
 
 ```
+export PATH="/home/raul/anaconda2/bin:$PATH" #Activate anaconda
 source activate rllab3 #Initialize rllab
 export PYTHONPATH=/home/raul/repos/rllab:$PYTHONPATH #Export rllab to pythonpath
 
