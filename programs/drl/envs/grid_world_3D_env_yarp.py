@@ -74,21 +74,22 @@ class GridWorld3DEnvYarp(Env, Serializable):
         
         #Init device to move the robot
         # This device will have three different options, device, remote local.
-        mentalOptions= yarp.Property
+        mentalOptions= yarp.Property()
         mentalOptions.put("device", "remote_controlboard") #device
-        str(remoteMental("/teoSim/rightArm"))
+        remoteMental="/teoSim/rightArm"
         mentalOptions.put("remote", remoteMental) #remote
-        str(localMental("/cgdaMental"))
+        localMental="/cgdaMental"
         mentalOptions.put("local", localMental) #local
 
         #define Device
-        yarp.dev.Polydriver(mentalDevice)
+        #yarp.dev.Polydriver(mentalDevice)
+        mentalDevice=yarp.PolyDriver()
         #open device
         mentalDevice.open(mentalOptions)
         if not mentalDevice.isValid() :
             print("Mental robot device not available.\n")
             mentalDevice.close()
-            yarp.os.Network.fini()
+            yarp.Network.fini()
             return 1
 
         print("Mental robot device available.\n")
