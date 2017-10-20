@@ -84,36 +84,19 @@ class GridWorld3DEnvYarp(Env, Serializable):
 
         #define Device
         #yarp.dev.Polydriver(mentalDevice)
-        mentalDevice= yarp.PolyDriver()
+        self.mentalDevice= yarp.PolyDriver()
         #open device
-        mentalDevice.open(mentalOptions)
-        if not mentalDevice.isValid() :
+        self.mentalDevice.open(mentalOptions)
+        if not self.mentalDevice.isValid() :
             print("Mental robot device not available.\n")
-            mentalDevice.close()
+            self.mentalDevice.close()
             yarp.Network.fini()
             return 1
 
         print("Mental robot device available.\n")
 
-        #Do something i dont understand :D
-        mentalPositionControl = mentalDevice.viewIPositionControl()
         #mentalPositionControl = yarp.IPositionControl()
         #mentalDevice.view(mentalPositionControl)
-
-        #Try to move the robot
-        dEncRaw = np.empty(6,float)
-        dEncRaw[0] = -2.4
-        dEncRaw[1] = -45
-        dEncRaw[3] = -37
-
-        mentalPositionControl.positionMove(0,dEncRaw[0])
-        mentalPositionControl.positionMove(1, dEncRaw[1])
-        mentalPositionControl.positionMove(3, dEncRaw[3])
-
-        #Just some sleep for debug
-        print("waiting")
-        time.sleep(5.5)  # pause 5.5 seconds
-
 
         Serializable.quick_init(self, locals())
         #print("desc before isinstance",desc)
@@ -198,6 +181,23 @@ class GridWorld3DEnvYarp(Env, Serializable):
         next_z = next_state // (self.n_col * self.n_row)
         next_x = (next_state - next_z*(self.n_col * self.n_row)) // self.n_col #Note: this is not a comment :D
         next_y = (next_state - next_z*(self.n_col * self.n_row)) % self.n_col
+
+        #Declare device to position control
+        mentalPositionControl = self.mentalDevice.viewIPositionControl()
+
+        #Try to move the robot
+        dEncRaw = np.empty(6,float)
+        dEncRaw[0] = -2.4
+        dEncRaw[1] = -45
+        dEncRaw[3] = -37
+
+        mentalPositionControl.positionMove(0,dEncRaw[0])
+        mentalPositionControl.positionMove(1, dEncRaw[1])
+        mentalPositionControl.positionMove(3, dEncRaw[3])
+
+        #Just some sleep for debug
+        print("Moving the robot")
+        time.sleep(5.5)  # pause 5.5 seconds
 
         #print(self.n_col)
         #print(self.n_row)
