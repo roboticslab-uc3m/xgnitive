@@ -1,5 +1,6 @@
 ################### GENERAL ##############################
 import numpy as np
+import time
 
 ################### RLLAB ################################
 from .base import Env
@@ -83,7 +84,7 @@ class GridWorld3DEnvYarp(Env, Serializable):
 
         #define Device
         #yarp.dev.Polydriver(mentalDevice)
-        mentalDevice=yarp.PolyDriver()
+        mentalDevice= yarp.PolyDriver()
         #open device
         mentalDevice.open(mentalOptions)
         if not mentalDevice.isValid() :
@@ -93,6 +94,26 @@ class GridWorld3DEnvYarp(Env, Serializable):
             return 1
 
         print("Mental robot device available.\n")
+
+        #Do something i dont understand :D
+        mentalPositionControl = mentalDevice.viewIPositionControl()
+        #mentalPositionControl = yarp.IPositionControl()
+        #mentalDevice.view(mentalPositionControl)
+
+        #Try to move the robot
+        dEncRaw = np.empty(6,float)
+        dEncRaw[0] = -2.4
+        dEncRaw[1] = -45
+        dEncRaw[3] = -37
+
+        mentalPositionControl.positionMove(0,dEncRaw[0])
+        mentalPositionControl.positionMove(1, dEncRaw[1])
+        mentalPositionControl.positionMove(3, dEncRaw[3])
+
+        #Just some sleep for debug
+        print("waiting")
+        time.sleep(5.5)  # pause 5.5 seconds
+
 
         Serializable.quick_init(self, locals())
         #print("desc before isinstance",desc)
