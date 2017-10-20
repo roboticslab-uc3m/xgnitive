@@ -66,14 +66,16 @@ class GridWorld3DEnvYarp(Env, Serializable):
 
     def __init__(self, desc='4x4'):
 
-        ##Init YARP
+        self.yarpDelay=0.05
+
+        ################ YARP ###############################################
         yarp.Network.init()
 
         if yarp.Network.checkNetwork() != True:  # let's see if there was actually a reachable YARP network
             print('[error] Please try running yarp server')  # tell the user to start one with 'yarp server' if there isn't any
             quit()
         
-        #Init device to move the robot
+        ################ YARP CONNECT TO MOVE ###############################
         # This device will have three different options, device, remote local.
         mentalOptions= yarp.Property()
         mentalOptions.put("device", "remote_controlboard") #device
@@ -97,6 +99,45 @@ class GridWorld3DEnvYarp(Env, Serializable):
 
         #mentalPositionControl = yarp.IPositionControl()
         #mentalDevice.view(mentalPositionControl)
+
+        ################ YARP CONNECT TO PAINT #############################
+        remotePaint = "/openraveYarpPaintSquares/rpc:s"
+        localPaint = "/cgda/openraveYarpPaintSquares/rpc:c"
+
+        self.rpcClient=yarp.RpcClient()
+        self.rpcClient.open(localPaint) #Connect to local paint
+
+        while True: ##do-while
+            yarp.Network.connect(localPaint,remotePaint)
+            print("Wait to connect to paint server...\n")
+            time.sleep(self.yarpDelay)
+            if self.rpcClient.getOutputCount() != 0:
+                break
+        print ("Paint server available. \n")
+
+        #Read state
+        self.cmd= yarp.Bottle()
+        self.res= yarp.Bottle()
+        cmd="reset"
+        self.rpcClient.write(self.cmd,self.res)
+
+        print("The size is: ", self.res.size())
+
+        for i in range(self.res.size()):
+            print(self.res.get(i).asInt())
+            print(i)
+
+        cmd="get"
+        self.rpcClient.write(self.cmd,self.res)
+
+        print("The size is: ", self.res.size())
+
+        for i in range(self.res.size()):
+            print(self.res.get(i).asInt())
+            print(i)
+
+
+        ############### GENERAL ############################################
 
         Serializable.quick_init(self, locals())
         #print("desc before isinstance",desc)
@@ -197,7 +238,7 @@ class GridWorld3DEnvYarp(Env, Serializable):
 
         #Just some sleep for debug
         print("Moving the robot")
-        time.sleep(5.5)  # pause 5.5 seconds
+        time.sleep(self.yarpDelay)  # pause 5.5 seconds
 
         #print(self.n_col)
         #print(self.n_row)
