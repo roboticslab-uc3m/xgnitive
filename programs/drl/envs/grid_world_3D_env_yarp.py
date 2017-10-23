@@ -26,15 +26,15 @@ MAPS = {
     "4x4": [
      [
         "SFFF",
-        "FHFH",
-        "FFFH",
-        "HFFF"
+        "FFFF",
+        "FFFF",
+        "FFFF"
     ],
     [
         "FFFF",
-        "FHFH",
-        "FFFH",
-        "HFFG"
+        "FFFF",
+        "FFFF",
+        "FFFF"
     ]
     ],
     "8x8": [
@@ -58,8 +58,6 @@ class GridWorld3DEnvYarp(Env, Serializable):
     'W' or 'x': wall
     'H' or 'o': hole (terminates episode)
     'G' : goal
-
-
     """
 
     ################### INIT ###############################
@@ -118,31 +116,37 @@ class GridWorld3DEnvYarp(Env, Serializable):
         #Read state
         self.cmd= yarp.Bottle()
         self.res= yarp.Bottle()
-        cmd="reset"
+
+        # Reset paint
+        #  8self.cmd= "reset"
+        self.cmd.clear()
+        self.res.clear()
+        self.cmd.addString("reset")
+        print(self.cmd)
         self.rpcClient.write(self.cmd,self.res)
 
-        print("The size is: ", self.res.size())
+        ################ YARP CARTESIAN CONTROL ############################
 
-        for i in range(self.res.size()):
-            print(self.res.get(i).asInt())
-            print(i)
-
-        cmd="get"
-        self.rpcClient.write(self.cmd,self.res)
-
-        print("The size is: ", self.res.size())
-
-        for i in range(self.res.size()):
-            print(self.res.get(i).asInt())
-            print(i)
-
+        self.rpcClientCart = yarp.RpcClient()
+        self.rpcClientCart.open("/cart:c")
+        while True:
+            yarp.Network.connect("/cart:c", "/CartesianControl/rpc_transform:s")
+            print("Wait to connect to cartesian server...\n")
+            #time.sleep(self.yarpDelay)
+            if self.rpcClientCart.getOutputCount() != 0:
+                break
 
         ############### GENERAL ############################################
 
+        # Do something I dont know what
         Serializable.quick_init(self, locals())
+
+
+        '''
         #print("desc before isinstance",desc)
         if isinstance(desc, str):
             desc = MAPS[desc]
+
         #print("desc before nparray \n",desc)
         desc[0] = list(map(list, desc[0]))
         #print(desc[0])
@@ -159,8 +163,13 @@ class GridWorld3DEnvYarp(Env, Serializable):
         (start_z,), (start_x,), (start_y,) = np.nonzero(desc == 'S')
         print('x', start_x)
         print('y', start_y)
-        print('z', start_z)
-        self.start_state = start_x * self.n_col + start_y + start_z * (self.n_col + self.n_row)
+        print('z', start_z)   
+        '''
+
+        self.lbound=-15
+        self.ubound=100
+
+        self.start_state = [0,0,0]
         self.state = None
         self.domain_fig = None
 
@@ -202,6 +211,7 @@ class GridWorld3DEnvYarp(Env, Serializable):
         :param action: should be a one-hot vector encoding the action
         :return:
         """
+
         possible_next_states = self.get_possible_next_states(self.state, action)
 
         #x = self.state // self.n_col
@@ -226,13 +236,18 @@ class GridWorld3DEnvYarp(Env, Serializable):
         #Declare device to position control
         mentalPositionControl = self.mentalDevice.viewIPositionControl()
 
-        #Try to move the robot
+        #Try to move the robot. We may need cartesians.
+
+        #PosX= coordX*sizeXcelda
+        #PosY= coordY*sizeYcelda
+        #PosZ= coordZ*sizeZcelda
+
         dEncRaw = np.empty(6,float)
         dEncRaw[0] = -2.4
         dEncRaw[1] = -45
         dEncRaw[3] = -37
 
-        mentalPositionControl.positionMove(0,dEncRaw[0])
+        mentalPositionControl.positionMove(0, dEncRaw[0])
         mentalPositionControl.positionMove(1, dEncRaw[1])
         mentalPositionControl.positionMove(3, dEncRaw[3])
 
@@ -265,11 +280,38 @@ class GridWorld3DEnvYarp(Env, Serializable):
         else:
             raise NotImplementedError
         self.state = next_state
+
+        print("The size is: ", self.res.size())
+
+        for i in range(self.res.size()):
+            print(self.res.get(i).asInt())
+            print(i)
+
+        ################ YARP GET % PAINT #################################
+
+        # self.cmd= "get"
+        self.cmd.clear()
+        self.res.clear()
+        self.cmd.addString("get")
+        self.rpcClient.write(self.cmd, self.res)
+
+        print("The size of print after get is: ", self.res.size())
+
+        percentage=0
+        for i in range(self.res.size()):
+            percentage= percentage+self.res.get(i).asInt()
+            # print(i)
+
+        percentage=(percentage*100/self.res.size())
+
+        reward=percentage
+
         return Step(observation=self.state, reward=reward, done=done)
 
     ################### NEXT STATES #############################
 
     def get_possible_next_states(self, state, action):
+
         """
         Given the state and action, return a list of possible next states and their probabilities. Only next states
         with nonzero probabilities will be returned
@@ -277,8 +319,12 @@ class GridWorld3DEnvYarp(Env, Serializable):
         :param action: action
         :return: a list of pairs (s', p(s'|s,a))
         """
+
         # assert self.observation_space.contains(state)
         # assert self.action_space.contains(action)
+
+        '''
+        # Obtain the z,x,y of the system by its state number. Later pos_z=coord_z*(increment z celda)
         z = self.state // (self.n_col * self.n_row)
         x = (self.state - z*(self.n_col * self.n_row)) // self.n_col #Note: this is not a comment :D
         y = (self.state - z*(self.n_col * self.n_row)) % self.n_col
@@ -288,6 +334,7 @@ class GridWorld3DEnvYarp(Env, Serializable):
         #print(coords)
 
         #print(coords)
+        ## Debug things
         self.desc[0] = list(map(list, self.desc[0]))
         #print(desc[0])
         self.desc[1] = list(map(list, self.desc[1]))
@@ -300,14 +347,35 @@ class GridWorld3DEnvYarp(Env, Serializable):
         now[z, x, y]='X'
         print(now)
 	
-        #Possible increments produced by the actions.
+        ## Possible increments produced by the actions.
         #print(action)
         increments = np.array([[0, 0, -1], [0, 1, 0], [0, 0, 1], [0, -1, 0], [1, 0, 0], [-1, 0, 0]])
         next_coords = np.clip(
             coords + increments[action],
             [0, 0, 0],
-            [self.levels -1, self.n_row - 1, self.n_col - 1]
+            [self.levels -1, self.n_row - 1, self.n_col - 1] #Set the limits
         )
+        '''
+
+        ################### GET POSITION #############################
+
+        self.cmd.clear()
+        self.res.clear()
+        self.cmd.addString("stat")
+        self.rpcClientCart.write(self.cmd, self.res)
+
+        print("La respuesta de posción es: ", self.res)
+        #printf("Got: %s\n", res.toString().c_str());
+
+        #yarp.Time.delay(DEFAULT_DELAY_S);
+        self.cmd.addString("stat")
+
+        # *cmd.addString("world");
+        # cmd.addString("whereis");
+        # cmd.addString("tcp");
+        # cmd.addString("rightArm"); * /
+        pRpcClientCart.write(cmd, res);
+        printf("Got: %s\n", res.toString().c_str());
         #print(next_coords)
         next_state = next_coords[0] * (self.n_col + self.n_row) + next_coords[1] * self.n_col + next_coords[2] #Calculate next step
         #print(next_state)
