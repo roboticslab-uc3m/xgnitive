@@ -7,12 +7,13 @@ from .base import Env
 from rllab.spaces import Discrete
 from rllab.envs.base import Step
 from rllab.core.serializable import Serializable
+from rllab.spaces import Box
 
 ################### YARP ##############################
 import yarp
 
 ################### TO USE NOW ############################
-
+'''
 MAPS = {
     "chain": [
         "GFFFFFFFFFFFFFSFFFFFFFFFFFFFG"
@@ -48,6 +49,7 @@ MAPS = {
         "FFFHFFFG"
     ],
 }
+'''
 
 ################### ENVIRONMENT #############################
 
@@ -188,13 +190,13 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         purposes.
         :return: the action index corresponding to the given direction
         """
-        return dict(
-            left=0,
-            down=1,
-            right=2,
-            up=3,
-            climb_up=4,
-            climb_down=5
+        return dict( #The actions for the system are:
+            inc_0=0,
+            dec_0=1,
+            inc_1=2,
+            dec_1=3,
+            inc_3=4,
+            dec_3=5
         )[d]
 
     ################### STEP ##############################
@@ -229,9 +231,11 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         print("next state is", next_state)
 
+        '''
         next_z = next_state // (self.n_col * self.n_row)
         next_x = (next_state - next_z*(self.n_col * self.n_row)) // self.n_col #Note: this is not a comment :D
         next_y = (next_state - next_z*(self.n_col * self.n_row)) % self.n_col
+        '''
 
         #Declare device to position control
         mentalPositionControl = self.mentalDevice.viewIPositionControl()
@@ -243,9 +247,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #PosZ= coordZ*sizeZcelda
 
         dEncRaw = np.empty(6,float)
-        dEncRaw[0] = -2.4
-        dEncRaw[1] = -45
-        dEncRaw[3] = -37
+        dEncRaw[0] = next_state[0]
+        dEncRaw[1] = -next_state[1]
+        dEncRaw[3] = next_state[2]
 
         mentalPositionControl.positionMove(0, dEncRaw[0])
         mentalPositionControl.positionMove(1, dEncRaw[1])
@@ -365,17 +369,25 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.rpcClientCart.write(self.cmd, self.res)
 
         print("La respuesta de posción es: ", self.res)
+        print("Got: ", self.res.toString())
         #printf("Got: %s\n", res.toString().c_str());
 
-        #yarp.Time.delay(DEFAULT_DELAY_S);
-        self.cmd.addString("stat")
+        # Now:
+        state_now=[]
+        for i in range(self.res.size()):
+            state_now=self.res.get(i).asDouble()
+        print(state_now)
 
-        # *cmd.addString("world");
-        # cmd.addString("whereis");
-        # cmd.addString("tcp");
-        # cmd.addString("rightArm"); * /
-        pRpcClientCart.write(cmd, res);
-        printf("Got: %s\n", res.toString().c_str());
+        #Possible increments produced by the action:
+        increments = np.array([[5, 0, 0], [-5, 0, 0], [0, 5, 1], [0, -5, 0], [0, 0, 5], [0, 0, -5]])
+
+        next_state = np.clip(
+            state_now + increments[action],
+            [self.lbound, self.lbound, self.lbound], # Limits
+            [self.ubound, self.ubound, self.ubound]  # Limits
+        )
+
+        '''
         #print(next_coords)
         next_state = next_coords[0] * (self.n_col + self.n_row) + next_coords[1] * self.n_col + next_coords[2] #Calculate next step
         #print(next_state)
@@ -385,7 +397,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         if next_state_type == 'W' or state_type == 'H' or state_type == 'G':
             return [(state, 1.)]
         else:
-            return [(next_state, 1.)]
+        '''
+
+        return [(next_state, 1.)]
 
     ################### ACTION ##################################
 
@@ -397,4 +411,5 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
     @property
     def observation_space(self):
-        return Discrete(self.n_row * self.n_col * self.levels)
+        return Box(low=-np.inf, high=np.inf, shape=(3,)) #The state is defined as a 3D continous space
+        #return Discrete(self.n_row * self.n_col * self.levels)
