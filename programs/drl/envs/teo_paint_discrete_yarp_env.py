@@ -66,7 +66,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
     def __init__(self, desc='4x4'):
 
-        self.yarpDelay=0.05
+        self.yarpDelay=0.5
 
         ################ YARP ###############################################
         yarp.Network.init()
@@ -229,7 +229,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         next_state_idx = np.random.choice(len(probs), p=probs)
         next_state = possible_next_states[next_state_idx][0]
 
-        print("next state is", next_state)
+        #print("next state before move is", next_state)
 
         '''
         next_z = next_state // (self.n_col * self.n_row)
@@ -246,18 +246,45 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #PosY= coordY*sizeYcelda
         #PosZ= coordZ*sizeZcelda
 
+        #print("the next state is ",next_state)
+        print("Me voy a mover a:", next_state[0],next_state[1],next_state[2])
         dEncRaw = np.empty(6,float)
+        '''
         dEncRaw[0] = next_state[0]
         dEncRaw[1] = -next_state[1]
         dEncRaw[3] = next_state[2]
+        '''
+        dEncRaw[0] = 30
+        dEncRaw[1] = 0
+        dEncRaw[3] = 0
 
         mentalPositionControl.positionMove(0, dEncRaw[0])
         mentalPositionControl.positionMove(1, dEncRaw[1])
         mentalPositionControl.positionMove(3, dEncRaw[3])
 
         #Just some sleep for debug
-        print("Moving the robot")
+        #print("Moving the robot")
         time.sleep(self.yarpDelay)  # pause 5.5 seconds
+
+        ################ GET POSITION #################################
+
+        self.cmd.clear()
+        self.res.clear()
+        self.cmd.addString("stat")
+        self.rpcClientCart.write(self.cmd, self.res)
+
+        #print("La posición después de moverme es: ", self.res)
+        print("Got after movement : ", self.res.toString())
+
+        '''
+        # Now:
+        state_now=[]
+        for i in range(1, 4): #take only the 3 first
+            state_now.append(self.res.get(i).asDouble())
+        print(state_now)
+        '''
+        print("--------------------------------------------------------------\n")
+
 
         #print(self.n_col)
         #print(self.n_row)
@@ -266,6 +293,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #print("the next x is", next_x)
         #print("the next y is", next_y)
 
+        '''
         next_state_type = self.desc[next_z, next_x, next_y]
         
         #print(next_state_type)
@@ -290,6 +318,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         for i in range(self.res.size()):
             print(self.res.get(i).asInt())
             print(i)
+        '''
 
         ################ YARP GET % PAINT #################################
 
@@ -299,7 +328,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.cmd.addString("get")
         self.rpcClient.write(self.cmd, self.res)
 
-        print("The size of print after get is: ", self.res.size())
+        #print("The size of print after get is: ", self.res.size())
 
         percentage=0
         for i in range(self.res.size()):
@@ -309,6 +338,13 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         percentage=(percentage*100/self.res.size())
 
         reward=percentage
+
+        if percentage==100:
+            done=True
+        else:
+            done=False
+
+        #print ("El reward es: ", reward)
 
         return Step(observation=self.state, reward=reward, done=done)
 
@@ -368,24 +404,28 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.cmd.addString("stat")
         self.rpcClientCart.write(self.cmd, self.res)
 
-        print("La respuesta de posción es: ", self.res)
-        print("Got: ", self.res.toString())
+        #print("La respuesta de posción es: ", self.res)
+        #print("Got position now: ", self.res.toString())
         #printf("Got: %s\n", res.toString().c_str());
 
         # Now:
         state_now=[]
-        for i in range(self.res.size()):
-            state_now=self.res.get(i).asDouble()
-        print(state_now)
+        for i in range(1, 4): #take only the 3 first
+            state_now.append(self.res.get(i).asDouble())
+        print("The state now is: ",state_now)
+
+        ################### GET FUTURE STATES #############################
 
         #Possible increments produced by the action:
-        increments = np.array([[5, 0, 0], [-5, 0, 0], [0, 5, 1], [0, -5, 0], [0, 0, 5], [0, 0, -5]])
+        increments = np.array([[5, 0, 0], [-5, 0, 0], [0, 5, 0], [0, -5, 0], [0, 0, 5], [0, 0, -5]])
 
         next_state = np.clip(
             state_now + increments[action],
             [self.lbound, self.lbound, self.lbound], # Limits
             [self.ubound, self.ubound, self.ubound]  # Limits
         )
+
+        print("the next state is ", next_state)
 
         '''
         #print(next_coords)
