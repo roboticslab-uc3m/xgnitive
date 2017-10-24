@@ -51,7 +51,7 @@ MAPS = {
 
 ################### ENVIRONMENT #############################
 
-class GridWorld3DEnvYarp(Env, Serializable):
+class TeoPaintDiscreteYarpEnv(Env, Serializable):
     """
     'S' : starting point
     'F' or '.': free space

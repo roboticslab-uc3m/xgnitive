@@ -1,13 +1,13 @@
 from rllab.algos.trpo import TRPO
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
 #from rllab.envs.grid_world_env import GridWorldEnv
-from envs.grid_world_3D_env_yarp import GridWorld3DEnvYarp
+from envs.teo_paint_discrete_yarp_env import TeoPaintDiscreteYarpEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.categorical_mlp_policy import CategoricalMLPPolicy
 from rllab.misc.instrument import run_experiment_lite
 
 def run_task(*_):
-    env = normalize(GridWorld3DEnvYarp())
+    env = normalize(TeoPaintDiscreteYarpEnv())
     policy = CategoricalMLPPolicy(
         env_spec=env.spec,
     )
