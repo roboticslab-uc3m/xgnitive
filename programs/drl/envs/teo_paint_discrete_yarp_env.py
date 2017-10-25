@@ -13,43 +13,6 @@ from rllab.spaces import Box
 import yarp
 
 ################### TO USE NOW ############################
-'''
-MAPS = {
-    "chain": [
-        "GFFFFFFFFFFFFFSFFFFFFFFFFFFFG"
-    ],
-    "4x4_safe": [
-        "SFFF",
-        "FWFW",
-        "FFFW",
-        "WFFG"
-    ],
-    "4x4": [
-     [
-        "SFFF",
-        "FFFF",
-        "FFFF",
-        "FFFF"
-    ],
-    [
-        "FFFF",
-        "FFFF",
-        "FFFF",
-        "FFFF"
-    ]
-    ],
-    "8x8": [
-        "FFFFSFFF",
-        "FFFFFFFF",
-        "FFFHFFFF",
-        "FFFFFHFF",
-        "FFFHFFFF",
-        "FHHFFFHF",
-        "FHFFHFHF",
-        "FFFHFFFG"
-    ],
-}
-'''
 
 ################### ENVIRONMENT #############################
 
@@ -66,7 +29,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
     def __init__(self, desc='4x4'):
 
-        self.yarpDelay=0.5
+        self.yarpDelay=0.001
 
         ################ YARP ###############################################
         yarp.Network.init()
@@ -99,6 +62,21 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #mentalPositionControl = yarp.IPositionControl()
         #mentalDevice.view(mentalPositionControl)
+
+        #Set initial position:
+        mentalPositionControl = self.mentalDevice.viewIPositionControl()
+
+        dEncRaw = np.empty(6,float)
+
+        dEncRaw[0] = 0
+        dEncRaw[1] = 0
+        dEncRaw[3] = 0
+
+        mentalPositionControl.positionMove(0, dEncRaw[0])
+        mentalPositionControl.positionMove(1, dEncRaw[1])
+        mentalPositionControl.positionMove(3, dEncRaw[3])
+
+        time.sleep(self.yarpDelay)  # pause 5.5 seconds
 
         ################ YARP CONNECT TO PAINT #############################
         remotePaint = "/openraveYarpPaintSquares/rpc:s"
@@ -249,14 +227,15 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #print("the next state is ",next_state)
         print("Me voy a mover a:", next_state[0],next_state[1],next_state[2])
         dEncRaw = np.empty(6,float)
-        '''
+
         dEncRaw[0] = next_state[0]
         dEncRaw[1] = -next_state[1]
         dEncRaw[3] = next_state[2]
-        '''
-        dEncRaw[0] = 30
-        dEncRaw[1] = 0
-        dEncRaw[3] = 0
+
+
+        #dEncRaw[0] = 30
+        #dEncRaw[1] = 0
+        #dEncRaw[3] = 0
 
         mentalPositionControl.positionMove(0, dEncRaw[0])
         mentalPositionControl.positionMove(1, dEncRaw[1])
@@ -415,6 +394,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         enc.getEncoders(v) # read the encoder values and put them into 'v'
         print("the axes are: ",str(v[0]))
 
+        '''
         # Now:
         response=self.res.toString()
         response = response.replace("(", "") #Delete parenthesis from the string
@@ -422,12 +402,13 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         print(response[2])
         print(response[3])
         print(response[5])
+        '''
 
 
         state_now=[]
-        state_now.append(response[2])
-        state_now.append(response[3])
-        state_now.append(response[5])
+        state_now.append(float(str(v[0])))
+        state_now.append(float(str(v[1])))
+        state_now.append(float(str(v[3])))
 
         #for i in range(self.res.size()):
         #    state_now.append(self.res.get(i).asDouble())
