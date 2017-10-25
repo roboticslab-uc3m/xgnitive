@@ -127,13 +127,13 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         print(self.cmd)
         self.rpcClient.write(self.cmd,self.res)
 
-        ################ YARP CARTESIAN CONTROL ############################
+        ################ YARP CONNECT TO ENCODERS ############################
 
         self.rpcClientCart = yarp.RpcClient()
-        self.rpcClientCart.open("/cart:c")
+        self.rpcClientCart.open("/encs:c")
         while True:
-            yarp.Network.connect("/cart:c", "/CartesianControl/rpc_transform:s")
-            print("Wait to connect to cartesian server...\n")
+            yarp.Network.connect("/encs:c", "/teoSim/rightArm/rpc:i")
+            print("Wait to connect to rightArm server...\n")
             #time.sleep(self.yarpDelay)
             if self.rpcClientCart.getOutputCount() != 0:
                 break
@@ -270,7 +270,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         self.cmd.clear()
         self.res.clear()
-        self.cmd.addString("stat")
+        self.cmd.addString("get encs")
         self.rpcClientCart.write(self.cmd, self.res)
 
         #print("La posición después de moverme es: ", self.res)
@@ -401,17 +401,36 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         self.cmd.clear()
         self.res.clear()
-        self.cmd.addString("stat")
-        self.rpcClientCart.write(self.cmd, self.res)
+        self.cmd.addString("get")
+        self.cmd.addString("encs")
+        self.rpcClientCart.write(self.cmd, self.res) #Obtain the cartesian position.
 
-        #print("La respuesta de posción es: ", self.res)
+        #print("La respuesta de posición es: ", self.res)
         #print("Got position now: ", self.res.toString())
         #printf("Got: %s\n", res.toString().c_str());
 
+        enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
+        axes = enc.getAxes()
+        v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
+        enc.getEncoders(v) # read the encoder values and put them into 'v'
+        print("the axes are: ",str(v[0]))
+
         # Now:
+        response=self.res.toString()
+        response = response.replace("(", "") #Delete parenthesis from the string
+        response=response.split(" ") #split string
+        print(response[2])
+        print(response[3])
+        print(response[5])
+
+
         state_now=[]
-        for i in range(1, 4): #take only the 3 first
-            state_now.append(self.res.get(i).asDouble())
+        state_now.append(response[2])
+        state_now.append(response[3])
+        state_now.append(response[5])
+
+        #for i in range(self.res.size()):
+        #    state_now.append(self.res.get(i).asDouble())
         print("The state now is: ",state_now)
 
         ################### GET FUTURE STATES #############################
