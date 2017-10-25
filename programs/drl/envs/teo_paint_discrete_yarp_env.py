@@ -121,31 +121,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         # Do something I dont know what
         Serializable.quick_init(self, locals())
 
-
-        '''
-        #print("desc before isinstance",desc)
-        if isinstance(desc, str):
-            desc = MAPS[desc]
-
-        #print("desc before nparray \n",desc)
-        desc[0] = list(map(list, desc[0]))
-        #print(desc[0])
-        desc[1] = list(map(list, desc[1]))
-        #print(desc[1])
-        desc= np.array(list(desc))
-        #print("desc after nparray \n",desc)
-        desc[desc == '.'] = 'F'
-        desc[desc == 'o'] = 'H'
-        desc[desc == 'x'] = 'W'
-        self.desc = desc
-        self.levels, self.n_row, self.n_col = desc.shape[:]
-        #print("desc before search start \n", desc)
-        (start_z,), (start_x,), (start_y,) = np.nonzero(desc == 'S')
-        print('x', start_x)
-        print('y', start_y)
-        print('z', start_z)   
-        '''
-
         self.lbound=-15
         self.ubound=100
 
@@ -209,12 +184,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #print("next state before move is", next_state)
 
-        '''
-        next_z = next_state // (self.n_col * self.n_row)
-        next_x = (next_state - next_z*(self.n_col * self.n_row)) // self.n_col #Note: this is not a comment :D
-        next_y = (next_state - next_z*(self.n_col * self.n_row)) % self.n_col
-        '''
-
         #Declare device to position control
         mentalPositionControl = self.mentalDevice.viewIPositionControl()
 
@@ -255,13 +224,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #print("La posición después de moverme es: ", self.res)
         print("Got after movement : ", self.res.toString())
 
-        '''
-        # Now:
-        state_now=[]
-        for i in range(1, 4): #take only the 3 first
-            state_now.append(self.res.get(i).asDouble())
-        print(state_now)
-        '''
         print("--------------------------------------------------------------\n")
 
 
@@ -271,33 +233,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #print("the next z is", next_z)
         #print("the next x is", next_x)
         #print("the next y is", next_y)
-
-        '''
-        next_state_type = self.desc[next_z, next_x, next_y]
-        
-        #print(next_state_type)
-        #print(self.desc)
-
-        # Here we fix what each position does.
-        if next_state_type == 'H':
-            done = True
-            reward = 0
-        elif next_state_type in ['F', 'S']:
-            done = False
-            reward = 0
-        elif next_state_type == 'G':
-            done = True
-            reward = 1
-        else:
-            raise NotImplementedError
-        self.state = next_state
-
-        print("The size is: ", self.res.size())
-
-        for i in range(self.res.size()):
-            print(self.res.get(i).asInt())
-            print(i)
-        '''
 
         ################ YARP GET % PAINT #################################
 
@@ -342,40 +277,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         # assert self.observation_space.contains(state)
         # assert self.action_space.contains(action)
 
-        '''
-        # Obtain the z,x,y of the system by its state number. Later pos_z=coord_z*(increment z celda)
-        z = self.state // (self.n_col * self.n_row)
-        x = (self.state - z*(self.n_col * self.n_row)) // self.n_col #Note: this is not a comment :D
-        y = (self.state - z*(self.n_col * self.n_row)) % self.n_col
-        coords = np.array([z, x, y])
-
-        #print('NEW STEP')
-        #print(coords)
-
-        #print(coords)
-        ## Debug things
-        self.desc[0] = list(map(list, self.desc[0]))
-        #print(desc[0])
-        self.desc[1] = list(map(list, self.desc[1]))
-        #print(desc[1])
-        now= np.array(list(self.desc))
-        #now=np.array(list(map(list, self.desc)))
-
-        #print(now)
-
-        now[z, x, y]='X'
-        print(now)
-	
-        ## Possible increments produced by the actions.
-        #print(action)
-        increments = np.array([[0, 0, -1], [0, 1, 0], [0, 0, 1], [0, -1, 0], [1, 0, 0], [-1, 0, 0]])
-        next_coords = np.clip(
-            coords + increments[action],
-            [0, 0, 0],
-            [self.levels -1, self.n_row - 1, self.n_col - 1] #Set the limits
-        )
-        '''
-
         ################### GET POSITION #############################
 
         self.cmd.clear()
@@ -393,17 +294,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
         enc.getEncoders(v) # read the encoder values and put them into 'v'
         print("the axes are: ",str(v[0]))
-
-        '''
-        # Now:
-        response=self.res.toString()
-        response = response.replace("(", "") #Delete parenthesis from the string
-        response=response.split(" ") #split string
-        print(response[2])
-        print(response[3])
-        print(response[5])
-        '''
-
 
         state_now=[]
         state_now.append(float(str(v[0])))
@@ -426,19 +316,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         )
 
         print("the next state is ", next_state)
-
-        '''
-        #print(next_coords)
-        next_state = next_coords[0] * (self.n_col + self.n_row) + next_coords[1] * self.n_col + next_coords[2] #Calculate next step
-        #print(next_state)
-        state_type = self.desc[z, x, y]
-        next_state_type = self.desc[next_coords[0], next_coords[1], next_coords[2]]
-        #print(next_state_type)
-        if next_state_type == 'W' or state_type == 'H' or state_type == 'G':
-            return [(state, 1.)]
-        else:
-        '''
-
+        
         return [(next_state, 1.)]
 
     ################### ACTION ##################################
