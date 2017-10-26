@@ -219,9 +219,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         enc.getEncoders(v) # read the encoder values and put them into 'v'
 
         self.state=[]
-        self.state.append(float(str(v[0])))
-        self.state.append(float(str(v[1])))
-        self.state.append(float(str(v[3])))
+        self.state.append(v[0])
+        self.state.append(v[1])
+        self.state.append(v[3])
 
         #for i in range(self.res.size()):
         #    state_now.append(self.res.get(i).asDouble())
