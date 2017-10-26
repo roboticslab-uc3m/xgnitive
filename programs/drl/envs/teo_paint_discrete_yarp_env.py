@@ -31,6 +31,8 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         self.yarpDelay=0.05
         self.action_inc=5
+        self.action_penalty=0.1
+        self.num_step=0
 
         ################ YARP ###############################################
         yarp.Network.init()
@@ -158,6 +160,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         print(self.cmd)
         self.rpcClient.write(self.cmd,self.res)
 
+        #Reset num_steps
+        self.num_step = 0
+
 
         return self.state
 
@@ -193,6 +198,34 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         :param action: should be a one-hot vector encoding the action
         :return:
         """
+
+        ################### GET ACTUAL STATE #############################
+
+        self.cmd.clear()
+        self.res.clear()
+        '''
+        self.cmd.addString("get")
+        self.cmd.addString("encs")
+        self.rpcClientCart.write(self.cmd, self.res) #Obtain the cartesian position.
+
+        #print("La respuesta de posición es: ", self.res)
+        #print("Got position now: ", self.res.toString())
+        #printf("Got: %s\n", res.toString().c_str());
+        '''
+
+        enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
+        axes = enc.getAxes()
+        v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
+        enc.getEncoders(v) # read the encoder values and put them into 'v'
+
+        self.state=[]
+        self.state.append(float(str(v[0])))
+        self.state.append(float(str(v[1])))
+        self.state.append(float(str(v[3])))
+
+        #for i in range(self.res.size()):
+        #    state_now.append(self.res.get(i).asDouble())
+        print("The state now is: ",self.state)
 
         possible_next_states = self.get_possible_next_states(self.state, action)
 
@@ -274,8 +307,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
             # print(i)
 
         percentage=(percentage*100/self.res.size())
+        self.num_step=self.num_step+1
 
-        reward=percentage
+        reward=percentage-self.num_step*self.action_penalty
 
         if percentage==100:
             done=True
@@ -293,7 +327,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         """
         Given the state and action, return a list of possible next states and their probabilities. Only next states
         with nonzero probabilities will be returned
-        :param state: start state
         :param action: action
         :return: a list of pairs (s', p(s'|s,a))
         """
@@ -301,33 +334,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         # assert self.observation_space.contains(state)
         # assert self.action_space.contains(action)
 
-        ################### GET POSITION #############################
-
-        self.cmd.clear()
-        self.res.clear()
-        '''
-        self.cmd.addString("get")
-        self.cmd.addString("encs")
-        self.rpcClientCart.write(self.cmd, self.res) #Obtain the cartesian position.
-
-        #print("La respuesta de posición es: ", self.res)
-        #print("Got position now: ", self.res.toString())
-        #printf("Got: %s\n", res.toString().c_str());
-        '''
-
-        enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
-        axes = enc.getAxes()
-        v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
-        enc.getEncoders(v) # read the encoder values and put them into 'v'
-
-        state_now=[]
-        state_now.append(float(str(v[0])))
-        state_now.append(float(str(v[1])))
-        state_now.append(float(str(v[3])))
-
-        #for i in range(self.res.size()):
-        #    state_now.append(self.res.get(i).asDouble())
-        print("The state now is: ",state_now)
 
         ################### GET FUTURE STATES #############################
 
@@ -335,7 +341,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         increments = np.array([[self.action_inc, 0, 0], [-self.action_inc, 0, 0], [0, self.action_inc, 0], [0, -self.action_inc, 0], [0, 0, self.action_inc], [0, 0, -self.action_inc]])
 
         next_state = np.clip(
-            state_now + increments[action],
+            state + increments[action],
             [self.lbound, self.lbound, self.lbound], # Limits
             [self.ubound, self.ubound, self.ubound]  # Limits
         )
