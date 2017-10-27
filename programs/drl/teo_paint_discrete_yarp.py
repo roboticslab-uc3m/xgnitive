@@ -16,7 +16,11 @@ def run_task(*_):
         env=env,
         policy=policy,
         baseline=baseline,
-        n_itr=200,
+        batch_size=1000, #The more, the more past samples it takes.
+        max_path_length=400, #Lenght of the learned path.
+        discount=0.99, #discount for discounter
+        step_size=0.3, #Step size of the gradient
+        #n_itr=800,
         # Uncomment both lines (this and the plot parameter below) to enable plotting
         #plot=True,
     )
@@ -30,6 +34,6 @@ run_experiment_lite(
     snapshot_mode="last",
     # Specifies the seed for the experiment. If this is not provided, a random seed
     # will be used
-    seed=1,
+    # seed=1,
     # plot=True,
 )

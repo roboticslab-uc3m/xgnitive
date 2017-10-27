@@ -123,7 +123,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         ############### GENERAL ############################################
 
-        # Do something I dont know what
+        #
         Serializable.quick_init(self, locals())
 
         self.lbound=-15
@@ -254,7 +254,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         dEncRaw = np.empty(6,float)
 
         dEncRaw[0] = next_state[0]
-        dEncRaw[1] = -next_state[1]
+        dEncRaw[1] = next_state[1]
         dEncRaw[3] = next_state[2]
 
         #dEncRaw[0] = 30
@@ -342,8 +342,8 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         next_state = np.clip(
             state + increments[action],
-            [self.lbound, self.lbound, self.lbound], # Limits
-            [self.ubound, self.ubound, self.ubound]  # Limits
+            [self.lbound, -self.ubound, self.lbound], # Limits
+            [self.ubound, -self.lbound, self.ubound]  # Limits
         )
 
         print("the next state is ", next_state)
