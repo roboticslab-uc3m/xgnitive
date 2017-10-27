@@ -19,7 +19,7 @@ def run_task(*_):
         batch_size=1000, #The more, the more past samples it takes.
         max_path_length=400, #Lenght of the learned path.
         discount=0.99, #discount for discounter
-        step_size=0.3, #Step size of the gradient
+        step_size=0.01, #Step size of the gradient
         #n_itr=800,
         # Uncomment both lines (this and the plot parameter below) to enable plotting
         #plot=True,
