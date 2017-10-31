@@ -33,6 +33,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.action_inc=5
         self.action_penalty=0.1
         self.num_step=0
+        self.percentage=0
 
         ################ YARP ###############################################
         yarp.Network.init()
@@ -44,7 +45,15 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         ################ YARP CONNECT TO MOVE ###############################
         # This device will have three different options, device, remote local.
         mentalOptions= yarp.Property()
-        mentalOptions.put("device", "remote_controlboard") #device
+        mentalOptions.put("device", "controlboardwrapper2")  # device
+        mentalOptions.put("subdevice", "YarpOpenraveControlboard") #device
+        mentalOptions.put("env", "/usr/local/share/xgnitive/contexts/models/teo_cgda_iros.env.xml") #Environment
+        mentalOptions.put("name", "/teoSim/rightArm")  # Teo
+        mentalOptions.put("robotIndex", 0) #Teo
+        mentalOptions.put("manipulatorIndex", 2) #Right_Arm
+        mentalOptions.put("orPlugin", "OpenraveYarpPaintSquares") #Our lovely plugin (◕‿◕✿)
+
+
         remoteMental="/teoSim/rightArm"
         mentalOptions.put("remote", remoteMental) #remote
         localMental="/cgdaMental"
@@ -167,6 +176,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #Reset num_steps
         self.num_step = 0
 
+        #Set percentage of painted wall as zero
+        self.percentage = 0
+
 
         return self.state
 
@@ -254,7 +266,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #Declare device to position control
         mentalPositionControl = self.mentalDevice.viewIPositionControl()
 
-        #Try to move the robot. We may need cartesians.
+        #Try to move the robot.
 
         #print("the next state is ",next_state)
         print("Me voy a mover a:", next_state[0],next_state[1],next_state[2])
@@ -279,7 +291,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #Just some sleep for debug
         #print("Moving the robot")
-        #time.sleep(self.yarpDelay)  # pause
+        time.sleep(self.yarpDelay)  # pause
 
         ################ GET POSITION #################################
 
@@ -313,17 +325,34 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #print("The size of print after get is: ", self.res.size())
 
-        percentage=0
+        new_percentage=0
         for i in range(self.res.size()):
-            percentage= percentage+self.res.get(i).asInt()
+            new_percentage= new_percentage+self.res.get(i).asInt()
             # print(i)
 
-        percentage=(percentage*100/self.res.size())
+        new_percentage=(new_percentage*100/self.res.size())
+
+        #If a paint additional wall reward=1
+        if new_percentage > self.percentage:
+            print("******************************************************************************************** painted :)")
+            reward=1
+            quit()
+        elif new_percentage < self.percentage:
+            reward=-1
+        else:
+            print("nothing painted :(")
+            reward=0-self.num_step*self.action_penalty
+
+        '''
         self.num_step=self.num_step+1
 
-        reward=percentage-self.num_step*self.action_penalty
+        self.percentage = 0
 
-        if percentage==100:
+        reward=percentage-self.num_step*self.action_penalty
+        '''
+        self.percentage=new_percentage
+
+        if self.percentage==100:
             done=True
         else:
             done=False
