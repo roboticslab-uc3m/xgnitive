@@ -81,7 +81,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         mentalPositionControl.positionMove(3, dEncRaw[3])
         '''
 
-        time.sleep(self.yarpDelay)  # pause 5.5 seconds
+        #time.sleep(self.yarpDelay)  # pause 5.5 seconds
 
         ################ YARP CONNECT TO PAINT #############################
         remotePaint = "/openraveYarpPaintSquares/rpc:s"
@@ -101,6 +101,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #Read state
         self.cmd= yarp.Bottle()
         self.res= yarp.Bottle()
+
         '''
         # Reset paint
         self.cmd.clear()
@@ -110,6 +111,8 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.rpcClient.write(self.cmd,self.res)
         '''
 
+
+        '''
         ################ YARP CONNECT TO ENCODERS ############################
 
         self.rpcClientCart = yarp.RpcClient()
@@ -120,6 +123,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
             #time.sleep(self.yarpDelay)
             if self.rpcClientCart.getOutputCount() != 0:
                 break
+        '''
 
         ############### GENERAL ############################################
 
@@ -199,11 +203,10 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         :return:
         """
 
+        '''
         ################### GET ACTUAL STATE #############################
-
         self.cmd.clear()
         self.res.clear()
-        '''
         self.cmd.addString("get")
         self.cmd.addString("encs")
         self.rpcClientCart.write(self.cmd, self.res) #Obtain the cartesian position.
@@ -213,6 +216,8 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #printf("Got: %s\n", res.toString().c_str());
         '''
 
+        '''
+        #GET ENCODERS
         enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
         axes = enc.getAxes()
         v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
@@ -226,6 +231,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #for i in range(self.res.size()):
         #    state_now.append(self.res.get(i).asDouble())
         print("The state now is: ",self.state)
+        '''
 
         possible_next_states = self.get_possible_next_states(self.state, action)
 
@@ -238,6 +244,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #now[coords[0], coords[1]]='X'
         #print(now)
 
+        #Choose an action at random with the probabilities obtained in get possible states. This means off-policy
         probs = [x[1] for x in possible_next_states]
         next_state_idx = np.random.choice(len(probs), p=probs)
         next_state = possible_next_states[next_state_idx][0]
@@ -257,6 +264,11 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         dEncRaw[1] = next_state[1]
         dEncRaw[3] = next_state[2]
 
+        #The new state is equal to state where i moved.
+        self.state[0] = next_state[0]
+        self.state[1] = next_state[1]
+        self.state[2] = next_state[2]
+
         #dEncRaw[0] = 30
         #dEncRaw[1] = 0
         #dEncRaw[3] = 0
@@ -267,7 +279,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #Just some sleep for debug
         #print("Moving the robot")
-        time.sleep(self.yarpDelay)  # pause
+        #time.sleep(self.yarpDelay)  # pause
 
         ################ GET POSITION #################################
 
