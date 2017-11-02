@@ -1,6 +1,7 @@
 ################### GENERAL ##############################
 import numpy as np
 import time
+import copy
 
 ################### RLLAB ################################
 from .base import Env
@@ -29,7 +30,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
     def __init__(self):
 
-        self.yarpDelay=0.1
+        self.yarpDelay=0.01
         self.action_inc=5
         self.action_penalty=0.1
         self.num_step=0
@@ -41,23 +42,34 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         if yarp.Network.checkNetwork() != True:  # let's see if there was actually a reachable YARP network
             print('[error] Please try running yarp server')  # tell the user to start one with 'yarp server' if there isn't any
             quit()
+
+        mentalOptions= yarp.Property()
         
         ################ YARP CONNECT TO MOVE ###############################
         # This device will have three different options, device, remote local.
-        mentalOptions= yarp.Property()
         mentalOptions.put("device", "controlboardwrapper2")  # device
         mentalOptions.put("subdevice", "YarpOpenraveControlboard") #device
         mentalOptions.put("env", "/usr/local/share/xgnitive/contexts/models/teo_cgda_iros.env.xml") #Environment
-        mentalOptions.put("name", "/teoSim/rightArm")  # Teo
+        mentalOptions.put("name", "/drl/rightArm")  # Teo
         mentalOptions.put("robotIndex", 0) #Teo
         mentalOptions.put("manipulatorIndex", 2) #Right_Arm
-        mentalOptions.put("orPlugin", "OpenraveYarpPaintSquares") #Our lovely plugin (◕‿◕✿)
+
+        ################ YARP CONNECT TO PAINT ###############################
+        orPlugins = mentalOptions.addGroup("orPlugins")
+
+        orPlugin1 = orPlugins.addGroup("OpenraveYarpPaintSquares")  # Our lovely plugin (◕‿◕✿))
+        orPlugin1.put("module", "OpenraveYarpPaintSquares")
+        orPlugin1.put("commands", "open /drl/openraveYarpPaintSquares/rpc:s")
+
+        # orPlugin2 = orPlugins.addGroup("OpenraveYarpPaintSquares2")  # Our lovely plugin (◕‿◕✿))
+        # orPlugin2.put("module","OpenraveYarpPaintSquares2a")
+        # orPlugin2.put("commands", "open")
 
 
-        remoteMental="/teoSim/rightArm"
-        mentalOptions.put("remote", remoteMental) #remote
-        localMental="/cgdaMental"
-        mentalOptions.put("local", localMental) #local
+        #remoteMental="/teoSim/rightArm"
+        #mentalOptions.put("remote", remoteMental) #remote
+        #localMental="/cgdaMental"
+        #mentalOptions.put("local", localMental) #local
 
         #define Device
         #yarp.dev.Polydriver(mentalDevice)
@@ -93,7 +105,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #time.sleep(self.yarpDelay)  # pause 5.5 seconds
 
         ################ YARP CONNECT TO PAINT #############################
-        remotePaint = "/openraveYarpPaintSquares/rpc:s"
+        remotePaint = "/drl/openraveYarpPaintSquares/rpc:s"
         localPaint = "/cgda/openraveYarpPaintSquares/rpc:c"
 
         self.rpcClient=yarp.RpcClient()
@@ -149,7 +161,12 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
     ################### RESET #############################
 
     def reset(self):
-        self.state = self.start_state
+        self.state = copy.deepcopy(self.start_state) #rmbr
+
+        #Get limits
+        #dd = yarp.PolyDriver()
+        #dd.viewIControlLimits()
+        #ll = dd.viewIControlLimits()
 
         #Set initial position:
         mentalPositionControl = self.mentalDevice.viewIPositionControl()
@@ -164,6 +181,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         mentalPositionControl.positionMove(1, dEncRaw[1])
         mentalPositionControl.positionMove(3, dEncRaw[3])
 
+        print(self.state)
         time.sleep(self.yarpDelay)  # pause
 
         # Reset paint
@@ -281,7 +299,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.state[1] = next_state[1]
         self.state[2] = next_state[2]
 
-        #dEncRaw[0] = 30
+        #dEncRaw[0] = 45
         #dEncRaw[1] = 0
         #dEncRaw[3] = 0
 
@@ -334,9 +352,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #If a paint additional wall reward=1
         if new_percentage > self.percentage:
-            print("******************************************************************************************** painted :)")
+            #print("******************************************************************************************** painted :)")
             reward=1
-            quit()
+            #quit()
         elif new_percentage < self.percentage:
             reward=-1
         else:
