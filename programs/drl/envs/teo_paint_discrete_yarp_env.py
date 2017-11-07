@@ -97,7 +97,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         self.min3 = yarp.DVector(1)
         self.max3 = yarp.DVector(1)
-        self.mentalControlLimits.getLimits(0, self.min3, self.max3)
+        self.mentalControlLimits.getLimits(3, self.min3, self.max3)
 
         #self.lbound=-15
         #self.ubound=100
