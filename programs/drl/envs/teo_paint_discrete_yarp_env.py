@@ -84,8 +84,23 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         print("Mental robot device available.\n")
 
-        #mentalPositionControl = yarp.IPositionControl()
-        #mentalDevice.view(mentalPositionControl)
+        self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
+        self.mentalControlLimits = self.mentalDevice.viewIControlLimits()
+
+        self.min0 = yarp.DVector(1)
+        self.max0 = yarp.DVector(1)
+        self.mentalControlLimits.getLimits(0, self.min0, self.max0)
+
+        self.min1 = yarp.DVector(1)
+        self.max1 = yarp.DVector(1)
+        self.mentalControlLimits.getLimits(1, self.min1, self.max1)
+
+        self.min3 = yarp.DVector(1)
+        self.max3 = yarp.DVector(1)
+        self.mentalControlLimits.getLimits(0, self.min3, self.max3)
+
+        #self.lbound=-15
+        #self.ubound=100
 
         '''
         #Set initial position:
@@ -132,27 +147,10 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.rpcClient.write(self.cmd,self.res)
         '''
 
-
-        '''
-        ################ YARP CONNECT TO ENCODERS ############################
-
-        self.rpcClientCart = yarp.RpcClient()
-        self.rpcClientCart.open("/encs:c")
-        while True:
-            yarp.Network.connect("/encs:c", "/teoSim/rightArm/rpc:i")
-            print("Wait to connect to rightArm server...\n")
-            #time.sleep(self.yarpDelay)
-            if self.rpcClientCart.getOutputCount() != 0:
-                break
-        '''
-
         ############### GENERAL ############################################
 
         #
         Serializable.quick_init(self, locals())
-
-        self.lbound=-15
-        self.ubound=100
 
         self.start_state = [0,0,0]
         self.state = None
@@ -163,23 +161,16 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
     def reset(self):
         self.state = copy.deepcopy(self.start_state) #rmbr
 
-        #Get limits
-        #dd = yarp.PolyDriver()
-        #dd.viewIControlLimits()
-        #ll = dd.viewIControlLimits()
-
         #Set initial position:
-        mentalPositionControl = self.mentalDevice.viewIPositionControl()
-
         dEncRaw = np.empty(6,float)
 
         dEncRaw[0] = 0
         dEncRaw[1] = 0
         dEncRaw[3] = 0
 
-        mentalPositionControl.positionMove(0, dEncRaw[0])
-        mentalPositionControl.positionMove(1, dEncRaw[1])
-        mentalPositionControl.positionMove(3, dEncRaw[3])
+        self.mentalPositionControl.positionMove(0, dEncRaw[0])
+        self.mentalPositionControl.positionMove(1, dEncRaw[1])
+        self.mentalPositionControl.positionMove(3, dEncRaw[3])
 
         print(self.state)
         time.sleep(self.yarpDelay)  # pause
@@ -281,9 +272,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #print("next state before move is", next_state)
 
-        #Declare device to position control
-        mentalPositionControl = self.mentalDevice.viewIPositionControl()
-
         #Try to move the robot.
 
         #print("the next state is ",next_state)
@@ -303,9 +291,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #dEncRaw[1] = 0
         #dEncRaw[3] = 0
 
-        mentalPositionControl.positionMove(0, dEncRaw[0])
-        mentalPositionControl.positionMove(1, dEncRaw[1])
-        mentalPositionControl.positionMove(3, dEncRaw[3])
+        self.mentalPositionControl.positionMove(0, dEncRaw[0])
+        self.mentalPositionControl.positionMove(1, dEncRaw[1])
+        self.mentalPositionControl.positionMove(3, dEncRaw[3])
 
         #Just some sleep for debug
         #print("Moving the robot")
@@ -401,8 +389,8 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         next_state = np.clip(
             state + increments[action],
-            [self.lbound, -self.ubound, self.lbound], # Limits
-            [self.ubound, -self.lbound, self.ubound]  # Limits
+            [self.min0[0], self.min1[0], self.min3[0]], # Limits
+            [self.max0[0], self.max1[0], self.max3[0]]  # Limits
         )
 
         print("the next state is ", next_state)
