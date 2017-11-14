@@ -31,6 +31,8 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
     def __init__(self):
 
         self.yarpDelay=0.01
+        self.yarpForceDelay=0.5
+
         self.action_inc=5
         self.action_penalty=0.1
         self.num_step=0
@@ -147,6 +149,10 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #
         Serializable.quick_init(self, locals())
 
+        #Read state
+        self.cmd= yarp.Bottle()
+        self.res= yarp.Bottle()
+
         self.start_state = [0,0,0]
         self.state = None
         self.domain_fig = None
@@ -169,13 +175,6 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         print(self.state)
         time.sleep(self.yarpDelay)  # pause
-
-        # Reset paint
-        self.cmd.clear()
-        self.res.clear()
-        self.cmd.addString("reset")
-        print(self.cmd)
-        self.rpcClient.write(self.cmd,self.res)
 
         #Reset num_steps
         self.num_step = 0
@@ -264,23 +263,25 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         self.rpcClientCart.write(self.cmd, self.res)
 
-        print("La posición obtenida con el Cartesian Position es: ", self.res())
+        print("La posición obtenida con el Cartesian Position es: ", self.res.toString())
 
         ################ GET FORCE ##############################################
 
         #self.cmd.clear()
         #self.res.clear()
 
-        b = self.forcePort.read(false)
+        b = self.forcePort.read(False)
 
         #Waiting to receive force
         if not b:
             while(1):
+                b = self.forcePort.read(False)
                 print("No force received yet")
+                time.sleep(self.yarpForceDelay)  # pause
                 if b:
                     break
 
-        print("La fuerza obtenida es: ", b)
+        print("La fuerza obtenida es: ", b.toString())
 
 
         '''
@@ -307,9 +308,9 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         # Idea reward: Executed trajectory - target trajectory. The Executed trajectory is init with 0s. It has to be comulative.
         # self.trajectory (??)
 
+        reward=1
 
-
-        if self.percentage==100:
+        if self.percentage==100: #here should be something like, totaltraj-attempedtraj=0
             done=True
         else:
             done=False
