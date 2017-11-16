@@ -85,22 +85,22 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         print("Mental robot device available.\n")
 
         self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
-        #self.mentalControlLimits = self.mentalDevice.viewIControlLimits()
+        self.mentalControlLimits = self.mentalDevice.viewIControlLimits()
 
-        #self.min0 = yarp.DVector(1)
-        #self.max0 = yarp.DVector(1)
-        #self.mentalControlLimits.getLimits(0, self.min0, self.max0)
+        self.min0 = yarp.DVector(1)
+        self.max0 = yarp.DVector(1)
+        self.mentalControlLimits.getLimits(0, self.min0, self.max0)
 
-        #self.min1 = yarp.DVector(1)
-        #self.max1 = yarp.DVector(1)
-        #self.mentalControlLimits.getLimits(1, self.min1, self.max1)
+        self.min1 = yarp.DVector(1)
+        self.max1 = yarp.DVector(1)
+        self.mentalControlLimits.getLimits(1, self.min1, self.max1)
 
-        #self.min3 = yarp.DVector(1)
-        #self.max3 = yarp.DVector(1)
-        #self.mentalControlLimits.getLimits(3, self.min3, self.max3)
+        self.min3 = yarp.DVector(1)
+        self.max3 = yarp.DVector(1)
+        self.mentalControlLimits.getLimits(3, self.min3, self.max3)
 
-        self.lbound=-15
-        self.ubound=100
+        #self.lbound=-15
+        #self.ubound=100
 
         '''
         #Set initial position:
@@ -151,6 +151,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
     def reset(self):
         self.state = copy.deepcopy(self.start_state) #rmbr
+        self.reward=0
 
         #Set initial position:
         dEncRaw = np.empty(6,float)
@@ -163,14 +164,14 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.mentalPositionControl.positionMove(1, dEncRaw[1])
         self.mentalPositionControl.positionMove(3, dEncRaw[3])
 
-        print(self.state)
+        #print(self.state)
         time.sleep(self.yarpDelay)  # pause
 
         # Reset paint
         self.cmd.clear()
         self.res.clear()
         self.cmd.addString("reset")
-        print(self.cmd)
+        #print(self.cmd)
         self.rpcClient.write(self.cmd,self.res)
 
         #Reset num_steps
@@ -235,15 +236,17 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
         enc.getEncoders(v) # read the encoder values and put them into 'v'
 
-        self.state=[]
-        self.state.append(v[0])
-        self.state.append(v[1])
-        self.state.append(v[3])
+        self.enc_state=[]
+        self.enc_state.append(v[0])
+        self.enc_state.append(v[1])
+        self.enc_state.append(v[3])
 
         #for i in range(self.res.size()):
         #    state_now.append(self.res.get(i).asDouble())
-        print("The state now is: ",self.state)
+        print("The state that the encoders tell me now is: ",self.enc_state)
+        print("The state where i think i am is: ", self.state)
         '''
+
 
         possible_next_states = self.get_possible_next_states(self.state, action)
 
@@ -266,8 +269,8 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         #Try to move the robot.
 
         #print("the next state is ",next_state)
-        print("Estabe en: ", self.state[0], self.state[1],self.state[2])
-        print("Me voy a mover a:", next_state[0],next_state[1],next_state[2])
+        #print("Estaba en: ", self.state[0], self.state[1],self.state[2])
+        #print("Me voy a mover a:", next_state[0],next_state[1],next_state[2])
         dEncRaw = np.empty(6,float)
 
         dEncRaw[0] = next_state[0]
@@ -332,14 +335,14 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #If a paint additional wall reward=1
         if new_percentage > self.percentage:
-            #print("******************************************************************************************** painted :)")
-            reward=1
+            print("******************************************************************************************** painted :)")
+            self.reward= self.reward+1
             #quit()
         elif new_percentage < self.percentage:
-            reward=-1
+            self.reward= self.reward-1
         else:
             print("nothing painted :(")
-            reward=0-self.num_step*self.action_penalty
+            #self.reward= self.reward #-self.num_step*self.action_penalty
 
         '''
         self.num_step=self.num_step+1
@@ -357,9 +360,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         else:
             done=False
 
-        print ("El reward es: ", reward)
+        print ("El reward es: ", self.reward)
 
-        return Step(observation=self.state, reward=reward, done=done)
+        return Step(observation=self.state, reward=self.reward, done=done)
 
     ################### NEXT STATES #############################
 
@@ -383,13 +386,13 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         next_state = np.clip(
             state + increments[action],
-            #[self.min0[0], self.min1[0], self.min3[0]], # Limits
-            #[self.max0[0], self.max1[0], self.max3[0]]  # Limits
-            [self.lbound, -self.ubound, self.lbound], # Limits
-            [self.ubound, -self.lbound, self.ubound]  # Limits
+            [self.min0[0], self.min1[0], self.min3[0]], # Limits
+            [self.max0[0], self.max1[0], self.max3[0]]  # Limits
+            #[self.lbound, -self.ubound, self.lbound], # Limits
+            #[self.ubound, -self.lbound, self.ubound]  # Limits
         )
 
-        print("the next state is ", next_state)
+        #print("the next state is ", next_state)
 
         return [(next_state, 1.)]
 
