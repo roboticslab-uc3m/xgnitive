@@ -299,7 +299,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         print("The state where i think i am is: ", self.state)
         '''
 
-        #print(self.state)
+        print("Before possible next step: ", self.state)
 
         possible_next_states = self.get_possible_next_states(self.state, action)
 
@@ -321,7 +321,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #Try to move the robot.
 
-        #print("the next state is ",next_state)
+        print("the next state is ",next_state)
         #print("Estaba en: ", self.state[0], self.state[1],self.state[2])
         #print("Me voy a mover a:", next_state[0],next_state[1],next_state[2])
         dEncRaw = np.empty(6,float)
@@ -329,13 +329,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         dEncRaw[0] = next_state[0]
         dEncRaw[1] = next_state[1]
         dEncRaw[3] = next_state[2]
-
-        #The new state is equal to state where i moved.
-        self.state[0] = next_state[0]
-        self.state[1] = next_state[1]
-        self.state[2] = next_state[2]
-
-        #print("Me moví a: ", next_state)
+        print("Me voy a mover a: ", dEncRaw[0],dEncRaw[1],dEncRaw[3])
 
         #dEncRaw[0] = 45
         #dEncRaw[1] = 0
@@ -344,6 +338,13 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.mentalPositionControl.positionMove(0, dEncRaw[0])
         self.mentalPositionControl.positionMove(1, dEncRaw[1])
         self.mentalPositionControl.positionMove(3, dEncRaw[3])
+
+        #The new state is equal to state where i moved.
+        self.state[0] = next_state[0]
+        self.state[1] = next_state[1]
+        self.state[2] = next_state[2]
+
+        print("Me moví a: ", next_state)
 
         #Just some sleep for debug
         #print("Moving the robot")
@@ -381,6 +382,26 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         #print("The size of print after get is: ", self.res.size())
 
+        percentage = 0
+        for i in range(self.res.size()):
+            percentage = percentage + self.res.get(i).asInt()
+            # print(i)
+
+        percentage = (percentage * 100 / self.res.size())
+        self.num_step = self.num_step + 1
+
+        reward = percentage - self.num_step * self.action_penalty
+
+        if percentage == 100:
+            done = True
+        else:
+            done = False
+
+        print ("Percentage of painted wall is: ", percentage)
+
+        print ("El reward es: ", reward)
+
+        '''
         new_percentage=0
         for i in range(self.res.size()):
             new_percentage= new_percentage+self.res.get(i).asInt()
@@ -400,13 +421,8 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
             print("nothing painted :(")
             #self.reward= self.reward #-self.num_step*self.action_penalty
 
-        '''
+    
         self.num_step=self.num_step+1
-
-        self.percentage = 0
-
-        reward=percentage-self.num_step*self.action_penalty
-        '''
 
         self.percentage=new_percentage
         print ("Percentage of painted wall is: ", self.percentage)
@@ -417,8 +433,10 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
             done=False
 
         print ("El reward es: ", self.reward)
+        '''
 
-        return Step(observation=self.state, reward=self.reward, done=done)
+        #return Step(observation=self.state, reward=self.reward, done=done)
+        return Step(observation=self.state, reward=reward, done=done)
 
     ################### NEXT STATES #############################
 
