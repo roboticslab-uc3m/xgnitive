@@ -32,6 +32,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.percentage=0
         self.reward=0
 
+        '''
         ################ YARP ###############################################
         yarp.Network.init()
 
@@ -40,7 +41,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
             '[error] Please try running yarp server')  # tell the user to start one with 'yarp server' if there isn't any
             quit()
 
-        ################ YARP CONNECT TO MOVE ###############################
+        ############### YARP CONNECT TO MOVE ###############################
         # This device will have three different options, device, remote local.
         mentalOptions = yarp.Property()
         mentalOptions.put("device", "remote_controlboard")  # device
@@ -62,21 +63,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         print("Mental robot device available.\n")
 
-        # mentalPositionControl = yarp.IPositionControl()
-        # mentalDevice.view(mentalPositionControl)
-
-        '''
-        #Set initial position:
-        mentalPositionControl = self.mentalDevice.viewIPositionControl()
-        dEncRaw = np.empty(6,float)
-        dEncRaw[0] = 0
-        dEncRaw[1] = 0
-        dEncRaw[3] = 0
-        mentalPositionControl.positionMove(0, dEncRaw[0])
-        mentalPositionControl.positionMove(1, dEncRaw[1])
-        mentalPositionControl.positionMove(3, dEncRaw[3])
-        '''
-
         time.sleep(self.yarpDelay)  # pause 5.5 seconds
 
         ################ YARP CONNECT TO PAINT #############################
@@ -97,14 +83,65 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         # Read state
         self.cmd = yarp.Bottle()
         self.res = yarp.Bottle()
+
         '''
-        # Reset paint
-        self.cmd.clear()
-        self.res.clear()
-        self.cmd.addString("reset")
-        print(self.cmd)
-        self.rpcClient.write(self.cmd,self.res)
-        '''
+
+        ################ YARP CONNECT TO MOVE ###############################
+        # This device will have three different options, device, remote local.
+        mentalOptions = yarp.Property()
+        mentalOptions.put("device", "controlboardwrapper2")  # device
+        mentalOptions.put("subdevice", "YarpOpenraveControlboard")  # device
+        mentalOptions.put("env", "/usr/local/share/xgnitive/contexts/models/teo_cgda_iros.env.xml")  # Environment
+        mentalOptions.put("name", "/drl/rightArm")  # Teo
+        mentalOptions.put("robotIndex", 0)  # Teo
+        mentalOptions.put("manipulatorIndex", 2)  # Right_Arm
+
+        ################ YARP CONNECT TO PAINT ###############################
+        orPlugins = mentalOptions.addGroup("orPlugins")
+
+        orPlugin1 = orPlugins.addGroup("OpenraveYarpPaintSquares")  # Our lovely plugin (◕‿◕✿))
+        orPlugin1.put("module", "OpenraveYarpPaintSquares")
+        orPlugin1.put("commands", "open /drl/openraveYarpPaintSquares/rpc:s")
+
+        # orPlugin2 = orPlugins.addGroup("OpenraveYarpPaintSquares2")  # Our lovely plugin (◕‿◕✿))
+        # orPlugin2.put("module","OpenraveYarpPaintSquares2a")
+        # orPlugin2.put("commands", "open")
+
+
+        # remoteMental="/teoSim/rightArm"
+        # mentalOptions.put("remote", remoteMental) #remote
+        # localMental="/cgdaMental"
+        # mentalOptions.put("local", localMental) #local
+
+        # define Device
+        # yarp.dev.Polydriver(mentalDevice)
+        self.mentalDevice = yarp.PolyDriver()
+        # open device
+        self.mentalDevice.open(mentalOptions)
+        if not self.mentalDevice.isValid():
+            print("Mental robot device not available.\n")
+            self.mentalDevice.close()
+            yarp.Network.fini()
+            return 1
+
+        # Read state
+        self.cmd = yarp.Bottle()
+        self.res = yarp.Bottle()
+
+        remotePaint = "/drl/openraveYarpPaintSquares/rpc:s"
+        localPaint = "/cgda/openraveYarpPaintSquares/rpc:c"
+
+        self.rpcClient = yarp.RpcClient()
+        self.rpcClient.open(localPaint)  # Connect to local paint
+
+        while True:  ##do-while
+            yarp.Network.connect(localPaint, remotePaint)
+            print("Wait to connect to paint server...\n")
+            time.sleep(self.yarpDelay)
+            if self.rpcClient.getOutputCount() != 0:
+                break
+
+        print("Mental robot device available.\n")
 
         ################ YARP CONNECT TO ENCODERS ############################
 
@@ -117,10 +154,33 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
             if self.rpcClientCart.getOutputCount() != 0:
                 break
 
+        '''
+
+        ################ LIMITS #############################################
+
+        self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
+        self.mentalControlLimits = self.mentalDevice.viewIControlLimits()
+
+        self.min0 = yarp.DVector(1)
+        self.max0 = yarp.DVector(1)
+        self.mentalControlLimits.getLimits(0, self.min0, self.max0)
+
+        self.min1 = yarp.DVector(1)
+        self.max1 = yarp.DVector(1)
+        self.mentalControlLimits.getLimits(1, self.min1, self.max1)
+
+        self.min3 = yarp.DVector(1)
+        self.max3 = yarp.DVector(1)
+        self.mentalControlLimits.getLimits(3, self.min3, self.max3)
+        '''
+
         ############### GENERAL ############################################
 
         #
         Serializable.quick_init(self, locals())
+
+        # Declare device to position control
+        self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
 
         self.lbound = -15
         self.ubound = 100
@@ -137,18 +197,15 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.reward = 0
         self.percentage = 0
 
-        # Set initial position:
-        mentalPositionControl = self.mentalDevice.viewIPositionControl()
-
         dEncRaw = np.empty(6, float)
 
         dEncRaw[0] = 0
         dEncRaw[1] = 0
         dEncRaw[3] = 0
 
-        mentalPositionControl.positionMove(0, dEncRaw[0])
-        mentalPositionControl.positionMove(1, dEncRaw[1])
-        mentalPositionControl.positionMove(3, dEncRaw[3])
+        self.mentalPositionControl.positionMove(0, dEncRaw[0])
+        self.mentalPositionControl.positionMove(1, dEncRaw[1])
+        self.mentalPositionControl.positionMove(3, dEncRaw[3])
 
         time.sleep(self.yarpDelay)  # pause
 
@@ -212,8 +269,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
         axes = enc.getAxes()
-        v = yarp.DVector(
-            axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
+        v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
         enc.getEncoders(v)  # read the encoder values and put them into 'v'
 
         self.state = []
@@ -242,8 +298,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         # print("next state before move is", next_state)
 
-        # Declare device to position control
-        mentalPositionControl = self.mentalDevice.viewIPositionControl()
+
 
         # Try to move the robot. We may need cartesians.
 
@@ -259,9 +314,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         # dEncRaw[1] = 0
         # dEncRaw[3] = 0
 
-        mentalPositionControl.positionMove(0, dEncRaw[0])
-        mentalPositionControl.positionMove(1, dEncRaw[1])
-        mentalPositionControl.positionMove(3, dEncRaw[3])
+        self.mentalPositionControl.positionMove(0, dEncRaw[0])
+        self.mentalPositionControl.positionMove(1, dEncRaw[1])
+        self.mentalPositionControl.positionMove(3, dEncRaw[3])
 
         # Just some sleep for debug
         # print("Moving the robot")
@@ -297,26 +352,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         # print("The size of print after get is: ", self.res.size())
 
-        '''
-        #WORKING
-        percentage = 0
-        for i in range(self.res.size()):
-            percentage = percentage + self.res.get(i).asInt()
-            # print(i)
-
-        percentage = (percentage * 100 / self.res.size())
-        #self.num_step = self.num_step + 1
-
-        reward = percentage#/10 #- self.num_step * self.action_penalty
-
-        if percentage == 100:
-            done = True
-        else:
-            done = False
-
-        print ("El reward es: ", reward)
-
-        '''
         new_percentage = 0
         for i in range(self.res.size()):
             new_percentage = new_percentage + self.res.get(i).asInt()
@@ -374,6 +409,8 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         next_state = np.clip(
             state + increments[action],
+            #[self.min0[0], self.min1[0], self.min3[0]],  # Limits
+            #[self.max0[0], self.max1[0], self.max3[0]]  # Limits
             [self.lbound, -self.ubound, self.lbound],  # Limits
             [self.ubound, -self.lbound, self.ubound]  # Limits
         )
