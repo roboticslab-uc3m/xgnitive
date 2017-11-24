@@ -23,7 +23,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
     def __init__(self):
 
-        self.yarpDelay = 0.1
+        self.yarpDelay = 0.01
         self.action_inc = 5
         self.action_penalty = 0.1
         self.num_step = 0
