@@ -13,18 +13,7 @@ from rllab.spaces import Box
 ################### YARP ##############################
 import yarp
 
-################### TO USE NOW ############################
-
-################### ENVIRONMENT #############################
-
 class TeoIronDiscreteYarpEnv(Env, Serializable):
-    """
-    'S' : starting point
-    'F' or '.': free space
-    'W' or 'x': wall
-    'H' or 'o': hole (terminates episode)
-    'G' : goal
-    """
 
     ################### INIT ###############################
 
@@ -124,6 +113,16 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
                 break
         print ("Cartesian port available. \n")
 
+        ################ YARP CONNECT TO ENCODERS ############################
+
+        self.rpcClientCart = yarp.RpcClient()
+        self.rpcClientCart.open("/encs:c")
+        while True:
+            yarp.Network.connect("/encs:c", "/teoSim/rightArm/rpc:i")
+            print("Wait to connect to rightArm server...\n")
+            # time.sleep(self.yarpDelay)
+            if self.rpcClientCart.getOutputCount() != 0:
+                break
 
         ################ YARP OBTAIN LIMITS ###############################
         self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
@@ -206,17 +205,28 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
     ################### STEP ##############################
 
     def step(self, action):
-        """
-        action map:
-        0: left
-        1: down
-        2: right
-        3: up
-        4: climb_up
-        5: climb_down
-        :param action: should be a one-hot vector encoding the action
-        :return:
-        """
+
+        self.cmd.clear()
+        self.res.clear()
+        '''
+        self.cmd.addString("get")
+        self.cmd.addString("encs")
+        self.rpcClientCart.write(self.cmd, self.res) #Obtain the cartesian position.
+        #print("La respuesta de posición es: ", self.res)
+        #print("Got position now: ", self.res.toString())
+        #printf("Got: %s\n", res.toString().c_str());
+        '''
+
+        enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
+        axes = enc.getAxes()
+        v = yarp.DVector(
+            axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
+        enc.getEncoders(v)  # read the encoder values and put them into 'v'
+
+        self.state = []
+        self.state.append(v[0])
+        self.state.append(v[1])
+        self.state.append(v[3])
 
         #Get possible states with the actual state.
         possible_next_states = self.get_possible_next_states(self.state, action)
@@ -239,9 +249,9 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         dEncRaw[3] = next_state[2]
 
         #The new state is equal to state where i moved.
-        self.state[0] = next_state[0]
-        self.state[1] = next_state[1]
-        self.state[2] = next_state[2]
+        #self.state[0] = next_state[0]
+        #self.state[1] = next_state[1]
+        #self.state[2] = next_state[2]
 
         #dEncRaw[0] = 45
         #dEncRaw[1] = 0
