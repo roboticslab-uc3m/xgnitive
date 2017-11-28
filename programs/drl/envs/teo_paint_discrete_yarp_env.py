@@ -154,8 +154,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
             if self.rpcClientCart.getOutputCount() != 0:
                 break
 
-        '''
-
         ################ LIMITS #############################################
 
         self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
@@ -172,7 +170,6 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.min3 = yarp.DVector(1)
         self.max3 = yarp.DVector(1)
         self.mentalControlLimits.getLimits(3, self.min3, self.max3)
-        '''
 
         ############### GENERAL ############################################
 
@@ -182,8 +179,8 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         # Declare device to position control
         self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
 
-        self.lbound = -15
-        self.ubound = 100
+        #self.lbound = -15
+        #self.ubound = 100
 
         self.start_state = [0, 0, 0]
         self.state = None
@@ -409,10 +406,10 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         next_state = np.clip(
             state + increments[action],
-            #[self.min0[0], self.min1[0], self.min3[0]],  # Limits
-            #[self.max0[0], self.max1[0], self.max3[0]]  # Limits
-            [self.lbound, -self.ubound, self.lbound],  # Limits
-            [self.ubound, -self.lbound, self.ubound]  # Limits
+            [self.min0[0], self.min1[0], self.min3[0]],  # Limits
+            [self.max0[0], self.max1[0], self.max3[0]]  # Limits
+            #[self.lbound, -self.ubound, self.lbound],  # Limits
+            #[self.ubound, -self.lbound, self.ubound]  # Limits
         )
 
         print("the next state is ", next_state)
