@@ -51,6 +51,16 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         ################ YARP CONNECT TO FORCE ###############################
 
+        orPlugins = mentalOptions.addGroup("orPlugins")
+
+        orPlugin1 = orPlugins.addGroup("OpenraveWorldRpcResponder")  # Our lovely plugin (◕‿◕✿)
+        orPlugin1.put("module", "OpenraveWorldRpcResponder")
+        orPlugin1.put("commands", "open")
+
+        orPlugin2 = orPlugins.addGroup("OpenraveYarpForceEstimator")  # Our lovely plugin (◕‿◕✿)
+        orPlugin2.put("module", "OpenraveYarpForceEstimator")
+        orPlugin2.put("commands", "open")
+
         self.forcePort= yarp.BufferedPortBottle()
 
         self.forcePort.open("/force:i")
@@ -199,14 +209,6 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         self.cmd.clear()
         self.res.clear()
-        '''
-        self.cmd.addString("get")
-        self.cmd.addString("encs")
-        self.rpcClientCart.write(self.cmd, self.res) #Obtain the cartesian position.
-        #print("La respuesta de posición es: ", self.res)
-        #print("Got position now: ", self.res.toString())
-        #printf("Got: %s\n", res.toString().c_str());
-        '''
 
         enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
         axes = enc.getAxes()
