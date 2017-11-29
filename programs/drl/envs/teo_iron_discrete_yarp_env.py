@@ -1,17 +1,22 @@
-################### GENERAL ##############################
+################### GENERAL ##################################
 import numpy as np
 import time
 import copy
 
-################### RLLAB ################################
+################### RLLAB ####################################
 from .base import Env
 from rllab.spaces import Discrete
 from rllab.envs.base import Step
 from rllab.core.serializable import Serializable
 from rllab.spaces import Box
 
-################### YARP ##############################
+################### YARP #####################################
 import yarp
+
+################### FAST-DTW #################################
+from scipy.spatial.distance import euclidean
+from fastdtw import fastdtw
+
 
 class TeoIronDiscreteYarpEnv(Env, Serializable):
 
@@ -23,7 +28,6 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         self.yarpForceDelay=0.5
 
         self.action_inc=5
-        self.action_penalty=0.1
         self.num_step=0
         self.percentage=0
 
@@ -151,6 +155,10 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #Read state
         self.cmd= yarp.Bottle()
         self.res= yarp.Bottle()
+
+        #Define Trajectories [x,y,z,Fz]:
+        self.attemp=np.array([0,0,0,0])
+        self.goal=np.array([])
 
         self.start_state = [0,0,0]
         self.state = None
@@ -317,6 +325,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         # Idea reward: Executed trajectory - target trajectory. The Executed trajectory is init with 0s. It has to be comulative.
         # self.trajectory (??)
+
 
         reward=1
 
