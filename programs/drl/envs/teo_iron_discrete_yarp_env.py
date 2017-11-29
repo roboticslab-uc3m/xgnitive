@@ -24,7 +24,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
     def __init__(self):
 
-        self.yarpDelay=0.01
+        self.yarpDelay=0.1
         self.yarpForceDelay=0.5
 
         self.action_inc=5
@@ -48,32 +48,6 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         mentalOptions.put("name", "/drl/rightArm")  # Teo
         mentalOptions.put("robotIndex", 0) #Teo
         mentalOptions.put("manipulatorIndex", 2) #Right_Arm
-
-        ################ YARP CONNECT TO IRON ###############################
-
-        orPlugins = mentalOptions.addGroup("orPlugins")
-
-        orPlugin1 = orPlugins.addGroup("OpenraveYarpPaintSquares")  # Our lovely plugin (◕‿◕✿))
-        orPlugin1.put("module", "OpenraveYarpPaintSquares")
-        orPlugin1.put("commands", "open /drl/openraveYarpPaintSquares/rpc:s")
-
-        # orPlugin2 = orPlugins.addGroup("OpenraveYarpPaintSquares2")  # Our lovely plugin (◕‿◕✿))
-        # orPlugin2.put("module","OpenraveYarpPaintSquares2a")
-        # orPlugin2.put("commands", "open")
-
-        #define Device
-        #yarp.dev.Polydriver(mentalDevice)
-        self.mentalDevice= yarp.PolyDriver()
-        #open device
-        self.mentalDevice.open(mentalOptions)
-        if not self.mentalDevice.isValid() :
-            print("Mental robot device not available.\n")
-            self.mentalDevice.close()
-            yarp.Network.fini()
-            return 1
-
-        print("Mental robot device available.\n")
-
 
         ################ YARP CONNECT TO FORCE ###############################
 
@@ -158,7 +132,16 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         #Define Trajectories [x,y,z,Fz]:
         self.attemp=np.array([0,0,0,0])
-        self.goal=np.array([])
+
+        self.goal=np.array([0.272805, -0.500201, 0.012808, 5.775318],
+                           [0.272620, -0.502092, 0.012907, 5.918067],
+                           [0.266961, -0.508060, -0.000334, 8.253265],
+                           [0.251811, -0.514240, -0.034490, 15.243059],
+                           [0.238970, -0.514431, -0.067436, -6.968969],
+                           [0.275419, -0.523437, -0.045262, -30.054635],
+                           [0.319814, -0.541889, -0.003238, -11.918344],
+                           [0.334939, -0.561616, 0.015075, -1.851854],
+                           [0.340740, -0.560490, 0.019368, -1.511597])
 
         self.start_state = [0,0,0]
         self.state = None
@@ -326,10 +309,13 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         # Idea reward: Executed trajectory - target trajectory. The Executed trajectory is init with 0s. It has to be comulative.
         # self.trajectory (??)
 
+        distance, path = fastdtw(self.attemp, self.goal, dist=euclidean)
 
-        reward=1
+        print("The distance is: ", distance)
 
-        if self.percentage==100: #here should be something like, totaltraj-attempedtraj=0
+        reward=1/distance;
+
+        if distance<=1:
             done=True
         else:
             done=False
