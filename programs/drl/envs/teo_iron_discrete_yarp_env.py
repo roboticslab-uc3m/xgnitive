@@ -54,13 +54,22 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         orPlugins = mentalOptions.addGroup("orPlugins")
 
+        print("************************************* HASTA AQUI LLEGUE 0************************************************************************************")
+
+
         orPlugin1 = orPlugins.addGroup("OpenraveWorldRpcResponder")  # Our lovely plugin (◕‿◕✿)
         orPlugin1.put("module", "OpenraveWorldRpcResponder")
         orPlugin1.put("commands", "open /drl/openraveWorldRpcResponder/rpc:s")
 
+        print("************************************* HASTA AQUI LLEGUE 1************************************************************************************")
+
+
         orPlugin2 = orPlugins.addGroup("OpenraveYarpForceEstimator")  # Our lovely plugin (◕‿◕✿)
         orPlugin2.put("module", "OpenraveYarpForceEstimator")
         orPlugin2.put("commands", "open /drl/openraveYarpForceEstimator/rpc:s")
+
+        print("************************************* HASTA AQUI LLEGUE 2************************************************************************************")
+
 
         # define Device
         self.mentalDevice = yarp.PolyDriver()
@@ -71,6 +80,8 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
             self.mentalDevice.close()
             yarp.Network.fini()
             return 1
+
+        print("************************************* HASTA AQUI LLEGUE 3************************************************************************************")
 
         '''
 
@@ -110,7 +121,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
             time.sleep(self.yarpDelay)
             if self.rpcClientWorld.getOutputCount() != 0:
                 break
-        print ("Force port available. \n")
+        print ("World port available. \n")
 
         ################ YARP CONNECT TO CARTESIAN ###############################
 
@@ -169,7 +180,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         self.attemp=np.array([0,0,0,0])
 
         self.goal=np.array([0.272805, -0.500201, 0.012808, 5.775318],
-                        [0.272620, -0.502092, 0.012907, 5.918067],
+                           [0.272620, -0.502092, 0.012907, 5.918067],
                            [0.266961, -0.508060, -0.000334, 8.253265],
                            [0.251811, -0.514240, -0.034490, 15.243059],
                            [0.238970, -0.514431, -0.067436, -6.968969],

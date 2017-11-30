@@ -95,6 +95,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         mentalOptions.put("name", "/drl/rightArm")  # Teo
         mentalOptions.put("robotIndex", 0)  # Teo
         mentalOptions.put("manipulatorIndex", 2)  # Right_Arm
+        mentalOptions.put("genRefSpeed", 9999999)  # Right_Arm
 
         ################ YARP CONNECT TO PAINT ###############################
         orPlugins = mentalOptions.addGroup("orPlugins")
