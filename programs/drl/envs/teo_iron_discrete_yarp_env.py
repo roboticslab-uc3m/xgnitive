@@ -44,7 +44,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         # This device will have three different options, device, remote local.
         mentalOptions.put("device", "controlboardwrapper2")  # device
         mentalOptions.put("subdevice", "YarpOpenraveControlboard") #device
-        mentalOptions.put("env", "/usr/local/share/xgnitive/contexts/models/teo_cgda_iros.env.xml") #Environment
+        mentalOptions.put("env", "/home/raul/repos/textiles/textiles/ironing/manipulation/ironingSim/ironingSim.env.xml") #Environment
         mentalOptions.put("name", "/drl/rightArm")  # Teo
         mentalOptions.put("robotIndex", 0) #Teo
         mentalOptions.put("manipulatorIndex", 2) #Right_Arm
