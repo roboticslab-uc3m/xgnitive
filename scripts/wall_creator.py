@@ -61,4 +61,11 @@ the_doc = KINBODY(
         )
 '''
 
-print etree.tostring(KinBody, pretty_print=True)
+str = etree.tostring(KinBody, pretty_print=True)
+
+text_file= open('wall.xml', 'wb')
+text_file.write(str)
+text_file.close()
+
+
+
