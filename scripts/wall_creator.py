@@ -26,12 +26,21 @@ Ez=0.26/NSquares
 
 
 KinBody = etree.Element("KinBody", name="wall")
-for i in range(NSquares):
-    Body = etree.SubElement(KinBody, "Body", name="square"+str(i), type="static")
-    Geom = etree.SubElement(Body, "Geom", type="box")
-    Extents = etree.SubElement(Geom, "EXTENTS").text= "0.001 0.115 0.065"
-    Translation = etree.SubElement(Geom, "TRANSLATION").text= "0.6 "+   "-0.8 0.32"
-    DifusseColor = etree.SubElement(Geom, "DIFUSSECOLOR").text= ".5 .5 .5"
+for i in range(NSquares): #filas
+    for j in range(NSquares): #columnas
+
+        #Calculate position of this "pixel"
+        x = 0.6
+        y = -Ey*(1+2*j) # i=fila, j=columna
+        z = 0.26+(Ez*(1+2*i))
+        Number=j+(i*NSquares)
+
+        #Create pixel
+        Body = etree.SubElement(KinBody, "Body", name="square"+str(Number), type="static")
+        Geom = etree.SubElement(Body, "Geom", type="box")
+        Extents = etree.SubElement(Geom, "Extents").text= "0.001 "+ str(Ey)+" "+str(Ez)
+        Translation = etree.SubElement(Geom, "Translation").text= str(x)+" "+str(y)+" "+str(z)
+        DifusseColor = etree.SubElement(Geom, "diffuseColor").text= ".5 .5 .5"
 
 
 
