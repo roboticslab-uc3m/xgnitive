@@ -12,7 +12,7 @@ from lxml import etree
 #TRANSLATION=E.Translation
 #DIFUSSECOLOR=E.diffuseColor
 
-NSquares=4
+NSquares=8
 
 Ex=0.001
 Ey=0.46/NSquares
@@ -63,7 +63,7 @@ the_doc = KINBODY(
 
 str = etree.tostring(KinBody, pretty_print=True)
 
-text_file= open('wall.xml', 'wb')
+text_file= open('wall.kinbody.xml', 'wb')
 text_file.write(str)
 text_file.close()
 
