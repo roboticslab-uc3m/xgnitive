@@ -21,7 +21,7 @@ Ez=0.26/NSquares
 #for i in range(0, NSquares)
 #    for j in range(0, NSquares)
 #x= 0.6
-#y= -Ey*(1+2i) #i=columna
+#y= -Ey*(1+2i)
 #z= 0.26+(Ez*(1+2*j))
 
 
@@ -31,8 +31,8 @@ for i in range(NSquares): #filas
 
         #Calculate position of this "pixel"
         x = 0.6
-        y = -Ey*(1+2*j) # i=fila, j=columna
-        z = 0.26+(Ez*(1+2*i))
+        y = -Ey*(1+2*((NSquares-1)-i)) #i=columna
+        z = 0.26+(Ez*(1+2*j))
         Number=j+(i*NSquares)
 
         #Create pixel
