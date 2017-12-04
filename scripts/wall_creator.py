@@ -26,12 +26,12 @@ Ez=0.26/NSquares
 
 
 KinBody = etree.Element("KinBody", name="wall")
-
-Body = etree.SubElement(KinBody, "Body", name="wall")
-Geom = etree.SubElement(Body, "Geom", name="square-"+str(2), type="static")
-Extents = etree.SubElement(Geom, "EXTENTS").text= "0.001 0.115 0.065"
-Translation = etree.SubElement(Geom, "TRANSLATION").text= "0.6 "+   "-0.8 0.32"
-DifusseColor = etree.SubElement(Geom, "DIFUSSECOLOR").text= ".5 .5 .5"
+for i in range(NSquares):
+    Body = etree.SubElement(KinBody, "Body", name="wall")
+    Geom = etree.SubElement(Body, "Geom", name="square"+str(i), type="static")
+    Extents = etree.SubElement(Geom, "EXTENTS").text= "0.001 0.115 0.065"
+    Translation = etree.SubElement(Geom, "TRANSLATION").text= "0.6 "+   "-0.8 0.32"
+    DifusseColor = etree.SubElement(Geom, "DIFUSSECOLOR").text= ".5 .5 .5"
 
 
 
