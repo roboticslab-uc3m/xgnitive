@@ -12,6 +12,7 @@ from lxml import etree
 #TRANSLATION=E.Translation
 #DIFUSSECOLOR=E.diffuseColor
 
+#The number of sqaures per side
 NSquares=8
 
 Ex=0.001
