@@ -102,7 +102,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         orPlugin1 = orPlugins.addGroup("OpenraveYarpPaintSquares")  # Our lovely plugin (◕‿◕✿))
         orPlugin1.put("module", "OpenraveYarpPaintSquares")
-        orPlugin1.put("commands", "open /drl/openraveYarpPaintSquares/rpc:s")
+        orPlugin1.put("commands", "open --name /drl/openraveYarpPaintSquares/rpc:s")
 
         # orPlugin2 = orPlugins.addGroup("OpenraveYarpPaintSquares2")  # Our lovely plugin (◕‿◕✿))
         # orPlugin2.put("module","OpenraveYarpPaintSquares2a")
