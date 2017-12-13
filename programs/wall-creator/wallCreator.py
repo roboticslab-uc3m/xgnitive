@@ -15,15 +15,23 @@ from lxml import etree
 #The number of sqaures per side
 NSquares=8
 
-Ex=0.001
-Ey=0.46/NSquares
-Ez=0.26/NSquares
+offsetEx=0
+offsetEy=-0.1
+offsetEz=0
+
+Ex=0.001+offsetEx
+Ey=(offsetEy+0.46)/NSquares
+Ez=(offsetEz+0.26)/NSquares
 
 #for i in range(0, NSquares)
 #    for j in range(0, NSquares)
 #x= 0.6
 #y= -Ey*(1+2i)
 #z= 0.26+(Ez*(1+2*j))
+
+offsetX=-0.05
+offsetY=0
+offsetZ=0
 
 
 KinBody = etree.Element("KinBody", name="wall")
