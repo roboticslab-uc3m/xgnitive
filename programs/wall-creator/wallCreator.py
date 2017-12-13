@@ -29,9 +29,9 @@ Ez=(offsetEz+0.26)/NSquares
 #y= -Ey*(1+2i)
 #z= 0.26+(Ez*(1+2*j))
 
-offsetX=-0.05
-offsetY=0
-offsetZ=0
+offsetX= 0
+offsetY= -0.05
+offsetZ= 0
 
 
 KinBody = etree.Element("KinBody", name="wall")
@@ -39,9 +39,9 @@ for i in range(NSquares): #filas
     for j in range(NSquares): #columnas
 
         #Calculate position of this "pixel"
-        x = 0.6
-        y = -Ey*(1+2*((NSquares-1)-i)) #i=columna
-        z = 0.26+(Ez*(1+2*j))
+        x = offsetX+0.6
+        y = offsetY-Ey*(1+2*((NSquares-1)-i)) #i=columna
+        z = offsetZ+0.26+(Ez*(1+2*j))
         Number=j+(i*NSquares)
 
         #Create pixel
