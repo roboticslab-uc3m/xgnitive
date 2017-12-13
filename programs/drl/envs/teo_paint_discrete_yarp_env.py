@@ -102,7 +102,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         orPlugin1 = orPlugins.addGroup("OpenraveYarpPaintSquares")  # Our lovely plugin (◕‿◕✿))
         orPlugin1.put("module", "OpenraveYarpPaintSquares")
-        orPlugin1.put("commands", "open --name /drl/openraveYarpPaintSquares/rpc:s")
+        orPlugin1.put("commands", "open --name /drl/openraveYarpPaintSquares/rpc:s --squares 64")
 
         # orPlugin2 = orPlugins.addGroup("OpenraveYarpPaintSquares2")  # Our lovely plugin (◕‿◕✿))
         # orPlugin2.put("module","OpenraveYarpPaintSquares2a")
@@ -355,7 +355,10 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
             new_percentage = new_percentage + self.res.get(i).asInt()
             # print(i)
 
-        new_percentage = (new_percentage * 100 / self.res.size())
+        #print ("The number of squares painted is: ", new_percentage)
+        #print ("number of squares is: ", self.res.size())
+
+        new_percentage = (new_percentage * 100.0 / self.res.size())
 
         self.reward = 0
         # If a paint additional wall reward=1
