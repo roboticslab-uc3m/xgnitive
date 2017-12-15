@@ -1,449 +1,113 @@
 <KinBody name="wall">
   <Body name="square0" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.725 0.2925</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.68 0.325</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square1" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.725 0.3575</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.68 0.455</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square2" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.725 0.4225</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.68 0.585</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square3" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.725 0.4875</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.68 0.715</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square4" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.725 0.5525</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.5 0.325</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square5" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.725 0.6175</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.5 0.455</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square6" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.725 0.6825</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.5 0.585</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square7" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.725 0.7475</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.5 0.715</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square8" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.635 0.2925</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.32 0.325</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square9" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.635 0.3575</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.32 0.455</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square10" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.635 0.4225</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.32 0.585</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square11" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.635 0.4875</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.32 0.715</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square12" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.635 0.5525</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.14 0.325</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square13" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.635 0.6175</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.14 0.455</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square14" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.635 0.6825</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.14 0.585</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>
   <Body name="square15" type="static">
     <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.635 0.7475</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square16" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.545 0.2925</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square17" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.545 0.3575</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square18" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.545 0.4225</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square19" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.545 0.4875</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square20" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.545 0.5525</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square21" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.545 0.6175</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square22" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.545 0.6825</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square23" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.545 0.7475</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square24" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.455 0.2925</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square25" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.455 0.3575</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square26" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.455 0.4225</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square27" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.455 0.4875</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square28" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.455 0.5525</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square29" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.455 0.6175</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square30" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.455 0.6825</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square31" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.455 0.7475</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square32" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.365 0.2925</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square33" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.365 0.3575</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square34" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.365 0.4225</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square35" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.365 0.4875</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square36" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.365 0.5525</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square37" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.365 0.6175</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square38" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.365 0.6825</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square39" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.365 0.7475</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square40" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.275 0.2925</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square41" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.275 0.3575</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square42" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.275 0.4225</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square43" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.275 0.4875</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square44" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.275 0.5525</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square45" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.275 0.6175</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square46" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.275 0.6825</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square47" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.275 0.7475</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square48" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.185 0.2925</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square49" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.185 0.3575</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square50" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.185 0.4225</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square51" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.185 0.4875</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square52" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.185 0.5525</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square53" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.185 0.6175</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square54" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.185 0.6825</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square55" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.185 0.7475</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square56" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.095 0.2925</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square57" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.095 0.3575</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square58" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.095 0.4225</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square59" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.095 0.4875</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square60" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.095 0.5525</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square61" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.095 0.6175</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square62" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.095 0.6825</Translation>
-      <diffuseColor>.5 .5 .5</diffuseColor>
-    </Geom>
-  </Body>
-  <Body name="square63" type="static">
-    <Geom type="box">
-      <Extents>0.001 0.045 0.0325</Extents>
-      <Translation>0.6 -0.095 0.7475</Translation>
+      <Extents>0.001 0.09 0.065</Extents>
+      <Translation>0.6 -0.14 0.715</Translation>
       <diffuseColor>.5 .5 .5</diffuseColor>
     </Geom>
   </Body>

@@ -13,7 +13,7 @@ from lxml import etree
 #DIFUSSECOLOR=E.diffuseColor
 
 #The number of sqaures per side
-NSquares=8
+NSquares=4
 
 offsetEx=0
 offsetEy=-0.1
