@@ -102,7 +102,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         orPlugin1 = orPlugins.addGroup("OpenraveYarpPaintSquares")  # Our lovely plugin (◕‿◕✿))
         orPlugin1.put("module", "OpenraveYarpPaintSquares")
-        orPlugin1.put("commands", "open --name /drl/openraveYarpPaintSquares/rpc:s --squares 64")
+        orPlugin1.put("commands", "open --name /drl/openraveYarpPaintSquares/rpc:s --squares 16")
 
         # orPlugin2 = orPlugins.addGroup("OpenraveYarpPaintSquares2")  # Our lovely plugin (◕‿◕✿))
         # orPlugin2.put("module","OpenraveYarpPaintSquares2a")
@@ -114,6 +114,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         # localMental="/cgdaMental"
         # mentalOptions.put("local", localMental) #local
 
+        ''''''
         # define Device
         # yarp.dev.Polydriver(mentalDevice)
         self.mentalDevice = yarp.PolyDriver()
