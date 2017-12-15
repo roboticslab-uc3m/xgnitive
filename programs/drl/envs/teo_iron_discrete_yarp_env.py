@@ -39,21 +39,20 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
             print('[error] Please try running yarp server')  # tell the user to start one with 'yarp server' if there isn't any
             quit()
 
-        mentalOptions= yarp.Property()
-        
-        ################ YARP CONNECT TO MOVE ###############################
-        # This device will have three different options, device, remote local.
-        mentalOptions.put("device", "controlboardwrapper2")  # device
-        mentalOptions.put("subdevice", "YarpOpenraveControlboard") #device
-        mentalOptions.put("env", "/home/raul/repos/textiles/textiles/ironing/manipulation/ironingSim/ironingSim.env.xml") #Environment
-        mentalOptions.put("name", "/drl/rightArm")  # Teo
-        mentalOptions.put("robotIndex", 0) #Teo
-        mentalOptions.put("manipulatorIndex", 2) #Right_Arm
-        mentalOptions.put("genRefSpeed", 9999999)  # Right_Arm
+        cartesianOptions = yarp.Property()
+        cartesianOptions.put("device", "BasicCartesianControl")  # device
+        cartesianOptions.put("kinematics", "/usr/local/share/teo/contexts/kinematics/rightArmKinematics-pan45-tilt30.ini")
+        cartesianOptions.put("robot", "controlboardwrapper2")  # robot device
+        cartesianOptions.put("subdevice", "YarpOpenraveControlboard") #device
+        cartesianOptions.put("env", "/home/raul/repos/textiles/textiles/ironing/manipulation/ironingSim/ironingSim.env.xml") #Environment
+        cartesianOptions.put("name", "/drl/rightArm")  # Teo
+        cartesianOptions.put("robotIndex", 0) #Teo
+        cartesianOptions.put("manipulatorIndex", 2) #Right_Arm
+        cartesianOptions.put("genRefSpeed", 9999999)  # Right_Arm
 
         ################ YARP CONNECT TO FORCE ###############################
 
-        orPlugins = mentalOptions.addGroup("orPlugins")
+        orPlugins = cartesianOptions.addGroup("orPlugins")
 
         #print("************************************* HASTA AQUI LLEGUE 0************************************************************************************")
 
@@ -64,7 +63,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         # define Device
         self.mentalDevice = yarp.PolyDriver()
         # open device
-        self.mentalDevice.open(mentalOptions)
+        self.mentalDevice.open(cartesianOptions)
         if not self.mentalDevice.isValid():
             print("Mental robot device not available.\n")
             self.mentalDevice.close()
@@ -105,29 +104,8 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         ################ YARP CONNECT TO CARTESIAN ###############################
 
-        time.sleep(1)
-
-        cartesianOptions = yarp.Property()
-        cartesianOptions.put("device", "BasicCartesianControl")  # device
-        cartesianOptions.put("kinematics", "/usr/local/share/teo/contexts/kinematics/rightArmKinematics-pan45-tilt30.ini")
-        cartesianOptions.put("robot", "remote_controlboard")  # robot device
-        cartesianOptions.put("local", "/BasicCartesianControl")  # for robot device
-        cartesianOptions.put("remote", "/drl/rightArm")  # for robot device
-
-        # define Device
-        self.cartesianDevice = yarp.PolyDriver()
-        # open device
-        self.cartesianDevice.open(cartesianOptions)
-        if not self.cartesianDevice.isValid():
-            print("Cartesian device not available.\n")
-            self.cartesianDevice.close()
-            yarp.Network.fini()
-            return 1
-
-        time.sleep(1)
-
         print("yeag------------------------------1")
-        self.cartesianControl = kinematics_dynamics.viewICartesianControl(self.cartesianDevice)
+        self.cartesianControl = kinematics_dynamics.viewICartesianControl(self.mentalDevice)
         x = yarp.DVector()
         stat = self.cartesianControl.stat(x)
         print ('<', yarp.Vocab.decode(stat), '[%s]' % ', '.join(map(str, x)))
