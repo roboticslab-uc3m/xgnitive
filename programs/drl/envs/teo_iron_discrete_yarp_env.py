@@ -39,20 +39,18 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
             print('[error] Please try running yarp server')  # tell the user to start one with 'yarp server' if there isn't any
             quit()
 
-        cartesianOptions = yarp.Property()
-        cartesianOptions.put("device", "BasicCartesianControl")  # device
-        cartesianOptions.put("kinematics", "/usr/local/share/teo/contexts/kinematics/rightArmKinematics-pan45-tilt30.ini")
-        cartesianOptions.put("robot", "controlboardwrapper2")  # robot device
-        cartesianOptions.put("subdevice", "YarpOpenraveControlboard") #device
-        cartesianOptions.put("env", "/home/raul/repos/textiles/textiles/ironing/manipulation/ironingSim/ironingSim.env.xml") #Environment
-        cartesianOptions.put("name", "/drl/rightArm")  # Teo
-        cartesianOptions.put("robotIndex", 0) #Teo
-        cartesianOptions.put("manipulatorIndex", 2) #Right_Arm
-        cartesianOptions.put("genRefSpeed", 9999999)  # Right_Arm
+        mentalOptions = yarp.Property()
+        mentalOptions.put("device", "controlboardwrapper2")  # device
+        mentalOptions.put("subdevice", "YarpOpenraveControlboard")
+        mentalOptions.put("env", "/home/raul/repos/textiles/textiles/ironing/manipulation/ironingSim/ironingSim.env.xml") #Environment
+        mentalOptions.put("name", "/drl/rightArm")  # Teo
+        mentalOptions.put("robotIndex", 0) #Teo
+        mentalOptions.put("manipulatorIndex", 2) #Right_Arm
+        mentalOptions.put("genRefSpeed", 9999999)  # Right_Arm
 
         ################ YARP CONNECT TO FORCE ###############################
 
-        orPlugins = cartesianOptions.addGroup("orPlugins")
+        orPlugins = mentalOptions.addGroup("orPlugins")
 
         #print("************************************* HASTA AQUI LLEGUE 0************************************************************************************")
 
@@ -63,7 +61,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         # define Device
         self.mentalDevice = yarp.PolyDriver()
         # open device
-        self.mentalDevice.open(cartesianOptions)
+        self.mentalDevice.open(mentalOptions)
         if not self.mentalDevice.isValid():
             print("Mental robot device not available.\n")
             self.mentalDevice.close()
@@ -104,11 +102,30 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         ################ YARP CONNECT TO CARTESIAN ###############################
 
+        solverOptions = yarp.Property()
+        solverOptions.put("device","KdlSolver")
+        solverOptions.put("kinematics", "/usr/local/share/teo/contexts/kinematics/rightArmKinematics-pan45-tilt30.ini")
+
+        # define Device
+        self.solverDevice = yarp.PolyDriver()
+        # open device
+        self.solverDevice.open(solverOptions)
+        if not self.solverDevice.isValid():
+            print("Solver robot device not available.\n")
+            self.solverDevice.close()
+            yarp.Network.fini()
+            return 1
+
+
         print("yeag------------------------------1")
-        self.cartesianControl = kinematics_dynamics.viewICartesianControl(self.mentalDevice)
+        self.cartesianSolver = kinematics_dynamics.viewICartesianSolver(self.solverDevice)
+        #x = yarp.DVector()
+        #stat = self.cartesianControl.stat(x)
+        #print ('<', yarp.Vocab.decode(stat), '[%s]' % ', '.join(map(str, x)))
+        q = yarp.DVector(6,0)  # std::vector<double> sadasd(size,value)
         x = yarp.DVector()
-        stat = self.cartesianControl.stat(x)
-        print ('<', yarp.Vocab.decode(stat), '[%s]' % ', '.join(map(str, x)))
+        self.cartesianSolver.fwdKin(q,x)
+        print('< [%s]' % ', '.join(map(str, x)))
         print("yeag------------------------------2")
 
         ################ YARP CONNECT TO ENCODERS ############################
@@ -123,8 +140,8 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
                 break
 
         ################ YARP OBTAIN LIMITS ###############################
-        self.mentalPositionControl = self.mentalDevice.YarpOpenraveControlboard.viewIPositionControl()
-        self.mentalControlLimits = self.mentalDevice.YarpOpenraveControlboard.viewIControlLimits()
+        self.mentalPositionControl = self.mentalDevice.viewIControlLimits()
+        self.mentalControlLimits = self.mentalDevice.viewIControlLimits()
 
         self.min0 = yarp.DVector(1)
         self.max0 = yarp.DVector(1)
