@@ -56,9 +56,9 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         #print("************************************* HASTA AQUI LLEGUE 0************************************************************************************")
 
-        orPlugin2 = orPlugins.addGroup("OpenraveYarpForceEstimator")  # Our lovely plugin (◕‿◕✿)
-        orPlugin2.put("module", "OpenraveYarpForceEstimator")
-        orPlugin2.put("commands", "open /drl/openraveYarpForceEstimator/rpc:s")
+        orPlugin1 = orPlugins.addGroup("OpenraveYarpForceEstimator")  # Our lovely plugin (◕‿◕✿)
+        orPlugin1.put("module", "OpenraveYarpForceEstimator")
+        orPlugin1.put("commands", "open /drl/openraveYarpForceEstimator/rpc:s")
 
         # define Device
         self.mentalDevice = yarp.PolyDriver()
@@ -123,8 +123,8 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
                 break
 
         ################ YARP OBTAIN LIMITS ###############################
-        self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
-        self.mentalControlLimits = self.mentalDevice.viewIControlLimits()
+        self.mentalPositionControl = self.mentalDevice.YarpOpenraveControlboard.viewIPositionControl()
+        self.mentalControlLimits = self.mentalDevice.YarpOpenraveControlboard.viewIControlLimits()
 
         self.min0 = yarp.DVector(1)
         self.max0 = yarp.DVector(1)
