@@ -42,6 +42,8 @@ fout2.write("\n")
 fout2.write("I: ")
 fout2.close()
 
+Nsquares=64
+
 while 1:
     f = open('memoryOET.txt', 'r')
     data_array=[] #Array of strings
@@ -55,8 +57,9 @@ while 1:
                 suma += 1
         print("sum:",suma)
     if not data_array:
-        data_array=[ "0","0", "0","0","0","0", "0","0","0","0","0","0","0","0","0","0"]
 	print"Empty Memory"
+        for x in range(Nsquares):
+            data_array.append("0")
 
     sum=0
     for i in data_array:
@@ -64,12 +67,12 @@ while 1:
     
     #Output percentage
     print sum
-    percentage=(sum/16.0)*100
+    percentage=(sum/float(Nsquares))*100.0
     percentage=str(percentage)
     print percentage
     fout.write(percentage)
     fout.write(" ")
-    if sum==16 or Gen==30:
+    if sum==Nsquares or Gen==30:
 	fout2= open('DataOET++.txt', 'a')
 	fout2.write("\n")
 	fout2.write("I: ")
@@ -86,9 +89,9 @@ while 1:
 
     start_time = time.time()
 
-    args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml", data_array[0],data_array[1], data_array[2],data_array[3],data_array[4],data_array[5], data_array[6],data_array[7],data_array[8],data_array[9],data_array[10],data_array[11],data_array[12],data_array[13],data_array[14],data_array[15] )
+    #args = ("mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml")
     
-    popen = subprocess.Popen(args, stdout=subprocess.PIPE) #Pipe is the standard stdout
+    popen = subprocess.Popen(["mpiexec", "-n", "1", "./cgdaExecutionOETOpenrave", "../../programs/cgdaExecutionOET/conf/evMono_ecf_params.xml"] + data_array, stdout=subprocess.PIPE) #Pipe is the standard stdout
     #popen.wait()
     #output = popen.stdout.read()
     #print output
