@@ -12,6 +12,7 @@ from rllab.spaces import Box
 
 ################### YARP #####################################
 import yarp
+import kinematics_dynamics
 
 ################### FAST-DTW #################################
 from scipy.spatial.distance import euclidean
@@ -54,22 +55,11 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         orPlugins = mentalOptions.addGroup("orPlugins")
 
-        print("************************************* HASTA AQUI LLEGUE 0************************************************************************************")
-
-
-        orPlugin1 = orPlugins.addGroup("OpenraveWorldRpcResponder")  # Our lovely plugin (◕‿◕✿)
-        orPlugin1.put("module", "OpenraveWorldRpcResponder")
-        orPlugin1.put("commands", "open /drl/openraveWorldRpcResponder/rpc:s")
-
-        print("************************************* HASTA AQUI LLEGUE 1************************************************************************************")
-
+        #print("************************************* HASTA AQUI LLEGUE 0************************************************************************************")
 
         orPlugin2 = orPlugins.addGroup("OpenraveYarpForceEstimator")  # Our lovely plugin (◕‿◕✿)
         orPlugin2.put("module", "OpenraveYarpForceEstimator")
         orPlugin2.put("commands", "open /drl/openraveYarpForceEstimator/rpc:s")
-
-        print("************************************* HASTA AQUI LLEGUE 2************************************************************************************")
-
 
         # define Device
         self.mentalDevice = yarp.PolyDriver()
@@ -80,8 +70,6 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
             self.mentalDevice.close()
             yarp.Network.fini()
             return 1
-
-        print("************************************* HASTA AQUI LLEGUE 3************************************************************************************")
 
         '''
 
@@ -97,45 +85,53 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         '''
 
 
-        self.forcePort= yarp.BufferedPortBottle()
+        #self.forcePort= yarp.BufferedPortBottle()
 
-        self.forcePort.open("/force:i")
+        #self.forcePort.open("/force:i")
 
-        while True: ##do-while
-            yarp.Network.connect("/forceEstimator:o", "/force:i")
-            print(" Wait to connect to forces...")
+        remoteForce = "/drl/openraveYarpForceEstimator/rpc:s"
+        localForce = "/force:c"
+
+        self.rpcClientForce = yarp.RpcClient()
+        self.rpcClientForce.open(localForce)  # Connect to local force
+
+        while True:  ##do-while
+            yarp.Network.connect(localForce, remoteForce)
+            print("Wait to connect to force server...\n")
             time.sleep(self.yarpDelay)
-            if self.forcePort.getInputCount() != 0:
+            if self.rpcClientForce.getOutputCount() != 0:
                 break
-        print ("Force port available. \n")
 
-        ################ YARP CONNECT TO WORLD ###############################
-
-        self.rpcClientWorld = yarp.RpcClient()
-
-        self.rpcClientWorld.open("/world:c")
-
-        while True: ##do-while
-            yarp.Network.connect("/world:c", "/worldRpcResponder/rpc:s")
-            print(" Wait to connect to world...")
-            time.sleep(self.yarpDelay)
-            if self.rpcClientWorld.getOutputCount() != 0:
-                break
-        print ("World port available. \n")
 
         ################ YARP CONNECT TO CARTESIAN ###############################
 
-        self.rpcClientCart = yarp.RpcClient()
+        time.sleep(1)
 
-        self.rpcClientCart.open("/cart:c")
+        cartesianOptions = yarp.Property()
+        cartesianOptions.put("device", "BasicCartesianControl")  # device
+        cartesianOptions.put("kinematics", "/usr/local/share/teo/contexts/kinematics/rightArmKinematics-pan45-tilt30.ini")
+        cartesianOptions.put("robot", "remote_controlboard")  # robot device
+        cartesianOptions.put("local", "/BasicCartesianControl")  # for robot device
+        cartesianOptions.put("remote", "/drl/rightArm")  # for robot device
 
-        while True: ##do-while
-            yarp.Network.connect("/cart:c", "/CartesianControl/rpc_transform:s")
-            print(" Wait to connect to Cartesian...")
-            time.sleep(self.yarpDelay)
-            if self.rpcClientCart.getOutputCount() != 0:
-                break
-        print ("Cartesian port available. \n")
+        # define Device
+        self.cartesianDevice = yarp.PolyDriver()
+        # open device
+        self.cartesianDevice.open(cartesianOptions)
+        if not self.cartesianDevice.isValid():
+            print("Cartesian device not available.\n")
+            self.cartesianDevice.close()
+            yarp.Network.fini()
+            return 1
+
+        time.sleep(1)
+
+        print("yeag------------------------------1")
+        self.cartesianControl = kinematics_dynamics.viewICartesianControl(self.cartesianDevice)
+        x = yarp.DVector()
+        stat = self.cartesianControl.stat(x)
+        print ('<', yarp.Vocab.decode(stat), '[%s]' % ', '.join(map(str, x)))
+        print("yeag------------------------------2")
 
         ################ YARP CONNECT TO ENCODERS ############################
 
