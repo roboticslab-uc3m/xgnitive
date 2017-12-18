@@ -41,11 +41,11 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         mentalOptions = yarp.Property()
         mentalOptions.put("device", "controlboardwrapper2")  # device
-        mentalOptions.put("subdevice", "YarpOpenraveControlboard")
+        mentalOptions.put("subdevice", "YarpOpenraveControlboard")  # device
         mentalOptions.put("env", "/home/raul/repos/textiles/textiles/ironing/manipulation/ironingSim/ironingSim.env.xml") #Environment
         mentalOptions.put("name", "/drl/rightArm")  # Teo
-        mentalOptions.put("robotIndex", 0) #Teo
-        mentalOptions.put("manipulatorIndex", 2) #Right_Arm
+        mentalOptions.put("robotIndex", 0)  # Teo
+        mentalOptions.put("manipulatorIndex", 2)  # Right_Arm
         mentalOptions.put("genRefSpeed", 9999999)  # Right_Arm
 
         ################ YARP CONNECT TO FORCE ###############################
@@ -140,7 +140,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
                 break
 
         ################ YARP OBTAIN LIMITS ###############################
-        self.mentalPositionControl = self.mentalDevice.viewIControlLimits()
+        #self.mentalPositionControl = self.mentalDevice.viewIControlLimits()
         self.mentalControlLimits = self.mentalDevice.viewIControlLimits()
 
         self.min0 = yarp.DVector(1)
@@ -167,10 +167,13 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         self.cmd= yarp.Bottle()
         self.res= yarp.Bottle()
 
+        #Position Control
+        self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
+
         #Define Trajectories [x,y,z,Fz]:
         self.attemp=np.array([0,0,0,0])
 
-        self.goal=np.array([0.272805, -0.500201, 0.012808, 5.775318],
+        self.goal=np.array([[0.272805, -0.500201, 0.012808, 5.775318],
                            [0.272620, -0.502092, 0.012907, 5.918067],
                            [0.266961, -0.508060, -0.000334, 8.253265],
                            [0.251811, -0.514240, -0.034490, 15.243059],
@@ -178,7 +181,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
                            [0.275419, -0.523437, -0.045262, -30.054635],
                            [0.319814, -0.541889, -0.003238, -11.918344],
                            [0.334939, -0.561616, 0.015075, -1.851854],
-                           [0.340740, -0.560490, 0.019368, -1.511597])
+                           [0.340740, -0.560490, 0.019368, -1.511597]])
 
         self.start_state = [0,0,0]
         self.state = None
@@ -190,7 +193,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         self.state = copy.deepcopy(self.start_state) #rmbr
 
         #Set initial position:
-        dEncRaw = np.empty(6,float)
+        dEncRaw = np.empty(6, float)
 
         dEncRaw[0] = 0
         dEncRaw[1] = 0
@@ -300,12 +303,12 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #self.cmd.clear()
         #self.res.clear()
 
-        b = self.forcePort.read(False)
+        b = self.rpcClientForce.read(False)
 
         #Waiting to receive force
         if not b:
             while(1):
-                b = self.forcePort.read(False)
+                b = self.rpcClientForce.read(False)
                 print("No force received yet")
                 time.sleep(self.yarpForceDelay)  # pause
                 if b:
