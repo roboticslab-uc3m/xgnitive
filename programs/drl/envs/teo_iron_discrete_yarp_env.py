@@ -237,20 +237,6 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
     def step(self, action):
 
-        self.cmd.clear()
-        self.res.clear()
-
-        enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
-        axes = enc.getAxes()
-        v = yarp.DVector(
-            axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
-        enc.getEncoders(v)  # read the encoder values and put them into 'v'
-
-        self.state = []
-        self.state.append(v[0])
-        self.state.append(v[1])
-        self.state.append(v[3])
-
         #Get possible states with the actual state.
         possible_next_states = self.get_possible_next_states(self.state, action)
 
@@ -290,6 +276,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         ################ GET CARTESIAN POSITION #################################
 
+        '''
         self.cmd.clear()
         self.res.clear()
         self.cmd.addString("stat")
@@ -297,6 +284,27 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         self.rpcClientCart.write(self.cmd, self.res)
 
         print("La posición obtenida con el Cartesian Position es: ", self.res.toString())
+        '''
+
+        #First obtain current position with Encoders.
+        enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
+        axes = enc.getAxes()
+        v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
+        enc.getEncoders(v)  # read the encoder values and put them into 'v'
+
+        self.state = []
+        self.state.append(v[0])
+        self.state.append(v[1])
+        self.state.append(v[3])
+
+        self.cartesianSolver = kinematics_dynamics.viewICartesianSolver(self.solverDevice)
+        #x = yarp.DVector()
+        #stat = self.cartesianControl.stat(x)
+        #print ('<', yarp.Vocab.decode(stat), '[%s]' % ', '.join(map(str, x)))
+        #q = yarp.DVector(6,0)
+        x = yarp.DVector()
+        self.cartesianSolver.fwdKin(v,x)
+        print('< [%s]' % ', '.join(map(str, x)))
 
         ################ GET FORCE ##############################################
 
