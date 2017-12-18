@@ -87,16 +87,16 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #self.forcePort.open("/force:i")
 
         remoteForce = "/drl/openraveYarpForceEstimator/rpc:s"
-        localForce = "/force:c"
+        localForce = "/force:i"
 
-        self.rpcClientForce = yarp.RpcClient()
-        self.rpcClientForce.open(localForce)  # Connect to local force
+        self.forcePort = yarp.BufferedPortBottle()
+        self.forcePort.open(localForce)  # Connect to local force
 
         while True:  ##do-while
-            yarp.Network.connect(localForce, remoteForce)
+            yarp.Network.connect(remoteForce, localForce)
             print("Wait to connect to force server...\n")
             time.sleep(self.yarpDelay)
-            if self.rpcClientForce.getOutputCount() != 0:
+            if self.forcePort.getInputCount() != 0:
                 break
 
 
@@ -303,12 +303,12 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #self.cmd.clear()
         #self.res.clear()
 
-        b = self.rpcClientForce.read(False)
+        b = self.forcePort.read(False)
 
         #Waiting to receive force
         if not b:
             while(1):
-                b = self.rpcClientForce.read(False)
+                b = self.forcePort.read(False)
                 print("No force received yet")
                 time.sleep(self.yarpForceDelay)  # pause
                 if b:
