@@ -311,18 +311,20 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #self.cmd.clear()
         #self.res.clear()
 
-        b = self.forcePort.read(False)
+        force = self.forcePort.read(False)
 
         #Waiting to receive force
-        if not b:
+        if not force:
             while(1):
-                b = self.forcePort.read(False)
+                force = self.forcePort.read(False)
                 print("No force received yet")
                 time.sleep(self.yarpForceDelay)  # pause
                 if b:
                     break
 
-        print("La fuerza obtenida es: ", b.toString())
+        print("La fuerza obtenida es: ", force.toString())
+
+
 
 
         '''
@@ -348,6 +350,15 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         # Idea reward: Executed trajectory - target trajectory. The Executed trajectory is init with 0s. It has to be comulative.
         # self.trajectory (??)
+
+        print("x0 es: ",x[0])
+        print("x1 es: ",x[1])
+        print("x2 es: ",x[2])
+
+        self.attemp=np.append(self.attemp, np.array([x[0],x[1],x[2],float(force.toString())]))
+
+        print("Attemp is: ", self.attemp)
+        print("Goal is: ", self.goal)
 
         distance, path = fastdtw(self.attemp, self.goal, dist=euclidean)
 
