@@ -47,7 +47,7 @@ for i in range(NSquares): #filas
         #Create pixel
         Body = etree.SubElement(KinBody, "Body", name="square"+str(Number), type="static")
         Geom = etree.SubElement(Body, "Geom", type="box")
-        Extents = etree.SubElement(Geom, "Extents").text= "0.001 "+ str(Ey)+" "+str(Ez)
+        Extents = etree.SubElement(Geom, "Extents").text= str(Ey)+" "+ str(Ey)+" "+str(Ez)
         Translation = etree.SubElement(Geom, "Translation").text= str(x)+" "+str(y)+" "+str(z)
         DifusseColor = etree.SubElement(Geom, "diffuseColor").text= ".5 .5 .5"
 
