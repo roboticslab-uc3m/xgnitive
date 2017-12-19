@@ -158,7 +158,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         ################ LIMITS #############################################
 
-        self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
+        #self.mentalPositionControl = self.mentalDevice.viewIPositionControl()
         self.mentalControlLimits = self.mentalDevice.viewIControlLimits()
 
         self.min0 = yarp.DVector(1)
