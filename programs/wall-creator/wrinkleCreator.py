@@ -43,12 +43,12 @@ for i in range(NSquares): #filas
         x = offsetX+0.6
         y = offsetY-Ey*(1+2*((NSquares-1)-i)) #i=columna
         z = offsetZ+0.26+(Ez*(1+2*j))
-        Number=j+(i*NSquares)
+        Number=i+(j*NSquares)
 
         #Create pixel
         Body = etree.SubElement(KinBody, "Body", name="square"+str(Number), type="static")
         Geom = etree.SubElement(Body, "Geom", type="box")
-        Extents = etree.SubElement(Geom, "Extents").text= "0.001 "+ str(Ey)+" "+str(Ez)
+        Extents = etree.SubElement(Geom, "Extents").text= str(Ex)+ str(Ey)+" "+str(Ez)
         Translation = etree.SubElement(Geom, "Translation").text= str(x)+" "+str(y)+" "+str(z)
         DifusseColor = etree.SubElement(Geom, "diffuseColor").text= ".5 .5 .5"
 
