@@ -30,9 +30,9 @@ Ex=(offsetEz+0.26)/NSquares
 #y= -Ey*(1+2i)
 #z= 0.26+(Ez*(1+2*j))
 
-offsetX= 0
-offsetY= -0.05
-offsetZ= 0
+offsetX= -0.1
+offsetY= 0.2
+offsetZ= -0.38
 
 
 KinBody = etree.Element("KinBody", name="iron-wrinkle")
@@ -73,7 +73,7 @@ the_doc = KINBODY(
 
 str = etree.tostring(KinBody, pretty_print=True)
 
-text_file= open('iron-wrinkle.kinbody.xml', 'wb')
+text_file= open('../../share/models/iron-wrinkle.kinbody.xml', 'wb') #Right now it is saved automatically in models, better if is saved HERE for final version.
 text_file.write(str)
 text_file.close()
 
