@@ -1,4 +1,4 @@
-<KinBody name="iron-wrinkle">
+<KinBody name="ironWrinkle">
   <Body name="square0" type="static">
     <Geom type="box">
       <Extents>0.065 0.09 0.001</Extents>

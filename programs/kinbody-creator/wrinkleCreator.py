@@ -35,7 +35,7 @@ offsetY= 0.2
 offsetZ= -0.38
 
 
-KinBody = etree.Element("KinBody", name="iron-wrinkle")
+KinBody = etree.Element("KinBody", name="ironWrinkle")
 for i in range(NSquares): #filas
     for j in range(1): #columnas, For a wrinkle we only want one column.
 
