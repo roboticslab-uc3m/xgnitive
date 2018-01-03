@@ -186,6 +186,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         self.start_state = [0,0,0]
         self.state = None
         self.domain_fig = None
+        self.reward=0
 
     ################### RESET #############################
 
@@ -198,6 +199,9 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         dEncRaw[0] = 0
         dEncRaw[1] = 0
         dEncRaw[3] = 0
+        
+        #reset reward
+        self.reward=0
 
         self.mentalPositionControl.positionMove(0, dEncRaw[0])
         self.mentalPositionControl.positionMove(1, dEncRaw[1])
@@ -347,10 +351,12 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #print("the next y is", next_y)
 
         ################ YARP REWARD #################################
-
+	
+        '''
+	
         # Idea reward: Executed trajectory - target trajectory. The Executed trajectory is init with 0s. It has to be comulative.
         # self.trajectory (??)
-
+	
         print("x0 es: ",x[0])
         print("x1 es: ",x[1])
         print("x2 es: ",x[2])
@@ -372,8 +378,56 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
             done=False
 
         print ("El reward es: ", reward)
+	'''
 
-        return Step(observation=self.state, reward=reward, done=done)
+	################ YARP GET % IRONED #################################
+
+        # self.cmd= "get"
+        self.cmd.clear()
+        self.res.clear()
+        self.cmd.addString("get")
+        self.rpcClient.write(self.cmd, self.res)
+
+        # print("The size of print after get is: ", self.res.size())
+
+        new_percentage = 0
+        for i in range(self.res.size()):
+            new_percentage = new_percentage + self.res.get(i).asInt()
+            # print(i)
+
+        #print ("The number of squares painted is: ", new_percentage)
+        #print ("number of squares is: ", self.res.size())
+
+        new_percentage = (new_percentage * 100.0 / self.res.size())
+
+        self.reward = 0
+        # If a paint additional wall reward=1
+        if new_percentage > self.percentage:
+            print("******************************************************************************************** painted :)")
+            self.reward = +100000
+            # quit()
+        elif new_percentage < self.percentage:
+            self.reward = -100000
+        else:
+            print("nothing ironed :(")
+            # self.reward= self.reward #-self.num_step*self.action_penalty
+
+        #self.num_step = self.num_step + 1
+
+        self.percentage = new_percentage
+        print ("Percentage ironed is: ", self.percentage)
+
+        if self.percentage == 100:
+            done = True
+        else:
+            done = False
+
+        print ("El reward es: ", self.reward)
+
+        return Step(observation=self.state, reward=self.reward, done=done)
+
+
+        #return Step(observation=self.state, reward=reward, done=done)
 
     ################### NEXT STATES #############################
 
