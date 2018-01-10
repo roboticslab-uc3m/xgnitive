@@ -42,7 +42,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         mentalOptions = yarp.Property()
         mentalOptions.put("device", "controlboardwrapper2")  # device
         mentalOptions.put("subdevice", "YarpOpenraveControlboard")  # device
-        mentalOptions.put("env", "/home/raul/repos/textiles/textiles/ironing/manipulation/ironingSim/ironingSim.env.xml") #Environment
+        mentalOptions.put("env", "/usr/local/share/xgnitive/contexts/models/teo_cgda_iros_iron.env.xml") #Environment
         mentalOptions.put("name", "/drl/rightArm")  # Teo
         mentalOptions.put("robotIndex", 0)  # Teo
         mentalOptions.put("manipulatorIndex", 2)  # Right_Arm
@@ -56,7 +56,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         orPlugin1 = orPlugins.addGroup("OpenraveYarpForceEstimator")  # Our lovely plugin (◕‿◕✿)
         orPlugin1.put("module", "OpenraveYarpForceEstimator")
-        orPlugin1.put("commands", "open /drl/openraveYarpForceEstimator/rpc:s")
+        orPlugin1.put("commands", "open --name /drl/openraveYarpForceEstimator/rpc:s --wrinkleSize 4")
 
         # define Device
         self.mentalDevice = yarp.PolyDriver()
@@ -89,14 +89,14 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         remoteForce = "/drl/openraveYarpForceEstimator/rpc:s"
         localForce = "/force:i"
 
-        self.forcePort = yarp.BufferedPortBottle()
+        self.forcePort = yarp.RpcClient()
         self.forcePort.open(localForce)  # Connect to local force
 
         while True:  ##do-while
             yarp.Network.connect(remoteForce, localForce)
             print("Wait to connect to force server...\n")
             time.sleep(self.yarpDelay)
-            if self.forcePort.getInputCount() != 0:
+            if self.forcePort.getOutputCount() != 0:
                 break
 
 
