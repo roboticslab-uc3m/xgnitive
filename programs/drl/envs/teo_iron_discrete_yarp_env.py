@@ -87,16 +87,16 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #self.forcePort.open("/force:i")
 
         remoteForce = "/drl/openraveYarpForceEstimator/rpc:s"
-        localForce = "/force:i"
+        localForce = "/cgda/openraveYarpForceEstimator/rpc:c"
 
-        self.forcePort = yarp.RpcClient()
-        self.forcePort.open(localForce)  # Connect to local force
+        self.rpcClient = yarp.RpcClient()
+        self.rpcClient.open(localForce)  # Connect to local force
 
         while True:  ##do-while
-            yarp.Network.connect(remoteForce, localForce)
+            yarp.Network.connect(localForce, remoteForce)
             print("Wait to connect to force server...\n")
             time.sleep(self.yarpDelay)
-            if self.forcePort.getOutputCount() != 0:
+            if self.rpcClient.getOutputCount() != 0:
                 break
 
 
@@ -310,10 +310,9 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         self.cartesianSolver.fwdKin(v,x)
         print('< [%s]' % ', '.join(map(str, x)))
 
-        ################ GET FORCE ##############################################
+        '''
 
-        #self.cmd.clear()
-        #self.res.clear()
+        ################ GET FORCE ##############################################
 
         force = self.forcePort.read(False)
 
@@ -327,7 +326,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
                     break
 
         print("La fuerza obtenida es: ", force.toString())
-
+        '''
 
 
 
@@ -343,12 +342,6 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         print("--------------------------------------------------------------\n")
         '''
 
-        #print(self.n_col)
-        #print(self.n_row)
-        #print(self.levels)
-        #print("the next z is", next_z)
-        #print("the next x is", next_x)
-        #print("the next y is", next_y)
 
         ################ YARP REWARD #################################
 	
