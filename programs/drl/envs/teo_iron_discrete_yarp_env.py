@@ -83,7 +83,6 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
 
         #self.forcePort= yarp.BufferedPortBottle()
-
         #self.forcePort.open("/force:i")
 
         remoteForce = "/drl/openraveYarpForceEstimator/rpc:s"
@@ -99,7 +98,8 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
             if self.rpcClient.getOutputCount() != 0:
                 break
 
-
+        '''
+        #No needed with the new iron setup
         ################ YARP CONNECT TO CARTESIAN ###############################
 
         solverOptions = yarp.Property()
@@ -116,8 +116,8 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
             yarp.Network.fini()
             return 1
 
-
-        print("yeag------------------------------1")
+        
+        print("yeah------------------------------1")
         self.cartesianSolver = kinematics_dynamics.viewICartesianSolver(self.solverDevice)
         #x = yarp.DVector()
         #stat = self.cartesianControl.stat(x)
@@ -127,6 +127,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         self.cartesianSolver.fwdKin(q,x)
         print('< [%s]' % ', '.join(map(str, x)))
         print("yeag------------------------------2")
+        '''
 
         ################ YARP CONNECT TO ENCODERS ############################
 
@@ -216,6 +217,12 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #Set percentage of painted wall as zero
         self.percentage = 0
 
+        #reset wrinkle
+        self.cmd.clear()
+        self.res.clear()
+        self.cmd.addString("reset")
+        self.rpcClient.write(self.cmd, self.res)
+
 
         return self.state
 
@@ -278,17 +285,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         #print("Moving the robot")
         time.sleep(self.yarpDelay)  # pause
 
-        ################ GET CARTESIAN POSITION #################################
-
-        '''
-        self.cmd.clear()
-        self.res.clear()
-        self.cmd.addString("stat")
-
-        self.rpcClientCart.write(self.cmd, self.res)
-
-        print("La posición obtenida con el Cartesian Position es: ", self.res.toString())
-        '''
+        ################ GET ENCODERS ##########################################
 
         #First obtain current position with Encoders.
         enc = self.mentalDevice.viewIEncoders()  # make an encoder controller object we call 'enc'
@@ -301,6 +298,11 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         self.state.append(v[1])
         self.state.append(v[3])
 
+        '''
+        ################ GET CARTESIAN POSITION #################################
+
+        #IN THE CURRENT SETUP OF IRON THE CARTESIAN POSITION IS NOT NEEDED.
+
         self.cartesianSolver = kinematics_dynamics.viewICartesianSolver(self.solverDevice)
         #x = yarp.DVector()
         #stat = self.cartesianControl.stat(x)
@@ -309,9 +311,9 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         x = yarp.DVector()
         self.cartesianSolver.fwdKin(v,x)
         print('< [%s]' % ', '.join(map(str, x)))
-
         '''
 
+        '''
         ################ GET FORCE ##############################################
 
         force = self.forcePort.read(False)
@@ -326,6 +328,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
                     break
 
         print("La fuerza obtenida es: ", force.toString())
+        
         '''
 
 
@@ -346,6 +349,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
         ################ YARP REWARD #################################
 	
         '''
+        #This idea is not currently used.
 	
         # Idea reward: Executed trajectory - target trajectory. The Executed trajectory is init with 0s. It has to be comulative.
         # self.trajectory (??)
@@ -385,6 +389,7 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
 
         new_percentage = 0
         for i in range(self.res.size()):
+            print("The size of res is : ", self.res.size())
             new_percentage = new_percentage + self.res.get(i).asInt()
             # print(i)
 
@@ -416,6 +421,22 @@ class TeoIronDiscreteYarpEnv(Env, Serializable):
             done = False
 
         print ("El reward es: ", self.reward)
+
+        '''
+
+        self.res.clear()
+        self.cmd.clear()
+        self.cmd.addString("force")
+        self.rpcClient.write(self.cmd, self.res)
+        print(self.res.get(i).asInt())
+
+        self.res.clear()
+        self.cmd.clear()
+        self.cmd.addString("iron 1 0 0 0")
+        self.rpcClient.write(self.cmd, self.res)
+        print(self.res.get(i).asInt())
+        '''
+
 
         return Step(observation=self.state, reward=self.reward, done=done)
 
