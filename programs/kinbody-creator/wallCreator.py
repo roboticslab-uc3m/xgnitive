@@ -13,7 +13,7 @@ from lxml import etree
 #DIFUSSECOLOR=E.diffuseColor
 
 #The number of sqaures per side
-NSquares=4
+NSquares=8
 
 offsetEx=0
 offsetEy=-0.1
@@ -30,7 +30,7 @@ Ez=(offsetEz+0.26)/NSquares
 #z= 0.26+(Ez*(1+2*j))
 
 offsetX= 0
-offsetY= -0.05
+offsetY= -0.15
 offsetZ= 0
 
 
@@ -47,7 +47,7 @@ for i in range(NSquares): #filas
         #Create pixel
         Body = etree.SubElement(KinBody, "Body", name="square"+str(Number), type="static")
         Geom = etree.SubElement(Body, "Geom", type="box")
-        Extents = etree.SubElement(Geom, "Extents").text= str(Ey)+" "+ str(Ey)+" "+str(Ez)
+        Extents = etree.SubElement(Geom, "Extents").text= str(Ex)+" "+ str(Ey)+" "+str(Ez)
         Translation = etree.SubElement(Geom, "Translation").text= str(x)+" "+str(y)+" "+str(z)
         DifusseColor = etree.SubElement(Geom, "diffuseColor").text= ".5 .5 .5"
 
