@@ -50,7 +50,7 @@ class Env(object):
         next_observation = np.copy(self._state)
 
         ##return values
-        return Step(observation=next_observation, reward=reward, done=done)
+        return Step(observation=next_observation, reward=reward, done=done)1
 
     def reset(self):
         """
