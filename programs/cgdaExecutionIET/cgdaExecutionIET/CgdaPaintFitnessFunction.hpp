@@ -20,7 +20,7 @@
 #include "DtwCgdaRecognition.hpp"
 
 #define NTPOINTS 17
-#define NSQUARES 16
+#define NSQUARES 64
 #define DEFAULT_DELAY_S 0.10
 
 namespace teo
