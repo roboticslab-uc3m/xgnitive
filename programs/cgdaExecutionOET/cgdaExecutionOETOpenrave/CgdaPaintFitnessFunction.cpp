@@ -6,7 +6,7 @@
 #include "CgdaPaintFitnessFunction.hpp"
 
 #define NTPOINTS 17
-#define NSQUARES 16
+#define NSQUARES 64
 
 namespace teo
 {

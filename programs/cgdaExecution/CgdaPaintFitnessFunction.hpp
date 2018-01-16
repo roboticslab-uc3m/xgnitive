@@ -27,7 +27,7 @@
 //This file comes from CgdaPaintFitnessFunction.hpp from the package evMono6.
 
 #define NTPOINTS 17
-#define NSQUARES 16
+#define NSQUARES 64
 #define DEFAULT_DELAY_S 0.010
 
 namespace teo
