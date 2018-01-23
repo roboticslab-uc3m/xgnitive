@@ -29,6 +29,7 @@ Universidad Carlos III de Madrid
 # Import a library of functions called 'pygame'
 import pygame
 import yarp
+import numpy as np
 
  
 # Initialize the game engine
@@ -48,6 +49,11 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+CYAN = (0, 255, 255)
+YELLOW = (255, 255, 0)
+MAGENTA = (255, 0, 104)
+
+
 
 
 # Set the height and width of the screen
@@ -69,11 +75,11 @@ screenW=1920;
 screenH=1080;
 
 # Number of screens
-scn=1
+scn=2
 
 # Number of rectangles
-hrect=4 #Horizontal
-vrect=4 #Vertical
+hrect=8 #Horizontal
+vrect=8 #Vertical
 
 # Clear the screen and set the screen background
 screen.fill(WHITE)
@@ -82,7 +88,8 @@ screen.fill(WHITE)
 class DataProcessor(yarp.PortReader): 
 
     def myInit(self):
-        self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+        #self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+        self.myMem = np.zeros(hrect*vrect)
 
     def read(self,connection):
         print("in DataProcessor.read")
@@ -93,34 +100,35 @@ class DataProcessor(yarp.PortReader):
         bout = yarp.Bottle()
         print("Trying to read from connection")
         ok = bin.read(connection)
+        if not(ok):
+            print("Failed to read input")
+            return False
         #self.received=bin;
         
-        #Lets paint the rectangle
+        #Read the rectangle from bottle
         x=(hrect-1-bin.get(0).asInt()) #The transfromation is done to change the x axis
         y=bin.get(1).asInt()
-        print("Pos rectangle")
-        print x
-        print y
+        print("Pos rectangle is: ",x," ",y)
         #if(x==-1 and y==4):
         #    print("IM CLEANING")
         #    screen.fill(WHITE)
         #else:
         #pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
+
+    #Draw rectangle
 	pygame.draw.rect(screen, BLUE, [x*screenW/(hrect*scn), y*screenH/vrect, screenW/(hrect*scn), screenH/vrect], 0)
         place = (3-y) + (4*x)
         print 'place',place
         print 'self.myMem',self.myMem
         print 'size',len(self.myMem)
         self.myMem[ place ] = 1
-        f = open('memoryOET.txt', 'w')
-        line = '%s' % ' '.join(map(str, self.myMem))
-        f.write(line)
-        f.close()
 
-	
-        if not(ok):
-            print("Failed to read input")
-            return False
+        #This should not depend on OET.
+        #f = open('memoryOET.txt', 'w')
+        #line = '%s' % ' '.join(map(str, self.myMem))
+        #f.write(line)
+        #f.close()
+
         print("Received [%s]"%bin.toString())
         bout.addString("Received:")
         bout.append(bin)
@@ -149,6 +157,7 @@ while not done:
     # This MUST happen after all the other drawing commands.
     pygame.display.flip() 
 
+    #Calculate percentage
     percent = 0
     for elem in r.myMem:
         percent += elem
