@@ -57,7 +57,7 @@ MAGENTA = (255, 0, 104)
 
 
 # Set the height and width of the screen
-size = (1920, 1080)
+size = (960, 540)
 #size = (0, 0)
 screen = pygame.display.set_mode(size)
 #pygame.FULLSCREEN
@@ -71,15 +71,20 @@ screenSize=pygame.display.Info()
 print(screenSize.current_w, screenSize.current_h)
 
 #Since using 2 screens are presented we can not auto detect the size of screen
-screenW=1920;
-screenH=1080;
+#screenW=1920;
+#screenH=1080;
+screenW=960;
+screenH=540;
 
 # Number of screens
-scn=2
+#scn=2
+
+#Where is the kinect 1 above, 0 below
+kinect=0
 
 # Number of rectangles
-hrect=8 #Horizontal
-vrect=8 #Vertical
+hrect=16 #Horizontal
+vrect=16 #Vertical
 
 # Clear the screen and set the screen background
 screen.fill(WHITE)
@@ -90,6 +95,7 @@ class DataProcessor(yarp.PortReader):
     def myInit(self):
         #self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
         self.myMem = np.zeros(hrect*vrect)
+        self.brushColour=1 #By default blue
 
     def read(self,connection):
         print("in DataProcessor.read")
@@ -104,40 +110,113 @@ class DataProcessor(yarp.PortReader):
             print("Failed to read input")
             return False
         #self.received=bin;
-        
+
         #Read the rectangle from bottle
-        x=(hrect-1-bin.get(0).asInt()) #The transfromation is done to change the x axis
-        y=bin.get(1).asInt()
-        print("Pos rectangle is: ",x," ",y)
-        #if(x==-1 and y==4):
-        #    print("IM CLEANING")
-        #    screen.fill(WHITE)
-        #else:
-        #pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
+        self.x=bin.get(0).asInt()
+        self.y=bin.get(1).asInt()
+        print("what i have received is [",self.x,",",self.y,"]")
 
-    #Draw rectangle
-	pygame.draw.rect(screen, BLUE, [x*screenW/(hrect*scn), y*screenH/vrect, screenW/(hrect*scn), screenH/vrect], 0)
-        place = (3-y) + (4*x)
-        print 'place',place
-        print 'self.myMem',self.myMem
-        print 'size',len(self.myMem)
-        self.myMem[ place ] = 1
+        #Paint conditions
+        if self.y < vrect: #We are talking about painting voxels if this is true
+            if self.brushColour == 1:
+                self.paintBlue()
 
-        #This should not depend on OET.
-        #f = open('memoryOET.txt', 'w')
-        #line = '%s' % ' '.join(map(str, self.myMem))
-        #f.write(line)
-        #f.close()
+            elif self.brushColour == 2:
+                self.paintYellow()
 
-        print("Received [%s]"%bin.toString())
-        bout.addString("Received:")
-        bout.append(bin)
-        print("Sending [%s]"%bout.toString())
+            elif self.brushColour == 3:
+                self.paintMagenta()
+        else: #We are talking about utilityVoxels
+            self.utilityVoxels()
+
+
+    def paintBlue(self):
+
+        #kinect below
+        if kinect==0:
+            pygame.draw.rect(screen,BLUE,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
+        elif kinect==1:
+            pygame.draw.rect(screen, BLUE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+
+        place =self.x*hrect+self.y*vrect #Number of pixel.
+        print 'place', place
+        print 'self.myMem', self.myMem
+        print 'size', len(self.myMem)
+        self.myMem[place] = 1
+
+        #print("Received [%s]" % bin.toString())
+        #bout.addString("Received:")
+        #bout.append(bin)
+        print("Sending [%s]" % bout.toString())
         writer = connection.getWriter()
-        if writer==None:
+        if writer == None:
             print("No one to reply to")
             return True
         return bout.write(writer)
+
+    def paintYellow(self):
+
+        #kinect below
+        if kinect==0:
+            pygame.draw.rect(screen,YELLOW,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
+        elif kinect==1:
+            pygame.draw.rect(screen,YELLOW, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+
+        place =self.x*hrect+self.y*vrect #Number of pixel.
+        print 'place', place
+        print 'self.myMem', self.myMem
+        print 'size', len(self.myMem)
+        self.myMem[place] = 2
+
+        #print("Received [%s]" % bin.toString())
+        #bout.addString("Received:")
+        #bout.append(bin)
+        print("Sending [%s]" % bout.toString())
+        writer = connection.getWriter()
+        if writer == None:
+            print("No one to reply to")
+            return True
+        return bout.write(writer)
+
+    def paintMagenta(self):
+
+        #kinect below
+        if kinect==0:
+            pygame.draw.rect(screen,MAGENTA,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
+        elif kinect==1:
+            pygame.draw.rect(screen,MAGENTA, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+
+        place =self.x*hrect+self.y*vrect #Number of pixel.
+        print 'place', place
+        print 'self.myMem', self.myMem
+        print 'size', len(self.myMem)
+        self.myMem[place] = 3
+
+        #print("Received [%s]" % bin.toString())
+        #bout.addString("Received:")
+        #bout.append(bin)
+        print("Sending [%s]" % bout.toString())
+        writer = connection.getWriter()
+        if writer == None:
+            print("No one to reply to")
+            return True
+        return bout.write(writer)
+
+    def utilityVoxels(self):
+        if self.x == 0:
+            self.brushColour = 1
+
+        elif self.x == 1:
+            self.brushColour = 2
+
+        elif self.x == 2:
+            self.brushColour = 3
+
+        elif self.x == 3:
+            pass #right now doing nothing
+
+
+
 
 p = yarp.Port()
 r = DataProcessor()
@@ -160,7 +239,8 @@ while not done:
     #Calculate percentage
     percent = 0
     for elem in r.myMem:
-        percent += elem
+        if elem!=0: #For each element not painted.
+            percent += 1
     percent = 100.0 * percent / float(len(r.myMem))
     out = yarp.Bottle()
     out.addDouble(percent)
