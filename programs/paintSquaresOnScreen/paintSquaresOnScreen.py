@@ -111,6 +111,15 @@ class DataProcessor(yarp.PortReader):
             return False
         #self.received=bin;
 
+        #Sending procedure
+        #bout.append(bin)
+        #print("Sending [%s]" % bout.toString())
+        #writer = connection.getWriter()
+        #if writer == None:
+        #    print("No one to reply to")
+        #    return True
+        #return bout.write(writer)
+
         #Read the rectangle from bottle
         self.x=bin.get(0).asInt()
         self.y=bin.get(1).asInt()
@@ -119,14 +128,19 @@ class DataProcessor(yarp.PortReader):
         #Paint conditions
         if self.y < vrect: #We are talking about painting voxels if this is true
             if self.brushColour == 1:
+                print("Painting blue now")
                 self.paintBlue()
 
             elif self.brushColour == 2:
+                print("Painting yellow now")
                 self.paintYellow()
 
             elif self.brushColour == 3:
+                print("Painting Magenta now")
                 self.paintMagenta()
+
         else: #We are talking about utilityVoxels
+            print("Utility pixels")
             self.utilityVoxels()
 
 
@@ -134,73 +148,49 @@ class DataProcessor(yarp.PortReader):
 
         #kinect below
         if kinect==0:
+            print("Painting Blue now for real")
             pygame.draw.rect(screen,BLUE,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
         elif kinect==1:
+            print("Painting Blue now for real")
             pygame.draw.rect(screen, BLUE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
 
-        place =self.x*hrect+self.y*vrect #Number of pixel.
+        place =self.x+self.y*vrect #Number of pixel.
         print 'place', place
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
         self.myMem[place] = 1
 
-        #print("Received [%s]" % bin.toString())
-        #bout.addString("Received:")
-        #bout.append(bin)
-        print("Sending [%s]" % bout.toString())
-        writer = connection.getWriter()
-        if writer == None:
-            print("No one to reply to")
-            return True
-        return bout.write(writer)
-
     def paintYellow(self):
 
         #kinect below
         if kinect==0:
+            print("Painting Yellow now for real")
             pygame.draw.rect(screen,YELLOW,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
         elif kinect==1:
+            print("Painting Yellow now for real")
             pygame.draw.rect(screen,YELLOW, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
 
-        place =self.x*hrect+self.y*vrect #Number of pixel.
+        place =self.x+self.y*vrect #Number of pixel.
         print 'place', place
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
         self.myMem[place] = 2
 
-        #print("Received [%s]" % bin.toString())
-        #bout.addString("Received:")
-        #bout.append(bin)
-        print("Sending [%s]" % bout.toString())
-        writer = connection.getWriter()
-        if writer == None:
-            print("No one to reply to")
-            return True
-        return bout.write(writer)
-
     def paintMagenta(self):
 
         #kinect below
         if kinect==0:
+            print("Painting Magenta now for real")
             pygame.draw.rect(screen,MAGENTA,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
         elif kinect==1:
+            print("Painting Magenta now for real")
             pygame.draw.rect(screen,MAGENTA, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
 
-        place =self.x*hrect+self.y*vrect #Number of pixel.
+        place =self.x+self.y*vrect #Number of pixel.
         print 'place', place
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
         self.myMem[place] = 3
-
-        #print("Received [%s]" % bin.toString())
-        #bout.addString("Received:")
-        #bout.append(bin)
-        print("Sending [%s]" % bout.toString())
-        writer = connection.getWriter()
-        if writer == None:
-            print("No one to reply to")
-            return True
-        return bout.write(writer)
 
     def utilityVoxels(self):
         if self.x == 0:
