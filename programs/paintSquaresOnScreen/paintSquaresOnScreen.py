@@ -96,6 +96,9 @@ class DataProcessor(yarp.PortReader):
         #self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
         self.myMem = np.zeros(hrect*vrect)
         self.brushColour=1 #By default blue
+        self.xold=0
+        self.yold=0
+        self.oldColour=1
 
     def read(self,connection):
         print("in DataProcessor.read")
@@ -138,6 +141,9 @@ class DataProcessor(yarp.PortReader):
             elif self.brushColour == 3:
                 print("Painting Magenta now")
                 self.paintMagenta()
+            elif self.brushColour == 0:
+                print("ERASING")
+                self.paintErase()
 
         else: #We are talking about utilityVoxels
             print("Utility pixels")
@@ -150,9 +156,12 @@ class DataProcessor(yarp.PortReader):
         if kinect==0:
             print("Painting Blue now for real")
             pygame.draw.rect(screen,BLUE,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            self.drawCursor()
+
         elif kinect==1:
             print("Painting Blue now for real")
             pygame.draw.rect(screen, BLUE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            self.drawCursor()
 
         place =self.x+self.y*vrect #Number of pixel.
         print 'place', place
@@ -166,10 +175,13 @@ class DataProcessor(yarp.PortReader):
         if kinect==0:
             print("Painting Yellow now for real")
             pygame.draw.rect(screen,YELLOW,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            self.drawCursor()
         elif kinect==1:
             print("Painting Yellow now for real")
             pygame.draw.rect(screen,YELLOW, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            self.drawCursor()
 
+        pygame.draw.circle(screen, RED, [(self.x * screenW / hrect)+screenW/(2*hrect), (vrect - self.y) * screenH / vrect+screenH/(2*vrect)], 10, 0)
         place =self.x+self.y*vrect #Number of pixel.
         print 'place', place
         print 'self.myMem', self.myMem
@@ -182,9 +194,30 @@ class DataProcessor(yarp.PortReader):
         if kinect==0:
             print("Painting Magenta now for real")
             pygame.draw.rect(screen,MAGENTA,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            self.drawCursor()
         elif kinect==1:
             print("Painting Magenta now for real")
             pygame.draw.rect(screen,MAGENTA, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            self.drawCursor()
+
+        pygame.draw.circle(screen, RED, [(self.x * screenW / hrect)+screenW/(2*hrect), (vrect - self.y) * screenH / vrect+screenH/(2*vrect)], 10, 0)
+        place =self.x+self.y*vrect #Number of pixel.
+        print 'place', place
+        print 'self.myMem', self.myMem
+        print 'size', len(self.myMem)
+        self.myMem[place] = 3
+
+    def paintErase(self):
+
+        #kinect below
+        if kinect==0:
+            print("Erasing now for real")
+            pygame.draw.rect(screen,WHITE,[self.x*screenW/hrect,(vrect-self.y)*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            self.drawCursor()
+        elif kinect==1:
+            print("Erasing now for real")
+            pygame.draw.rect(screen,WHITE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            self.drawCursor()
 
         place =self.x+self.y*vrect #Number of pixel.
         print 'place', place
@@ -192,17 +225,46 @@ class DataProcessor(yarp.PortReader):
         print 'size', len(self.myMem)
         self.myMem[place] = 3
 
+    def drawCursor(self):
+
+        #DrawCursor
+        pygame.draw.circle(screen,RED,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-self.y)*screenH/vrect+screenH/(2*vrect)],10,0)
+
+
+        if self.oldColour == 0:
+            pygame.draw.circle(screen, WHITE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-self.yold)*screenH/vrect+screenH/(2*vrect)], 10, 0)
+
+        elif self.oldColour == 1:
+            pygame.draw.circle(screen, BLUE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-self.yold)*screenH/vrect+screenH/(2*vrect)], 10, 0)
+
+        elif self.oldColour == 2:
+            pygame.draw.circle(screen, YELLOW, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-self.yold)*screenH/vrect+screenH/(2*vrect)],10,0)
+
+
+        elif self.oldColour == 3:
+            pygame.draw.circle(screen, MAGENTA, [(self.xold * screenW / hrect)+screenW/(2*hrect), (vrect - self.yold) * screenH / vrect+screenH/(2*vrect)], 10, 0)
+
+        # Update cursor position and colour
+        self.xold = self.x
+        self.yold = self.y
+        self.oldColour = self.brushColour
+
     def utilityVoxels(self):
         if self.x == 0:
             self.brushColour = 1
+            print("BRUSH COLOUR NOW BLUE")
 
         elif self.x == 1:
             self.brushColour = 2
+            print("BRUSH COLOUR NOW YELLOW")
 
         elif self.x == 2:
             self.brushColour = 3
+            print("BRUSH COLOUR NOW MAGENTA")
 
         elif self.x == 3:
+            self.brushColour = 0 #Rubber
+            print("WARNING: USING ERASER")
             pass #right now doing nothing
 
 
