@@ -249,7 +249,7 @@ class DataProcessor(yarp.PortReader):
             pygame.draw.circle(screen, MAGENTA, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
         #DrawCursor
-        pygame.draw.circle(screen,RED,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
+        pygame.draw.circle(screen,BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
 
         # Update cursor position and colour
         self.xold = self.x
