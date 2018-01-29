@@ -30,6 +30,7 @@ Universidad Carlos III de Madrid
 import pygame
 import yarp
 import numpy as np
+import time
 
  
 # Initialize the game engine
@@ -95,23 +96,26 @@ class DataProcessor(yarp.PortReader):
     def myInit(self):
         #self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
         self.myMem = np.zeros(hrect*vrect)
-        self.brushColour=3 #By default blue
+        self.brushColour=1 #By default blue
         self.xold=0
         self.yold=0
         self.oldColour=1
 
     def read(self,connection):
+
+        #time.sleep(0.1)  # delays for 5 seconds. You can Also Use Float Value
         print("in DataProcessor.read")
         if not(connection.isValid()):
             print("Connection shutting down")
             return False
         bin = yarp.Bottle()
-        bout = yarp.Bottle()
+        #bout = yarp.Bottle()
         print("Trying to read from connection")
         ok = bin.read(connection)
         if not(ok):
             print("Failed to read input")
             return False
+
         #self.received=bin;
 
         #Sending procedure
@@ -123,32 +127,36 @@ class DataProcessor(yarp.PortReader):
         #    return True
         #return bout.write(writer)
 
-        #Read the rectangle from bottle
-        self.x=bin.get(0).asInt()
-        self.y=bin.get(1).asInt()
-        print("what i have received is [",self.x,",",self.y,"]")
+        if bin.size()==0:
+            print("Empty bottle, discarded")
 
-        #Paint conditions
-        if self.y < vrect: #We are talking about painting voxels if this is true
-            if self.brushColour == 1:
-                print("Painting blue now")
-                self.paintBlue()
+        else:
+            #Read the rectangle from bottle
+            self.x=bin.get(0).asInt()
+            self.y=bin.get(1).asInt()
+            print("what i have received is [",self.x,self.y,"]")
 
-            elif self.brushColour == 2:
-                print("Painting yellow now")
-                self.paintYellow()
+            #Paint conditions
+            if self.y < vrect: #We are talking about painting voxels if this is true
+                if self.brushColour == 1:
+                    print("Painting blue now")
+                    self.paintBlue()
 
-            elif self.brushColour == 3:
-                print("Painting Magenta now")
-                self.paintMagenta()
+                elif self.brushColour == 2:
+                    print("Painting yellow now")
+                    self.paintYellow()
 
-            elif self.brushColour == 0:
-                print("ERASING")
-                self.paintErase()
+                elif self.brushColour == 3:
+                    print("Painting Magenta now")
+                    self.paintMagenta()
 
-        else: #We are talking about utilityVoxels
-            print("Utility pixels")
-            self.utilityVoxels()
+                elif self.brushColour == 0:
+                    print("ERASING")
+                    self.paintErase()
+
+            else: #We are talking about utilityVoxels
+                print("Utility pixels")
+                self.utilityVoxels()
 
 
     def paintBlue(self):
@@ -227,10 +235,7 @@ class DataProcessor(yarp.PortReader):
 
     def drawCursor(self):
 
-        #DrawCursor
-        pygame.draw.circle(screen,RED,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
-
-        #Delete cursor
+        #Delete old cursor
         if self.oldColour == 0:
             pygame.draw.circle(screen, WHITE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
@@ -242,6 +247,9 @@ class DataProcessor(yarp.PortReader):
 
         elif self.oldColour == 3:
             pygame.draw.circle(screen, MAGENTA, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+
+        #DrawCursor
+        pygame.draw.circle(screen,RED,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
 
         # Update cursor position and colour
         self.xold = self.x
