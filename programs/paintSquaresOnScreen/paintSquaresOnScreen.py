@@ -99,7 +99,7 @@ class DataProcessor(yarp.PortReader):
         self.brushColour=1 #By default blue
         self.xold=0
         self.yold=0
-        self.oldColour=1
+        self.oldColour=0
 
     def read(self,connection):
 
