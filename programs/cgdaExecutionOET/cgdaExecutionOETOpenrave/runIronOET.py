@@ -30,10 +30,6 @@ Universidad Carlos III de Madrid
 import subprocess
 import time
 
-#TODO list:
-# 1) Implement here that zeros and ones are read from a txt and send through args. X
-# 2) Implement in CgdaExecutionOET that the outputs of paintsquared are send to the txt called before.
-# 3) Implement a while that is running until certain condition is achieved. Maybe extract this condition from evMono_ecf_params, just for simplicity.
 Gen=0
 fout= open('percentageOET.txt', 'a')
 
@@ -42,7 +38,8 @@ fout2.write("\n")
 fout2.write("I: ")
 fout2.close()
 
-Nsquares=64
+Nfeatures=4 
+Nsquares=4 #Nsquares of the wrinkle
 
 while 1:
     f = open('memoryOET.txt', 'r')
@@ -58,18 +55,20 @@ while 1:
         print("sum:",suma)
     if not data_array:
 	print"Empty Memory"
-        for x in range(Nsquares):
+        for x in range(Nfeatures+Nsquares):
             data_array.append("0")
             
     sum=0
-    for i in data_array:
+    print Nfeatures
+    #print len(data_array)
+    for i in data_array[Nfeatures:]:
         sum=sum+int(i)
     
     #Output percentage
-    print sum
+    print ("sum is: ",sum)
     percentage=(sum/float(Nsquares))*100.0
     percentage=str(percentage)
-    print percentage
+    print ("percentage is: ", percentage)
     fout.write(percentage)
     fout.write(" ")
     if sum==Nsquares or Gen==30:

@@ -15,24 +15,24 @@ int CgdaExecutionOET::init(int argc, char **argv)
 {
 
     //Uncomment for Iron
-//    sqFeatures.resize(argc-2);
+    sqFeatures.resize(argc-2);
 
-//    for(int i=0;i<argc-2;i++)
-//    {
-//        stringstream ss(argv[i+2]);
-//        ss >> sqFeatures[i];
-//        printf("EL valor de sqFeatures %d es:::: %d \n", i, sqFeatures[i]);
-//    }
+    for(int i=0;i<argc-2;i++)
+    {
+        stringstream ss(argv[i+2]);
+        ss >> sqFeatures[i];
+        printf("EL valor de sqFeatures %d es:::: %d \n", i, sqFeatures[i]);
+    }
 
     //Uncomment for Paint
-        psqFeatures.resize(argc-2);
+//        psqFeatures.resize(argc-2);
 
-        for(int i=0;i<argc-2;i++)
-        {
-            stringstream ss(argv[i+2]);
-            ss >> psqFeatures[i];
-            printf("EL valor de sqFeatures %d es:::: %d \n", i, psqFeatures[i]);
-        }
+//        for(int i=0;i<argc-2;i++)
+//        {
+//            stringstream ss(argv[i+2]);
+//            ss >> psqFeatures[i];
+//            printf("EL valor de sqFeatures %d es:::: %d \n", i, psqFeatures[i]);
+//        }
 
 //    portNum = -1;
 //    bool open = false;

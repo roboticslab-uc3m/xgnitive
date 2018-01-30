@@ -169,7 +169,7 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
 
 double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
-    //This is sqFeatures
+    //This is sqFeatures: {x,y,z,Fx,[wrinkle_array]}
 
 
     //*****************************************RETRIEVAL STEP*****************************************************//
@@ -177,7 +177,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     memory.clear();
 
     //READ FROM sqFeatures the last NFEATURES points wich is the actual state of the environment
-    for(int i=0;i<sqFeatures->size();i++)
+    for(int i=0;i<NFEATURES;i++)
     {
         memory.push_back(sqFeatures->operator [](i));
         //std::cout<<sqFeatures->operator [](i)<<std::endl;
@@ -226,24 +226,6 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     observationClean.push_back(observationData[2]); //Z
     observationClean.push_back(observationData[7]); //Fz
 
-    //********************************PERFORMANCE CALCULATION STEP**************************************************//
-
-    int Nironed=0;
-    yarp::os::Time::delay(DEFAULT_DELAY_S);
-    yarp::os::Bottle cmd2,res2;
-    cmd2.addString("get");
-    pRpcClient->write(cmd2,res2);
-    for(int i=0;i<res2.size();i++)
-    {
-        if ( res2.get(i).asInt() || sqFeatures->operator [](i) )  // logic OR;
-            Nironed ++;
-    }
-
-    //Fitness of the actual point= percentage of the wall painted
-
-    float percentage=(Nironed/NSQUARES)*100;
-
-    std::cout<<"PERCENTAGE IS "<<percentage<<std::endl;
 
     //********************************FITNESS CALCULATION STEP******************************************************//
 
@@ -305,20 +287,17 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //GOAL: Execute the obtained best values to obtain the STATS executed trajectory
 
-    //Physical limits normalization approximation, using force senosr "limits"
-
-//    for (int i=0;i<NTPOINTS;i++){
-//        target[i][3]=target[i][3]/60;
-
-//    }
-
+    //Reset wrinkle
+    yarp::os::Bottle cmd,res;
+    cmd.addString("reset");
+    pRpcClient->write(cmd,res);
 
     //*****************************************RETRIEVAL STEP*****************************************************//
 
     std::vector<double> memory;
 
     //READ FROM sqFeatures the last NFEATURES points wich is the actual state of the environment
-    for(int i=0;i<sqFeatures->size();i++)
+    for(int i=0;i<NFEATURES;i++)
     {
         memory.push_back(sqFeatures->operator [](i));
         //std::cout<<"LA FEATURE "<<i<<" IN THE LAST STEP VALUES" <<sqFeatures->operator [](i)<<std::endl;
@@ -383,6 +362,32 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     timeStep=localization(state);
     std::cout<<"El timestep es:"<<timeStep<<std::endl;
 
+    //********************************PERFORMANCE CALCULATION STEP**************************************************//
+
+    int Nironed=0;
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Bottle cmd2,res2;
+    cmd2.addString("get");
+    pRpcClient->write(cmd2,res2);
+
+    for(int i=NFEATURES;i<res2.size();i++) //Update sqFeatures with the current action.
+    {
+        int state = int(sqFeatures->operator [](i)); //Convert from double to int for logic OR
+        state |= res2.get(i).asInt();  // logic OR
+    }
+
+    for(int i=0;i<sqFeatures->size();i++)
+    {
+        if (sqFeatures->operator [](i) )  // logic OR;
+            Nironed ++;
+    }
+
+    //Fitness of the actual point= percentage of the wall painted
+
+    float percentage=(Nironed/NSQUARES)*100;
+
+    std::cout<<"PERCENTAGE IS "<<percentage<<std::endl;
+
     //********************************FITNESS CALCULATION STEP******************************************************//
 
     //The fit is the L2 norm between the current features, and the t+1 feature environment.
@@ -433,20 +438,16 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //std::cout<<" THE SIZE OF OBSERVATION IS "<<observationData.size()<<std::endl;
     if (myfile1.is_open() && myfile2.is_open()){
-        myfile1<<timeStep<<" ";
+        //myfile1<<timeStep<<" ";
         myfile2<<timeStep<<" ";
         for(int i=0;i<observationClean.size();i++)
         {
-            //std::cout<<" LA OBSERVACIÓN ES "<<observation[i]<<std::endl;
-            myfile1<<observationClean[i]<< " ";
+            myfile1<<observationClean[i]<< " "; //Save Trajectory in memory and then in Trajectory.txt
             myfile2<<observationClean[i]<< " ";
-            //myfile1<<"1 ";
-            //myfile1<< sqFeatures->operator[](i) << " ";
-            //P myfile1<< sqFeatures->operator [](i);
-            //Pmyfile1<< " ";
-            //std::cout<<sqFeatures->operator[](i) << " ";
-            //Pstd::cout<< sqFeatures->operator [](i);
-            //Pstd::cout<< " ";
+        }
+        for(int i=NFEATURES; i<sqFeatures->size();i++)
+        {
+            myfile1<<sqFeatures->operator [](i)<< " "; //Save Wrinkle state in memory
         }
         std::cout<<std::endl;
     }
