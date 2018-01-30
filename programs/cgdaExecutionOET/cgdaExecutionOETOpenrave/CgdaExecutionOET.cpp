@@ -50,28 +50,39 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     //Uncomment for iron
 
-//    forcePort.open("/force:i");
-//    do {
-//        yarp::os::Network::connect("/forceEstimator:o","/force:i");
-//        printf("Wait to connect to forces...\n");
-//        yarp::os::Time::delay(DEFAULT_DELAY_S);
-//    } while( forcePort.getInputCount() == 0 );
+    forcePort.open("/force:i");
+    do {
+        yarp::os::Network::connect("/forceEstimator:o","/force:i");
+        printf("Wait to connect to forces...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( forcePort.getInputCount() == 0 );
 
-//    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
+    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
-//    rpcClientWorld.open("/world:c");
-//    do {
-//        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
-//        printf("Wait to connect to world...\n");
-//        yarp::os::Time::delay(DEFAULT_DELAY_S);
-//    } while( rpcClientWorld.getOutputCount() == 0 );
+    World.open("/world:c");
+    do {
+        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
+        printf("Wait to connect to world...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientWorld.getOutputCount() == 0 );
 
-//    rpcClientCart.open("/cart:c");
-//    do {
-//        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
-//        printf("Wait to connect to world...\n");
-//        yarp::os::Time::delay(DEFAULT_DELAY_S);
-//    } while( rpcClientCart.getOutputCount() == 0 );
+    rpcClientCart.open("/cart:c");
+    do {
+        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
+        printf("Wait to connect to world...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientCart.getOutputCount() == 0 );
+
+    std::string remoteIron("/openraveYarpForceEstimator/rpc:s");
+    std::string localIron("/cgda");
+    localIron.append( "/openraveYarpForceEstimator/rpc:c" );
+    rpcClient.open(localIron);
+    do {
+        yarp::os::Network::connect(localIron,remoteIron);
+        printf("Wait to connect to iron server...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClient.getOutputCount() == 0 );
+    CD_SUCCESS("Iron server available.\n");
 
     //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
@@ -125,23 +136,25 @@ int CgdaExecutionOET::init(int argc, char **argv)
 //    CD_SUCCESS("Real robot device available.\n");
 
 //    //-- Paint server (uncomment for paint)
-    //std::string remotePaint("/");
-    //remotePaint.append( ss.str() );
-    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
-    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
-    //std::string localPaint("/cgda/");
-    //localPaint.append( ss.str() );
-    std::string localPaint("/cgda");
-    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
-    rpcClient.open(localPaint);
-    do {
-        yarp::os::Network::connect(localPaint,remotePaint);
-        printf("Wait to connect to paint server...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( rpcClient.getOutputCount() == 0 );
-    CD_SUCCESS("Paint server available.\n");
+//    //std::string remotePaint("/");
+//    //remotePaint.append( ss.str() );
+//    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+//    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
+//    //std::string localPaint("/cgda/");
+//    //localPaint.append( ss.str() );
+//    std::string localPaint("/cgda");
+//    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+//    rpcClient.open(localPaint);
+//    do {
+//        yarp::os::Network::connect(localPaint,remotePaint);
+//        printf("Wait to connect to paint server...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClient.getOutputCount() == 0 );
+//    CD_SUCCESS("Paint server available.\n");
 
-    CD_SUCCESS("----- All good for %d.\n",portNum);
+//    CD_SUCCESS("----- All good for %d.\n",portNum);
+
+    //***********************************************************//
 
     vector< double > results;
 
@@ -176,13 +189,13 @@ int CgdaExecutionOET::init(int argc, char **argv)
     realDevice.view(functionMinEvalOp->realPositionControl);
     functionMinEvalOp->setPRpcClient(&rpcClient);
     //Uncomment for paint
-    functionMinEvalOp->setPsqFeatures(&psqFeatures);
+//    functionMinEvalOp->setPsqFeatures(&psqFeatures);
 
     //Uncomment for iron
-//    functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
-//    functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
-//    functionMinEvalOp->setPForcePort(&forcePort);
-//    functionMinEvalOp->setsqFeatures(&sqFeatures);
+    functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
+    functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
+    functionMinEvalOp->setPForcePort(&forcePort);
+    functionMinEvalOp->setsqFeatures(&sqFeatures);
 
     state->setEvalOp(functionMinEvalOp);
 
