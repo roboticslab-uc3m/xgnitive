@@ -29,6 +29,8 @@ Universidad Carlos III de Madrid
 # Import a library of functions called 'pygame'
 import pygame
 import yarp
+import numpy as np
+import time
 
  
 # Initialize the game engine
@@ -48,10 +50,15 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+CYAN = (0, 255, 255)
+YELLOW = (255, 255, 0)
+MAGENTA = (255, 0, 104)
+
+
 
 
 # Set the height and width of the screen
-size = (1920, 1080)
+size = (960, 540)
 #size = (0, 0)
 screen = pygame.display.set_mode(size)
 #pygame.FULLSCREEN
@@ -65,15 +72,20 @@ screenSize=pygame.display.Info()
 print(screenSize.current_w, screenSize.current_h)
 
 #Since using 2 screens are presented we can not auto detect the size of screen
-screenW=1920;
-screenH=1080;
+#screenW=1920;
+#screenH=1080;
+screenW=960;
+screenH=540;
 
 # Number of screens
-scn=1
+#scn=2
+
+#Where is the kinect 1 above, 0 below
+kinect=0
 
 # Number of rectangles
-hrect=4 #Horizontal
-vrect=4 #Vertical
+hrect=8 #Horizontal
+vrect=8 #Vertical
 
 # Clear the screen and set the screen background
 screen.fill(WHITE)
@@ -82,54 +94,188 @@ screen.fill(WHITE)
 class DataProcessor(yarp.PortReader): 
 
     def myInit(self):
-        self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+        #self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+        self.myMem = np.zeros(hrect*vrect)
+        self.brushColour=1 #By default blue
+        self.xold=0
+        self.yold=0
+        self.oldColour=0
 
     def read(self,connection):
+
+        #time.sleep(0.1)  # delays for 5 seconds. You can Also Use Float Value
         print("in DataProcessor.read")
         if not(connection.isValid()):
             print("Connection shutting down")
             return False
         bin = yarp.Bottle()
-        bout = yarp.Bottle()
+        #bout = yarp.Bottle()
         print("Trying to read from connection")
         ok = bin.read(connection)
-        #self.received=bin;
-        
-        #Lets paint the rectangle
-        x=(hrect-1-bin.get(0).asInt()) #The transfromation is done to change the x axis
-        y=bin.get(1).asInt()
-        print("Pos rectangle")
-        print x
-        print y
-        #if(x==-1 and y==4):
-        #    print("IM CLEANING")
-        #    screen.fill(WHITE)
-        #else:
-        #pygame.draw.rect(screen, BLUE, [x*screenSize.current_w/(hrect*scn), y*screenSize.current_h/vrect, screenSize.current_w/(hrect*scn), screenSize.current_h/vrect], 0)
-	pygame.draw.rect(screen, BLUE, [x*screenW/(hrect*scn), y*screenH/vrect, screenW/(hrect*scn), screenH/vrect], 0)
-        place = (3-y) + (4*x)
-        print 'place',place
-        print 'self.myMem',self.myMem
-        print 'size',len(self.myMem)
-        self.myMem[ place ] = 1
-        f = open('memoryOET.txt', 'w')
-        line = '%s' % ' '.join(map(str, self.myMem))
-        f.write(line)
-        f.close()
-
-	
         if not(ok):
             print("Failed to read input")
             return False
-        print("Received [%s]"%bin.toString())
-        bout.addString("Received:")
-        bout.append(bin)
-        print("Sending [%s]"%bout.toString())
-        writer = connection.getWriter()
-        if writer==None:
-            print("No one to reply to")
-            return True
-        return bout.write(writer)
+
+        #self.received=bin;
+
+        #Sending procedure
+        #bout.append(bin)
+        #print("Sending [%s]" % bout.toString())
+        #writer = connection.getWriter()
+        #if writer == None:
+        #    print("No one to reply to")
+        #    return True
+        #return bout.write(writer)
+
+        if bin.size()==0:
+            print("Empty bottle, discarded")
+
+        else:
+            #Read the rectangle from bottle
+            self.x=bin.get(0).asInt()
+            self.y=bin.get(1).asInt()
+            print("what i have received is [",self.x,self.y,"]")
+
+            #Paint conditions
+            if self.y < vrect: #We are talking about painting voxels if this is true
+                if self.brushColour == 1:
+                    print("Painting blue now")
+                    self.paintBlue()
+
+                elif self.brushColour == 2:
+                    print("Painting yellow now")
+                    self.paintYellow()
+
+                elif self.brushColour == 3:
+                    print("Painting Magenta now")
+                    self.paintMagenta()
+
+                elif self.brushColour == 0:
+                    print("ERASING")
+                    self.paintErase()
+
+            else: #We are talking about utilityVoxels
+                print("Utility pixels")
+                self.utilityVoxels()
+
+
+    def paintBlue(self):
+
+        #kinect below
+        if kinect==0:
+            print("Painting Blue now for real")
+            pygame.draw.rect(screen,BLUE,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            self.drawCursor()
+
+        elif kinect==1:
+            print("Painting Blue now for real")
+            pygame.draw.rect(screen, BLUE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            self.drawCursor()
+
+        place =self.x+self.y*vrect #Number of pixel.
+        print 'place', place
+        print 'self.myMem', self.myMem
+        print 'size', len(self.myMem)
+        self.myMem[place] = 1
+
+    def paintYellow(self):
+
+        #kinect below
+        if kinect==0:
+            print("Painting Yellow now for real")
+            pygame.draw.rect(screen,YELLOW,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            self.drawCursor()
+
+        elif kinect==1:
+            print("Painting Yellow now for real")
+            pygame.draw.rect(screen,YELLOW, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            self.drawCursor()
+
+        place =self.x+self.y*vrect #Number of pixel.
+        print 'place', place
+        print 'self.myMem', self.myMem
+        print 'size', len(self.myMem)
+        self.myMem[place] = 2
+
+    def paintMagenta(self):
+
+        #kinect below
+        if kinect==0:
+            print("Painting Magenta now for real")
+            pygame.draw.rect(screen,MAGENTA,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            self.drawCursor()
+        elif kinect==1:
+            print("Painting Magenta now for real")
+            pygame.draw.rect(screen,MAGENTA, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            self.drawCursor()
+
+        place =self.x+self.y*vrect #Number of pixel.
+        print 'place', place
+        print 'self.myMem', self.myMem
+        print 'size', len(self.myMem)
+        self.myMem[place] = 3
+
+    def paintErase(self):
+
+        #kinect below
+        if kinect==0:
+            print("Erasing now for real")
+            pygame.draw.rect(screen,WHITE,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            self.drawCursor()
+        elif kinect==1:
+            print("Erasing now for real")
+            pygame.draw.rect(screen,WHITE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            self.drawCursor()
+
+        place =self.x+self.y*vrect #Number of pixel.
+        print 'place', place
+        print 'self.myMem', self.myMem
+        print 'size', len(self.myMem)
+        self.myMem[place] = 3
+
+    def drawCursor(self):
+
+        #Delete old cursor
+        if self.oldColour == 0:
+            pygame.draw.circle(screen, WHITE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+
+        elif self.oldColour == 1:
+            pygame.draw.circle(screen, BLUE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+
+        elif self.oldColour == 2:
+            pygame.draw.circle(screen, YELLOW, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)],10,0)
+
+        elif self.oldColour == 3:
+            pygame.draw.circle(screen, MAGENTA, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+
+        #DrawCursor
+        pygame.draw.circle(screen,BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
+
+        # Update cursor position and colour
+        self.xold = self.x
+        self.yold = self.y
+        self.oldColour = self.brushColour
+
+    def utilityVoxels(self):
+        if self.x == 0:
+            self.brushColour = 1
+            print("BRUSH COLOUR NOW BLUE")
+
+        elif self.x == 1:
+            self.brushColour = 2
+            print("BRUSH COLOUR NOW YELLOW")
+
+        elif self.x == 2:
+            self.brushColour = 3
+            print("BRUSH COLOUR NOW MAGENTA")
+
+        elif self.x == 3:
+            self.brushColour = 0 #Rubber
+            print("WARNING: USING ERASER")
+            pass #right now doing nothing
+
+
+
 
 p = yarp.Port()
 r = DataProcessor()
@@ -149,9 +295,11 @@ while not done:
     # This MUST happen after all the other drawing commands.
     pygame.display.flip() 
 
+    #Calculate percentage
     percent = 0
     for elem in r.myMem:
-        percent += elem
+        if elem!=0: #For each element not painted.
+            percent += 1
     percent = 100.0 * percent / float(len(r.myMem))
     out = yarp.Bottle()
     out.addDouble(percent)

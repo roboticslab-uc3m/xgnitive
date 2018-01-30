@@ -1,0 +1,23 @@
+<application>
+<name>iros2018-real-paint App</name>
+
+<!-- paintSquaresOnScreen -->
+
+    <module> <!-- Xgnitive -->
+        <name>paintSquaresOnScreen.py</name>
+        <workdir>/usr/local/bin/</workdir>
+	<node>localhost</node>
+    </module>
+
+    <module> <!-- teoHead -->
+        <name>voxelOccupancyDetection</name>
+        <node>localhost</node>
+    </module>
+
+    <connection>
+        <from>/voxelOccupancyDetection/state:o</from>
+        <to>/voxelOccupancyDetection/state:i</to>
+    </connection>
+        
+</application>
+
