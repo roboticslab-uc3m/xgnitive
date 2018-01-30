@@ -9,8 +9,9 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
-//#include "CgdaIronFitnessFunction.hpp"
-#include "CgdaPaintFitnessFunction.hpp"
+#include "CgdaIronFitnessFunction.hpp"
+//#include "CgdaPaintFitnessFunction.hpp"
+
 //The following cost functions are not yet implemented in OET
 //#include "CgdaWaxFitnessFunction.hpp"
 //#include "CgdaConstrainedPaintFitnessFunction.hpp"

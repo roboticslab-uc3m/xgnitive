@@ -116,10 +116,6 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
     yarp::os::Bottle cmd,res;
     cmd.addString("stat");
 
-    /*cmd.addString("world");
-    cmd.addString("whereis");
-    cmd.addString("tcp");
-    cmd.addString("rightArm");*/
     pRpcClientCart->write(cmd,res);
     printf("Got: %s\n",res.toString().c_str());
     /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
@@ -230,6 +226,24 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     observationClean.push_back(observationData[2]); //Z
     observationClean.push_back(observationData[7]); //Fz
 
+    //********************************PERFORMANCE CALCULATION STEP**************************************************//
+
+    int Nironed=0;
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Bottle cmd2,res2;
+    cmd2.addString("get");
+    pRpcClient->write(cmd2,res2);
+    for(int i=0;i<res2.size();i++)
+    {
+        if ( res2.get(i).asInt() || sqFeatures->operator [](i) )  // logic OR;
+            Nironed ++;
+    }
+
+    //Fitness of the actual point= percentage of the wall painted
+
+    float percentage=(Nironed/NSQUARES)*100;
+
+    std::cout<<"PERCENTAGE IS "<<percentage<<std::endl;
 
     //********************************FITNESS CALCULATION STEP******************************************************//
 
@@ -267,9 +281,6 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 //    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationData[2]<<std::endl;
 
     std::cout<<" FIT "<<fit<<std::endl;
-
-
-
 
     //featureTrajectories->compare(attempVectforSimpleDiscrepancy,fit);
 

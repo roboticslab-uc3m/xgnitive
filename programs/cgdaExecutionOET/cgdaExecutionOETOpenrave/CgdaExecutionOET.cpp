@@ -59,7 +59,7 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
-    World.open("/world:c");
+    rpcClientWorld.open("/world:c");
     do {
         yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
         printf("Wait to connect to world...\n");
@@ -177,8 +177,10 @@ int CgdaExecutionOET::init(int argc, char **argv)
     //           state->addAlgorithm(nalg3);
 
     // set the evaluation operator
-    //CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
-    CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+    CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
+
+    //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+
     //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
     //Constrained Cost functions
     //CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
