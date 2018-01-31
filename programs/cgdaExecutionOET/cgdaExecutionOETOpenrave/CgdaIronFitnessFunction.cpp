@@ -271,6 +271,13 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Actually move the robot
     //mentalPositionControl->positionMove(dEncRaw2.data());
 
+    //Reset wrinke for visualization options.
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Bottle cmd,res;
+    cmd.addString("reset");
+    pRpcClient->write(cmd,res);
+
+
     return fit;
 }
 
