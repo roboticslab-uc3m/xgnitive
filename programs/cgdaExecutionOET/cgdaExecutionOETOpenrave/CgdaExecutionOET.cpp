@@ -50,12 +50,12 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     //Uncomment for iron
 
-    forcePort.open("/force:i");
-    do {
-        yarp::os::Network::connect("/forceEstimator:o","/force:i");
-        printf("Wait to connect to forces...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( forcePort.getInputCount() == 0 );
+//    forcePort.open("/force:i");
+//    do {
+//        yarp::os::Network::connect("/forceEstimator:o","/force:i");
+//        printf("Wait to connect to forces...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( forcePort.getInputCount() == 0 );
 
     //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
