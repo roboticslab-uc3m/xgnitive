@@ -140,25 +140,18 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
         //std(observationData[i]);
     }
 
-    //FORCE
-    yarp::os::Bottle* b = pForcePort->read(false);
-    if(!b)
-    {
-        printf("No force yet\n");
-        do{
-            yarp::os::Time::delay(DEFAULT_DELAY_S);
-            b = pForcePort->read(false);
-            if(b){
-                break;
-            }
-            printf("Waiting receiving force\n");
+    //FORCE Observation
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Bottle cmd2,res2;
+    cmd.addString("force");
 
-        }while(1);
-    }
+    pRpcClientCart->write(cmd2,res2);
+    printf("Got: %s\n",res2.toString().c_str());
+
     //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
-    for(size_t i=0; i<b->size(); i++)
+    for(size_t i=0; i<res2.size(); i++)
     {
-        observationData.push_back( b->get(i).asDouble() );
+        observationData.push_back( res2.get(i).asDouble() );
         //std(observationData[i]);
     }
 

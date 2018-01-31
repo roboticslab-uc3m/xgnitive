@@ -196,7 +196,6 @@ int CgdaExecutionOET::init(int argc, char **argv)
     //Uncomment for iron
     functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
     functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
-    functionMinEvalOp->setPForcePort(&forcePort);
     functionMinEvalOp->setsqFeatures(&sqFeatures);
 
     state->setEvalOp(functionMinEvalOp);
