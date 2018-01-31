@@ -96,8 +96,7 @@ while 1:
     #print output
     out, err = popen.communicate()
     errcode = popen.returncode
-    #output = popen.stdout.read()
-    ###print out
+    print out
 
     #Output time
     elapsed_time=time.time() - start_time

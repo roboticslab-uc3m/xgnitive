@@ -143,9 +143,9 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
     //FORCE Observation
     yarp::os::Time::delay(DEFAULT_DELAY_S);
     yarp::os::Bottle cmd2,res2;
-    cmd.addString("force");
+    cmd2.addString("force");
 
-    pRpcClientCart->write(cmd2,res2);
+    pRpcClient->write(cmd2,res2);
     printf("Got: %s\n",res2.toString().c_str());
 
     //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
@@ -180,6 +180,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //***************************************LOCALIZATION STEP******************************************************//
 
     int timeStep;
+    std::cout<<"State that I am using for localization EVOLVING is: "<<memory<<std::endl;
     timeStep=localization(memory);
 
     //********************************SIMULATED EXECUTION STEP******************************************************//
@@ -229,7 +230,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     for(int i=0;i<NFEATURES;i++){
         double aux_elem;
-        if(i==3){
+        if(i==3){ //Force Feature
             aux_elem=(observationClean[i]-target[timeStep+1][i])/300;
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
@@ -251,9 +252,15 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
     fit=sqrt(fit);
 
-//    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" OBERVACIÓN "<<observationData[0]<<std::endl;
-//    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" OBERVACIÓN "<<observationData[1]<<std::endl;
-//    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" OBERVACIÓN "<<observationData[2]<<std::endl;
+//    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" CURRENT REAL POSITION "<<observationData[0]<<std::endl;
+//    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" CURRENT REAL POSITION "<<observationData[1]<<std::endl;
+//    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" CURRENT REAL POSITION "<<observationData[2]<<std::endl;
+//    std::cout<<" TARGET FORCE "<< target[timeStep+1][3]<<" CURRENT REAL FORCE "<<observationData[3]<<std::endl;
+
+//    std::cout<<" CURRENT STATE X "<< target[timeStep][0]<<std::endl;
+//    std::cout<<" CURRENT STATE Y "<< target[timeStep][1]<<std::endl;
+//    std::cout<<" CURRENT STATE  Z "<< target[timeStep][2]<<std::endl;
+//    std::cout<<" CURRENT FORCE  "<< target[timeStep][3]<<std::endl;
 
     std::cout<<" FIT "<<fit<<std::endl;
 
@@ -349,15 +356,28 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     observationClean.push_back(observationData[2]); //Z
     observationClean.push_back(observationData[7]); //Fz
 
+
+    std::cout<<" TARGET X "<< target[timeStep+1][0]<<" CURRENT REAL POSITION "<<observationData[0]<<std::endl;
+    std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" CURRENT REAL POSITION "<<observationData[1]<<std::endl;
+    std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" CURRENT REAL POSITION "<<observationData[2]<<std::endl;
+    std::cout<<" TARGET FORCE "<< target[timeStep+1][3]<<" CURRENT REAL FORCE "<<observationData[3]<<std::endl;
+
+    std::cout<<" CURRENT STATE X "<< target[timeStep][0]<<std::endl;
+    std::cout<<" CURRENT STATE Y "<< target[timeStep][1]<<std::endl;
+    std::cout<<" CURRENT STATE  Z "<< target[timeStep][2]<<std::endl;
+    std::cout<<" CURRENT FORCE  "<< target[timeStep][3]<<std::endl;
+
     //std::cout<<observationData<<std::endl;
 
     //***************************************CURRENT LOCALIZATION STEP******************************************************//
 
     state.clear();
-    state.push_back(timeStep);
+    //state.push_back(timeStep);
     for (int i=0; i<observationClean.size();i++){
         state.push_back(observationClean[i]);
     }
+
+    std::cout<<"State that I am using for localization is: "<<state<<std::endl;
 
     timeStep=localization(state);
     std::cout<<"El timestep es:"<<timeStep<<std::endl;
@@ -372,8 +392,8 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     for(int i=NFEATURES;i<res2.size();i++) //Update sqFeatures with the current action.
     {
-        int state = int(sqFeatures->operator [](i)); //Convert from double to int for logic OR
-        state |= res2.get(i).asInt();  // logic OR
+        int paintSquares = int(sqFeatures->operator [](i)); //Convert from double to int for logic OR
+        paintSquares |= res2.get(i).asInt();  // logic OR
     }
 
     for(int i=0;i<sqFeatures->size();i++)
