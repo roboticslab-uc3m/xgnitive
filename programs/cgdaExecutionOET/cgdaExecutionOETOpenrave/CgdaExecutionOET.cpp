@@ -59,13 +59,6 @@ int CgdaExecutionOET::init(int argc, char **argv)
 
     //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
 
-    rpcClientWorld.open("/world:c");
-    do {
-        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
-        printf("Wait to connect to world...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( rpcClientWorld.getOutputCount() == 0 );
-
     rpcClientCart.open("/cart:c");
     do {
         yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
@@ -194,7 +187,6 @@ int CgdaExecutionOET::init(int argc, char **argv)
 //    functionMinEvalOp->setPsqFeatures(&psqFeatures);
 
     //Uncomment for iron
-    functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
     functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
     functionMinEvalOp->setsqFeatures(&sqFeatures);
 

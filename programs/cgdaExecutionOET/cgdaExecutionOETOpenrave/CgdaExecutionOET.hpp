@@ -42,7 +42,6 @@ private:
     // YARP
     yarp::os::Network yarp;
     yarp::os::Port port;
-    yarp::os::RpcClient rpcClientWorld;
     yarp::os::RpcClient rpcClientCart;
     int portNum;
     yarp::dev::PolyDriver mentalDevice;
