@@ -6,11 +6,11 @@
 #ifndef __EV_MONO_HPP__
 #define __EV_MONO_HPP__
 
-#include "CgdaPaintFitnessFunction.hpp"
+//#include "CgdaPaintFitnessFunction.hpp"
 //#include "CgdaWaxFitnessFunction.hpp"
 //#include "CgdaConstrainedPaintFitnessFunction.hpp"
 //#include "CgdaConstrainedWaxFitnessFunction.hpp"
-//#include "CgdaIronFitnessFunction.hpp"
+#include "CgdaIronFitnessFunction.hpp"
 
 
 //#include "AlgPSOInheritance.hpp"
@@ -39,9 +39,7 @@ class CgdaExecutionIET  {
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
     yarp::os::RpcClient rpcClient;
-    yarp::os::RpcClient rpcClientWorld;
     yarp::os::RpcClient rpcClientCart;
-    yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
 
 
 };

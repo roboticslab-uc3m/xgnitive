@@ -91,7 +91,6 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 
 
     //********************************OBSERVATION STEP*******************************************************//
-
     std::vector<double> observationData, observationClean;
     observationData.clear();
 
@@ -100,10 +99,6 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     yarp::os::Bottle cmd,res;
     cmd.addString("stat");
 
-    /*cmd.addString("world");
-    cmd.addString("whereis");
-    cmd.addString("tcp");
-    cmd.addString("rightArm");*/
     pRpcClientCart->write(cmd,res);
     printf("Got: %s\n",res.toString().c_str());
 
@@ -114,26 +109,20 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     }
 
     //FORCE
-    yarp::os::Bottle* b = pForcePort->read(false);
-    if(!b)
-    {
-        printf("No force yet\n");
-        do{
-            yarp::os::Time::delay(DEFAULT_DELAY_S);
-            b = pForcePort->read(false);
-            if(b){
-                break;
-            }
-            printf("Waiting receiving force\n");
+    yarp::os::Time::delay(DEFAULT_DELAY_S);
+    yarp::os::Bottle cmd2,res2;
+    cmd2.addString("force");
 
-        }while(1);
-    }
+    pRpcClient->write(cmd2,res2);
+    printf("Got: %s\n",res2.toString().c_str());
+
     //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
-    for(size_t i=0; i<b->size(); i++)
+    for(size_t i=0; i<res2.size(); i++)
     {
-        observationData.push_back( b->get(i).asDouble() );
-        //std(observationData[i]);
+        observationData.push_back( res2.get(i).asDouble() );
+        //std::cout<<(observationData[i])<<std::endl;
     }
+
 
     //std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
     std::cout<<" In the iteration "<<*pIter<<" the position of the robot is "<<observationData<<std::endl;
@@ -156,7 +145,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
             aux_elem=(observationClean[i]-target_iron[*pIter][i])/300;
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
-            std::cout<<" target_iron "<< target_iron[*pIter][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
+            //std::cout<<" target_iron "<< target_iron[*pIter][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
         }
         else{
@@ -165,7 +154,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
             //std::cout<<"Fit is at some time step: "<<fit<<std::endl;
-            std::cout<<" target_iron "<< target_iron[*pIter][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
+            //std::cout<<" target_iron "<< target_iron[*pIter][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
         }
 
@@ -197,6 +186,11 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //Actually move the robot
     //mentalPositionControl->positionMove(dEncRaw2.data());
 
+    //Reset wrinkle
+//    yarp::os::Bottle cmd,res;
+//    cmd.addString("reset");
+//    pRpcClient->write(cmd,res);
+
     return fit;
 }
 
@@ -207,6 +201,13 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
     //GOAL: Execute the obtained best values to obtain the STATS executed trajectory
 
     //Obtain the actual state of the feature environment.
+
+    int ironed[WRINKLESIZE]={0}; //Init all the values to 0.
+
+    //Reset wrinkle
+//    yarp::os::Bottle cmd,res;
+//    cmd.addString("reset");
+//    pRpcClient->write(cmd,res);
 
     for(int t=0;t<NTPOINTS;t++) {
 
@@ -262,36 +263,54 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         }
 
         //FORCE
-        yarp::os::Bottle* b = pForcePort->read(false);
-        if(!b)
-        {
-            printf("No force yet\n");
-            do{
-                yarp::os::Time::delay(DEFAULT_DELAY_S);
-                b = pForcePort->read(false);
-                if(b){
-                    break;
-                }
-                printf("Waiting receiving force\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+        yarp::os::Bottle cmd2,res2;
+        cmd2.addString("force");
 
-            }while(1);
-        }
+        pRpcClient->write(cmd2,res2);
+        printf("Got: %s\n",res2.toString().c_str());
+
         //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
-        for(size_t i=0; i<b->size(); i++)
+        for(size_t i=0; i<res2.size(); i++)
         {
-            observationData.push_back( b->get(i).asDouble() );
-            //std(observationData[i]);
+            observationData.push_back( res2.get(i).asDouble() );
+            //std::cout<<(observationData[i])<<std::endl;
         }
 
         //std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
-
-
 
         observationClean.push_back(observationData[0]); //X
         observationClean.push_back(observationData[1]); //Y
         observationClean.push_back(observationData[2]); //Z
         observationClean.push_back(observationData[7]); //Fz
         std::cout<<" In the iteration "<<t<<" the trajectory obtained was "<<observationClean<<std::endl;
+
+        //********************************PERFORMANCE CALCULATION STEP**************************************************//
+
+        double Nironed=0;
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+        yarp::os::Bottle cmd3,res3;
+        cmd3.addString("get");
+        pRpcClient->write(cmd3,res3);
+
+        for(int i=0;i<res3.size();i++)
+        {
+            std::cout<<"I have painted this: "<<res3.get(i).asInt()<<std::endl;
+            ironed[i] |= res3.get(i).asInt();  // logic OR
+        }
+
+        for(int i=0;i<WRINKLESIZE;i++)
+        {
+            if (ironed[i])  // logic OR;
+                Nironed ++;
+                std::cout<<"I have ironed this much "<<Nironed<<std::endl;
+        }
+
+        //Fitness of the actual point= percentage of the wall painted
+
+        double percentage=(Nironed/WRINKLESIZE)*100;
+
+        std::cout<<"PERCENTAGE IS "<<percentage<<std::endl;
 
         //********************************FITNESS CALCULATION STEP******************************************************//
 
@@ -305,7 +324,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
                 aux_elem=(observationClean[i]-target_iron[t][i])/300;
                 aux_elem=aux_elem*aux_elem;
                 fit=fit+aux_elem;
-                std::cout<<" target_iron "<< target_iron[t][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
+                //std::cout<<" target_iron "<< target_iron[t][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
             }
             else{
@@ -314,7 +333,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
                 aux_elem=aux_elem*aux_elem;
                 fit=fit+aux_elem;
                 //std::cout<<"Fit is at some time step: "<<fit<<std::endl;
-                std::cout<<" target_iron "<< target_iron[t][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
+                //std::cout<<" target_iron "<< target_iron[t][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
             }
 
@@ -356,18 +375,12 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         if (myfile1.is_open()){
             for(int i=0;i<observationClean.size();i++)
             {
-                //std::cout<<" LA OBSERVACIÓN ES "<<observation[i]<<std::endl;
                 myfile1<<observationClean[i]<< " ";
-                //myfile1<<"1 ";
-                //myfile1<< psqFeatures->operator[](i) << " ";
-                //P myfile1<< psqFeatures->operator [](i);
-                //Pmyfile1<< " ";
-                //std::cout<<psqFeatures->operator[](i) << " ";
-                //Pstd::cout<< psqFeatures->operator [](i);
-                //Pstd::cout<< " ";
             }
+            myfile1<<percentage<<" ";
             std::cout<<std::endl;
             myfile1<<fit<<" ";
+            myfile1<<std::endl;
         }
         myfile1.close();
 

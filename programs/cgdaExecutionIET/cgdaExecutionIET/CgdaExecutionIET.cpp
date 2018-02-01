@@ -77,49 +77,46 @@ bool CgdaExecutionIET::init() {
 //    CD_SUCCESS("Real robot device available.\n");
 
     //-- Paint server (uncomment for Paint)
-//    std::string remotePaint("/");
-//    remotePaint.append( ss.str() );
-//    remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
-    std::string remotePaint( "/openraveYarpPaintSquares/rpc:s" );
-    std::string localPaint("/cgda");
-    //localPaint.append( ss.str() );
-    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
-    rpcClient.open(localPaint);
-    do {
-        yarp::os::Network::connect(localPaint,remotePaint);
-        printf("Wait to connect to paint server...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( rpcClient.getOutputCount() == 0 );
+//    std::string remotePaint( "/openraveYarpPaintSquares/rpc:s" );
+//    std::string localPaint("/cgda");
+//    //localPaint.append( ss.str() );
+//    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+//    rpcClient.open(localPaint);
+//    do {
+//        yarp::os::Network::connect(localPaint,remotePaint);
+//        printf("Wait to connect to paint server...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClient.getOutputCount() == 0 );
 
 
-    CD_SUCCESS("Paint server available.\n");
+//    CD_SUCCESS("Paint server available.\n");
 
-    CD_SUCCESS("----- All good for %d.\n",portNum);
+//    CD_SUCCESS("----- All good for %d.\n",portNum);
+
+    //////////////////////////////////////////////////////////////////////////////
 
 
     //Uncomment iron
-//    //force connect
-//    forcePort.open("/force:i");
-//    do {
-//        yarp::os::Network::connect("/forceEstimator:o","/force:i");
-//        printf("Wait to connect to forces...\n");
-//        yarp::os::Time::delay(DEFAULT_DELAY_S);
-//    } while( forcePort.getInputCount() == 0 );
 
-//    rpcClientWorld.open("/world:c");
-//    do {
-//        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
-//        printf("Wait to connect to world...\n");
-//        yarp::os::Time::delay(DEFAULT_DELAY_S);
-//    } while( rpcClientWorld.getOutputCount() == 0 );
+    rpcClientCart.open("/cart:c");
+    do {
+        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
+        printf("Wait to connect to world...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientCart.getOutputCount() == 0 );
 
-//    rpcClientCart.open("/cart:c");
-//    do {
-//        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
-//        printf("Wait to connect to world...\n");
-//        yarp::os::Time::delay(DEFAULT_DELAY_S);
-//    } while( rpcClientCart.getOutputCount() == 0 );
+    std::string remoteIron("/openraveYarpForceEstimator/rpc:s");
+    std::string localIron("/cgda");
+    localIron.append( "/openraveYarpForceEstimator/rpc:c" );
+    rpcClient.open(localIron);
+    do {
+        yarp::os::Network::connect(localIron,remoteIron);
+        printf("Wait to connect to iron server...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClient.getOutputCount() == 0 );
+    CD_SUCCESS("Iron server available.\n");
 
+    //////////////////////////////////////////////////////////////////////////////////
 
     vector< double > results;
     vector< double >* presults= &results;
@@ -150,8 +147,8 @@ bool CgdaExecutionIET::init() {
         //           state->addAlgorithm(nalg3);
 
         // set the evaluation operator
-        //CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
-        CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+        CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
+        //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
         //CgdaWaxFitnessFunction* functionMinEvalOp = new CgdaWaxFitnessFunction;
         //Constrained Cost functions
         //CgdaConstrainedPaintFitnessFunction* functionMinEvalOp = new CgdaConstrainedPaintFitnessFunction;
@@ -166,9 +163,7 @@ bool CgdaExecutionIET::init() {
         state->setEvalOp(functionMinEvalOp);
 
         //Uncomment iron
-        //functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
-        //functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
-        //functionMinEvalOp->setPForcePort(&forcePort);
+        functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
 
         unsigned int* pIter= &i;
         functionMinEvalOp->setIter(pIter);
@@ -215,10 +210,10 @@ bool CgdaExecutionIET::init() {
 
 
 //    std::vector<double> percentage;
-    CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+    //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
 
     //Execute final trajectory
-    //CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
+    CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
     functionMinEvalOp->individualExecution(results);
 
 

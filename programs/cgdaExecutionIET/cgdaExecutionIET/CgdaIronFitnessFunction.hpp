@@ -25,6 +25,7 @@
 #define NTPOINTS 9
 #define NFEATURES 4
 #define NSQUARES 16
+#define WRINKLESIZE 4
 
 //using namespace ObpenRAVE;
 
@@ -48,14 +49,6 @@ class CgdaIronFitnessFunction : public EvaluateOp {
         this->pRpcClient = pRpcClient;
     }
 
-    void setPForcePort( yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort){
-        this->pForcePort = pForcePort;
-    }
-
-    void setPRpcClientWorld( yarp::os::RpcClient* pRpcClientWorld){
-        this->pRpcClientWorld = pRpcClientWorld;
-    }
-
     void setPRpcClientCart( yarp::os::RpcClient* pRpcClientCart){
         this->pRpcClientCart = pRpcClientCart;
     }
@@ -72,9 +65,6 @@ class CgdaIronFitnessFunction : public EvaluateOp {
     yarp::dev::IPositionControl *mentalPositionControl;
     yarp::dev::IPositionControl *realPositionControl;
     yarp::os::RpcClient* pRpcClient;
-    yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort;
-
-    yarp::os::RpcClient* pRpcClientWorld;
     yarp::os::RpcClient* pRpcClientCart;
 
 };
