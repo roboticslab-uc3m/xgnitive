@@ -276,10 +276,10 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //mentalPositionControl->positionMove(dEncRaw2.data());
 
     //Reset wrinke for visualization options.
-    yarp::os::Time::delay(DEFAULT_DELAY_S);
-    yarp::os::Bottle cmd,res;
-    cmd.addString("reset");
-    pRpcClient->write(cmd,res);
+//    yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    yarp::os::Bottle cmd,res;
+//    cmd.addString("reset");
+//    pRpcClient->write(cmd,res);
 
 
     return fit;
@@ -292,9 +292,9 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     //GOAL: Execute the obtained best values to obtain the STATS executed trajectory
 
     //Reset wrinkle
-    yarp::os::Bottle cmd,res;
-    cmd.addString("reset");
-    pRpcClient->write(cmd,res);
+//    yarp::os::Bottle cmd,res;
+//    cmd.addString("reset");
+//    pRpcClient->write(cmd,res);
 
     //*****************************************RETRIEVAL STEP*****************************************************//
 
@@ -381,27 +381,28 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //********************************PERFORMANCE CALCULATION STEP**************************************************//
 
-    int Nironed=0;
+    double Nironed=0;
     yarp::os::Time::delay(DEFAULT_DELAY_S);
     yarp::os::Bottle cmd2,res2;
     cmd2.addString("get");
     pRpcClient->write(cmd2,res2);
 
-    for(int i=(NFEATURES+1);i<res2.size();i++) //Update sqFeatures with the current action.
+    std::vector<int> ironedWrinkle;
+    for(int i=0;i<res2.size();i++) //Update sqFeatures with the current action.
     {
-        int paintSquares = int(sqFeatures->operator [](i)); //Convert from double to int for logic OR
-        paintSquares |= res2.get(i).asInt();  // logic OR
+        ironedWrinkle.push_back(int(sqFeatures->operator [](i+NFEATURES+1))); //Convert from double to int, for logic OR
+        ironedWrinkle[i] |= res2.get(i).asInt();  // logic OR
+        sqFeatures->operator [](i+NFEATURES+1)=ironedWrinkle[i];
     }
 
-    for(int i=0;i<sqFeatures->size();i++)
+    for(int i=NFEATURES+1;i<sqFeatures->size();i++)
     {
-        if (sqFeatures->operator [](i) )  // logic OR;
+        if ( sqFeatures->operator [](i))  // logic OR;
             Nironed ++;
     }
 
     //Fitness of the actual point= percentage of the wall painted
-
-    float percentage=(Nironed/NSQUARES)*100;
+    double percentage=(Nironed/WRINKLESIZE)*100.0;
 
     std::cout<<"PERCENTAGE IS "<<percentage<<std::endl;
 
