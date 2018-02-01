@@ -69,6 +69,8 @@ int CgdaIronFitnessFunction::localization(std::vector<double> state){
     int timeStep=0;
     double diff=1000000;
 
+    std::cout<<"El state que estoy localizando es:"<<state<<std::endl;
+
     //Position
     for(int i=state[0]; i<state[0]+3 && i<NTPOINTS;i++){ //Note that going back in the trajectory has no sense. memory [0] is the last timeStep of the trajectory.
         double aux_dist=0;
@@ -89,13 +91,13 @@ int CgdaIronFitnessFunction::localization(std::vector<double> state){
         }
 
         aux_dist=sqrt(aux_dist);
-        //std::cout<<"LA DIST PARA EL TIME STEP "<<i<<" ES "<<aux_dist<<std::endl;
+        std::cout<<"LA DIST PARA EL TIME STEP "<<i<<" ES "<<aux_dist<<std::endl;
 
         if(aux_dist<diff){
             timeStep=i;
             diff=aux_dist;
             //printf("i -> %d", i);
-            //printf("Time Step %d \n",timeStep);
+            printf("Time Step %d \n",timeStep);
 
         }
     }
@@ -136,8 +138,8 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
 
     for(size_t i=1; i<res.size(); i++)
     {
-        observationData.push_back( res.get(i).asDouble() );
-        //std(observationData[i]);
+        observationData.push_back(res.get(i).asDouble());
+        //std::cout<<(observationData[i])<<std::endl;
     }
 
     //FORCE Observation
@@ -152,7 +154,7 @@ std::vector<double> CgdaIronFitnessFunction::observation(){
     for(size_t i=0; i<res2.size(); i++)
     {
         observationData.push_back( res2.get(i).asDouble() );
-        //std(observationData[i]);
+        //std::cout<<(observationData[i])<<std::endl;
     }
 
    // std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
@@ -170,7 +172,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     memory.clear();
 
     //READ FROM sqFeatures the last NFEATURES points wich is the actual state of the environment
-    for(int i=0;i<NFEATURES;i++)
+    for(int i=0;i<(NFEATURES+1);i++)
     {
         memory.push_back(sqFeatures->operator [](i));
         //std::cout<<sqFeatures->operator [](i)<<std::endl;
@@ -180,7 +182,7 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //***************************************LOCALIZATION STEP******************************************************//
 
     int timeStep;
-    std::cout<<"State that I am using for localization EVOLVING is: "<<memory<<std::endl;
+    //std::cout<<"State that I am using for localization EVOLVING is: "<<memory<<std::endl;
     timeStep=localization(memory);
 
     //********************************SIMULATED EXECUTION STEP******************************************************//
@@ -201,10 +203,6 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
 //    dEncRaw[4] = 0.378349;  // simple
 //    dEncRaw[5] = -14.809414;  // simple
 
-
-
-
-    //dEncRaw[4] = 70; //TODO:This must be changed for IRON
 
     //std::cout<<" LO QUE ME VOY A MOVER ES :::::: "<<genPoints[0]<<" "<<genPoints[1]<<" "<<genPoints[2]<<std::endl;
 
@@ -234,16 +232,15 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
             aux_elem=(observationClean[i]-target[timeStep+1][i])/300;
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
-            std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
+            //std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
         }
         else{
             aux_elem=observationClean[i]-target[timeStep+1][i];
-            std::cout<<aux_elem<<" "<<std::endl;
+            //std::cout<<aux_elem<<" "<<std::endl;
             aux_elem=aux_elem*aux_elem;
             fit=fit+aux_elem;
-            //std::cout<<"Fit is at some time step: "<<fit<<std::endl;
-            std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
+            //std::cout<<" TARGET "<< target[timeStep+1][i]<<" OBERVACIÓN "<<observationClean[i]<<" FIT "<<fit<<std::endl;
 
         }
 
@@ -304,7 +301,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::vector<double> memory;
 
     //READ FROM sqFeatures the last NFEATURES points wich is the actual state of the environment
-    for(int i=0;i<NFEATURES;i++)
+    for(int i=0;i<(NFEATURES+1);i++)
     {
         memory.push_back(sqFeatures->operator [](i));
         //std::cout<<"LA FEATURE "<<i<<" IN THE LAST STEP VALUES" <<sqFeatures->operator [](i)<<std::endl;
@@ -360,7 +357,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     std::cout<<" TARGET X "<< target[timeStep+1][0]<<" CURRENT REAL POSITION "<<observationData[0]<<std::endl;
     std::cout<<" TARGET Y "<< target[timeStep+1][1]<<" CURRENT REAL POSITION "<<observationData[1]<<std::endl;
     std::cout<<" TARGET Z "<< target[timeStep+1][2]<<" CURRENT REAL POSITION "<<observationData[2]<<std::endl;
-    std::cout<<" TARGET FORCE "<< target[timeStep+1][3]<<" CURRENT REAL FORCE "<<observationData[3]<<std::endl;
+    std::cout<<" TARGET FORCE "<< target[timeStep+1][3]<<" CURRENT REAL FORCE "<<observationData[7]<<std::endl;
 
     std::cout<<" CURRENT STATE X "<< target[timeStep][0]<<std::endl;
     std::cout<<" CURRENT STATE Y "<< target[timeStep][1]<<std::endl;
@@ -372,7 +369,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     //***************************************CURRENT LOCALIZATION STEP******************************************************//
 
     state.clear();
-    //state.push_back(timeStep);
+    state.push_back(timeStep);
     for (int i=0; i<observationClean.size();i++){
         state.push_back(observationClean[i]);
     }
@@ -390,7 +387,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
     cmd2.addString("get");
     pRpcClient->write(cmd2,res2);
 
-    for(int i=NFEATURES;i<res2.size();i++) //Update sqFeatures with the current action.
+    for(int i=(NFEATURES+1);i<res2.size();i++) //Update sqFeatures with the current action.
     {
         int paintSquares = int(sqFeatures->operator [](i)); //Convert from double to int for logic OR
         paintSquares |= res2.get(i).asInt();  // logic OR
@@ -458,14 +455,14 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
 
     //std::cout<<" THE SIZE OF OBSERVATION IS "<<observationData.size()<<std::endl;
     if (myfile1.is_open() && myfile2.is_open()){
-        //myfile1<<timeStep<<" ";
+        myfile1<<timeStep<<" ";
         myfile2<<timeStep<<" ";
         for(int i=0;i<observationClean.size();i++)
         {
             myfile1<<observationClean[i]<< " "; //Save Trajectory in memory and then in Trajectory.txt
             myfile2<<observationClean[i]<< " ";
         }
-        for(int i=NFEATURES; i<sqFeatures->size();i++)
+        for(int i=(NFEATURES+1); i<sqFeatures->size();i++)
         {
             myfile1<<sqFeatures->operator [](i)<< " "; //Save Wrinkle state in memory
         }

@@ -55,13 +55,13 @@ while 1:
         print("sum:",suma)
     if not data_array:
 	print"Empty Memory"
-        for x in range(Nfeatures+Nsquares):
+        for x in range(Nfeatures+Nsquares+1): #There is one additional position for the time step.
             data_array.append("0")
             
     sum=0
     print Nfeatures
     #print len(data_array)
-    for i in data_array[Nfeatures:]:
+    for i in data_array[(Nfeatures+1):]:
         sum=sum+int(i)
     
     #Output percentage
@@ -71,11 +71,13 @@ while 1:
     print ("percentage is: ", percentage)
     fout.write(percentage)
     fout.write(" ")
-    if sum==Nsquares or Gen==30:
+    print(data_array[0])
+    if int(data_array[0])==8 or Gen==30:
 	fout2= open('DataOET++.txt', 'a')
 	fout2.write("\n")
 	fout2.write("I: ")
         fout2.close()
+	print("EXITING")
         break
 
     #Now delete the content in the file
