@@ -465,6 +465,7 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> results){
         for(int i=(NFEATURES+1); i<sqFeatures->size();i++)
         {
             myfile1<<sqFeatures->operator [](i)<< " "; //Save Wrinkle state in memory
+            myfile2<<sqFeatures->operator [](i)<< " "; //Save Wrinkle state in memory
         }
         std::cout<<std::endl;
     }
