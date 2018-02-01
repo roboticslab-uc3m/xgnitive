@@ -187,9 +187,9 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //mentalPositionControl->positionMove(dEncRaw2.data());
 
     //Reset wrinkle
-//    yarp::os::Bottle cmd,res;
-//    cmd.addString("reset");
-//    pRpcClient->write(cmd,res);
+    yarp::os::Bottle cmd,res;
+    cmd.addString("reset");
+    pRpcClient->write(cmd,res);
 
     return fit;
 }
@@ -205,9 +205,9 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
     int ironed[WRINKLESIZE]={0}; //Init all the values to 0.
 
     //Reset wrinkle
-//    yarp::os::Bottle cmd,res;
-//    cmd.addString("reset");
-//    pRpcClient->write(cmd,res);
+    yarp::os::Bottle cmd,res;
+    cmd.addString("reset");
+    pRpcClient->write(cmd,res);
 
     for(int t=0;t<NTPOINTS;t++) {
 
