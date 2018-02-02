@@ -50,39 +50,27 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         yarp::os::Bottle cmd,res;
         cmd.addString("stat");
 
-        /*cmd.addString("world");
-        cmd.addString("whereis");
-        cmd.addString("tcp");
-        cmd.addString("rightArm");*/
         pRpcClientCart->write(cmd,res);
         printf("Got: %s\n",res.toString().c_str());
 
         for(size_t i=1; i<res.size(); i++)
         {
             observationData.push_back( res.get(i).asDouble() );
-            //std(observationData[i]);
         }
 
         //FORCE
-        yarp::os::Bottle* b = pForcePort->read(false);
-        if(!b)
-        {
-            printf("No force yet\n");
-            do{
-                yarp::os::Time::delay(DEFAULT_DELAY_S);
-                b = pForcePort->read(false);
-                if(b){
-                    break;
-                }
-                printf("Waiting receiving force\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+        yarp::os::Bottle cmd2,res2;
+        cmd2.addString("force");
 
-            }while(1);
-        }
+        pRpcClient->write(cmd2,res2);
+        printf("Got: %s\n",res2.toString().c_str());
+
         //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
-        for(size_t i=0; i<b->size(); i++)
+        for(size_t i=0; i<res2.size(); i++)
         {
-            observationData.push_back( b->get(i).asDouble() );
-            //std(observationData[i]);
+            observationData.push_back( res2.get(i).asDouble() );
+            //std::cout<<(observationData[i])<<std::endl;
         }
 
         //std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
@@ -197,6 +185,8 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
         {0.340740, -0.560490, 0.019368, -1.511597}
     };
 
+    int ironed[WRINKLESIZE]={0}; //Init all the values to 0.
+
 
     //Obtain the actual state of the feature environment.
 
@@ -254,26 +244,20 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
         }
 
         //FORCE
-        yarp::os::Bottle* b = pForcePort->read(false);
-        if(!b)
-        {
-            printf("No force yet\n");
-            do{
-                yarp::os::Time::delay(DEFAULT_DELAY_S);
-                b = pForcePort->read(false);
-                if(b){
-                    break;
-                }
-                printf("Waiting receiving force\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+        yarp::os::Bottle cmd2,res2;
+        cmd2.addString("force");
 
-            }while(1);
-        }
+        pRpcClient->write(cmd2,res2);
+        printf("Got: %s\n",res2.toString().c_str());
+
         //printf("El parámetro del sensor de fuerza es %s\n", b->toString().c_str());
-        for(size_t i=0; i<b->size(); i++)
+        for(size_t i=0; i<res2.size(); i++)
         {
-            observationData.push_back( b->get(i).asDouble() );
-            //std(observationData[i]);
+            observationData.push_back( res2.get(i).asDouble() );
+            //std::cout<<(observationData[i])<<std::endl;
         }
+
 
         //std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
 
@@ -284,6 +268,34 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
         observationClean.push_back(observationData[2]); //Z
         observationClean.push_back(observationData[7]); //Fz
         std::cout<<" In the iteration "<<t<<" the trajectory obtained was "<<observationClean<<std::endl;
+
+        //********************************PERFORMANCE CALCULATION STEP**************************************************//
+
+        double Nironed=0;
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+        yarp::os::Bottle cmd3,res3;
+        cmd3.addString("get");
+        pRpcClient->write(cmd3,res3);
+
+        for(int i=0;i<res3.size();i++)
+        {
+            std::cout<<"I have painted this: "<<res3.get(i).asInt()<<std::endl;
+            ironed[i] |= res3.get(i).asInt();  // logic OR
+        }
+
+        for(int i=0;i<WRINKLESIZE;i++)
+        {
+            if (ironed[i])  // logic OR;
+                Nironed ++;
+                std::cout<<"I have ironed this much "<<Nironed<<std::endl;
+        }
+
+        //Fitness of the actual point= percentage of the wall painted
+
+        double percentage=(Nironed/WRINKLESIZE)*100;
+
+        std::cout<<"PERCENTAGE IS "<<percentage<<std::endl;
+
 
         //********************************FITNESS CALCULATION STEP******************************************************//
 
@@ -359,6 +371,7 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
                 //Pstd::cout<< " ";
             }
             std::cout<<std::endl;
+            myfile1<<percentage<<" ";
             myfile1<<fit<<" ";
         }
         myfile1.close();

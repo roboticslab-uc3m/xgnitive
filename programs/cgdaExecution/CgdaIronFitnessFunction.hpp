@@ -29,6 +29,7 @@
 #define NTPOINTS 9
 #define NFEATURES 4
 #define DEFAULT_DELAY_S 0.10
+#define WRINKLESIZE 4
 
 namespace teo
 {
