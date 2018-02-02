@@ -187,9 +187,9 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
     //mentalPositionControl->positionMove(dEncRaw2.data());
 
     //Reset wrinkle
-    yarp::os::Bottle cmd,res;
-    cmd.addString("reset");
-    pRpcClient->write(cmd,res);
+    yarp::os::Bottle cmd3,res3;
+    cmd3.addString("reset");
+    pRpcClient->write(cmd3,res3);
 
     return fit;
 }
