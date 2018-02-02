@@ -14,9 +14,9 @@
 
 #define DEFAULT_FILE_NAME "evMono_ecf_params.xml"
 
-//#include "CgdaIronFitnessFunction.hpp"
+#include "CgdaIronFitnessFunction.hpp"
 
-#include "CgdaPaintFitnessFunction.hpp"
+//#include "CgdaPaintFitnessFunction.hpp"
 
 namespace teo
 {
@@ -32,8 +32,6 @@ class CgdaExecution  {
     yarp::dev::PolyDriver mentalDevice;
     yarp::dev::PolyDriver realDevice;
     yarp::os::RpcClient rpcClient;
-    yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
-    yarp::os::RpcClient rpcClientWorld;
     yarp::os::RpcClient rpcClientCart;
 
 };

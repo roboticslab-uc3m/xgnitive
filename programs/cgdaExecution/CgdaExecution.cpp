@@ -13,28 +13,27 @@ bool CgdaExecution::init() {
     clock_gettime(CLOCK_REALTIME, &tsStart);
 
     //Uncomment for iron
-//    forcePort.open("/force:i");
-//    do {
-//        yarp::os::Network::connect("/forceEstimator:o","/force:i");
-//        printf("Wait to connect to forces...\n");
-//        yarp::os::Time::delay(DEFAULT_DELAY_S);
-//    } while( forcePort.getInputCount() == 0 );
+    ///////////////////////////////////////////////////////////
 
-//    rpcClientWorld.open("/world:c");
-//    do {
-//        yarp::os::Network::connect("/world:c","/worldRpcResponder/rpc:s");
-//        printf("Wait to connect to world...\n");
-//        yarp::os::Time::delay(DEFAULT_DELAY_S);
-//    } while( rpcClientWorld.getOutputCount() == 0 );
+    rpcClientCart.open("/cart:c");
+    do {
+        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
+        printf("Wait to connect to cartesian control..\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClientCart.getOutputCount() == 0 );
 
-//    rpcClientCart.open("/cart:c");
-//    do {
-//        yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
-//        printf("Wait to connect to world...\n");
-//        yarp::os::Time::delay(DEFAULT_DELAY_S);
-//    } while( rpcClientCart.getOutputCount() == 0 );
+    std::string remoteIron("/openraveYarpForceEstimator/rpc:s");
+    std::string localIron("/cgda");
+    localIron.append( "/openraveYarpForceEstimator/rpc:c" );
+    rpcClient.open(localIron);
+    do {
+        yarp::os::Network::connect(localIron,remoteIron);
+        printf("Wait to connect to iron server...\n");
+        yarp::os::Time::delay(DEFAULT_DELAY_S);
+    } while( rpcClient.getOutputCount() == 0 );
+    CD_SUCCESS("Iron server available.\n");
 
-    //std::cout<<"HASTA AQUI LLEGUE"<<std::endl;
+    ///////////////////////////////////////////////////////////
 
     //-- MENTAL ROBOT ARM
     yarp::os::Property mentalOptions;
@@ -86,8 +85,11 @@ bool CgdaExecution::init() {
 //    CD_SUCCESS("Real robot device available.\n");
 
     //-- Paint server (uncomment for paint)
+    ///////////////////////////////////////////////////////////
+
     //std::string remotePaint("/");
-    //remotePaint.append( ss.str() );
+    //remotePaint.append( ss.str() );    ///////////////////////////////////////////////////////////
+
     //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
     std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
     //std::string localPaint("/cgda/");
@@ -104,6 +106,8 @@ bool CgdaExecution::init() {
 
     CD_SUCCESS("----- All good for %d.\n",portNum);
 
+    ///////////////////////////////////////////////////////////
+
     timespec tsEvStart; //Start second timer
     clock_gettime(CLOCK_REALTIME, &tsEvStart);
 
@@ -116,8 +120,8 @@ bool CgdaExecution::init() {
 //    state->addAlgorithm(nalg2);
 
     // set the evaluation operator, init CgdaFitnessFunction
-    //CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
-    CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
+    CgdaIronFitnessFunction* functionMinEvalOp = new CgdaIronFitnessFunction;
+    //CgdaPaintFitnessFunction* functionMinEvalOp = new CgdaPaintFitnessFunction;
 
 
     mentalDevice.view(functionMinEvalOp->mentalPositionControl);
@@ -180,9 +184,10 @@ bool CgdaExecution::init() {
     //Execute best trajectory to get % of the wall painted
 
     //Uncomment for iron
-    //functionMinEvalOp->trajectoryExecution(results);
+    functionMinEvalOp->trajectoryExecution(results);
+
     //uncomment for paint
-    percentage=functionMinEvalOp->trajectoryExecution(results);
+    //percentage=functionMinEvalOp->trajectoryExecution(results);
 
 //    printf("-begin-\n");
 //    for(unsigned int i=0;i<bestPoints.size();i++)
@@ -214,17 +219,17 @@ bool CgdaExecution::init() {
         myfile1<<bestInd[0]->fitness->getValue()<<" ";
 
         //uncomment for paint
-        for(int i=0; i<NTPOINTS;i++){
-            myfile1<<percentage[i]<<" ";
-        }
+//        for(int i=0; i<NTPOINTS;i++){
+//            myfile1<<percentage[i]<<" ";
+//        }
 
-        for(int i=0; i<NSQUARES; i++){
-            myfile1<<results[i*3+0]<<" ";
-            myfile1<<results[i*3+1]<<" ";
-            myfile1<<results[i*3+2]<<" ";
-        }
-        myfile1<<total_time<<" ";
-        myfile1<<ev_time<<std::endl;
+//        for(int i=0; i<NSQUARES; i++){
+//            myfile1<<results[i*3+0]<<" ";
+//            myfile1<<results[i*3+1]<<" ";
+//            myfile1<<results[i*3+2]<<" ";
+//        }
+//        myfile1<<total_time<<" ";
+//        myfile1<<ev_time<<std::endl;
     }
 
     //*******************************************************************************************//
