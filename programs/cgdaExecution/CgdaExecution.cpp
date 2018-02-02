@@ -128,9 +128,7 @@ bool CgdaExecution::init() {
     functionMinEvalOp->setPRpcClient(&rpcClient);
 
     //Uncomment for iron
-//    functionMinEvalOp->setPRpcClientWorld(&rpcClientWorld);
-//    functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
-//    functionMinEvalOp->setPForcePort(&forcePort);
+    functionMinEvalOp->setPRpcClientCart(&rpcClientCart);
 
 //    functionMinEvalOp->setPRobot(probot);
 //    functionMinEvalOp->setPenv(penv);
@@ -169,7 +167,8 @@ bool CgdaExecution::init() {
     // final result
     vector< double > results;
     //Uncomment for paint
-    std::vector<double> percentage;
+    //std::vector<double> percentage;
+
     double evaluations=0;
     double total_time=0;
     bestInd = state->getHoF()->getBest();

@@ -217,28 +217,7 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
         yarp::os::Bottle cmd,res;
         cmd.addString("stat");
 
-        /*cmd.addString("world");
-        cmd.addString("whereis");
-        cmd.addString("tcp");
-        cmd.addString("rightArm");*/
         pRpcClientCart->write(cmd,res);
-        printf("Got: %s\n",res.toString().c_str());
-        /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
-        for(size_t i=0; i<res.size(); i++)
-        {
-            observationData.push_back( res.get(i).asDouble() );
-            //std(observationData[i]);
-        }*/
-        //yarp::os::Bottle* pos = res.get(0).asList();
-        //printf("El parámetro de posicion es %s\n", pos->toString().c_str());
-        //std::cout<<"LA POSICIÓN A LA QUE ME MOVÍ ES ESTA:::::"<<std::endl;
-        /*for(size_t i=0; i<pos->size(); i++)
-        {
-            observationData.push_back(pos->get(i).asDouble());
-            //printf("%f",observationData[i+3]);
-            //std::cout<<observationData[i]<<std::endl;
-        }*/
-
         for(size_t i=1; i<res.size(); i++)
         {
             observationData.push_back( res.get(i).asDouble() );
@@ -260,10 +239,7 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
             //std::cout<<(observationData[i])<<std::endl;
         }
 
-
         //std::cout<<" THE OBSERVATION IS :::::::::: "<<observationData<<std::endl;
-
-
 
         observationClean.push_back(observationData[0]); //X
         observationClean.push_back(observationData[1]); //Y
