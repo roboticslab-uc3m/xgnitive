@@ -101,7 +101,7 @@ bool CgdaExecutionIET::init() {
     rpcClientCart.open("/cart:c");
     do {
         yarp::os::Network::connect("/cart:c","/CartesianControl/rpc_transform:s");
-        printf("Wait to connect to world...\n");
+        printf("Wait to connect to cartesian control...\n");
         yarp::os::Time::delay(DEFAULT_DELAY_S);
     } while( rpcClientCart.getOutputCount() == 0 );
 
