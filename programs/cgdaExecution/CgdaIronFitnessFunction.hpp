@@ -41,13 +41,6 @@ class CgdaIronFitnessFunction : public EvaluateOp {
         this->pRpcClient = pRpcClient;
     }
 
-    void setPForcePort( yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort){
-        this->pForcePort = pForcePort;
-    }
-
-    void setPRpcClientWorld( yarp::os::RpcClient* pRpcClientWorld){
-        this->pRpcClientWorld = pRpcClientWorld;
-    }
     void setPRpcClientCart( yarp::os::RpcClient* pRpcClientCart){
         this->pRpcClientCart = pRpcClientCart;
     }
@@ -62,10 +55,6 @@ class CgdaIronFitnessFunction : public EvaluateOp {
 
     yarp::dev::IPositionControl *mentalPositionControl;
     yarp::os::RpcClient* pRpcClient;
-
-    yarp::os::BufferedPort<yarp::os::Bottle>* pForcePort;
-
-    yarp::os::RpcClient* pRpcClientWorld;
     yarp::os::RpcClient* pRpcClientCart;
 
 };

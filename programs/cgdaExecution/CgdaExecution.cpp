@@ -87,24 +87,24 @@ bool CgdaExecution::init() {
     //-- Paint server (uncomment for paint)
     ///////////////////////////////////////////////////////////
 
-    //std::string remotePaint("/");
-    //remotePaint.append( ss.str() );    ///////////////////////////////////////////////////////////
+//    //std::string remotePaint("/");
+//    //remotePaint.append( ss.str() );    ///////////////////////////////////////////////////////////
 
-    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
-    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
-    //std::string localPaint("/cgda/");
-    //localPaint.append( ss.str() );
-    std::string localPaint("/cgda");
-    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
-    rpcClient.open(localPaint);
-    do {
-        yarp::os::Network::connect(localPaint,remotePaint);
-        printf("Wait to connect to paint server...\n");
-        yarp::os::Time::delay(DEFAULT_DELAY_S);
-    } while( rpcClient.getOutputCount() == 0 );
-    CD_SUCCESS("Paint server available.\n");
+//    //remotePaint.append( "/openraveYarpPaintSquares/rpc:s" );
+//    std::string remotePaint("/openraveYarpPaintSquares/rpc:s");
+//    //std::string localPaint("/cgda/");
+//    //localPaint.append( ss.str() );
+//    std::string localPaint("/cgda");
+//    localPaint.append( "/openraveYarpPaintSquares/rpc:c" );
+//    rpcClient.open(localPaint);
+//    do {
+//        yarp::os::Network::connect(localPaint,remotePaint);
+//        printf("Wait to connect to paint server...\n");
+//        yarp::os::Time::delay(DEFAULT_DELAY_S);
+//    } while( rpcClient.getOutputCount() == 0 );
+//    CD_SUCCESS("Paint server available.\n");
 
-    CD_SUCCESS("----- All good for %d.\n",portNum);
+//    CD_SUCCESS("----- All good for %d.\n",portNum);
 
     ///////////////////////////////////////////////////////////
 

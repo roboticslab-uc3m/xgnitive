@@ -81,6 +81,8 @@ double CgdaIronFitnessFunction::getCustomFitness(vector <double> genPoints){
         observationClean.push_back(observationData[1]); //Y
         observationClean.push_back(observationData[2]); //Z
         observationClean.push_back(observationData[7]); //Fz
+        std::cout<<" In the iteration "<<t<<" the trajectory obtained was "<<observationClean<<std::endl;
+
 
         //********************************FITNESS CALCULATION STEP******************************************************//
 

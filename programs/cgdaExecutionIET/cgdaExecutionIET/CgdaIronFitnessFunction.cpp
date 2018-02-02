@@ -234,10 +234,6 @@ void CgdaIronFitnessFunction::individualExecution(vector<double> result_trajecto
         yarp::os::Bottle cmd,res;
         cmd.addString("stat");
 
-        /*cmd.addString("world");
-        cmd.addString("whereis");
-        cmd.addString("tcp");
-        cmd.addString("rightArm");*/
         pRpcClientCart->write(cmd,res);
         printf("Got: %s\n",res.toString().c_str());
         /*printf("El parámetro de posicion es %s\n", res.toString().c_str());
