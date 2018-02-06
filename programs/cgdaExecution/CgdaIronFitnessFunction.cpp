@@ -338,15 +338,7 @@ void CgdaIronFitnessFunction::trajectoryExecution(vector<double> result_trajecto
         if (myfile1.is_open()){
             for(int i=0;i<observationClean.size();i++)
             {
-                //std::cout<<" LA OBSERVACIÓN ES "<<observation[i]<<std::endl;
                 myfile1<<observationClean[i]<< " ";
-                //myfile1<<"1 ";
-                //myfile1<< psqFeatures->operator[](i) << " ";
-                //P myfile1<< psqFeatures->operator [](i);
-                //Pmyfile1<< " ";
-                //std::cout<<psqFeatures->operator[](i) << " ";
-                //Pstd::cout<< psqFeatures->operator [](i);
-                //Pstd::cout<< " ";
             }
             std::cout<<std::endl;
             myfile1<<percentage<<" ";

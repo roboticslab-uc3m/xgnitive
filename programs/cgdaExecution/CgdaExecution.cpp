@@ -166,6 +166,7 @@ bool CgdaExecution::init() {
 
     // final result
     vector< double > results;
+
     //Uncomment for paint
     //std::vector<double> percentage;
 
@@ -187,12 +188,6 @@ bool CgdaExecution::init() {
 
     //uncomment for paint
     //percentage=functionMinEvalOp->trajectoryExecution(results);
-
-//    printf("-begin-\n");
-//    for(unsigned int i=0;i<bestPoints.size();i++)
-//        printf("%f, ",bestPoints[i]);
-//    printf("\n-end-\n");
-//    port.close();
 
     timespec tsEnd;
     clock_gettime(CLOCK_REALTIME, &tsEnd);
