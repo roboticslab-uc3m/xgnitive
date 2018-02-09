@@ -81,7 +81,7 @@ screenH=540;
 #scn=2
 
 #Where is the kinect 1 above, 0 below
-kinect=0
+kinect=1
 
 # Number of rectangles
 hrect=8 #Horizontal
@@ -157,6 +157,8 @@ class DataProcessor(yarp.PortReader):
             else: #We are talking about utilityVoxels
                 print("Utility pixels")
                 self.utilityVoxels()
+
+        return True
 
 
     def paintBlue(self):
