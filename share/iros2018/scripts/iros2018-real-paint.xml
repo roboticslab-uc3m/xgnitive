@@ -1,15 +1,19 @@
 <application>
 <name>iros2018-real-paint App</name>
 
-<!-- paintSquaresOnScreen -->
+    <module>
+        <name>yarpdev</name>
+        <parameters>--device OpenNI2DeviceServer --depthVideoMode 4 --colorVideoMode 9 --noRGBMirror --noDepthMirror</parameters>
+        <node>localhost</node>
+    </module>
 
-    <module> <!-- Xgnitive -->
+    <module> <!-- xgnitive -->
         <name>paintSquaresOnScreen.py</name>
         <workdir>/usr/local/bin/</workdir>
 	<node>localhost</node>
     </module>
 
-    <module> <!-- teoHead -->
+    <module> <!-- vision -->
         <name>voxelOccupancyDetection</name>
         <node>localhost</node>
     </module>
