@@ -249,26 +249,46 @@ class DataProcessor(yarp.PortReader):
 
     def drawCursor(self):
 
-        #Delete old cursor
-        if self.oldColour == 0:
-            pygame.draw.circle(screen, WHITE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+        if kinect==0:	
+	    #Delete old cursor
+	    if self.oldColour == 0:
+		pygame.draw.circle(screen, WHITE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
-        elif self.oldColour == 1:
-            pygame.draw.circle(screen, BLUE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+	    elif self.oldColour == 1:
+		pygame.draw.circle(screen, BLUE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
-        elif self.oldColour == 2:
-            pygame.draw.circle(screen, YELLOW, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)],10,0)
+	    elif self.oldColour == 2:
+		pygame.draw.circle(screen, YELLOW, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)],10,0)
 
-        elif self.oldColour == 3:
-            pygame.draw.circle(screen, MAGENTA, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+	    elif self.oldColour == 3:
+		pygame.draw.circle(screen, MAGENTA, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
-        #DrawCursor
-        pygame.draw.circle(screen,BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
+	    #DrawCursor
+	    pygame.draw.circle(screen,BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
 
-        # Update cursor position and colour
-        self.xold = self.x
-        self.yold = self.y
-        self.oldColour = self.brushColour
+	elif kinect==1:	
+
+[self.x*screenW/(hrect), self.y*screenH/vrect
+	    #Delete old cursor
+	    if self.oldColour == 0:
+		pygame.draw.circle(screen, WHITE, [self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)], 10, 0)
+
+	    elif self.oldColour == 1:
+		pygame.draw.circle(screen, BLUE, [self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)], 10, 0)
+
+	    elif self.oldColour == 2:
+		pygame.draw.circle(screen, YELLOW, [self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)],10,0)
+
+	    elif self.oldColour == 3:
+		pygame.draw.circle(screen, MAGENTA, [self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)], 10, 0)
+
+	    #DrawCursor
+	    pygame.draw.circle(screen,BLACK,[self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)],10,0)
+
+	# Update cursor position and colour
+	self.xold = self.x
+	self.yold = self.y
+	self.oldColour = self.brushColour
 
 	return True
 	
