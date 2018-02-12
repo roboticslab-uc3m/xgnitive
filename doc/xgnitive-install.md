@@ -24,7 +24,7 @@ git clone https://github.com/roboticslab-uc3m/xgnitive.git  # Download xgnitive 
 cd xgnitive; mkdir build; cd build; cmake ..  # Configure the xgnitive software
 make  # Compile
 sudo make install  # Install :-)
-cp ../scripts/gnome/xgnitive.desktop $HOME/Desktop
+cp ../scripts/gnome/xgnitive.desktop $HOME/Desktop  # May require some updates to point to path and icon
 cd..;sudo pip install -r requirements.txt #Install python requirements
 ```
 For additional options use ccmake instead of cmake.
