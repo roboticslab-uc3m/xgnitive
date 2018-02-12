@@ -1,30 +1,10 @@
 <application>
     <name>2018-iros-paint-record App</name>
+
     <dependencies>
         <port>/teo/leftArm/CartesianControl/state:o</port>
-        <port>/teo/rightArm/CartesianControl/state:o</port>
-        <port>/jr3/ch2:o</port>
         <port>/paintSquaresOnScreen/state:o</port>
     </dependencies>
-
-    <module>
-        <name>yarpdev</name>
-        <parameters>--device OpenNI2DeviceServer --depthVideoMode 4 --colorVideoMode 9 --noRGBMirror --noDepthMirror</parameters>
-        <node>localhost</node>
-    </module>
-    <module> <!-- vision -->
-        <name>voxelOccupancyDetection</name>
-        <node>localhost</node>
-    </module>
-    <module> <!-- xgnitive -->
-        <name>paintSquaresOnScreen.py</name>
-        <workdir>/home/teo/repos/xgnitive/build/bin</workdir>
-    <node>localhost</node>
-    </module>
-    <connection>
-        <from>/voxelOccupancyDetection/state:o</from>
-        <to>/voxelOccupancyDetection/state:i</to>
-    </connection>
 
     <module>
         <name>yarpdatadumper</name>
@@ -36,26 +16,7 @@
         <to>/dumper/teo/leftArm/CartesianControl/state:o</to>
         <protocol>udp</protocol>
     </connection>
-    <module>
-        <name>yarpdatadumper</name>
-        <parameters>--name /dumper/teo/rightArm/CartesianControl/state:o --type bottle </parameters>
-        <node>localhost</node>
-    </module>
-    <connection>
-        <from>/teo/rightArm/CartesianControl/state:o</from>
-        <to>/dumper/teo/rightArm/CartesianControl/state:o</to>
-        <protocol>udp</protocol>
-    </connection>
-    <module>
-        <name>yarpdatadumper</name>
-        <parameters>--name /dumper/jr3/ch2:o --type bottle </parameters>
-        <node>localhost</node>
-    </module>
-    <connection>
-        <from>/jr3/ch2:o</from>
-        <to>/dumper/jr3/ch2:o</to>
-        <protocol>udp</protocol>
-    </connection>
+
     <module>
         <name>yarpdatadumper</name>
         <parameters>--name /dumper/paintSquaresOnScreen/state:o --type bottle </parameters>
@@ -66,5 +27,6 @@
         <to>/dumper/paintSquaresOnScreen/state:o</to>
         <protocol>udp</protocol>
     </connection>
+
 </application>
 
