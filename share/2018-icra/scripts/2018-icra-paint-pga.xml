@@ -1,11 +1,11 @@
 <application>
-<name>icra2018-paint-pga App</name>
+<name>2018-icra-paint-pga App</name>
 
     <module>
         <name>/usr/bin/python</name>
-	<parameters>/home/raul/repos/openrave-yarp-plugins/examples/openrave-YarpRobotPaintSquares.py</parameters>
-	<prefix>/0</prefix>
-	<node>localhost</node>
+        <parameters>/home/raul/repos/openrave-yarp-plugins/examples/openrave-YarpRobotPaintSquares.py</parameters>
+        <prefix>/0</prefix>
+        <node>localhost</node>
     </module>
 
     <module>

@@ -1,5 +1,5 @@
 <application>
-<name>iros2018-ironSim App</name>
+<name>2018-icra-ironSim App</name>
 
     <module>
         <name>/usr/bin/python</name>

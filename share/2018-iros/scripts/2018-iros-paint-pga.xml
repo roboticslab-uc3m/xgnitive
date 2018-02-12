@@ -1,5 +1,5 @@
 <application>
-<name>iros2018-paint-pga App</name>
+<name>2018-iros-paint-pga App</name>
 
     <module>
         <name>/usr/bin/python</name>
