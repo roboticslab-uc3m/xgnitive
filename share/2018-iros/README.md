@@ -2,7 +2,7 @@ README.md
 =========
 
 # Paint record
-0. Check hardware (iron f/t sensor, etc).
+0. Check hardware (robot, etc).
 1. Start teoBase: launchManipulation, leftArm BasicCartesianControl, and leftArm BasicCartesianControl. Check everything working with teoTools.
 2. Start paintSquaresOnScreen-real App.
 3. Start teoTools: yarp rpc /teo/leftArm/rpc:i, yarp rpc /teo/rightArm/rpc:i.
