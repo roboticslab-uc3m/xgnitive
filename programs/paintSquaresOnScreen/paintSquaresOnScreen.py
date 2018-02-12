@@ -60,7 +60,7 @@ MAGENTA = (255, 0, 104)
 # Set the height and width of the screen
 #size = (960, 540)
 #size = (0, 0)
-size = (1920, 1080)
+size = (1512, 1080)
 screen = pygame.display.set_mode(size)
 #pygame.FULLSCREEN
  
@@ -73,7 +73,7 @@ screenSize=pygame.display.Info()
 print(screenSize.current_w, screenSize.current_h)
 
 #Since using 2 screens are presented we can not auto detect the size of screen
-screenW=1920;
+screenW=1512;
 screenH=1080;
 #screenW=960;
 #screenH=540;
@@ -267,20 +267,19 @@ class DataProcessor(yarp.PortReader):
 	    pygame.draw.circle(screen,BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
 
 	elif kinect==1:	
-
-[self.x*screenW/(hrect), self.y*screenH/vrect
+	    print("the old colour is: ",self.oldColour)
 	    #Delete old cursor
 	    if self.oldColour == 0:
-		pygame.draw.circle(screen, WHITE, [self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, WHITE, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 1:
-		pygame.draw.circle(screen, BLUE, [self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, BLUE, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 2:
-		pygame.draw.circle(screen, YELLOW, [self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)],10,0)
+		pygame.draw.circle(screen, YELLOW, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)],10,0)
 
 	    elif self.oldColour == 3:
-		pygame.draw.circle(screen, MAGENTA, [self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, MAGENTA, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    #DrawCursor
 	    pygame.draw.circle(screen,BLACK,[self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)],10,0)
@@ -320,7 +319,7 @@ r.myInit()
 p.setReader(r)
 pout = yarp.Port()
 
-p.open("/voxelOccupancyDetection/state:i")
+p.open("/paintSquaresOnScreen/voxelOccupancyDetection/state:i")
 pout.open("/paintSquaresOnScreen/state:o")
 # Loop as long as done == False
 while not done: 
