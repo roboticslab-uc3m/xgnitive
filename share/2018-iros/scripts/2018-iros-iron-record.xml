@@ -1,0 +1,32 @@
+<application>
+    <name>2018-iros-iron-record App</name>
+
+    <dependencies>
+        <port>/teo/rightArm/CartesianControl/state:o</port>
+        <port>/jr3/ch2:o</port>
+    </dependencies>
+
+    <module>
+        <name>yarpdatadumper</name>
+        <parameters>--name /dumper/teo/rightArm/CartesianControl/state:o --type bottle </parameters>
+        <node>localhost</node>
+    </module>
+    <connection>
+        <from>/teo/rightArm/CartesianControl/state:o</from>
+        <to>/dumper/teo/rightArm/CartesianControl/state:o</to>
+        <protocol>udp</protocol>
+    </connection>
+
+    <module>
+        <name>yarpdatadumper</name>
+        <parameters>--name /dumper/jr3/ch2:o --type bottle </parameters>
+        <node>localhost</node>
+    </module>
+    <connection>
+        <from>/jr3/ch2:o</from>
+        <to>/dumper/jr3/ch2:o</to>
+        <protocol>udp</protocol>
+    </connection>
+
+</application>
+
