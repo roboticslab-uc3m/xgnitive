@@ -6,7 +6,7 @@ README.md
 1. From Desktop `TEO Apps yarpmanager` -> `teoBase`: launchManipulation, launchLocomotion, leftArm BasicCartesianControl, and leftArm BasicCartesianControl. Check everything working with teoTools.
 2. Start paintSquaresOnScreen-real App.
 3. Via `TEO Apps yarpmanager` -> `teoTools`: `yarp rpc /teo/leftArm/rpc:i`, `yarp rpc /teo/rightArm/rpc:i`
-4. `set poss (0 0 0 0 0 0)`.
+4. `set poss (0 0 0 0 0 0)`. Can use `[set] [icmd] [cmod] 0 [torq]` to set individual as in [yarp-devices-tricks](https://github.com/roboticslab-uc3m/yarp-devices/blob/develop/doc/yarp-devices-tricks.md).
 4. Send a `[gcmp]` to leftArm BasicCartesianControl.
 5. Start 2018-iros-paint-record App: play and connect.
 6. Move robot.
