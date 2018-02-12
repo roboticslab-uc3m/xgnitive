@@ -27,5 +27,5 @@ sudo make install  # Install :-)
 cp ../scripts/gnome/xgnitive.desktop $HOME/Desktop  # May require some updates to point to path and icon
 cd..;sudo pip install -r requirements.txt #Install python requirements
 ```
-For additional options use ccmake instead of cmake.
+For additional options use `ccmake` instead of `cmake`.
 
