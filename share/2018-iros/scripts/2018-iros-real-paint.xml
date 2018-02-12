@@ -10,7 +10,7 @@
     <module> <!-- xgnitive -->
         <name>paintSquaresOnScreen.py</name>
         <workdir>/usr/local/bin/</workdir>
-	<node>localhost</node>
+        <node>localhost</node>
     </module>
 
     <module> <!-- vision -->
@@ -21,6 +21,17 @@
     <connection>
         <from>/voxelOccupancyDetection/state:o</from>
         <to>/voxelOccupancyDetection/state:i</to>
+    </connection>
+
+    <module>
+        <name>yarpview</name>
+        <parameters>--name /yarpview/depthFrame:i</parameters>
+        <node>localhost</node>
+    </module>
+
+    <connection>
+        <from>/OpenNI2/depthFrame:o</from>
+        <to>/yarpview/depthFrame:i</to>
     </connection>
         
 </application>
