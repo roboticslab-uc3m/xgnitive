@@ -4,6 +4,5 @@
 add_subdirectory(cgdaExecution)
 add_subdirectory(cgdaExecutionIET)
 add_subdirectory(cgdaExecutionOET)
-add_subdirectory(depthToMesh)
 add_subdirectory(paintSquaresOnScreen)
 #add_subdirectory(gmmExecution)
