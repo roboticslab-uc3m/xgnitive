@@ -58,8 +58,9 @@ MAGENTA = (255, 0, 104)
 
 
 # Set the height and width of the screen
-size = (960, 540)
+#size = (960, 540)
 #size = (0, 0)
+size = (1920, 1080)
 screen = pygame.display.set_mode(size)
 #pygame.FULLSCREEN
  
@@ -72,10 +73,10 @@ screenSize=pygame.display.Info()
 print(screenSize.current_w, screenSize.current_h)
 
 #Since using 2 screens are presented we can not auto detect the size of screen
-#screenW=1920;
-#screenH=1080;
-screenW=960;
-screenH=540;
+screenW=1920;
+screenH=1080;
+#screenW=960;
+#screenH=540;
 
 # Number of screens
 #scn=2
@@ -100,6 +101,8 @@ class DataProcessor(yarp.PortReader):
         self.xold=0
         self.yold=0
         self.oldColour=0
+	
+	return True
 
     def read(self,connection):
 
@@ -179,6 +182,9 @@ class DataProcessor(yarp.PortReader):
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
         self.myMem[place] = 1
+	
+	return True
+	
 
     def paintYellow(self):
 
@@ -199,6 +205,8 @@ class DataProcessor(yarp.PortReader):
         print 'size', len(self.myMem)
         self.myMem[place] = 2
 
+	return True	
+
     def paintMagenta(self):
 
         #kinect below
@@ -217,6 +225,8 @@ class DataProcessor(yarp.PortReader):
         print 'size', len(self.myMem)
         self.myMem[place] = 3
 
+	return True	
+
     def paintErase(self):
 
         #kinect below
@@ -234,6 +244,8 @@ class DataProcessor(yarp.PortReader):
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
         self.myMem[place] = 3
+
+	return True	
 
     def drawCursor(self):
 
@@ -258,6 +270,9 @@ class DataProcessor(yarp.PortReader):
         self.yold = self.y
         self.oldColour = self.brushColour
 
+	return True
+	
+
     def utilityVoxels(self):
         if self.x == 0:
             self.brushColour = 1
@@ -276,7 +291,7 @@ class DataProcessor(yarp.PortReader):
             print("WARNING: USING ERASER")
             pass #right now doing nothing
 
-
+	return True	
 
 
 p = yarp.Port()
