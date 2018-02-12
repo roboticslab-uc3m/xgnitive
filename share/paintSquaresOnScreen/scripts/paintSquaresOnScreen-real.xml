@@ -1,5 +1,5 @@
 <application>
-<name>2018-iros-paintSquares-real App</name>
+<name>paintSquaresOnScreen-real App</name>
 
     <module>
         <name>yarpdev</name>
@@ -7,28 +7,26 @@
         <node>localhost</node>
     </module>
 
-    <module> <!-- xgnitive -->
-        <name>paintSquaresOnScreen.py</name>
-        <workdir>/usr/local/bin/</workdir>
-        <node>localhost</node>
-    </module>
-
     <module> <!-- vision -->
         <name>voxelOccupancyDetection</name>
         <node>localhost</node>
     </module>
+    <!-- Uses OpenNI2DeviceClient which connects automatically -->
 
+    <module> <!-- xgnitive -->
+        <name>paintSquaresOnScreen.py</name>
+        <node>localhost</node>
+    </module>
     <connection>
         <from>/voxelOccupancyDetection/state:o</from>
-        <to>/voxelOccupancyDetection/state:i</to>
+        <to>/paintSquaresOnScreen/voxelOccupancyDetection/state:i</to>
     </connection>
 
-    <module>
+    <module> <!-- yarp gui -->
         <name>yarpview</name>
         <parameters>--name /yarpview/depthFrame:i</parameters>
         <node>localhost</node>
     </module>
-
     <connection>
         <from>/OpenNI2/depthFrame:o</from>
         <to>/yarpview/depthFrame:i</to>
