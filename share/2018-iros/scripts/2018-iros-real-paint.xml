@@ -1,5 +1,5 @@
 <application>
-<name>iros2018-real-paint App</name>
+<name>2018-iros-real-paint App</name>
 
     <module>
         <name>yarpdev</name>
