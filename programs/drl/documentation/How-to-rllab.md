@@ -107,7 +107,23 @@ Here we have two options, [implement our own algorithm](http://rllab.readthedocs
 
 In rllab the algorithms are divided in two groups:
 
-- asd
+- **Batch algorithms:** Its a subgroup of algorithms inside the dynamic programming algorithms. These are:
+	- **REINFORCE**: Algorithm from 1992. *Williams, R.J. Mach Learn (1992) 8: 229. https://doi.org/10.1007/BF00992696*
+	- **Truncated Natural Policy Gradient (TNPG)**: *Kakade, S. M. (2002). A natural policy gradient. In Advances in neural information processing systems (pp. 1531-1538)*.
+	- **Trust Region Policy Optimization (TRPO)**: This algorithm is effective for optimizing large nonlinear policies such as neural networks. The idea of TRPO is that you have some function that you want to approximate. Then you a have a local approximation which is quite accuarate, and the you have the farther you go out of that approximation the more inaccuarate it gets. The limitations are that is Hard to use in architectures with multiple outputs, performs poorly in task requiring deep CNN and RNN (like atari) and having a conjugate gradient makes all more complicated. *Schulman, J., Levine, S., Moritz, P., Jordan, M. I., & Abbeel, P. (2015). Trust Region Policy Optimization. https://doi.org/10.1063/1.4927398*
+	- **Relative Entropy Policy Search(REPS):** This method limits the information loss between iterations to achieve a soft learning curve. *Peters, J., Mülling, K., & Altun, Y. (2010, July). Relative Entropy Policy Search. In AAAI (pp. 1607-1612).*
+	- **Cross Entropy Method (CEM):** RL method from 1999. Rubinstein, R. Y. (1999). The cross-entropy method for combinatorial and continuous optimization. Methodology and Computing in Applied Probability, 1(2), 127–190.
+	- **Covariance Matrix Adaptation Evolution Strategy (CMA-ES)** This is a RL based on evolutionary algorithms. *Nikolaus Hansen, Sibylle D. Müller, and Petros Koumoutsakos. 2003. Reducing the time complexity of the derandomized evolution strategy with covariance matrix adaptation (CMA-ES). Evol. Comput. 11, 1 (March 2003), 1-18. DOI=http://dx.doi.org/10.1162/106365603321828970* 
+
+ - **Online Algorithms**
+ 	- **Deep determisitc Policy Gradient (DDPG):** This algorithms was born to be able to use Q-learning with a  continous action space. *Bengio, Y. (2016). Continuous control with deep reinforcement learning. Foundations and Trends® in Machine Learning, 2(1), 1–127. https://doi.org/10.1561/2200000006*
+
+
+# Sources:
+- *Duan, Y., Chen, X., Schulman, J., & Abbeel, P. (2016). Benchmarking Deep Reinforcement Learning for Continuous Control. arXiv, 48, 14. Retrieved from http://arxiv.org/abs/1604.06778*
+
+- http://rllab.readthedocs.io/en/latest/
+- *Deep RL Bootcamp videos from:* https://www.youtube.com/channel/UCTgM-VlXKuylPrZ_YGAJHOw
 
 
 
