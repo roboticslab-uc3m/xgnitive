@@ -117,7 +117,17 @@ In rllab the algorithms are divided in two groups:
 
  - **Online Algorithms**
  	- **Deep determisitc Policy Gradient (DDPG):** This algorithms was born to be able to use Q-learning with a  continous action space. *Bengio, Y. (2016). Continuous control with deep reinforcement learning. Foundations and Trends® in Machine Learning, 2(1), 1–127. https://doi.org/10.1561/2200000006*
+	
+# How to define the environment
 
+In rllab to define an environment we have to define at least the following functions:
+
+- **observation_space(self)** : This function is where we define the observation space of our problem. This functions returns this observation space. This way, if we have a robot that is able to obtain the (x,y) position using some odometry, the observation will be a 2D signal, and therefore we will have to do something like this:
+
+```python
+    def observation_space(self):
+    	return Box(low=-np.inf, high=np.inf, shape=(2,))
+```
 
 # Sources:
 - *Duan, Y., Chen, X., Schulman, J., & Abbeel, P. (2016). Benchmarking Deep Reinforcement Learning for Continuous Control. arXiv, 48, 14. Retrieved from http://arxiv.org/abs/1604.06778*
