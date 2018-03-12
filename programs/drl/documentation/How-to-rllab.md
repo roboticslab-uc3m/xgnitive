@@ -122,7 +122,7 @@ In rllab the algorithms are divided in two groups:
 
 In rllab to define an environment we have to define at least the following functions:
 
-- **observation_space(self)** : This function is where we define the observation space of our problem. This functions returns this observation space. This way, if we have a robot that is able to obtain the (x,y) position using some odometry, the observation will be a 2D signal, and therefore we will have to do something like this:
+- **observation_space(self)** : This function is where we define the observation space of our problem. This function returns this observation space. This way, if we have a robot that is able to obtain the (x,y) position using some odometry, the observation will be a 2D signal, and therefore we will have to do something like this:
 
 ```python
     def observation_space(self):
