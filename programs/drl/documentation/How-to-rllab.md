@@ -225,25 +225,33 @@ Here are some examples we have done working with rllab
 
 ### Core
 
-[2D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/grid_2D_world.py)
+- [2D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/grid_2D_world.py)
 
-[3D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/grid_3D_world.py)
+- [3D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/grid_3D_world.py)
 
-[CGDA Paint](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/teo_paint_discrete_yarp.py)
+- [CGDA Paint](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/teo_paint_discrete_yarp.py)
 
-[CGDA Iron](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/teo_iron_discrete_yarp.py)
+- [CGDA Iron](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/teo_iron_discrete_yarp.py)
 
 ### Environment
 
-[2D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_2D_env.py)
+- [2D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_2D_env.py)
 
-[3D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_3D_env.py)
+- [3D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_3D_env.py)
 
-[3D grid with Openrave](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_3D_env_openrave.py)
+- [3D grid with Openrave](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_3D_env_openrave.py)
 
-[CGDA Paint](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/teo_paint_discrete_yarp_env.py)
+- [CGDA Paint](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/teo_paint_discrete_yarp_env.py)
 
-[CGDA Iron](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/teo_iron_discrete_yarp_env.py)
+- [CGDA Iron](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/teo_iron_discrete_yarp_env.py)
+
+## Tools
+
+Here are some tools we have developed, that will help us work with rllab:
+
+- [sim_policy](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/sim_policy.py): This script just executes the obtained policy in the training environment to see how it performs. This script is based in the [one](https://github.com/rll/rllab/blob/b3a28992eca103cab3cb58363dd7a4bb07f250a0/scripts/sim_env.py) presented in the original rllab source code.
+
+
 
 # Sources:
 - [1] http://rllab.readthedocs.io/en/latest/
