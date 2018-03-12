@@ -118,7 +118,7 @@ In rllab the algorithms are divided in two groups:
  - **Online Algorithms**
  	- **Deep determisitc Policy Gradient (DDPG):** This algorithms was born to be able to use Q-learning with a  continous action space. *Bengio, Y. (2016). Continuous control with deep reinforcement learning. Foundations and Trends® in Machine Learning, 2(1), 1–127. https://doi.org/10.1561/2200000006*
 	
-# How to define the environment
+## How to define the environment
 
 In rllab to define an environment we have to define at least the following functions:
 
@@ -168,6 +168,8 @@ In rllab to define an environment we have to define at least the following funct
      self.state = self.start_state
 	return self.state
  ```
+ 
+ ## How to define the policy
  
 [Example](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/envs/grid_world_2D_env.py)
 
