@@ -77,7 +77,7 @@ policy = GaussianMLPPolicy( #Definimos la policy con una red neuronal.
 	hidden_sizes=(32, 32)
 )
 ```
-Defines the policy used by the algorithm and initialize its values. Here a GaussianMLPPolicy with 2 hidden layers, each with 32 hidden units is used.
+Defines the policy used by the algorithm and initialize its values. Here a **GaussianMLPPolicy** with 2 hidden layers, each with 32 hidden units is used.
 
 ```python
 algo = TRPO(
@@ -93,7 +93,7 @@ algo = TRPO(
 )
 ```
 
-This part of the code corresponds with the initialisation of the algorithm. This will be further explained in section **missing reference.**
+This part of the code corresponds with the initialisation of the algorithm. This will be further explained in section **How to define the algorithm.**
 
 What we can conclude is that in order to implement our own DRL program we need to define three major parts:
 
@@ -122,12 +122,25 @@ In rllab the algorithms are divided in two groups:
 
 In rllab to define an environment we have to define at least the following functions:
 
-- **observation_space(self)** : This function is where we define the observation space of our problem. This function returns this observation space. This way, if we have a robot that is able to obtain the (x,y) position using some odometry, the observation will be a 2D signal, and therefore we will have to do something like this:
+- **observation_space(self)** : This function is where we define the observation space of our problem. This function returns this observation space. In rllab there are three defined types, [Box](https://github.com/rll/rllab/blob/master/rllab/spaces/box.py), [Discrete](https://github.com/rll/rllab/blob/master/rllab/spaces/discrete.py), and [product](https://github.com/rll/rllab/blob/master/rllab/spaces/product.py). This way, supposing a grid world with *n_row.n_col* cells, the observation space is defined as:
+
 
 ```python
     def observation_space(self):
-    	return Box(low=-np.inf, high=np.inf, shape=(2,))
+	return Discrete(self.n_row * self.n_col)
 ```
+
+
+
+- **action_space(self):** This function is where we define the action space of our problem. This function returns this observation space. Following with the grid world idea, an example of this could be an action space with 4 discrete actions, up, right, left and dow.
+
+```python
+    def action_space(self):
+	return Discrete(4)
+```
+
+- **step(self,action):** This fucntion takes as input the state and the action we want to perform, and returns the next state, the reward, and if it has finished. 
+
 
 [Example](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/envs/grid_world_2D_env.py)
 
