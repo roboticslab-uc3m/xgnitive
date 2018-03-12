@@ -245,7 +245,6 @@ Here are some examples we have done working with rllab
 
 [CGDA Iron](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/teo_iron_discrete_yarp_env.py)
 
-
 # Sources:
 - [1] http://rllab.readthedocs.io/en/latest/
 - [2] *Duan, Y., Chen, X., Schulman, J., & Abbeel, P. (2016). Benchmarking Deep Reinforcement Learning for Continuous Control. arXiv, 48, 14. Retrieved from http://arxiv.org/abs/1604.06778*
