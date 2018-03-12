@@ -216,10 +216,35 @@ The second keyword defines **how the Neural Network is**
 - **Conv**: Convolutional NN.
 - **mlp**: is a class of feedforward artificial neural network. This neural networks are charactirized because they have only one way input -> output, there are no loops, also each layer is "full connected" to the next one. MLP utilizes a supervised learning technique called backpropagation for training.
  - **Gated recurrent units (GRU)**: Most used for speak recognition.
-
-
  
-[Example](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/envs/grid_world_2D_env.py)
+ This way for our grid world example, we can use a **CategoricalMLPPolicy**, although others configurations could be used, which one to use will depen on us.
+
+## Examples
+
+Here are some examples we have done working with rllab
+
+### Core
+
+[2D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/grid_2D_world.py)
+
+[3D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/grid_3D_world.py)
+
+[CGDA Paint](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/teo_paint_discrete_yarp.py)
+
+[CGDA Iron](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/teo_iron_discrete_yarp.py)
+
+### Environment
+
+[2D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_2D_env.py)
+
+[3D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_3D_env.py)
+
+[3D grid with Openrave](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_3D_env_openrave.py)
+
+[CGDA Paint](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/teo_paint_discrete_yarp_env.py)
+
+[CGDA Iron](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/teo_iron_discrete_yarp_env.py)
+
 
 # Sources:
 - [1] http://rllab.readthedocs.io/en/latest/
