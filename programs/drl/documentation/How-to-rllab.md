@@ -162,6 +162,13 @@ In rllab to define an environment we have to define at least the following funct
 
 ```
 
+ - **reset(self)** Reset the system to a initial state and returns the observation of that state. In the grid example, the observation is the state where the robot is. This way, having defined an initial state (self.start_state), this could be something like this: 
+ 
+ ```python
+     self.state = self.start_state
+	return self.state
+ ```
+ 
 [Example](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/envs/grid_world_2D_env.py)
 
 # Sources:
