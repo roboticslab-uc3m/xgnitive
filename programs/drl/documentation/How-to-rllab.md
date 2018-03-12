@@ -129,6 +129,8 @@ In rllab to define an environment we have to define at least the following funct
     	return Box(low=-np.inf, high=np.inf, shape=(2,))
 ```
 
+[Example](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/envs/grid_world_2D_env.py)
+
 # Sources:
 - *Duan, Y., Chen, X., Schulman, J., & Abbeel, P. (2016). Benchmarking Deep Reinforcement Learning for Continuous Control. arXiv, 48, 14. Retrieved from http://arxiv.org/abs/1604.06778*
 
