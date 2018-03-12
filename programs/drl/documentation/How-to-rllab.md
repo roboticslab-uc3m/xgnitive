@@ -190,7 +190,34 @@ std_network=None,
 dist_cls=DiagonalGaussian
 ```
 
-For the experiments presented in rllab, a 32 hidden size value is used, however in DDPG [1]
+For the experiments presented in rllab, a 32 hidden size value is used, however in DDPG [10], the authors used policies with between 300-400 hidden units, so choosing this value will depend not only on the task but also on the algorithm.
+
+So this goes with the parameters, the next step now is to choose the method to define the policy. In rllab we have different kinds of policy, these are:
+
+- categorical_conv_policy 
+- categorical_gru_policy
+- categorical_mlp_policy
+- deterministic_mlp_policy
+- gaussian_gru_policy
+- gaussian_mlp_policy
+- uniform_control_policy
+
+So the question now is **"what policy i have to choose for my system?"**. To answer this question lets define the meaning of each of the keywords for the policies.
+
+The first keyword defines the **output value type** of the policy:
+
+- **Categorical**: The policy is formed by a group of discrete values, that can be seen as categories. Example: "right, left, up, down".
+- **Deterministic**: Deterministic policy, each state give us an action, not a probability distribution.
+- **Gaussian**: The actions are defined as probability Gaussian distributions.
+- **Uniform**: The actions are defined as probability uniform distributions.
+	
+The second keyword defines **how the Neural Network is**
+
+- **Conv**: Convolutional NN.
+- **mlp**: is a class of feedforward artificial neural network. This neural networks are charactirized because they have only one way input -> output, there are no loops, also each layer is "full connected" to the next one. MLP utilizes a supervised learning technique called backpropagation for training.
+ - **Gated recurrent units (GRU)**: Most used for speak recognition.
+
+
  
 [Example](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/envs/grid_world_2D_env.py)
 
