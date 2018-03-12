@@ -139,8 +139,28 @@ In rllab to define an environment we have to define at least the following funct
 	return Discrete(4)
 ```
 
-- **step(self,action):** This fucntion takes as input the state and the action we want to perform, and returns the next state, the reward, and if it has finished. 
+- **step(self,action):** This function takes as input the state and the action we want to perform, and returns the next state, the reward, and if it has finished. In the grid world this could be something like this:
 
+```python
+def step(self, action):
+	next_state=self.getnextstate(self, action) #This function returns the next state for a given action "up,right,left,down"
+	
+       	#H="death", F="Free", S="Start", G="Goal"
+        if next_state_type == 'H':
+            done = True
+            reward = 0
+        elif next_state_type in ['F', 'S']:
+            done = False
+            reward = 0
+        elif next_state_type == 'G':
+            done = True
+            reward = 1
+        else:
+            raise NotImplementedError
+        self.state = next_state
+	return Step(observation=self.state, reward=reward, done=done)
+
+```
 
 [Example](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/envs/grid_world_2D_env.py)
 
