@@ -143,7 +143,7 @@ In rllab to define an environment we have to define at least the following funct
 
 ```python
 	def step(self, action):
-		next_state=self.getnextstate(self, action) #This function returns the next state for a given action "up,right,left,down"
+		next_state=self.get_next_state(self, action) #This function returns the next state for a given action "up,right,left,down"
 
 		#H="death", F="Free", S="Start", G="Goal"
 		if next_state_type == 'H':
