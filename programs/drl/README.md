@@ -63,3 +63,17 @@ cd ~/repos/tools/build/bin; ./controlboardStateToIPosition --remote /teoSim/righ
 cd ~/repos/xgnitive/programs/drl; python teo_paint_discrete_yarp.py;
 yarp connect /drl/rightArm/state:o /ControlboardStateToIPosition/state:i
 ```
+
+If while trying to execute some of the python scripts an error with openrave appears,the solution right now is to install openrave in the environment we are working on (rllab or home) everytime we switch between environments. In this case just use the following commands instead of the ones above:
+
+```
+yarpserver
+cd ~/repos/openrave; mkdir -p build_here; cd build_here; cmake ..; sudo make install
+cd ~/repos/openrave-yarp-plugins/examples/python; python openraveYarpPaintSquares.py #From openrave-yarp-plugins
+cd ~/repos/tools/build/bin; ./controlboardStateToIPosition --remote /teoSim/rightArm 
+#Run rllab in a new terminal, then in the same terminal:
+cd ~/repos/openrave; mkdir -p build; cd build; cmake ..; sudo make install
+cd ~/repos/xgnitive/programs/drl; python teo_paint_discrete_yarp.py;
+yarp connect /drl/rightArm/state:o /ControlboardStateToIPosition/state:i
+```
+
