@@ -58,7 +58,8 @@ Run rllab. Then execute the following commands:
 ```
 yarpserver
 cd ~/repos/openrave-yarp-plugins/examples/python; python openraveYarpPaintSquares.py #From openrave-yarp-plugins 
-cd repos/xgnitive/share; yarpmanager #IMPORTANT: Here go to 2018-icra-paint-pga_APP and run yarpdev.
+cd ~/repos/tools/build/bin; ./controlboardStateToIPosition --remote /teoSim/rightArm 
 #Run rllab in a new terminal, then in the same terminal:
-cd ~/repos/xgnitive/programs/drl;
+cd ~/repos/xgnitive/programs/drl; python teo_paint_discrete_yarp.py;
+yarp connect /drl/rightArm/state:o /ControlboardStateToIPosition/state:i
 ```
