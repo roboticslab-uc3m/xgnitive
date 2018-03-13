@@ -64,7 +64,7 @@ cd ~/repos/xgnitive/programs/drl; python teo_paint_discrete_yarp.py;
 yarp connect /drl/rightArm/state:o /ControlboardStateToIPosition/state:i
 ```
 
-If while trying to execute some of the python scripts an error with openrave appears,the solution right now is to install openrave in the environment we are working on (rllab or home) everytime we switch between environments. In this case just use the following commands instead of the ones above:
+If while trying to execute some of the python scripts an **error with openrave** appears,the solution right now is to install openrave in the environment we are working on (rllab or home) everytime we switch between environments. In this case just use the following commands instead of the ones above:
 
 ```
 yarpserver
