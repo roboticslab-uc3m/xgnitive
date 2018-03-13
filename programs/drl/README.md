@@ -56,6 +56,9 @@ python sim_policy.py home/repos/rllab/data/local/experiment_{timestamp}/params.p
 Run rllab. Then execute the following commands:
 
 ```
-cd repos/xgnitive/share; yarpmanager #IMPORTANT: Here activate the appliaction icra2018-paint-pga and run yarpdev.
-cd; cd repos/xgnitive/programs/drl; python grid_3D_yarp.py
+yarpserver
+cd ~/repos/openrave-yarp-plugins/examples/python; python openraveYarpPaintSquares.py #From openrave-yarp-plugins 
+cd repos/xgnitive/share; yarpmanager #IMPORTANT: Here go to 2018-icra-paint-pga_APP and run yarpdev.
+#Run rllab in a new terminal, then in the same terminal:
+cd ~/repos/xgnitive/programs/drl;
 ```
