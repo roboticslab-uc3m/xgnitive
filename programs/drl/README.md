@@ -53,15 +53,16 @@ python sim_policy.py home/repos/rllab/data/local/experiment_{timestamp}/params.p
 ```
 
 ## Example: Teo-Paint openrave discrete actions + rllab 
-Run rllab. Then execute the following commands:
+Execute the following commands:
 
 ```
 yarpserver
 cd ~/repos/openrave-yarp-plugins/examples/python; python openraveYarpPaintSquares.py #From openrave-yarp-plugins 
-cd ~/repos/tools/build/bin; ./controlboardStateToIPosition --remote /teoSim/rightArm 
 #Run rllab in a new terminal, then in the same terminal:
 cd ~/repos/xgnitive/programs/drl; python teo_paint_discrete_yarp.py;
 yarp connect /drl/rightArm/state:o /ControlboardStateToIPosition/state:i
+#In a new terminal
+cd ~/repos/tools/build/bin; ./controlboardStateToIPosition --in /drl/rightArm --out /teoSim/rightArm 
 ```
 
 If while trying to execute some of the python scripts an **error with openrave** appears,the solution right now is to install openrave in the environment we are working on (rllab or home) everytime we switch between environments. In this case just use the following commands instead of the ones above:
@@ -70,10 +71,40 @@ If while trying to execute some of the python scripts an **error with openrave**
 yarpserver
 cd ~/repos/openrave; mkdir -p build_here; cd build_here; cmake ..; sudo make install
 cd ~/repos/openrave-yarp-plugins/examples/python; python openraveYarpPaintSquares.py #From openrave-yarp-plugins
-cd ~/repos/tools/build/bin; ./controlboardStateToIPosition --remote /teoSim/rightArm 
 #Run rllab in a new terminal, then in the same terminal:
 cd ~/repos/openrave; mkdir -p build; cd build; cmake ..; sudo make install
 cd ~/repos/xgnitive/programs/drl; python teo_paint_discrete_yarp.py;
-yarp connect /drl/rightArm/state:o /ControlboardStateToIPosition/state:i
+#In a new terminal
+cd ~/repos/tools/build/bin; ./controlboardStateToIPosition --in /drl/rightArm --out /teoSim/rightArm 
+```
+## Example: Teo-Iron openrave discrete actions + rllab 
+Execute the following commands:
+
+```bash
+yarpserver
+cd ~/repos/openrave-yarp-plugins/examples/python; python openraveYarpForceEstimator.py #From openrave-yarp-plugins
+yarp rpc /teoSim/trunk/rpc:i
+#Then in the same terminal
+set pos 0 45
+#Run rllab in a new terminal, then in the same terminal:
+cd ~/repos/xgnitive/programs/drl; python teo_iron_discrete_yarp.py
+#In a new terminal
+cd ~/repos/tools/build/bin; ./controlboardStateToIPosition --in /drl/rightArm --out /teoSim/rightArm
+```
+
+If while trying to execute some of the python scripts an **error with openrave** appears,the solution right now is to install openrave in the environment we are working on (rllab or home) everytime we switch between environments. In this case just use the following commands instead of the ones above:
+
+```bash
+yarpserver
+cd ~/repos/openrave; mkdir -p build_here; cd build_here; cmake ..; sudo make install
+cd ~/repos/openrave-yarp-plugins/examples/python; python openraveYarpForceEstimator.py #From openrave-yarp-plugins
+yarp rpc /teoSim/trunk/rpc:i
+#Then in the same terminal
+set pos 0 45
+#Run rllab in a new terminal, then in the same terminal:
+cd ~/repos/openrave; mkdir -p build; cd build; cmake ..; sudo make install
+cd ~/repos/xgnitive/programs/drl; python teo_iron_discrete_yarp.py
+#In a new terminal
+cd ~/repos/tools/build/bin; ./controlboardStateToIPosition --in /drl/rightArm --out /teoSim/rightArm
 ```
 
