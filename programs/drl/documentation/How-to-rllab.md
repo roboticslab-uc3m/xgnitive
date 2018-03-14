@@ -168,6 +168,8 @@ In rllab to define an environment we have to define at least the following funct
 	return self.state
  ```
  
+ [Gym](https://gym.openai.com/) can also be used to define an environment in rllab, [here](https://github.com/rll/rllab/blob/master/rllab/envs/gym_env.py) is an example of how to define an environment using gym. 
+ 
  ## How to define the policy
  
  The policy is a function that given an state, returns the probability of take each action in that state. In rllab and typically in every RL algorithm, policy are approximated using Neural Networks. The parameters we can set in rllab are the following:
@@ -222,7 +224,7 @@ The second keyword defines **how the Neural Network is**
 
 Here are some examples we have done working with rllab
 
-### Core
+### Code
 
 - [2D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/grid_2D_world.py)
 
@@ -243,6 +245,8 @@ Here are some examples we have done working with rllab
 - [CGDA Paint](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/teo_paint_discrete_yarp_env.py)
 
 - [CGDA Iron](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/teo_iron_discrete_yarp_env.py)
+
+These examples are based in the ones already presented in rllab, for more examples take a look at the rllab source code for [code examples](https://github.com/rll/rllab/tree/master/examples) and [envs](https://github.com/rll/rllab/tree/master/rllab/envs).
 
 ## Tools
 
