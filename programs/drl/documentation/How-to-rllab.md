@@ -142,24 +142,23 @@ In rllab to define an environment we have to define at least the following funct
 - **step(self,action):** This function takes as input the state and the action we want to perform, and returns the next state, the reward, and if it has finished. In the grid world this could be something like this:
 
 ```python
-	def step(self, action):
-		next_state=self.get_next_state(self, action) #This function returns the next state for a given action "up,right,left,down"
+    def step(self, action):
+	next_state=self.get_next_state(self, action) #This function returns the next state for a given action "up,right,left,down"
 
-		#H="death", F="Free", S="Start", G="Goal"
-		if next_state_type == 'H':
-		    done = True
-		    reward = 0
-		elif next_state_type in ['F', 'S']:
-		    done = False
-		    reward = 0
-		elif next_state_type == 'G':
-		    done = True
-		    reward = 1
-		else:
-		    raise NotImplementedError
-		self.state = next_state
-		return Step(observation=self.state, reward=reward, done=done)
-
+	#H="death", F="Free", S="Start", G="Goal"
+	if next_state_type == 'H':
+	    done = True
+	    reward = 0
+	elif next_state_type in ['F', 'S']:
+	    done = False
+	    reward = 0
+	elif next_state_type == 'G':
+	    done = True
+	    reward = 1
+	else:
+	    raise NotImplementedError
+	self.state = next_state
+	return Step(observation=self.state, reward=reward, done=done)
 ```
 
  - **reset(self)** Reset the system to a initial state and returns the observation of that state. In the grid example, the observation is the state where the robot is. This way, having defined an initial state (self.start_state), this could be something like this: 
