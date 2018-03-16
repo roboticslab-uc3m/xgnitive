@@ -77,12 +77,12 @@ add_subdirectory(share)
 add_subdirectory(libraries)
 add_subdirectory(programs)
 if (ENABLE_tests)
-    add_subdirectory(test)
+    add_subdirectory(tests)
 endif (ENABLE_tests)
 
 # export our variables to a XGNITIVEConfig.cmake creation
 set(XGNITIVE_LINK_DIRS ${XGNITIVE_LINK_DIRS} ${LIBRARY_OUTPUT_PATH})
-configure_file(${CMAKE_SOURCE_DIR}/cmake/template/XGNITIVEConfig.cmake.in
+configure_file(${CMAKE_SOURCE_DIR}/cmake/templates/XGNITIVEConfig.cmake.in
                ${CMAKE_BINARY_DIR}/XGNITIVEConfig.cmake @ONLY)
 
 # create a symbolic link to the shared directory (as contains models and may be heavy)
@@ -96,7 +96,7 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake/template/XGNITIVEConfig.cmake.in
 
 # uninstall target
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/template/XGNITIVEConfigUninstall.cmake.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/XGNITIVEConfigUninstall.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/XGNITIVEConfigUninstall.cmake" IMMEDIATE @ONLY)
 
 add_custom_target(uninstall
