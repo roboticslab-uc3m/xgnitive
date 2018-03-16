@@ -12,12 +12,14 @@ if(ENABLE_tests)
 
     find_package(YARP REQUIRED)
 
+    add_subdirectory(${GTestSources_SOURCE_DIR} ${CMAKE_BINARY_DIR}/gtest)
+
     add_definitions(${XGNITIVE_DEFINITIONS})
-    include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} ${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS})
+    include_directories(${GTestSources_INCLUDE_DIR} ${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS})
     link_directories(${XGNITIVE_LINK_DIRS})
 
     add_executable(testCgdaRecognitionLib testCgdaRecognitionLib.cpp)
-    target_link_libraries(testCgdaRecognitionLib ${YARP_LIBRARIES} ${XGNITIVE_LIBRARIES} gtest gtest_main)
+    target_link_libraries(testCgdaRecognitionLib ${YARP_LIBRARIES} ${XGNITIVE_LIBRARIES} gtest_main)
 
 else()
 
