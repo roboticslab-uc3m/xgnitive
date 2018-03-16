@@ -76,9 +76,7 @@ set(XGNITIVE_LIBRARIES CACHE INTERNAL "appended libraries" FORCE)
 add_subdirectory(share)
 add_subdirectory(libraries)
 add_subdirectory(programs)
-if (ENABLE_tests)
-    add_subdirectory(tests)
-endif (ENABLE_tests)
+add_subdirectory(tests)
 
 # export our variables to a XGNITIVEConfig.cmake creation
 set(XGNITIVE_LINK_DIRS ${XGNITIVE_LINK_DIRS} ${LIBRARY_OUTPUT_PATH})

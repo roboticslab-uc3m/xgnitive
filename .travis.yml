@@ -20,6 +20,8 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install libsoqt4-dev libcoin80-dev; fi
   #-- Install Aquila deps
   - sudo apt-get install libsfml-dev
+  #-- Install googletest
+  - sudo apt-get install libgtest-dev
 
 install:
   #-- Install opencv
