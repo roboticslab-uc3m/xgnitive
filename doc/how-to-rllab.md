@@ -1,14 +1,14 @@
 # how-to-rllab 
 
-So this document is intended to be as a "how to use" rllab documentation. Its still under development so may be incomplete parts, all the support is also welcome.
+This document is intended to be as a "how to use" rllab documentation. Its still under development so may be incomplete parts, all the support is also welcome.
 
 ## What is rllab
 
 So the first question to answer is **"What is rllab?"**: from the [official documentation](http://rllab.readthedocs.io/en/latest/) [1][2] is a *"framework for developing and evaluating reinforcement learning algorithms"*. For us, we use it a a python framework to work with DEEP REINFORCEMENT LEARNING systems, by developing our own algorithms, environments and so on, or just using the ones already implemented in the framework.
 
 ## How to use rllab
-Ok, so thats clear, the next question is then **How to use rllab**. To use rllab the basic code for every DRL system is the following: 
-_______________________________________________________________________
+Now that this clear, the next question is **How to use rllab**. To use rllab the basic code for every DRL system is the following: 
+
 ```python
 from rllab.algos.trpo import TRPO 
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline 
@@ -39,7 +39,6 @@ algo = TRPO(
 algo.train()
 
 ```
-___
 
 Lets dissect this code:
 
@@ -130,8 +129,6 @@ In rllab to define an environment we have to define at least the following funct
 	return Discrete(self.n_row * self.n_col)
 ```
 
-
-
 - **action_space(self):** This function is where we define the action space of our problem. This function returns this observation space. Following with the grid world idea, an example of this could be an action space with 4 discrete actions, up, right, left and dow.
 
 ```python
@@ -170,9 +167,8 @@ In rllab to define an environment we have to define at least the following funct
  
  [Gym](https://gym.openai.com/) can also be used to define an environment in rllab, [here](https://github.com/rll/rllab/blob/master/rllab/envs/gym_env.py) is an example of how to define an environment using gym. 
  
- ## How to define the policy
- 
- The policy is a function that given an state, returns the probability of take each action in that state. In rllab and typically in every RL algorithm, policy are approximated using Neural Networks. The parameters we can set in rllab are the following:
+## How to define the policy
+The policy is a function that given an state, returns the probability of take each action in that state. In rllab and typically in every RL algorithm, policy are approximated using Neural Networks. The parameters we can set in rllab are the following:
  
  ```
 env_spec, 
@@ -221,11 +217,9 @@ The second keyword defines **how the Neural Network is**
  This way for our grid world example, we can use a **CategoricalMLPPolicy**, although others configurations could be used, which one to use will depen on us.
 
 ## Examples
-
 Here are some examples we have done working with rllab
 
 ### Code
-
 - [2D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/grid_2D_world.py)
 
 - [3D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/grid_3D_world.py)
@@ -235,7 +229,6 @@ Here are some examples we have done working with rllab
 - [CGDA Iron](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/teo_iron_discrete_yarp.py)
 
 ### Environment
-
 - [2D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_2D_env.py)
 
 - [3D grid](https://github.com/roboticslab-uc3m/xgnitive/blob/e1380027134f762ef729d570d0b1c08ba54cf2a1/programs/drl/envs/grid_world_3D_env.py)
@@ -249,12 +242,9 @@ Here are some examples we have done working with rllab
 These examples are based in the ones already presented in rllab, for more examples take a look at the rllab source code for [code examples](https://github.com/rll/rllab/tree/master/examples) and [envs](https://github.com/rll/rllab/tree/master/rllab/envs).
 
 ## Tools
-
 Here are some tools we have developed, that will help us work with rllab:
 
 - [sim_policy](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/sim_policy.py): This script just executes the obtained policy in the training environment to see how it performs. This script is based in the [one](https://github.com/rll/rllab/blob/b3a28992eca103cab3cb58363dd7a4bb07f250a0/scripts/sim_env.py) presented in the original rllab source code.
-
-
 
 # Sources:
 - [1] http://rllab.readthedocs.io/en/latest/
