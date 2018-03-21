@@ -4,7 +4,7 @@ This document is intended to be as a "how to use" rllab documentation. Its still
 
 ## What is rllab
 
-So the first question to answer is **"What is rllab?"**: from the [official documentation](http://rllab.readthedocs.io/en/latest/) [1][2] is a *"framework for developing and evaluating reinforcement learning algorithms"*. For us, we use it a a python framework to work with DEEP REINFORCEMENT LEARNING systems, by developing our own algorithms, environments and so on, or just using the ones already implemented in the framework.
+So the first question to answer is **"What is rllab?"**: from the [official documentation](http://rllab.readthedocs.io/en/latest/) [[1]](#1)[[2]](#2) is a *"framework for developing and evaluating reinforcement learning algorithms"*. For us, we use it a a python framework to work with DEEP REINFORCEMENT LEARNING systems, by developing our own algorithms, environments and so on, or just using the ones already implemented in the framework.
 
 ## How to use rllab
 Now that this clear, the next question is **How to use rllab**. To use rllab the basic code for every DRL system is the following: 
@@ -107,22 +107,21 @@ Here we have two options, [implement our own algorithm](http://rllab.readthedocs
 In rllab the algorithms are divided in two groups:
 
 - **Batch algorithms:** Its a subgroup of algorithms inside the dynamic programming algorithms. These are:
-	- **REINFORCE**: Algorithm from 1992. [3]
-	- **Truncated Natural Policy Gradient (TNPG)** [4]
-	- **Trust Region Policy Optimization (TRPO)**: This algorithm is effective for optimizing large nonlinear policies such as neural networks. The idea of TRPO is that you have some function that you want to approximate. Then you a have a local approximation which is quite accuarate, and the you have the farther you go out of that approximation the more inaccuarate it gets. The limitations are that is Hard to use in architectures with multiple outputs, performs poorly in task requiring deep CNN and RNN (like atari) and having a conjugate gradient makes all more complicated [5][6].
-	- **Relative Entropy Policy Search(REPS):** This method limits the information loss between iterations to achieve a soft learning curve [7].
-	- **Cross Entropy Method (CEM)** [8]
-	- **Covariance Matrix Adaptation Evolution Strategy (CMA-ES)** This is a RL based on evolutionary algorithms [9].
+	- **REINFORCE**: Algorithm from 1992. [[3]](#3)
+	- **Truncated Natural Policy Gradient (TNPG)** [[4]](#4)
+	- **Trust Region Policy Optimization (TRPO)**: This algorithm is effective for optimizing large nonlinear policies such as neural networks. The idea of TRPO is that you have some function that you want to approximate. Then you a have a local approximation which is quite accuarate, and the you have the farther you go out of that approximation the more inaccuarate it gets. The limitations are that is Hard to use in architectures with multiple outputs, performs poorly in task requiring deep CNN and RNN (like atari) and having a conjugate gradient makes all more complicated [[5]](#5)[[6]](#6).
+	- **Relative Entropy Policy Search(REPS):** This method limits the information loss between iterations to achieve a soft learning curve [[7]](#7).
+	- **Cross Entropy Method (CEM)** [[8]](#8)
+	- **Covariance Matrix Adaptation Evolution Strategy (CMA-ES)** This is a RL based on evolutionary algorithms [[9]](#9).
 
  - **Online Algorithms**
- 	- **Deep determisitc Policy Gradient (DDPG):** This algorithms was born to be able to use Q-learning with a  continous action space [10].
+ 	- **Deep determisitc Policy Gradient (DDPG):** This algorithms was born to be able to use Q-learning with a  continous action space [[10]](#10).
 	
 ## How to define the environment
 
 In rllab to define an environment we have to define at least the following functions:
 
 - **observation_space(self)** : This function is where we define the observation space of our problem. This function returns this observation space. In rllab there are three defined types, [Box](https://github.com/rll/rllab/blob/master/rllab/spaces/box.py), [Discrete](https://github.com/rll/rllab/blob/master/rllab/spaces/discrete.py), and [product](https://github.com/rll/rllab/blob/master/rllab/spaces/product.py). This way, supposing a grid world with *n_row.n_col* cells, the observation space is defined as:
-
 
 ```python
     def observation_space(self):
