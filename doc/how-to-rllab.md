@@ -1,4 +1,4 @@
-# How-to-rllab 
+# how-to-rllab 
 
 So this document is intended to be as a "how to use" rllab documentation. Its still under development so may be incomplete parts, all the support is also welcome.
 
