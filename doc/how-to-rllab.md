@@ -247,16 +247,13 @@ Here are some tools we have developed, that will help us work with rllab:
 - [sim_policy](https://github.com/roboticslab-uc3m/xgnitive/blob/485c982b16403c2ac78f2816fae4b560e71d5b46/programs/drl/sim_policy.py): This script just executes the obtained policy in the training environment to see how it performs. This script is based in the [one](https://github.com/rll/rllab/blob/b3a28992eca103cab3cb58363dd7a4bb07f250a0/scripts/sim_env.py) presented in the original rllab source code.
 
 # Sources:
-- [1] http://rllab.readthedocs.io/en/latest/
-- [2] *Duan, Y., Chen, X., Schulman, J., & Abbeel, P. (2016). Benchmarking Deep Reinforcement Learning for Continuous Control. arXiv, 48, 14. Retrieved from http://arxiv.org/abs/1604.06778*
-- [3] *Williams, R.J. Mach Learn (1992) 8: 229. https://doi.org/10.1007/BF00992696*
-- [4] *Kakade, S. M. (2002). A natural policy gradient. In Advances in neural information processing systems (pp. 1531-1538)*
-- [5] *Schulman, J., Levine, S., Moritz, P., Jordan, M. I., & Abbeel, P. (2015). Trust Region Policy Optimization. https://doi.org/10.1063/1.4927398*
-- [6] *Deep RL Bootcamp videos from:* https://www.youtube.com/channel/UCTgM-VlXKuylPrZ_YGAJHOw
-- [7] *Peters, J., Mülling, K., & Altun, Y. (2010, July). Relative Entropy Policy Search. In AAAI (pp. 1607-1612).*
-- [8] *Rubinstein, R. Y. (1999). The cross-entropy method for combinatorial and continuous optimization. Methodology and Computing in Applied Probability, 1(2), 127–190.*
-- [9] *Nikolaus Hansen, Sibylle D. Müller, and Petros Koumoutsakos. 2003. Reducing the time complexity of the derandomized evolution strategy with covariance matrix adaptation (CMA-ES). Evol. Comput. 11, 1 (March 2003), 1-18. DOI=http://dx.doi.org/10.1162/106365603321828970* 
-- [10] *Lillicrap, T. P., Hunt, J. J., Pritzel, A., Heess, N., Erez, T., Tassa, Y., … Wierstra, D. (2015). Continuous control with deep reinforcement learning. Foundations and Trends® in Machine Learning, 2(1), 1–127. https://doi.org/10.1561/2200000006*
-
-
-
+<a id="1">[1]</a> http://rllab.readthedocs.io/en/latest/
+<a id="2">[2]</a> *Duan, Y., Chen, X., Schulman, J., & Abbeel, P. (2016). Benchmarking Deep Reinforcement Learning for Continuous Control. arXiv, 48, 14. Retrieved from http://arxiv.org/abs/1604.06778*
+<a id="3">[3]</a> *Williams, R.J. Mach Learn (1992) 8: 229. https://doi.org/10.1007/BF00992696*
+<a id="4">[4]</a> *Kakade, S. M. (2002). A natural policy gradient. In Advances in neural information processing systems (pp. 1531-1538)*
+<a id="5">[5]</a> *Schulman, J., Levine, S., Moritz, P., Jordan, M. I., & Abbeel, P. (2015). Trust Region Policy Optimization. https://doi.org/10.1063/1.4927398*
+<a id="6">[6]</a> *Deep RL Bootcamp videos from:* https://www.youtube.com/channel/UCTgM-VlXKuylPrZ_YGAJHOw
+<a id="7">[7]</a> *Peters, J., Mülling, K., & Altun, Y. (2010, July). Relative Entropy Policy Search. In AAAI (pp. 1607-1612).*
+<a id="8">[8]</a> *Rubinstein, R. Y. (1999). The cross-entropy method for combinatorial and continuous optimization. Methodology and Computing in Applied Probability, 1(2), 127–190.*
+<a id="9">[9]</a> *Nikolaus Hansen, Sibylle D. Müller, and Petros Koumoutsakos. 2003. Reducing the time complexity of the derandomized evolution strategy with covariance matrix adaptation (CMA-ES). Evol. Comput. 11, 1 (March 2003), 1-18. DOI=http://dx.doi.org/10.1162/106365603321828970* 
+<a id="10">[10]</a> *Lillicrap, T. P., Hunt, J. J., Pritzel, A., Heess, N., Erez, T., Tassa, Y., … Wierstra, D. (2015). Continuous control with deep reinforcement learning. Foundations and Trends® in Machine Learning, 2(1), 1–127. https://doi.org/10.1561/2200000006*
