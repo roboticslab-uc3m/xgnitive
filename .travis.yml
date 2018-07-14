@@ -1,100 +1,127 @@
 language: cpp
 dist: trusty
 sudo: required
-
-os:
-  - linux
+os: linux
 
 compiler:
   - gcc
   - clang
 
+env:
+  global:
+    - CACHE_DIR=~/cached-deps
+  matrix:
+    - YARP_CHECKOUT=master
+    - YARP_CHECKOUT=v2.3.72.1
+    - YARP_CHECKOUT=v2.3.70.2
+
+matrix:
+  include:
+    - if: type = cron
+      compiler: gcc
+      env: ROBOTOLOGY_CHECKOUT=devel
+    - if: type = cron
+      compiler: clang
+      env: ROBOTOLOGY_CHECKOUT=devel
+
+cache:
+  directories: $CACHE_DIR
+
+addons:
+  apt:
+    packages:
+    - libopencv-dev
+
+    # YARP and KDL
+    - libeigen3-dev
+
+    # OpenRAVE
+    - libboost-all-dev
+    - libqt4-dev
+    - qt4-dev-tools
+    - libxml2-dev
+    - libode-dev
+    - libsoqt4-dev
+    - libcoin80-dev
+
+    # Aquila
+    - libsfml-dev
+
+    # unit testing
+    - libgtest-dev
+
+    # code coverage
+    - lcov
+
 before_install:
+  #-- Configure Git (needed by YCM)
   - if [ ! `git config --get user.email` ]; then `git config --global user.email 'user@example.com'`; fi
   - if [ ! `git config --get user.name` ]; then `git config --global user.name 'Travis CI'`; fi
-  #-- Install yarp/kdl deps
-  - sudo apt-get install libeigen3-dev
-  #-- Install OpenRAVE deps
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install libboost-all-dev; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install libqt4-dev qt4-dev-tools libxml2-dev libode-dev; fi # libfcl-dev not on Trusty used in this travis
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install libsoqt4-dev libcoin80-dev; fi
-  #-- Install Aquila deps
-  - sudo apt-get install libsfml-dev
-  #-- Install googletest
-  - sudo apt-get install libgtest-dev
 
-install:
-  #-- Install opencv
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install libopencv-dev; fi
-  #-- Install PCL
+  #-- Add source repository for PCL-related packages
   - sudo add-apt-repository --yes ppa:v-launchpad-jochen-sprickerhof-de/pcl
-  - sudo apt-get update -qq  # -qq No output except for errors
-  - sudo apt-get install libpcl-all libpcl-all-dev
-  #-- Install ECF
-  - wget https://sourceforge.net/projects/ecfproject/files/ECF_1.4.1/ECF_1.4.1.tar.gz/download -O ECF_1.4.1.tar.gz
-  - tar -zxf ECF_1.4.1.tar.gz
-  - cd ECF_1.4.1
-  - wget http://ecf.zemris.fer.hr/ecf_install.sh
-  - echo "exit 0" > exit0.sh
-  - echo "yes" | sh ./ecf_install.sh; sh ./exit0.sh
-  - cd ..
-  #-- Install cmake
-  - sudo apt-get install cmake
-  #-- Install yarp
-  - git clone https://github.com/robotology/yarp
-  - cd yarp && mkdir build && cd build
-  - cmake .. -DSKIP_ACE=ON
-  - make
-  - sudo make install
-  - cd ../..
-  #-- Install OpenRAVE
-  - git clone --branch latest_stable https://github.com/rdiankov/openrave.git
-  - cd openrave && mkdir build && cd build
-  - cmake .. -DOPENRAVE_PLUGIN_FCLRAVE=OFF
-  - make
-  - sudo make install
-  - cd ../..
-  #-- Install kdl
-  - git clone https://github.com/orocos/orocos_kinematics_dynamics
-  - cd orocos_kinematics_dynamics/orocos_kdl && mkdir build && cd build
-  - cmake ..
-  - make
-  - sudo make install
-  - cd ../../..
-  #-- Install Aquila
-  - git clone git://github.com/zsiciarz/aquila.git
-  - cd aquila; mkdir build; cd build
-  - cmake ..
-  - make
-  - sudo make install
-  - cd ../..
-  # see http://gronlier.fr/blog/2015/01/adding-code-coverage-to-your-c-project/
-  - if [ "$CXX" = "g++" ]; then wget http://ftp.de.debian.org/debian/pool/main/l/lcov/lcov_1.11.orig.tar.gz; fi
-  - if [ "$CXX" = "g++" ]; then tar xf lcov_1.11.orig.tar.gz; fi
-  - if [ "$CXX" = "g++" ]; then sudo make -C lcov-1.11/ install; fi
+  - sudo apt-get -qq update
+
+  #-- Install PCL
+  - sudo apt-get install libpcl-all-dev
+
+  #-- Code coverage
   - if [ "$CXX" = "g++" ]; then gem install coveralls-lcov; fi
 
+install:
+  #-- Install ECF
+  - wget https://sourceforge.net/projects/ecfproject/files/ECF_1.4.1/ECF_1.4.1.tar.gz/download -O ~/ECF_1.4.1.tar.gz
+  - tar -zxf ~/ECF_1.4.1.tar.gz -C ~
+  - wget http://ecf.zemris.fer.hr/ecf_install.sh -P ~/ECF_1.4.1
+  - echo "exit 0" > ~/ECF_1.4.1/exit0.sh
+  - echo "yes" | sh ~/ECF_1.4.1/ecf_install.sh; sh ~/ECF_1.4.1/exit0.sh
+
+  #-- Install YARP
+  - >
+    source "$TRAVIS_BUILD_DIR/scripts/travis/git-cache-dependency.sh"
+    --package-name YARP
+    --repo-url https://github.com/robotology/yarp
+    --repo-checkout "${ROBOTOLOGY_CHECKOUT:-$YARP_CHECKOUT}"
+    --additional-cmake-options "-DSKIP_ACE:BOOL=ON"
+    --prepend-to-linker-path lib
+    --additional-export-paths "YARP_DATA_DIRS;share/yarp"
+
+  #-- Install OpenRAVE
+  - >
+    source "$TRAVIS_BUILD_DIR/scripts/travis/git-cache-dependency.sh"
+    --package-name OpenRAVE
+    --repo-url https://github.com/rdiankov/openrave
+    --repo-checkout master
+    --prepend-to-linker-path lib
+
+  #-- Install KDL
+  - >
+    source "$TRAVIS_BUILD_DIR/scripts/travis/git-cache-dependency.sh"
+    --package-name KDL
+    --repo-url https://github.com/orocos/orocos_kinematics_dynamics
+    --repo-checkout master
+    --cmake-home-dir orocos_kdl
+    --prepend-to-linker-path lib
+
+  #-- Install Aquila
+  - >
+    source "$TRAVIS_BUILD_DIR/scripts/travis/git-cache-dependency.sh"
+    --package-name Aquila
+    --repo-url https://github.com/zsiciarz/aquila
+    --repo-checkout master
+    --prepend-to-linker-path lib
+
 before_script:
-  - mkdir -p build && cd build
+  - mkdir -p "$TRAVIS_BUILD_DIR/build" && cd "$_"
+  - cmake .. -DCMAKE_INSTALL_PREFIX="$PWD/install" -DENABLE_coverage:BOOL=ON
+  - make install
+  - export LD_LIBRARY_PATH=$PWD/install/lib:$LD_LIBRARY_PATH
 
 script:
-  - cmake .. -DENABLE_coverage=ON
-  - make
-  - sudo make install
-  - sudo ldconfig
-  #- bin/testKdlSolver
+  - echo "No unit tests available"
 
 after_success:
-  #  - cd ${TRAVIS_BUILD_DIR}
-  # capture coverage info
-  - if [ "$CXX" = "g++" ]; then lcov --directory . --capture --output-file coverage.info; fi
-  # filter out system and test code
-  - if [ "$CXX" = "g++" ]; then lcov --remove coverage.info  '/usr/*' 'test/*' --output-file coverage.info; fi
-  # debug before upload
-  - if [ "$CXX" = "g++" ]; then lcov --list coverage.info; fi
-  # uploads to coveralls
-  #- if [ "$CXX" = "g++" ]; then coveralls-lcov --source-encoding=ISO-8859-1 --repo-token InWqFy6VWMrEUzr2Rn8XV0cGqv3wXWo2d coverage.info; fi
-  - if [ "$CXX" = "g++" ]; then coveralls-lcov --source-encoding=ISO-8859-1 coverage.info; fi
+  #-- Code coverage
+  - if [ "$CXX" = "g++" ]; then source "$TRAVIS_BUILD_DIR/scripts/travis/coverage.sh"; fi
 
-  - sudo make uninstall
-
+  - make uninstall
