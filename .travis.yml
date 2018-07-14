@@ -110,6 +110,7 @@ install:
     --repo-url https://github.com/zsiciarz/aquila
     --repo-checkout master
     --prepend-to-linker-path lib
+    --additional-export-paths AQUILA_DIR
 
 before_script:
   - mkdir -p "$TRAVIS_BUILD_DIR/build" && cd "$_"
