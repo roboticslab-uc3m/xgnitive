@@ -60,7 +60,7 @@ bool CgdaExecutionIET::init() {
     //use the 'mode' object to set the device to position mode (as opposed to velocity mode)
     for (unsigned int i = 0; i < axes; i++)
     {
-        mode->setPositionMode(i);
+        mode->setControlMode(i, VOCAB_CM_POSITION);
     }
 
 //    printf("test positionMove(1,-35)\n");
@@ -79,7 +79,7 @@ bool CgdaExecutionIET::init() {
 //    //use the 'mode' object to set the device to velocity mode (as opposed to position mode)
 //    for (unsigned int i = 0; i < axes; i++)
 //    {
-//        mode->setVelocityMode(i);
+//        mode->setControlMode(i, VOCAB_CM_VELOCITY);
 //    }
 //    printf("test velocityMove(0,10)\n");
 //    vel->velocityMove(0,10);
