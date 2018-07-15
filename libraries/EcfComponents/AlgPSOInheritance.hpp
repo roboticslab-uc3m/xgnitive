@@ -26,11 +26,11 @@
 #ifndef Particle_Swarm_Optimization_inheritance_h
 #define Particle_Swarm_Optimization_inheritance_h
 
-#include "ECF_base.h"
-#include "ECF_macro.h"
+#include <ecf/ECF_base.h>
+#include <ecf/ECF_macro.h>
 
-#include "Algorithm.h"
-#include "floatingpoint/FloatingPoint.h"
+#include <ecf/Algorithm.h>
+#include <ecf/floatingpoint/FloatingPoint.h>
 
 
 /**
