@@ -26,7 +26,9 @@ then
     rm -rf "$repo_cache_dir"/*
     svn co "$url" "$repo_source_dir"
     (cd "$repo_source_dir" && autoreconf -fi && ./configure --prefix="$repo_cache_dir")
-    make -C "$repo_source_dir" -j$(nproc) check install
+    make -C "$repo_source_dir" -j$(nproc)
+    make -C "$repo_source_dir" -j$(nproc) check
+    make -C "$repo_source_dir" install
     echo "$rev" > "$repo_cache_dir/$rev_file"
 else
     echo "$package_name found in cache (rev $(cat $repo_cache_dir/$rev_file))"
