@@ -10,6 +10,7 @@ set(KEYWORD "cgdaExecution")
 find_package(YARP REQUIRED)
 #find_package(OpenRAVE REQUIRED)
 #find_package(Boost COMPONENTS iostreams python thread system)
+find_package(ECF REQUIRED)
 
 # Search for source code.
 file(GLOB folder_source *.cpp *.cc *.c)
@@ -29,7 +30,7 @@ endif( CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX )
 
 add_definitions(-std=c++11)
 
-include_directories(${OpenRAVE_INCLUDE_DIRS} ${YARP_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${OpenRAVE_INCLUDE_DIRS} ${YARP_INCLUDE_DIRS} ${ECF_INCLUDE_DIRS} ${XGNITIVE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 
 if( Boost_INCLUDE_DIRS )
   include_directories(${Boost_INCLUDE_DIRS})
@@ -41,7 +42,7 @@ link_directories(${OpenRAVE_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS} ${XGNITIVE_LINK_
 if (folder_source)
   add_executable(${KEYWORD} ${folder_source} ${folder_header})
   #add_executable(evMono main.cpp CgdaExecution.cpp CgdaFitnessFunction.cpp)
-  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${XGNITIVE_LIBRARIES} ${OpenCV_LIBS} ${OpenRAVE_LIBRARIES} ${OpenRAVE_CORE_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ecf)
+  target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${XGNITIVE_LIBRARIES} ${OpenCV_LIBS} ${OpenRAVE_LIBRARIES} ${OpenRAVE_CORE_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${ECF_LIBRARIES})
   install(TARGETS ${KEYWORD} DESTINATION bin)
 else (folder_source)
   message(FATAL_ERROR "No source code files found. Please add something")
