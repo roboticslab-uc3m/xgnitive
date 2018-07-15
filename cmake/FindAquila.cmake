@@ -7,17 +7,34 @@
 
 #set(AQUILA_DEFINITIONS ${PC_LIBXML_CFLAGS_OTHER})
 
-find_path(AQUILA_INCLUDE_DIR aquila.h
-  $ENV{AQUILA_DIR}
-  $ENV{FFMPEG_DIR}/aquila
-  /usr/local/include/aquila
-  /usr/include/aquila
+find_path(AQUILA_INCLUDE_DIR aquila/aquila.h
+  HINTS
+    $ENV{AQUILA_DIR}
+    $ENV{FFMPEG_DIR}
+  PATHS
+    /usr/local
+    /usr
+  PATH_SUFFIXES
+    include
 )
 
-find_library(AQUILA_LIBRARY NAMES Aquila libAquila )
+find_library(AQUILA_LIBRARY
+  NAMES
+    Aquila
+    libAquila
+  HINTS
+    $ENV{AQUILA_DIR}
+  PATH_SUFFIXES
+    lib
+)
 
-mark_as_advanced(AQUILA_INCLUDE_DIR AQUILA_LIBRARY )
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Aquila DEFAULT_MSG
+  AQUILA_INCLUDE_DIR AQUILA_LIBRARY
+)
 
-set(AQUILA_DEFINITIONS -std=c++11 )
-set(AQUILA_INCLUDE_DIRS ${AQUILA_INCLUDE_DIR} )
-set(AQUILA_LIBRARIES ${AQUILA_LIBRARY} )
+mark_as_advanced(AQUILA_INCLUDE_DIR AQUILA_LIBRARY)
+
+set(AQUILA_DEFINITIONS -std=c++11)
+set(AQUILA_INCLUDE_DIRS ${AQUILA_INCLUDE_DIR})
+set(AQUILA_LIBRARIES ${AQUILA_LIBRARY})

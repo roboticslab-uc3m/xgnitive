@@ -28,7 +28,7 @@ private:
     yarp::dev::IPositionControl *pos; //make a position controller object we call 'pos'
     yarp::dev::IEncoders *enc; //make an encoder controller object we call 'enc'
     yarp::dev::IVelocityControl *vel; //make a velocity controller object we call 'vel'
-    yarp::dev::IControlMode *mode; //make a mode controller object we call 'mode'
+    yarp::dev::IControlMode2 *mode; //make a mode controller object we call 'mode'
 };
 
 } //namespace TEO

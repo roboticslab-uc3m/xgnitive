@@ -4,14 +4,14 @@
 #ifndef Constrained_SST_h
 #define Constrained_SST_h
 
-#include "ECF_base.h"
-#include "ECF_macro.h"
+#include <ecf/ECF_base.h>
+#include <ecf/ECF_macro.h>
 
-#include "SelRandomOp.h"
-#include "SelWorstOp.h"
-#include "floatingpoint/FloatingPoint.h"
+#include <ecf/SelRandomOp.h>
+#include <ecf/SelWorstOp.h>
+#include <ecf/floatingpoint/FloatingPoint.h>
 
-#include "Algorithm.h"
+#include <ecf/Algorithm.h>
 
 /**
  *
