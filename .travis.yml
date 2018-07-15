@@ -32,6 +32,11 @@ addons:
     packages:
     - libopencv-dev
 
+    # ECF
+    - libboost-dev
+    - libtool
+    - dh-autoreconf
+
     # YARP and KDL
     - libeigen3-dev
 
@@ -70,11 +75,7 @@ before_install:
 
 install:
   #-- Install ECF
-  - wget https://sourceforge.net/projects/ecfproject/files/ECF_1.4.1/ECF_1.4.1.tar.gz/download -O ~/ECF_1.4.1.tar.gz
-  - tar -zxf ~/ECF_1.4.1.tar.gz -C ~
-  - wget http://ecf.zemris.fer.hr/ecf_install.sh -P ~/ECF_1.4.1
-  - echo "exit 0" > ~/ECF_1.4.1/exit0.sh
-  - echo "yes" | sh ~/ECF_1.4.1/ecf_install.sh; sh ~/ECF_1.4.1/exit0.sh
+  - source "$TRAVIS_BUILD_DIR/scripts/travis/cache-ecf.sh"
 
   #-- Install YARP
   - >

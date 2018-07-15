@@ -7,16 +7,33 @@
 
 #set(ECF_DEFINITIONS ${PC_LIBXML_CFLAGS_OTHER})
 
-find_path(ECF_INCLUDE_DIR ECF.h
-  $ENV{ECF_DIR}
-  $ENV{FFMPEG_DIR}/ecf
-  /usr/local/include/ecf
-  /usr/include/ecf
+find_path(ECF_INCLUDE_DIR ecf/ECF.h
+  HINTS
+    $ENV{ECF_DIR}
+    $ENV{FFMPEG_DIR}
+  PATHS
+    /usr/local
+    /usr
+  PATH_SUFFIXES
+    include
 )
 
-find_library(ECF_LIBRARY NAMES ecf libecf )
+find_library(ECF_LIBRARY
+  NAMES
+    ecf
+    libecf
+  HINTS
+    $ENV{ECF_DIR}
+  PATH_SUFFIXES
+    lib
+)
 
-mark_as_advanced(ECF_INCLUDE_DIR ECF_LIBRARY )
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(ECF DEFAULT_MSG
+  ECF_INCLUDE_DIR ECF_LIBRARY
+)
 
-set(ECF_INCLUDE_DIRS ${ECF_INCLUDE_DIR} )
-set(ECF_LIBRARIES ${ECF_LIBRARY} )
+mark_as_advanced(ECF_INCLUDE_DIR ECF_LIBRARY)
+
+set(ECF_INCLUDE_DIRS ${ECF_INCLUDE_DIR})
+set(ECF_LIBRARIES ${ECF_LIBRARY})
