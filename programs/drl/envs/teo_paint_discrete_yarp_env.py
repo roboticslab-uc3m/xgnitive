@@ -187,10 +187,13 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         self.start_state = [0, 0, 0]
         self.state = None
         self.domain_fig = None
+        print("Hasta aqui llegue! 0");
+
 
     ################### RESET #############################
 
     def reset(self):
+        print("Hasta aqui llegue! 1");
         self.state = self.start_state
         #Reward:
         self.reward = 0
@@ -201,10 +204,14 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         dEncRaw[0] = 0
         dEncRaw[1] = 0
         dEncRaw[3] = 0
+        print(dEncRaw)
+        print("Hasta aqui llegue! 2");
 
         self.mentalPositionControl.positionMove(0, dEncRaw[0])
         self.mentalPositionControl.positionMove(1, dEncRaw[1])
         self.mentalPositionControl.positionMove(3, dEncRaw[3])
+        print("Hasta aqui llegue! 3");
+
 
         time.sleep(self.yarpDelay)  # pause
 
@@ -217,12 +224,11 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         # Reset num_steps
         self.num_step = 0
+        print("Hasta aqui llegue! 4");
 
         return self.state
 
     ################### ACTION DEFINITION #################
-
-    @staticmethod
     def action_from_direction(d):
         """
         Return the action corresponding to the given direction. This is a helper method for debugging and testing
@@ -254,6 +260,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         """
 
         ################### GET ACTUAL STATE #############################
+        print("Hasta aqui llegue! 4");
 
         self.cmd.clear()
         self.res.clear()
