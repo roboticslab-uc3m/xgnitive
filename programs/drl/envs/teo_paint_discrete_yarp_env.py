@@ -278,7 +278,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
         enc.getEncoders(v)  # read the encoder values and put them into 'v'
 
-        self.state = []
+        self.state = [] #State is a 3D vector
         self.state.append(v[0])
         self.state.append(v[1])
         self.state.append(v[3])
@@ -298,9 +298,10 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         # now[coords[0], coords[1]]='X'
         # print(now)
 
-        probs = [x[1] for x in possible_next_states]
-        next_state_idx = np.random.choice(len(probs), p=probs)
-        next_state = possible_next_states[next_state_idx][0]
+	#Right now this is like doing nothing. Really nothing.
+        probs = [x[1] for x in possible_next_states] #Obtain the probabilities of the next_states
+        next_state_idx = np.random.choice(len(probs), p=probs) #Chose a random action using that prob.
+        next_state = possible_next_states[next_state_idx][0] #The next state is the random action chosen.
 
         # print("next state before move is", next_state)
 
@@ -418,15 +419,15 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         next_state = np.clip(
             state + increments[action],
-            [self.min0[0], self.min1[0], self.min3[0]],  # Limits
-            [self.max0[0], self.max1[0], self.max3[0]]  # Limits
+            [self.min0[0], self.min1[0], self.min3[0]],  # Min Limit
+            [self.max0[0], self.max1[0], self.max3[0]]  # Max Limit
             #[self.lbound, -self.ubound, self.lbound],  # Limits
             #[self.ubound, -self.lbound, self.ubound]  # Limits
         )
 
         print("the next state is ", next_state)
 
-        return [(next_state, 1.)]
+        return [(next_state, 1.)] #We only have one action and give them probability 1. Duh.
 
     ################### ACTION ##################################
 
