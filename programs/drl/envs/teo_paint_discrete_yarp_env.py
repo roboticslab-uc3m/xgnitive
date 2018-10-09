@@ -201,9 +201,9 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         dEncRaw = np.empty(6, float)
 
-        dEncRaw[0] = 0
-        dEncRaw[1] = 0
-        dEncRaw[3] = 0
+        dEncRaw[0] = self.start_state[0]
+        dEncRaw[1] = self.start_state[1]
+        dEncRaw[3] = self.start_state[2]
         print(dEncRaw)
         print("Hasta aqui llegue! 2");
 
@@ -228,11 +228,11 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         return self.state
 
+    '''
     ################### ACTION DEFINITION #################
     def action_from_direction(d):
         """
-        Return the action corresponding to the given direction. This is a helper method for debugging and testing
-        purposes.
+        Return the action corresponding to the given direction.
         :return: the action index corresponding to the given direction
         """
         return dict(  # The actions for the system are:
@@ -243,6 +243,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
             inc_3=4,
             dec_3=5
         )[d]
+    '''
 
     ################### STEP ##############################
 
@@ -298,7 +299,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
         # now[coords[0], coords[1]]='X'
         # print(now)
 
-	#Right now this is like doing nothing. Really nothing.
+	    #Right now this is like doing nothing. Really nothing.
         probs = [x[1] for x in possible_next_states] #Obtain the probabilities of the next_states
         next_state_idx = np.random.choice(len(probs), p=probs) #Chose a random action using that prob.
         next_state = possible_next_states[next_state_idx][0] #The next state is the random action chosen.
@@ -393,7 +394,7 @@ class TeoPaintDiscreteYarpEnv(Env, Serializable):
 
         print ("El reward es: ", self.reward)
 
-        return Step(observation=self.state, reward=self.reward, done=done)
+        return Step(observation=self.next_state, reward=self.reward, done=done)
 
     ################### NEXT STATES #############################
 
