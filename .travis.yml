@@ -62,13 +62,6 @@ addons:
     - lcov
 
 before_install:
-  #-- Add source repository for PCL-related packages
-  - sudo add-apt-repository --yes ppa:v-launchpad-jochen-sprickerhof-de/pcl
-  - sudo apt-get -qq update
-
-  #-- Install PCL
-  - sudo apt-get install libpcl-all-dev
-
   #-- Code coverage
   - if [ "$CXX" = "g++" ]; then gem install coveralls-lcov; fi
 
