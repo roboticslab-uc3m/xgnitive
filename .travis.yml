@@ -85,7 +85,7 @@ install:
     --package-name OpenRAVE
     --repo-url https://github.com/rdiankov/openrave
     --repo-checkout master
-    --additional-cmake-options "-DOPT_VIDEORECORDING:BOOL=OFF"
+    --additional-cmake-options "-DOPT_VIDEORECORDING:BOOL=OFF -DOPT_IKFAST_FLOAT32:BOOL=OFF"
     --prepend-to-linker-path lib
     --cmake-env 'CFLAGS="-w" CXXFLAGS="-w"'
 
