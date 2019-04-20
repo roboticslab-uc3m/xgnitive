@@ -10,6 +10,10 @@ project(${KEYWORD})
 #find_package(YARP REQUIRED)
 find_package(PCL 1.2 REQUIRED)
 
+# Xenial + PCL 1.7 bug
+# https://github.com/PointCloudLibrary/pcl/issues/2406
+list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
+
 # Search for source code.
 file(GLOB folder_source *.cpp *.cc *.c)
 file(GLOB folder_header *.h)
@@ -23,7 +27,6 @@ foreach(header_file ${folder_header})
 endforeach(header_file ${folder_header})
 
 #include_directories(${YARP_INCLUDE_DIRS})
-find_package(PCL 1.2 REQUIRED)
 include_directories(${PCL_INCLUDE_DIRS})
 
 link_directories(${PCL_LIBRARY_DIRS})

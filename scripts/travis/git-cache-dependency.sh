@@ -12,6 +12,7 @@ additional_cmake_options=
 prepend_to_linker_path=
 prepend_to_standard_path=
 additional_export_paths=
+cmake_env=
 
 #-- Available getopt long option names
 #-- https://gist.github.com/magnetikonline/22c1eb412daa350eeceee76c97519da8
@@ -25,6 +26,7 @@ ARGUMENT_LIST=(
     "prepend-to-linker-path"
     "prepend-to-standard-path"
     "additional-export-paths"
+    "cmake-env"
 )
 
 #-- Read arguments
@@ -91,7 +93,7 @@ if $is_clone_only_branch; then
     then
         echo "$package_name not in cache or not the latest commit of $repo_checkout branch"
         rm -rf "$repo_cache_dir"/*
-        cmake -H"$cmake_home_dir" -B"$repo_build_dir" $repo_cmake_options
+        eval $cmake_env cmake -H"$cmake_home_dir" -B"$repo_build_dir" $repo_cmake_options
         make -C "$repo_build_dir" -j$(nproc) install
         echo "$last_commit_sha" > "$repo_cache_dir/.last_commit_sha"
     else
@@ -106,7 +108,7 @@ else
         echo "Downloading $package_name $repo_checkout from archive"
         wget -q "$repo_url/archive/$repo_checkout.tar.gz" -P "$repo_source_dir"
         tar xzf "$repo_source_dir/$repo_checkout.tar.gz" -C "$repo_source_dir" --strip-components=1
-        cmake -H"$cmake_home_dir" -B"$repo_build_dir" $repo_cmake_options
+        eval $cmake_env cmake -H"$cmake_home_dir" -B"$repo_build_dir" $repo_cmake_options
         make -C "$repo_build_dir" -j$(nproc) install
     else
         echo "$package_name $repo_checkout already in cache"

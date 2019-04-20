@@ -1,5 +1,5 @@
 language: cpp
-dist: trusty
+dist: xenial
 os: linux
 
 compiler:
@@ -32,6 +32,8 @@ addons:
   apt:
     packages:
     - libopencv-dev
+    - libpcl-dev
+    - libproj-dev # needed by libpcl-dev on Xenial (known bug)
 
     # ECF
     - libboost-dev
@@ -92,6 +94,7 @@ install:
     --repo-checkout master
     --additional-cmake-options "-DOPT_VIDEORECORDING:BOOL=OFF"
     --prepend-to-linker-path lib
+    --cmake-env 'CFLAGS="-w" CXXFLAGS="-w"'
 
   #-- Install KDL
   - >
