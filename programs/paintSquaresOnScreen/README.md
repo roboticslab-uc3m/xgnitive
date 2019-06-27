@@ -1,8 +1,12 @@
 # How-to paintSquaresOnScreen
 
-This application allow you to use the kinect to detect the position of your hand or a brush, and use it to paint squares on a screen. To use this application make sure you have installed OpenNI2DeviceServer from the [YARP installation manual](https://github.com/roboticslab-uc3m/installation-guides/blob/c391d11f6bb624458111bd6655cfcb9109e7952a/install-yarp.md). It also needs to have installed the [vision package](https://github.com/roboticslab-uc3m/vision).
+This application allow you to use the kinect to detect the position of your hand/brush and use it to paint squares on a screen. 
 
-In order to use this application, perform the next steps:
+## Dependencies
+- [YARP with OpenNI2DeviceServer](https://github.com/roboticslab-uc3m/installation-guides/blob/c391d11f6bb624458111bd6655cfcb9109e7952a/install-yarp.md).
+- [vision package](https://github.com/roboticslab-uc3m/vision)
+
+## Installation
 
 ```bash
 #Init software for kinect
