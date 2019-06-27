@@ -54,6 +54,9 @@ CYAN = (0, 255, 255)
 YELLOW = (255, 255, 0)
 MAGENTA = (255, 0, 104)
 
+# Num max strokes
+NUM_MAX_STROKES=10
+
 
 
 
@@ -97,10 +100,12 @@ class DataProcessor(yarp.PortReader):
     def myInit(self):
         #self.myMem = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
         self.myMem = np.zeros(hrect*vrect)
+        self.strokeMem = np.zeros(hrect * vrect)
         self.brushColour=1 #By default blue
         self.xold=0
         self.yold=0
         self.oldColour=0
+
 	
 	return True
 
@@ -169,12 +174,12 @@ class DataProcessor(yarp.PortReader):
         #kinect below
         if kinect==0:
             print("Painting Blue now for real")
-            pygame.draw.rect(screen,BLUE,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            pygame.draw.rect(screen,(0, 0, self.strokeMem[place]/NUM_MAX_STROKES),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
             self.drawCursor()
 
         elif kinect==1:
             print("Painting Blue now for real")
-            pygame.draw.rect(screen, BLUE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            pygame.draw.rect(screen, (0, 0, self.strokeMem[place]/NUM_MAX_STROKES), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
             self.drawCursor()
 
         place =self.x+self.y*vrect #Number of pixel.
@@ -182,6 +187,7 @@ class DataProcessor(yarp.PortReader):
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
         self.myMem[place] = 1
+        self.strokeMem[place] += 1
 	
 	return True
 	
@@ -191,12 +197,12 @@ class DataProcessor(yarp.PortReader):
         #kinect below
         if kinect==0:
             print("Painting Yellow now for real")
-            pygame.draw.rect(screen,YELLOW,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            pygame.draw.rect(screen,(self.strokeMem[place]/NUM_MAX_STROKES, self.strokeMem[place]/NUM_MAX_STROKES, 0),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
             self.drawCursor()
 
         elif kinect==1:
             print("Painting Yellow now for real")
-            pygame.draw.rect(screen,YELLOW, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            pygame.draw.rect(screen,(self.strokeMem[place]/NUM_MAX_STROKES, self.strokeMem[place]/NUM_MAX_STROKES, 0), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
             self.drawCursor()
 
         place =self.x+self.y*vrect #Number of pixel.
@@ -204,6 +210,7 @@ class DataProcessor(yarp.PortReader):
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
         self.myMem[place] = 2
+        self.strokeMem[place] += 1
 
 	return True	
 
@@ -212,11 +219,11 @@ class DataProcessor(yarp.PortReader):
         #kinect below
         if kinect==0:
             print("Painting Magenta now for real")
-            pygame.draw.rect(screen,MAGENTA,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+            pygame.draw.rect(screen,(self.strokeMem[place]/NUM_MAX_STROKES, 0, self.strokeMem[place]/(NUM_MAX_STROKES*2)),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
             self.drawCursor()
         elif kinect==1:
             print("Painting Magenta now for real")
-            pygame.draw.rect(screen,MAGENTA, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+            pygame.draw.rect(screen,(self.strokeMem[place]/NUM_MAX_STROKES, 0, self.strokeMem[place]/(NUM_MAX_STROKES*2)), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
             self.drawCursor()
 
         place =self.x+self.y*vrect #Number of pixel.
@@ -224,6 +231,7 @@ class DataProcessor(yarp.PortReader):
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
         self.myMem[place] = 3
+        self.strokeMem[place] += 1
 
 	return True	
 
@@ -244,6 +252,7 @@ class DataProcessor(yarp.PortReader):
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
         self.myMem[place] = 3
+        self.strokeMem[place] = 0
 
 	return True	
 
