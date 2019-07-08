@@ -16,6 +16,6 @@ cd ~/repos/vision/build/bin; ./voxelOccupancyDetection
 #Init paint screen
 cd ~/repos/xgnitive/programs/paintSquaresOnScreen; ./paintSquaresOnScreen.py
 #Connect
-yarp connect /voxelOccupancyDetection/state:o /voxelOccupancyDetection/state:i
+yarp connect /voxelOccupancyDetection/state:o /paintSquaresOnScreen/voxelOccupancyDetection/state:i
 ```
 
