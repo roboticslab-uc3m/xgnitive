@@ -278,19 +278,21 @@ class DataProcessor(yarp.PortReader):
 
     def drawCursor(self):
 
+        place = self.xold+self.yold*vrect
+
         if kinect==0:	
 	    #Delete old cursor
 	    if self.oldColour == 0:
 		pygame.draw.circle(screen, WHITE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 1:
-		pygame.draw.circle(screen, BLUE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, (0, 0, 255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES)), [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 2:
-		pygame.draw.circle(screen, YELLOW, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)],10,0)
+		pygame.draw.circle(screen, (255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES), 255-(self.strokeMem[place]-1)*(255/(NUM_MAX_STROKES))), [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)],10,0)
 
 	    elif self.oldColour == 3:
-		pygame.draw.circle(screen, MAGENTA, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, ((255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES), 0, 255-(self.strokeMem[place]-1)*(255/(NUM_MAX_STROKES*2)))), [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    #DrawCursor
 	    pygame.draw.circle(screen,BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
@@ -302,13 +304,13 @@ class DataProcessor(yarp.PortReader):
 		pygame.draw.circle(screen, WHITE, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 1:
-		pygame.draw.circle(screen, BLUE, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, (0, 0, 255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES)), [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 2:
-		pygame.draw.circle(screen, YELLOW, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)],10,0)
+		pygame.draw.circle(screen, (255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES), 255-(self.strokeMem[place]-1)*(255/(NUM_MAX_STROKES))), [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)],10,0)
 
 	    elif self.oldColour == 3:
-		pygame.draw.circle(screen, MAGENTA, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, ((255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES), 0, 255-(self.strokeMem[place]-1)*(255/(NUM_MAX_STROKES*2)))), [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    #DrawCursor
 	    pygame.draw.circle(screen,BLACK,[self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)],10,0)
