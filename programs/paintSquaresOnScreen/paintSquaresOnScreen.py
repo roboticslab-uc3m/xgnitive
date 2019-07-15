@@ -61,9 +61,17 @@ NUM_MAX_STROKES=10
 
 
 # Set the height and width of the screen
-#size = (960, 540)
-#size = (0, 0)
-size = (1512, 1080)
+#Setup1
+size = (960, 540)
+screenW=960;
+screenH=540;
+
+#Setup2
+#size = (1512, 1080)
+#screenW=1512;
+#screenH=1080;
+
+
 screen = pygame.display.set_mode(size)
 #pygame.FULLSCREEN
  
@@ -75,11 +83,6 @@ clock = pygame.time.Clock()
 screenSize=pygame.display.Info()
 print(screenSize.current_w, screenSize.current_h)
 
-#Since using 2 screens are presented we can not auto detect the size of screen
-screenW=1512;
-screenH=1080;
-#screenW=960;
-#screenH=540;
 
 # Number of screens
 #scn=2
@@ -88,8 +91,8 @@ screenH=1080;
 kinect=1
 
 # Number of rectangles
-hrect=8 #Horizontal
-vrect=8 #Vertical
+hrect=4 #Horizontal
+vrect=4 #Vertical
 
 # Clear the screen and set the screen background
 screen.fill(WHITE)
@@ -105,6 +108,7 @@ class DataProcessor(yarp.PortReader):
         self.xold=0
         self.yold=0
         self.oldColour=0
+        self.memplace=-1
 
 	
 	return True
@@ -171,71 +175,88 @@ class DataProcessor(yarp.PortReader):
 
     def paintBlue(self):
 
-        #kinect below
-        if kinect==0:
-            print("Painting Blue now for real")
-            pygame.draw.rect(screen,(0, 0, self.strokeMem[place]/NUM_MAX_STROKES),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
-            self.drawCursor()
+        place = self.x + self.y * vrect  # Number of pixel.
 
-        elif kinect==1:
-            print("Painting Blue now for real")
-            pygame.draw.rect(screen, (0, 0, self.strokeMem[place]/NUM_MAX_STROKES), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
-            self.drawCursor()
+        if self.memplace != place:
+            #kinect below
+            if kinect==0:
+                print("Painting Blue now for real")
+                pygame.draw.rect(screen,(0, 0, 255-self.strokeMem[place]*(255/NUM_MAX_STROKES)),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+                self.drawCursor()
 
-        place =self.x+self.y*vrect #Number of pixel.
-        print 'place', place
-        print 'self.myMem', self.myMem
-        print 'size', len(self.myMem)
-        self.myMem[place] = 1
-        self.strokeMem[place] += 1
+            elif kinect==1:
+                print("Painting Blue now for real")
+                pygame.draw.rect(screen, (0, 0, 255-self.strokeMem[place]*(255/NUM_MAX_STROKES)), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+                print("pete aqui!")
+                self.drawCursor()
+
+            print 'place', place
+            print 'self.strokeMem[place]', self.strokeMem[place]
+            print 'size', len(self.myMem)
+            self.myMem[place] = 1
+            if self.strokeMem[place]<NUM_MAX_STROKES:
+                self.strokeMem[place] += 1
+            self.memplace=place
 	
 	return True
 	
 
     def paintYellow(self):
 
-        #kinect below
-        if kinect==0:
-            print("Painting Yellow now for real")
-            pygame.draw.rect(screen,(self.strokeMem[place]/NUM_MAX_STROKES, self.strokeMem[place]/NUM_MAX_STROKES, 0),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
-            self.drawCursor()
 
-        elif kinect==1:
-            print("Painting Yellow now for real")
-            pygame.draw.rect(screen,(self.strokeMem[place]/NUM_MAX_STROKES, self.strokeMem[place]/NUM_MAX_STROKES, 0), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
-            self.drawCursor()
+        place = self.x + self.y * vrect  # Number of pixel.
 
-        place =self.x+self.y*vrect #Number of pixel.
-        print 'place', place
-        print 'self.myMem', self.myMem
-        print 'size', len(self.myMem)
-        self.myMem[place] = 2
-        self.strokeMem[place] += 1
+        if self.memplace != place:
+            #kinect below
+            if kinect==0:
+                print("Painting Yellow now for real")
+                pygame.draw.rect(screen,(255-self.strokeMem[place]*(255/NUM_MAX_STROKES), 255-self.strokeMem[place]*(255/(NUM_MAX_STROKES)), 0),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+                self.drawCursor()
+
+            elif kinect==1:
+                print("Painting Yellow now for real")
+                pygame.draw.rect(screen,(255-self.strokeMem[place]*(255/NUM_MAX_STROKES), 255-self.strokeMem[place]*(255/(NUM_MAX_STROKES)), 0), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+                self.drawCursor()
+
+            print 'place', place
+            print 'self.strokeMem', self.strokeMem
+            print 'size', len(self.myMem)
+            self.myMem[place] = 2
+            if self.strokeMem[place]<NUM_MAX_STROKES:
+                self.strokeMem[place] += 1
+            self.memplace = place
+
 
 	return True	
 
     def paintMagenta(self):
 
-        #kinect below
-        if kinect==0:
-            print("Painting Magenta now for real")
-            pygame.draw.rect(screen,(self.strokeMem[place]/NUM_MAX_STROKES, 0, self.strokeMem[place]/(NUM_MAX_STROKES*2)),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
-            self.drawCursor()
-        elif kinect==1:
-            print("Painting Magenta now for real")
-            pygame.draw.rect(screen,(self.strokeMem[place]/NUM_MAX_STROKES, 0, self.strokeMem[place]/(NUM_MAX_STROKES*2)), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
-            self.drawCursor()
-
         place =self.x+self.y*vrect #Number of pixel.
-        print 'place', place
-        print 'self.myMem', self.myMem
-        print 'size', len(self.myMem)
-        self.myMem[place] = 3
-        self.strokeMem[place] += 1
+
+        if self.memplace != place:
+            #kinect below
+            if kinect==0:
+                print("Painting Magenta now for real")
+                pygame.draw.rect(screen,(255-self.strokeMem[place]*(255/NUM_MAX_STROKES), 0, 255-self.strokeMem[place]*(255/(NUM_MAX_STROKES*2))),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+                self.drawCursor()
+            elif kinect==1:
+                print("Painting Magenta now for real")
+                pygame.draw.rect(screen,(255-self.strokeMem[place]*(255/NUM_MAX_STROKES), 0, 255-self.strokeMem[place]*(255/(NUM_MAX_STROKES*2))), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+                self.drawCursor()
+
+            print 'place', place
+            print 'self.myMem', self.myMem
+            print 'size', len(self.myMem)
+            self.myMem[place] = 3
+            if self.strokeMem[place]<NUM_MAX_STROKES:
+                self.strokeMem[place] += 1
+            self.memplace = place
 
 	return True	
 
     def paintErase(self):
+
+        place =self.x+self.y*vrect #Number of pixel.
 
         #kinect below
         if kinect==0:
@@ -247,7 +268,6 @@ class DataProcessor(yarp.PortReader):
             pygame.draw.rect(screen,WHITE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
             self.drawCursor()
 
-        place =self.x+self.y*vrect #Number of pixel.
         print 'place', place
         print 'self.myMem', self.myMem
         print 'size', len(self.myMem)
