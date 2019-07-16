@@ -95,7 +95,7 @@ hrect=4 #Horizontal
 vrect=4 #Vertical
 
 # Clear the screen and set the screen background
-screen.fill(WHITE)
+screen.fill(BLUE)
 
 # YARP Callback
 class DataProcessor(yarp.PortReader): 
@@ -170,9 +170,9 @@ class DataProcessor(yarp.PortReader):
         print("El incremento es:", inc)
         print("El numero de strokes es:", self.strokeMem[place])
 
-        if self.strokeMem[place] <= inc: #Blue
-            colour = (0,0,255*(self.strokeMem[place])/inc)
-        elif self.strokeMem[place] <= 2*inc:
+        #if self.strokeMem[place] <= inc: #Blue
+        #    colour = (0,0,255*self.strokeMem[place]/inc)
+        if self.strokeMem[place] <= 2*inc:
             colour = (0, 255*(self.strokeMem[place])/(2*inc), 255) #0-1
         elif self.strokeMem[place] <= 3 * inc:
             colour = (0, 255, 255-(self.strokeMem[place]-2*inc)*255/inc)
