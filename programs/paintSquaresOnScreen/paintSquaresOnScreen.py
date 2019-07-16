@@ -181,12 +181,12 @@ class DataProcessor(yarp.PortReader):
             #kinect below
             if kinect==0:
                 print("Painting Blue now for real")
-                pygame.draw.rect(screen,(0, 0, 255-self.strokeMem[place]*(255/NUM_MAX_STROKES)),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+                pygame.draw.rect(screen,BLUE,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
                 self.drawCursor()
 
             elif kinect==1:
                 print("Painting Blue now for real")
-                pygame.draw.rect(screen, (0, 0, 255-self.strokeMem[place]*(255/NUM_MAX_STROKES)), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+                pygame.draw.rect(screen, BLUE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
                 print("pete aqui!")
                 self.drawCursor()
 
@@ -210,12 +210,12 @@ class DataProcessor(yarp.PortReader):
             #kinect below
             if kinect==0:
                 print("Painting Yellow now for real")
-                pygame.draw.rect(screen,(255-self.strokeMem[place]*(255/NUM_MAX_STROKES), 255-self.strokeMem[place]*(255/(NUM_MAX_STROKES)), 0),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+                pygame.draw.rect(screen,YELLOW,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
                 self.drawCursor()
 
             elif kinect==1:
                 print("Painting Yellow now for real")
-                pygame.draw.rect(screen,(255-self.strokeMem[place]*(255/NUM_MAX_STROKES), 255-self.strokeMem[place]*(255/(NUM_MAX_STROKES)), 0), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+                pygame.draw.rect(screen,YELLOW, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
                 self.drawCursor()
 
             print 'place', place
@@ -237,11 +237,11 @@ class DataProcessor(yarp.PortReader):
             #kinect below
             if kinect==0:
                 print("Painting Magenta now for real")
-                pygame.draw.rect(screen,(255-self.strokeMem[place]*(255/NUM_MAX_STROKES), 0, 255-self.strokeMem[place]*(255/(NUM_MAX_STROKES*2))),[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
+                pygame.draw.rect(screen,MAGENTA,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
                 self.drawCursor()
             elif kinect==1:
                 print("Painting Magenta now for real")
-                pygame.draw.rect(screen,(255-self.strokeMem[place]*(255/NUM_MAX_STROKES), 0, 255-self.strokeMem[place]*(255/(NUM_MAX_STROKES*2))), [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
+                pygame.draw.rect(screen,MAGENTA, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
                 self.drawCursor()
 
             print 'place', place
@@ -286,16 +286,16 @@ class DataProcessor(yarp.PortReader):
 		pygame.draw.circle(screen, WHITE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 1:
-		pygame.draw.circle(screen, (0, 0, 255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES)), [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, BLUE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 2:
-		pygame.draw.circle(screen, (255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES), 255-(self.strokeMem[place]-1)*(255/(NUM_MAX_STROKES))), [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)],10,0)
+		pygame.draw.circle(screen, YELLOW, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)],10,0)
 
 	    elif self.oldColour == 3:
-		pygame.draw.circle(screen, ((255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES), 0, 255-(self.strokeMem[place]-1)*(255/(NUM_MAX_STROKES*2)))), [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, MAGENTA, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    #DrawCursor
-	    pygame.draw.circle(screen,BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
+	    pygame.draw.circle(screen, BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
 
 	elif kinect==1:	
 	    print("the old colour is: ",self.oldColour)
@@ -304,16 +304,16 @@ class DataProcessor(yarp.PortReader):
 		pygame.draw.circle(screen, WHITE, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 1:
-		pygame.draw.circle(screen, (0, 0, 255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES)), [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, BLUE, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    elif self.oldColour == 2:
-		pygame.draw.circle(screen, (255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES), 255-(self.strokeMem[place]-1)*(255/(NUM_MAX_STROKES))), [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)],10,0)
+		pygame.draw.circle(screen, YELLOW, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)],10,0)
 
 	    elif self.oldColour == 3:
-		pygame.draw.circle(screen, ((255-(self.strokeMem[place]-1)*(255/NUM_MAX_STROKES), 0, 255-(self.strokeMem[place]-1)*(255/(NUM_MAX_STROKES*2)))), [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
+		pygame.draw.circle(screen, MAGENTA, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
 	    #DrawCursor
-	    pygame.draw.circle(screen,BLACK,[self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)],10,0)
+	    pygame.draw.circle(screen, BLACK,[self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)],10,0)
 
 	# Update cursor position and colour
 	self.xold = self.x
