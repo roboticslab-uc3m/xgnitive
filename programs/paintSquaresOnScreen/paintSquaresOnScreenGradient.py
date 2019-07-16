@@ -151,7 +151,7 @@ class DataProcessor(yarp.PortReader):
             #Paint conditions
             if self.y < vrect: #We are talking about painting voxels if this is true
                 if self.brushColour == 1:
-                    print("Painting blue now")
+                    print("Painting now")
                     self.paint()
 
                 elif self.brushColour == 0:
@@ -164,18 +164,22 @@ class DataProcessor(yarp.PortReader):
 
         return True
 
-    def findColour(selfs, place):
+    def findColour(self, place):
+
         inc=NUM_MAX_STROKES/5
+        print("El incremento es:", inc)
+        print("El numero de strokes es:", self.strokeMem[place])
+
         if self.strokeMem[place] <= inc: #Blue
             colour = (0,0,255*(self.strokeMem[place])/inc)
         elif self.strokeMem[place] <= 2*inc:
-            colour = (0, 255*(self.strokeMem[place]-1)/2*inc, 255) #0-1
+            colour = (0, 255*(self.strokeMem[place])/(2*inc), 255) #0-1
         elif self.strokeMem[place] <= 3 * inc:
             colour = (0, 255, 255-(self.strokeMem[place]-2*inc)*255/inc)
         elif self.strokeMem[place] <= 4 * inc:
             colour = (255*(self.strokeMem[place])/(4*inc), 255, 0)
         elif self.strokeMem[place] <= 5 * inc:
-            colour = (255, 255*(self.strokeMem[place])/(5*inc), 0)
+            colour = (255, 255-(self.strokeMem[place])*255/(5*inc), 0)
 
         return colour
 
@@ -183,13 +187,14 @@ class DataProcessor(yarp.PortReader):
 
         place = self.x + self.y * vrect  # Number of pixel.
 
-        if self.strokeMem[place] < NUM_MAX_STROKES:
-            self.strokeMem[place] += 1
-
-        #Find colour
-        colour=self.findColour(place)
-
         if self.memplace != place:
+            if self.strokeMem[place] < NUM_MAX_STROKES:
+                self.strokeMem[place] += 1
+
+            # Find colour
+            colour = self.findColour(place)
+            print("The colour is:", colour)
+
             #kinect below
             if kinect==0:
                 print("Painting now for real")
@@ -199,14 +204,14 @@ class DataProcessor(yarp.PortReader):
             elif kinect==1:
                 print("Painting now for real")
                 pygame.draw.rect(screen, colour, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
-                print("pete aqui!")
                 self.drawCursor()
 
             print 'place', place
             print 'self.strokeMem[place]', self.strokeMem[place]
             print 'size', len(self.myMem)
             self.myMem[place] = 1
-            self.memplace=place
+
+        self.memplace=place
 	
 	return True
 
@@ -237,37 +242,35 @@ class DataProcessor(yarp.PortReader):
         place = self.xold+self.yold*vrect
         colour= self.findColour(place)
 
-        if kinect==0:	
-	    #Delete old cursor
-	    if self.oldColour == 0:
-		pygame.draw.circle(screen, WHITE, [(self.xold*screenW/hrect)+screenW/(2*hrect),(vrect-(self.yold+1))*screenH/vrect+screenH/(2*vrect)], 10, 0)
+        if kinect==0:
+            #Delete old cursor
+            if self.oldColour == 0:
+                pygame.draw.circle(screen, WHITE, [(self.xold * screenW / hrect) + screenW / (2 * hrect),(vrect - (self.yold + 1)) * screenH / vrect + screenH / (2 * vrect)],10, 0)
 
-        elif self.oldColour == 1:
-            pygame.draw.circle(screen, colour, [(self.xold * screenW / hrect) + screenW / (2 * hrect),(vrect - (self.yold + 1)) * screenH / vrect + screenH / (2 * vrect)], 100)
+            elif self.oldColour == 1:
+                pygame.draw.circle(screen, colour, [(self.xold * screenW / hrect) + screenW / (2 * hrect), (vrect - (self.yold + 1)) * screenH / vrect + screenH / (2 * vrect)],10, 0)
 
-        #DrawCursor
-	    pygame.draw.circle(screen,BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
+            #DrawCursor
+            pygame.draw.circle(screen,BLACK,[(self.x*screenW/hrect)+screenW/(2*hrect),(vrect-(self.y+1))*screenH/vrect+screenH/(2*vrect)],10,0)
 
-	elif kinect==1:	
-	    print("the old colour is: ",self.oldColour)
-	    #Delete old cursor
-	    if self.oldColour == 0:
-		pygame.draw.circle(screen, WHITE, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
+        elif kinect==1:
+            #Delete old cursor
+            if self.oldColour == 0:
+                pygame.draw.circle(screen, WHITE, [self.xold * screenW / (hrect) + screenW / (2 * hrect), self.yold * screenH / vrect + screenH / (2 * vrect)], 10, 0)
 
-        elif self.oldColour == 1:
-            pygame.draw.circle(screen, BLUE, [(self.xold * screenW / hrect) + screenW / (2 * hrect),(vrect - (self.yold + 1)) * screenH / vrect + screenH / (2 * vrect)], 100)
+            elif self.oldColour == 1:
+                pygame.draw.circle(screen, colour, [self.xold*screenW/(hrect)+screenW/(2*hrect),self.yold*screenH/vrect+screenH/(2*vrect)], 10, 0)
 
+            #DrawCursor
+            pygame.draw.circle(screen,BLACK,[self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)],10,0)
 
-	    #DrawCursor
-	    pygame.draw.circle(screen,BLACK,[self.x*screenW/(hrect)+screenW/(2*hrect),self.y*screenH/vrect+screenH/(2*vrect)],10,0)
+	    # Update cursor position and colour
+	    self.xold = self.x
+	    self.yold = self.y
+	    self.oldColour = self.brushColour
 
-	# Update cursor position and colour
-	self.xold = self.x
-	self.yold = self.y
-	self.oldColour = self.brushColour
+	    return True
 
-	return True
-	
 
     def utilityVoxels(self):
         if self.x == 0:
