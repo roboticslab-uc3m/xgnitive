@@ -6,7 +6,7 @@ This application allow you to use the kinect to detect the position of your hand
 - [YARP with depthCamera](https://github.com/roboticslab-uc3m/installation-guides/blob/78e277815c8b37859b11c73b70c35fc860429ad2/install-yarp.md)
 - [vision package](https://github.com/roboticslab-uc3m/vision)
 
-## Installation
+## Usage
 
 ```bash
 #Init software for kinect
