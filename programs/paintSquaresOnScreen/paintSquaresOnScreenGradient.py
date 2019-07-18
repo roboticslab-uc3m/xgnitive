@@ -162,7 +162,7 @@ class DataProcessor(yarp.PortReader):
 
     def findColour(self, place):
 
-        inc = self.numMaxStrokes/5
+        inc = self.numMaxStrokes/5.0
         if inc==0:
             inc=1
         print("El incremento es:", inc)
@@ -193,7 +193,6 @@ class DataProcessor(yarp.PortReader):
                 for j in range(vrect):
                     aux_place = i + j * vrect  # Number of pixel.
                     colour = self.findColour(aux_place)
-                    print("This should be looping")
                     #kinect below
                     if kinect==0:
                         print("Painting now for real")
