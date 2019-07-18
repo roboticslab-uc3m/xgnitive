@@ -161,15 +161,14 @@ class DataProcessor(yarp.PortReader):
         return True
 
     def findColour(self, place):
-
+        #print("Starting finding colour")
         inc = self.numMaxStrokes/5.0
         if inc==0:
             inc=1
-        print("El incremento es:", inc)
-        print("El numero de strokes es:", self.strokeMem[place])
+        #print("El incremento es:", inc)
+        #print("El place es:", place)
+        #print("El numero de strokes", self.strokeMem[place])
 
-        #if self.strokeMem[place] <= inc: #Blue
-        #    colour = (0,0,255*self.strokeMem[place]/inc)
         if self.strokeMem[place] <= 2 * inc:
             colour = (0, 255*(self.strokeMem[place])/(2*inc), 255) #0-1
         elif self.strokeMem[place] <= 3 * inc:
@@ -179,15 +178,16 @@ class DataProcessor(yarp.PortReader):
         elif self.strokeMem[place] <= 5 * inc:
             colour = (255, 255-(self.strokeMem[place])*255/(5*inc), 0)
 
+        print(colour)
+
         return colour
 
     def paint(self):
-
         place = self.x + self.y * vrect  # Number of pixel.
 
         if self.memplace != place:
             self.strokeMem[place] += 1
-            self.numMaxStrokes = int(np.amax(self.strokeMem[place])) #Update the maximum number of strokes
+            self.numMaxStrokes = int(np.amax(self.strokeMem)) #Update the maximum number of strokes
 
             for i in range(hrect):
                 for j in range(vrect):
@@ -195,17 +195,16 @@ class DataProcessor(yarp.PortReader):
                     colour = self.findColour(aux_place)
                     #kinect below
                     if kinect==0:
-                        print("Painting now for real")
+                        #print("Painting now for real")
                         pygame.draw.rect(screen,colour,[i*screenW/hrect,(vrect-(j+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
-
                     elif kinect==1:
-                        print("Painting now for real")
+                        #print("Painting now for real")
                         pygame.draw.rect(screen, colour, [i*screenW/(hrect), j*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
 
         self.drawCursor()
-        print 'place', place
-        print 'self.strokeMem[place]', self.strokeMem[place]
-        print 'size', len(self.myMem)
+        #print 'place', place
+        #print 'self.strokeMem[place]', self.strokeMem[place]
+        #print 'size', len(self.myMem)
         self.myMem[place] = 1
 
         self.memplace=place
@@ -213,29 +212,27 @@ class DataProcessor(yarp.PortReader):
 	return True
 
     def paintErase(self):
-
+        #print("Start Erase")
         place =self.x+self.y*vrect #Number of pixel.
 
         #kinect below
         if kinect==0:
-            print("Erasing now for real")
             pygame.draw.rect(screen,WHITE,[self.x*screenW/hrect,(vrect-(self.y+1))*screenH/vrect,screenW/hrect,screenH/vrect],0)
             self.drawCursor()
         elif kinect==1:
-            print("Erasing now for real")
             pygame.draw.rect(screen,WHITE, [self.x*screenW/(hrect), self.y*screenH/vrect, screenW/(hrect), screenH/vrect], 0)
             self.drawCursor()
 
-        print 'place', place
-        print 'self.myMem', self.myMem
-        print 'size', len(self.myMem)
+        #print 'place', place
+        #print 'self.myMem', self.myMem
+        #print 'size', len(self.myMem)
         self.myMem[place] = 3
         self.strokeMem[place] = 0
 
 	return True	
 
     def drawCursor(self):
-
+        #print("Start cursor")
         place = self.xold+self.yold*vrect
         colour= self.findColour(place)
 
