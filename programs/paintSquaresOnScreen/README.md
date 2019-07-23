@@ -11,7 +11,7 @@ This application allow you to use the kinect to detect the position of your hand
 ```bash
 #Init software for kinect
 cd; cd repos/vision/share/sensors/conf/
-yarpdev --from asus-xtion.ini
+yarpdev --context sensors --from asus-xtion.ini
 cd ~/repos/vision/build/bin; ./voxelOccupancyDetection
 #Init paint screen
 cd ~/repos/xgnitive/programs/paintSquaresOnScreen; ./paintSquaresOnScreen.py
