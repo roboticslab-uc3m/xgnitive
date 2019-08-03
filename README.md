@@ -26,7 +26,7 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
 ## Status
 
-[![Build Status (Linux/OSX)](https://travis-ci.org/roboticslab-uc3m/xgnitive.svg?branch=develop)](https://travis-ci.org/roboticslab-uc3m/xgnitive)
+[![Build Status (Linux)](https://travis-ci.com/roboticslab-uc3m/xgnitive.svg?branch=develop)](https://travis-ci.com/roboticslab-uc3m/xgnitive)
 
 [![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/xgnitive/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/xgnitive)
 
