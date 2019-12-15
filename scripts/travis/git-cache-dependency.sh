@@ -6,7 +6,7 @@ set -e
 package_name=
 repo_url=
 repo_checkout=
-clone_only_branches="master devel develop production"
+repo_archive=
 cmake_home_dir=
 additional_cmake_options=
 prepend_to_linker_path=
@@ -20,7 +20,7 @@ ARGUMENT_LIST=(
     "package-name"
     "repo-url"
     "repo-checkout"
-    "clone-only-branches"
+    "repo-archive"
     "cmake-home-dir"
     "additional-cmake-options"
     "prepend-to-linker-path"
@@ -52,12 +52,17 @@ while [ "$#" -gt 1 ]; do
 done
 
 #-- Check required arguments
-if [ -z "$package_name" ] || [ -z "$repo_url" ] || [ -z "$repo_checkout" ]; then
+if [ -z "$package_name" ] || [ -z "$repo_url" ] || [ -z "${repo_checkout}${repo_archive}" ]; then
     echo "Missing required options. Traceback:"
     for v in "${ARGUMENT_LIST[@]}"; do
         v_param=$(echo $v | tr '-' '_')
         echo "  --$v=${!v_param}"
     done
+    return 1
+fi
+
+if [ ! -z "$repo_checkout" ] && [ ! -z "$repo_archive" ]; then
+    echo "Cannot have both repo-checkout and repo-archive options."
     return 1
 fi
 
@@ -70,16 +75,8 @@ cmake_home_dir="$repo_source_dir/$cmake_home_dir"
 #-- Configure CMake command line options
 repo_cmake_options="$additional_cmake_options -DCMAKE_INSTALL_PREFIX:PATH=$repo_cache_dir"
 
-is_clone_only_branch=false
-
-for branch in $clone_only_branches; do
-    if [ "$repo_checkout" = "$branch" ]; then
-        is_clone_only_branch=true
-        break
-    fi
-done
-
-if $is_clone_only_branch; then
+#-- Do work
+if [ ! -z "$repo_checkout" ]; then
 
     #-- Clone, build and store in cache
 
@@ -100,7 +97,7 @@ if $is_clone_only_branch; then
         echo "$package_name found in cache ($(cat $repo_cache_dir/.last_commit_sha))"
     fi
 
-else
+elif [ ! -z "$repo_archive" ]; then
 
     #-- Download zipped file from archive, build and store in cache
 
