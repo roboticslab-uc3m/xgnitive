@@ -41,13 +41,18 @@ addons:
     - libeigen3-dev
 
     # OpenRAVE
-    - libboost-all-dev
+    - libboost-filesystem-dev
+    - libboost-system-dev
+    - libboost-python-dev
+    - libboost-thread-dev
+    - libboost-iostreams-dev
     - libqt4-dev
     - qt4-dev-tools
     - libxml2-dev
     - libode-dev
     - libsoqt4-dev
     - libcoin80-dev
+    - rapidjson-dev
 
     # Aquila
     - libsfml-dev
