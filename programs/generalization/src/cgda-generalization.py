@@ -93,11 +93,11 @@ def main():
 
     #featureSum=[len()]
 
-    centers=np.zeros((timeIntervals,demons[1].shape[1]));
+    centers=np.zeros((timeIntervals,demons[1].shape[1])); #(timeIntervals,n_features)
 
-    for i in range(timeIntervals): #time intervals
+    for i in range(timeIntervals): # time intervals
         npoints=0
-        for j in range(len(demoNames)): #demons
+        for j in range(len(demoNames)): # demons
             for k in range(demons[j].shape[0]):  # sample
                 if (timeIntervalsDuration*(i)<=temp_demons[j][k]<timeIntervalsDuration*(i+1)):
                     for l in range(demons[j].shape[1]):  # features
