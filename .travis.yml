@@ -9,11 +9,11 @@ compiler:
 env:
   global:
     - CACHE_DIR=~/cached-deps
-  matrix:
+  jobs:
     - YARP_CHECKOUT=yarp-3.3
     - YARP_CHECKOUT=yarp-3.2
 
-matrix:
+jobs:
   include:
     - if: type = cron
       compiler: gcc
@@ -52,7 +52,6 @@ addons:
     - libode-dev
     - libsoqt4-dev
     - libcoin80-dev
-    - rapidjson-dev
 
     # Aquila
     - libsfml-dev

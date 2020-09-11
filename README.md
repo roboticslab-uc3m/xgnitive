@@ -13,7 +13,7 @@ The search for the Grial of generalizing robot actions continues! In Continuous 
 Take a look at most machine learning algorithms, when trying to get something novel, you'll most probably get an average off what you already have. Robot Imagination, as described in its first international conference paper [[6]](#6), aims to generate novel mental models of objects given a previous phase of semantic supervised training. Some improvements can be seen in [[7]](#7). The transition to actions would not be easy. Whereas initial reseach includes [[8]](#8), it eventually lead to the foundations of CGDA research. Additional references to RIS include the original PhD thesis [[9]](#9).
 
 ## Installation
-Installation instructions for installing from source can be found [here](https://github.com/roboticslab-uc3m/xgnitive/blob/develop/doc/xgnitive-install.md).
+Installation instructions for installing from source can be found [here](doc/xgnitive-install.md).
 
 ## Experiments
 
@@ -26,7 +26,7 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 
 ## Status
 
-[![Build Status (Linux)](https://travis-ci.com/roboticslab-uc3m/xgnitive.svg?branch=develop)](https://travis-ci.com/roboticslab-uc3m/xgnitive)
+[![Build Status (Linux)](https://travis-ci.com/roboticslab-uc3m/xgnitive.svg?branch=master)](https://travis-ci.com/roboticslab-uc3m/xgnitive)
 
 [![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/xgnitive/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/xgnitive)
 
@@ -50,5 +50,3 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-xgnitive
 <a id="8">[8]</a> J.G. Victores, S. Morante, A. Jardon, C. Balaguer. Semantic Action Parameter Inference through Machine Learning Methods. RoboCity2030 12th Workshop: Robótica Cognitiva. ISBN: 9-788469-581759, pages: 35 - 46, UNED. 2013-07-04, Madrid, Spain. 2013. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/Victores%20et%20al.%20-%202013%20-%20Semantic%20Action%20Parameter%20Inference%20through%20Machine%20Learning%20Methods.pdf) [[slides]](http://www.slideshare.net/JuanGVictores/victores2013semanticpresentation) [[bib]](doc/bib/victores2013semantic.bib) [[URL]](https://www.researchgate.net/publication/269631454_Semantic_Action_Parameter_Inference_through_Machine_Learning_Methods)
 
 <a id="9">[9]</a>  J.G. Victores. Robot Imagination System. PhD Thesis. Supervisor: C. Balaguer, A. Jardon. Qualification: Cum Laude. Universidad Carlos III de Madrid. 2014. [[PDF]](http://roboticslab.uc3m.es/roboticslab/sites/default/files/victores2014thesis.pdf) [[slides]](http://www.slideshare.net/JuanGVictores/victores2014thesispresentation) [[bib]](doc/bib/victores2014phd.bib) [[URL]](http://e-archivo.uc3m.es/handle/10016/19834)
-
-
