@@ -57,7 +57,7 @@ def main():
     sumDiss = dist.sum(axis=0) / dist.sum(axis=0).sum()
     print "[INFO] Sum of Dissimilarities: ", sumDiss
         
-     ##########################   ZSCORE   #################################
+    ##########################   ZSCORE   #################################
         
     boolzscores, zscores = libtools.get_outlier(sumDiss, thresh=ALPHA)
     print "[INFO] Detected outliers: ", boolzscores, zscores

@@ -1,5 +1,5 @@
 language: cpp
-dist: xenial
+dist: bionic
 os: linux
 
 compiler:
@@ -10,17 +10,17 @@ env:
   global:
     - CACHE_DIR=~/cached-deps
   matrix:
-    - YARP_CHECKOUT=master
-    - YARP_CHECKOUT=v3.1.2
+    - YARP_CHECKOUT=yarp-3.3
+    - YARP_CHECKOUT=yarp-3.2
 
 matrix:
   include:
     - if: type = cron
       compiler: gcc
-      env: ROBOTOLOGY_CHECKOUT=devel
+      env: ROBOTOLOGY_CHECKOUT=master
     - if: type = cron
       compiler: clang
-      env: ROBOTOLOGY_CHECKOUT=devel
+      env: ROBOTOLOGY_CHECKOUT=master
 
 cache:
   directories: $CACHE_DIR
@@ -41,13 +41,18 @@ addons:
     - libeigen3-dev
 
     # OpenRAVE
-    - libboost-all-dev
+    - libboost-filesystem-dev
+    - libboost-system-dev
+    - libboost-python-dev
+    - libboost-thread-dev
+    - libboost-iostreams-dev
     - libqt4-dev
     - qt4-dev-tools
     - libxml2-dev
     - libode-dev
     - libsoqt4-dev
     - libcoin80-dev
+    - rapidjson-dev
 
     # Aquila
     - libsfml-dev
